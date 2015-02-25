@@ -1,3 +1,5 @@
+import clr
+clr.AddReference("DataTypes.dll")
 from IronPythonTest import List, Number, InputSpecification
 
 name = "Renobuild"
