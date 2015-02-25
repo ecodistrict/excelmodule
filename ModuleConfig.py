@@ -1,6 +1,8 @@
+import os.path
 import clr
-clr.AddReference("DataTypes.dll")
-from IronPythonTest import List, Number, InputSpecification
+dll_path = os.path.join(os.path.realpath(__file__), 'DataTypes.dll')
+clr.AddReferenceToFileAndPath(dll_path)
+from DataTypes import List, Number, InputSpecification
 
 name = "Renobuild"
 description = "Description of the module"
