@@ -1,9 +1,13 @@
 import clr
-import System
-import System.IO
-dll_dir = System.IO.Path.GetDirectoryName(System.Application.ExecutablePath)
-dll_path = System.IO.Path.Combine(dll_dir, 'DataTypes.dll')
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.IO")
+from System.Windows.Forms import Application
+from System.IO import Path
+
+dll_dir = Path.GetDirectoryName(Application.ExecutablePath)
+dll_path = Path.Combine(dll_dir, 'DataTypes.dll')
 clr.AddReferenceToFileAndPath(dll_path)
+
 from DataTypes import List, Number, InputSpecification
 
 name = "Renobuild"
