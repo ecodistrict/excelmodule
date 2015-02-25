@@ -7,10 +7,10 @@ path = '....xls'
 
 def input_specification():
     inputs = InputSpecification()
-    inputs.add(Number(max=32))
+    inputs.Add(Number(max=32))
     l = List()
-    l.add(Number(min=0))
-    inputs.add(l)
+    l.Add(Number(min=0))
+    inputs.Add(l)
     return inputs
 
 def run(indata, excel):
