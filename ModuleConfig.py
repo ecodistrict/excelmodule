@@ -1,6 +1,8 @@
-import os.path
 import clr
-dll_path = os.path.join(os.path.realpath(__file__), 'DataTypes.dll')
+import System
+import System.IO
+dll_dir = System.IO.Path.GetDirectoryName(System.Application.ExecutablePath)
+dll_path = System.IO.Path.Combine(dll_dir, 'DataTypes.dll')
 clr.AddReferenceToFileAndPath(dll_path)
 from DataTypes import List, Number, InputSpecification
 
