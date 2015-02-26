@@ -54,10 +54,13 @@ namespace IronPythonTest
                 //isp.Add(new Input());
                 //isp.Add(new Atomic());
                 isp.Add(new Number("a"));
-                //List aList = new List("ListLbl");
-                //aList.Add(new Number("b"));
-                //aList.Add(new Number("c"));
-                //isp.Add(aList);
+                List aList = new List("ListLbl");
+                aList.Add(new Number("b"));
+                aList.Add(new Number("c"));
+                List listRoot = new List();
+                listRoot.Add(aList);
+                listRoot.Add(aList);
+                isp.Add(listRoot);
                 var settings = new DataContractJsonSerializerSettings();
                 settings.EmitTypeInformation = EmitTypeInformation.Never;
                 MemoryStream stream1 = new MemoryStream();
