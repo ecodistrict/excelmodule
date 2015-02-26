@@ -27,8 +27,21 @@ namespace DataTypes
 
         public string ToJason()
         {
+            string json = "";
 
-            return "";
+            json += "{" + System.Environment.NewLine;
+
+            json += "type: " + type + "," + System.Environment.NewLine;
+            json += "label: " + label + "," + System.Environment.NewLine;
+            json += "id: " + id + "," + System.Environment.NewLine;
+            json += "min: " + min + "," + System.Environment.NewLine;
+            json += "max: " + max + "," + System.Environment.NewLine;
+            json += "value: " + value + "," + System.Environment.NewLine;
+
+            json += "}" + System.Environment.NewLine;
+
+
+            return json;
         }
     }
 }

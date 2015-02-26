@@ -12,6 +12,6 @@ namespace DataTypes
         protected string label { get; set; }
         protected string id { get; set; }
 
-        public extern string ToJason();
+        public virtual string ToJason() { return ""; }
     }
 }

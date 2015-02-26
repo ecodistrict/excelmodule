@@ -19,5 +19,20 @@ namespace DataTypes
         {
             inputs.Add(item);
         }
+
+        public string ToJason()
+        {
+            string json = "";
+
+            json += "[" + System.Environment.NewLine;
+
+            foreach (Input input in inputs)
+                json += input;
+
+            json += "]" + System.Environment.NewLine;
+
+
+            return json;
+        }
     }
 }

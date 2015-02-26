@@ -49,9 +49,16 @@ namespace IronPythonTest
         {
             try
             {
-                var ipy = Python.CreateRuntime();
-                dynamic config = ipy.UseFile("../ModuleConfig.py");
-                InputSpecification inputSpec = config.input_specification();
+                InputSpecification isp = new InputSpecification();
+                isp.Add(new Number("a"));
+                isp.Add(new Number("b"));
+                isp.Add(new Number("c"));
+
+                tBox1.Text = isp.ToJason();
+
+                //var ipy = Python.CreateRuntime();
+                //dynamic config = ipy.UseFile("../ModuleConfig.py");
+                //InputSpecification inputSpec = config.input_specification();
             }
             catch (Exception exe)
             {
