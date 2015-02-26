@@ -50,31 +50,30 @@ namespace IronPythonTest
         {
             try
             {
-                InputSpecification isp = new InputSpecification();
-                //isp.Add(new Input());
-                //isp.Add(new Atomic());
-                isp.Add(new Number("a"));
-                List aList = new List("ListLbl");
-                aList.Add(new Number("b"));
-                aList.Add(new Number("c"));
-                List listRoot = new List();
-                listRoot.Add(aList);
-                listRoot.Add(aList);
-                isp.Add(listRoot);
                 var settings = new DataContractJsonSerializerSettings();
                 settings.EmitTypeInformation = EmitTypeInformation.Never;
                 MemoryStream stream1 = new MemoryStream();
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(InputSpecification),settings);
-                ser.WriteObject(stream1, isp);
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(InputSpecification), settings);
+                InputSpecification inputSpec = new InputSpecification();
+
+                //inputSpec.Add(new Number("a"));
+                //List aList = new List("ListLbl");
+                //aList.Add(new Number("b"));
+                //aList.Add(new Number("c"));
+                //List listRoot = new List();
+                //listRoot.Add(aList);
+                //listRoot.Add(aList);
+                //inputSpec.Add(listRoot);
+               
+
+                var ipy = Python.CreateRuntime();
+                dynamic config = ipy.UseFile("../ModuleConfig.py");
+                inputSpec = config.input_specification();
+
+                ser.WriteObject(stream1, inputSpec);
                 stream1.Position = 0;
                 StreamReader sr = new StreamReader(stream1);
                 tBox1.Text = sr.ReadToEnd();
-
-                //tBox1.Text = isp.ToJason();
-
-                //var ipy = Python.CreateRuntime();
-                //dynamic config = ipy.UseFile("../ModuleConfig.py");
-                //InputSpecification inputSpec = config.input_specification();
             }
             catch (Exception exe)
             {

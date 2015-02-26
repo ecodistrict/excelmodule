@@ -20,6 +20,7 @@ def input_specification():
     inputs.Add(Number(max=32))
     l = List()
     l.Add(Number(min=0))
+    l.Add(Number(min=3))
     inputs.Add(l)
     return inputs
 
