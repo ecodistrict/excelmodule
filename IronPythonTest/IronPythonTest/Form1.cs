@@ -15,7 +15,7 @@ using System.Runtime.Serialization.Json;
 using IronPython;
 using IronPython.Hosting;
 
-using DataTypes;
+using Ecodistrict.Messaging;
 
 namespace IronPythonTest
 {

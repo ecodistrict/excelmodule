@@ -5,10 +5,10 @@ from System.Windows.Forms import Application
 from System.IO import Path
 
 dll_dir = Path.GetDirectoryName(Application.ExecutablePath)
-dll_path = Path.Combine(dll_dir, 'DataTypes.dll')
+dll_path = Path.Combine(dll_dir, 'EcodistrictMessaging.dll')
 clr.AddReferenceToFileAndPath(dll_path)
 
-from DataTypes import List, Number, InputSpecification
+from Ecodistrict.Messaging import List, Number, InputSpecification
 
 name = "Renobuild"
 description = "Description of the module"
