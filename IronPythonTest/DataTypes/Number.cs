@@ -24,5 +24,11 @@ namespace DataTypes
             this.value = value;
         }
 
+
+        public string ToJason()
+        {
+
+            return "";
+        }
     }
 }
