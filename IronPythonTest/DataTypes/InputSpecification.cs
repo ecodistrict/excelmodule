@@ -3,36 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace DataTypes
 {
-    public class InputSpecification : NonAtomic
+    [DataContract]
+    public class InputSpecification 
     {
-        public InputSpecification()
-        {
-            this.type = "";
-            this.label = "";
-            this.id = "";
-        }
-
-        public override void Add(Input item)
+        [DataMember]
+        List<Input> inputs = new List<Input>();
+        
+        public void Add(Input item)
         {
             inputs.Add(item);
         }
 
-        public string ToJason()
-        {
-            string json = "";
+        //public string ToJason()
+        //{
+        //    string json = "";
 
-            json += "[" + System.Environment.NewLine;
+        //    json += "[" + System.Environment.NewLine;
 
-            foreach (Input input in inputs)
-                json += input;
+        //    foreach (Input input in inputs)
+        //        json += input.ToJason() + "," + System.Environment.NewLine;
 
-            json += "]" + System.Environment.NewLine;
+        //    json += "]" + System.Environment.NewLine;
 
 
-            return json;
-        }
+        //    return json;
+        //}
     }
 }

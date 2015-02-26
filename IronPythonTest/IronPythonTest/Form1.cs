@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+
 using IronPython;
 using IronPython.Hosting;
 
@@ -31,9 +34,7 @@ namespace IronPythonTest
         private void btnRun_Click(object sender, EventArgs e)
         {
             try
-            {
-                
-
+            {           
                 var ipy = Python.CreateRuntime();
                 dynamic test = ipy.UseFile("../../../../ModuleConfig.py");
                 int i = test.run(1, 2);
@@ -50,11 +51,23 @@ namespace IronPythonTest
             try
             {
                 InputSpecification isp = new InputSpecification();
+                //isp.Add(new Input());
+                //isp.Add(new Atomic());
                 isp.Add(new Number("a"));
-                isp.Add(new Number("b"));
-                isp.Add(new Number("c"));
+                //List aList = new List("ListLbl");
+                //aList.Add(new Number("b"));
+                //aList.Add(new Number("c"));
+                //isp.Add(aList);
+                var settings = new DataContractJsonSerializerSettings();
+                settings.EmitTypeInformation = EmitTypeInformation.Never;
+                MemoryStream stream1 = new MemoryStream();
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(InputSpecification),settings);
+                ser.WriteObject(stream1, isp);
+                stream1.Position = 0;
+                StreamReader sr = new StreamReader(stream1);
+                tBox1.Text = sr.ReadToEnd();
 
-                tBox1.Text = isp.ToJason();
+                //tBox1.Text = isp.ToJason();
 
                 //var ipy = Python.CreateRuntime();
                 //dynamic config = ipy.UseFile("../ModuleConfig.py");

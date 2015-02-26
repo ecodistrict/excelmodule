@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace DataTypes
 {
+    [DataContract]
     public class Number : Atomic
     {
+        [DataMember]
         decimal min { get; set; }
+        [DataMember]
         decimal max { get; set; }
+        [DataMember]
         decimal value { get; set; }
 
         public Number(string label="", string id ="", 
@@ -25,23 +31,23 @@ namespace DataTypes
         }
 
 
-        public string ToJason()
-        {
-            string json = "";
+        //public override string ToJason()
+        //{
+        //    string json = "";
 
-            json += "{" + System.Environment.NewLine;
+        //    json += "{" + System.Environment.NewLine;
 
-            json += "type: " + type + "," + System.Environment.NewLine;
-            json += "label: " + label + "," + System.Environment.NewLine;
-            json += "id: " + id + "," + System.Environment.NewLine;
-            json += "min: " + min + "," + System.Environment.NewLine;
-            json += "max: " + max + "," + System.Environment.NewLine;
-            json += "value: " + value + "," + System.Environment.NewLine;
+        //    json += "type: " + type + "," + System.Environment.NewLine;
+        //    json += "label: " + label + "," + System.Environment.NewLine;
+        //    json += "id: " + id + "," + System.Environment.NewLine;
+        //    json += "min: " + min + "," + System.Environment.NewLine;
+        //    json += "max: " + max + "," + System.Environment.NewLine;
+        //    json += "value: " + value + "," + System.Environment.NewLine;
 
-            json += "}" + System.Environment.NewLine;
+        //    json += "}";
 
 
-            return json;
-        }
+        //    return json;
+        //}
     }
 }
