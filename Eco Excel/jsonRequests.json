@@ -1,0 +1,41 @@
+[
+  {
+    "type": "request",
+    "method": "getModels",
+    "parameters": {
+      "kpiList": []
+    }
+  },
+  {
+    "type": "request",
+    "method": "selectModel",
+    "variantId": "54edec210373368309a04091",
+    "moduleId": "list-input",
+    "kpiAlias": "list"
+  },
+  {
+    "type": "request",
+    "method": "startModel",
+    "moduleId": "list-input",
+    "variantId": "54edec210373368309a04091",
+    "kpiAlias": "list",
+    "inputs": [
+      {
+        "value": 50,
+        "min": 1,
+        "unit": "years",
+        "label": "Time period for LCA calculation",
+        "type": "number",
+        "id": "time-frame"
+      },
+      {
+        "inputs": [],
+        "entity": "building",
+        "id": "buildings",
+        "label": "Define buildings and their heating systems",
+        "type": "list",
+        "value": []
+      }
+    ]
+  }
+]
