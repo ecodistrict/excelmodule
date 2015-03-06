@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronPythonTest", "IronPythonTest\IronPythonTest.csproj", "{59D4A933-9C80-4EF8-B4B5-4C97A685F445}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTypes", "DataTypes\DataTypes.csproj", "{F9C0CDC8-FF0D-4DEE-A2F2-210F49521691}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcodistrictMessaging", "EcodistrictMessaging\EcodistrictMessaging.csproj", "{F9C0CDC8-FF0D-4DEE-A2F2-210F49521691}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

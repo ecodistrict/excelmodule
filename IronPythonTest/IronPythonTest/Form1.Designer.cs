@@ -55,9 +55,13 @@
             // 
             // tBox1
             // 
+            this.tBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tBox1.Location = new System.Drawing.Point(93, 12);
             this.tBox1.Multiline = true;
             this.tBox1.Name = "tBox1";
+            this.tBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tBox1.Size = new System.Drawing.Size(429, 196);
             this.tBox1.TabIndex = 3;
             // 

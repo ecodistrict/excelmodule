@@ -9,10 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+
 using IronPython;
 using IronPython.Hosting;
 
-using DataTypes;
+using Ecodistrict.Messaging;
 
 namespace IronPythonTest
 {
@@ -31,9 +34,7 @@ namespace IronPythonTest
         private void btnRun_Click(object sender, EventArgs e)
         {
             try
-            {
-                
-
+            {           
                 var ipy = Python.CreateRuntime();
                 dynamic test = ipy.UseFile("../../../../ModuleConfig.py");
                 int i = test.run(1, 2);
@@ -49,16 +50,30 @@ namespace IronPythonTest
         {
             try
             {
-                InputSpecification isp = new InputSpecification();
-                isp.Add(new Number("a"));
-                isp.Add(new Number("b"));
-                isp.Add(new Number("c"));
+                var settings = new DataContractJsonSerializerSettings();
+                settings.EmitTypeInformation = EmitTypeInformation.Never;
+                MemoryStream stream1 = new MemoryStream();
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(InputSpecification), settings);
+                InputSpecification inputSpec = new InputSpecification();
 
-                tBox1.Text = isp.ToJason();
+                //inputSpec.Add(new Number("a"));
+                //List aList = new List("ListLbl");
+                //aList.Add(new Number("b"));
+                //aList.Add(new Number("c"));
+                //List listRoot = new List();
+                //listRoot.Add(aList);
+                //listRoot.Add(aList);
+                //inputSpec.Add(listRoot);
+               
 
-                //var ipy = Python.CreateRuntime();
-                //dynamic config = ipy.UseFile("../ModuleConfig.py");
-                //InputSpecification inputSpec = config.input_specification();
+                var ipy = Python.CreateRuntime();
+                dynamic config = ipy.UseFile("../ModuleConfig.py");
+                inputSpec = config.input_specification();
+
+                ser.WriteObject(stream1, inputSpec);
+                stream1.Position = 0;
+                StreamReader sr = new StreamReader(stream1);
+                tBox1.Text = sr.ReadToEnd();
             }
             catch (Exception exe)
             {

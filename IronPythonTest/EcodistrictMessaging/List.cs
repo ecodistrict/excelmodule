@@ -6,30 +6,23 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
-namespace DataTypes
+namespace Ecodistrict.Messaging
 {
     [DataContract]
-    public class Number : Atomic
+    public class List : NonAtomic
     {
-        [DataMember]
-        decimal min { get; set; }
-        [DataMember]
-        decimal max { get; set; }
-        [DataMember]
-        decimal value { get; set; }
 
-        public Number(string label="", string id ="", 
-            decimal min=0, decimal max=10, decimal value=5)
+        public List(string label="", string id="")
         {
-            this.type = "number";
+            this.type = "list";
             this.label = label;
             this.id = id;
-
-            this.min = min;
-            this.max = max;
-            this.value = value;
         }
 
+        public override void Add(Input item)
+        {
+            inputs.Add(item);
+        }
 
         //public override string ToJason()
         //{
@@ -40,12 +33,16 @@ namespace DataTypes
         //    json += "type: " + type + "," + System.Environment.NewLine;
         //    json += "label: " + label + "," + System.Environment.NewLine;
         //    json += "id: " + id + "," + System.Environment.NewLine;
-        //    json += "min: " + min + "," + System.Environment.NewLine;
-        //    json += "max: " + max + "," + System.Environment.NewLine;
-        //    json += "value: " + value + "," + System.Environment.NewLine;
+
+        //    json += "inputs: [" + System.Environment.NewLine;
+
+        //    foreach (Input input in inputs)
+        //        json += input.ToJason() + "," + System.Environment.NewLine;
+
+        //    json += "]" + System.Environment.NewLine;
+
 
         //    json += "}";
-
 
         //    return json;
         //}
