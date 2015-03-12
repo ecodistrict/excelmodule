@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IMB;
 using Excel=Microsoft.Office.Interop.Excel;
 
 
@@ -20,13 +19,10 @@ namespace EcoExcel
         public CExcel(string workBookFilePath)
         {
             WorkBookFilePath = workBookFilePath;
-            if (!File.Exists(WorkBookFilePath))
-            {
-                throw new ArgumentException("Excelfile not found");
-            }
+            
             try
             {
-                mExcel = new Microsoft.Office.Interop.Excel.Application();
+                mExcel = new Excel.Application();
                 wb = mExcel.Workbooks.Open(WorkBookFilePath,ReadOnly:true);
             }
             catch (Exception ex)
@@ -80,14 +76,14 @@ namespace EcoExcel
             }
         }
 
-        public object GetCellValue(string sheet, string cell, out string celltype)
+        public object GetCellValue(string sheet, string cell)
         {
             try
             {
                 if (ws == null || ws.Name != sheet)
                     ws = wb.Worksheets[sheet];
 
-                celltype = ws.Range[cell].Value.GetType();
+                //celltype = ws.Range[cell].Value.GetType();
                 return ws.Range[cell].Value;
 
             }
@@ -96,14 +92,14 @@ namespace EcoExcel
                 throw new Exception(string.Format("Could not read worksheet:{0} cell:{1}" , sheet, cell));
             }
         }
-        public object GetCellValue(string sheet, int row, int col, out string celltype)
+        public object GetCellValue(string sheet, int row, int col)
         {
             try
             {
                 if (ws == null || ws.Name != sheet)
                     ws = wb.Worksheets[sheet];
 
-                celltype = ws.Range[row, col].Value.GetType();
+                //celltype = ws.Range[row, col].Value.GetType();
                 return ws.Range[row, col].Value;
 
             }

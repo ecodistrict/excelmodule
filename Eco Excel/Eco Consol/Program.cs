@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using EcoExcel;
 using IMB;
 using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json;
+using IronPython;
+using Ecodistrict.Messaging;
+using IronPython.Hosting;
 
 
 namespace Eco_Consol
@@ -15,25 +18,26 @@ namespace Eco_Consol
     {
         //Debug
         private const string UrlPath = @"C:\Users\perbe\Documents\EcoDistr\Kod\Eco Excel\ServerInfo.txt";
-        private const string XlsPath = @"C:\Users\perbe\Documents\EcoDistr\Kod\Eco Excel\EcoDistrictTest.xlsx";
         //End debug
         private static TConnection Connection { get; set; }
         private static TEventEntry SubscribedEvent { get; set; }
         private static TEventEntry PublichedEvent { get; set; }
         private static string Id { get; set; } //Self.ID
-        private static CServerData ServerData { get; set; }
-        
+        private static ServerInfo ServerData { get; set; }
+        private static dynamic Config { get; set; }
+
         
         static void Main(string[] args)
-        {
-            //Debug
-            JSONtest();
-            //End debug
+        {    
+            ReadConfiguration();
 
+#if (DEBUG)
+            DebugReadTestFiles();
+#endif
             try
             {
                 bool startupStatus = true;
-                if (!ReadConfigFile())
+                if (!ReadServerConfigFile())
                 {
                     Console.WriteLine("Ending program");
                     startupStatus = false;
@@ -55,6 +59,87 @@ namespace Eco_Consol
             {
                 Connection.Close();
             }
+        }
+
+        private static void DebugReadTestFiles()
+        {
+           //Receive and Respond to getModels
+            string msg = File.ReadAllText(@"..\..\TestFiles\getModels.txt", new UTF8Encoding());
+            GetModelsRequest gmReq= ConvertEcoString(msg) as GetModelsRequest;
+            var kpiList = new List<string>();
+            foreach (var item in Config.kpiList)
+                kpiList.Add(item);
+            GetModelsResponse gmRes=new GetModelsResponse(Config.name,Config.moduleId,Config.description,kpiList);
+            var gmResString=Ecodistrict.Messaging.Serialize.Message(gmRes);
+           //Send gmResString
+
+            
+            //Receive and response to selectModel
+            msg = File.ReadAllText(@"..\..\TestFiles\selectModel.txt", new UTF8Encoding());
+            SelectModelRequest smReq = ConvertEcoString(msg) as SelectModelRequest;
+            string variantId = smReq.variantId;
+            string kpiId = smReq.kpiId;
+            SelectModelResponse smRes = new SelectModelResponse(Config.moduleId, variantId,kpiId,Config.input_specification());
+            var smResString = Ecodistrict.Messaging.Serialize.Message(smRes);
+            //Send smResString
+
+            //Receive and response to startModule
+            msg = File.ReadAllText(@"..\..\TestFiles\startModel.txt", new UTF8Encoding());
+            StartModelRequest stmReq = ConvertEcoString(msg) as StartModelRequest;
+            string smVariantId = stmReq.variantId;
+            string smkpiId = smReq.kpiId;
+            StartModelResponse stmResp=new StartModelResponse(Config.moduleId,smVariantId,smkpiId,ModelStatus.Processing);
+            var stmRespString=Ecodistrict.Messaging.Serialize.Message(stmResp);
+            //Send stmRespString
+
+            CExcel exls;
+            Outputs _outputs=null;
+            try
+            {
+
+
+                if (File.Exists(Config.path))
+                {
+                    exls = new CExcel(Config.path);
+                    _outputs = Config.run(stmReq.inputData, exls);
+                }
+                else
+                {
+                    Console.WriteLine("Excelfile <{0}> not found", Config.path);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                exls = null;    
+            }
+
+            ModelResult _result = new ModelResult(Config.moduleId, smVariantId, smkpiId,_outputs);
+            var modResString=Ecodistrict.Messaging.Serialize.Message(_result);
+            
+            StartModelResponse stmResp2 = new StartModelResponse(Config.moduleId, smVariantId, smkpiId, ModelStatus.Success);
+            var stmRespString2 = Ecodistrict.Messaging.Serialize.Message(stmResp);
+            //Send stmRespString2
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void ReadConfiguration()
+        {
+            var ipy = Python.CreateRuntime();
+            Config = ipy.UseFile("../ModuleConfig.py");
+
+            Ecodistrict.Messaging.InputSpecification inputSpec = Config.input_specification();
+
+            //var myString=Ecodistrict.Messaging.Serialize.InputSpecification(inputSpec,true);
+            //Gå igenom och beräkna
+            //List<Ecodistrict.Messaging.Output> myRes=Config.run("startModuleRequest", ExcelObj);
+
         }
 
         private static bool ConnectToServer()
@@ -86,106 +171,49 @@ namespace Eco_Consol
             return res;
         }
 
-        private static GetModulesMessageRequest JSONtest()
-        {
-            const string cStartModel = "startModel";
-            const string cSelectModel = "selectModel";
-            const string cGetModels = "getModels";
-
-            var message = File.ReadAllText(@"L:\EcoDistr\Kod\Eco Excel\" + "getModels.txt");
-            //var message = File.ReadAllText(@"L:\EcoDistr\Kod\Eco Excel\" + "selectModel.txt");
-            //var message = File.ReadAllText(@"L:\EcoDistr\Kod\Eco Excel\" + "startModel.txt");
-            
-            dynamic array = JsonConvert.DeserializeObject(message);
-
-            string type, method;
-            var c = new List<object>();
-
-            type = array.type;
-            
-            if(type!="request")
-                return null;
-            
-            method = array.method;
-            var reqMsg = new GetModulesMessageRequest();
-            
-
-            switch (method)
-            {
-                case cGetModels:
-                {
-                    //reqMsg.Method = GetModulesMessageRequest.eMethod.GetModules;
-                    break;
-                }
-                case cSelectModel:
-                {
-                    //reqMsg.Method=CRequestMessage.eMethod.SelectModel;
-                    break;
-                }
-                case cStartModel:
-                {
-                    //reqMsg.Method = CRequestMessage.eMethod.StartModel;
-                    break;
-                }
-            }
-
-            if(array.parameters!=null)
-                foreach (var item in array.parameters)
-                {
-                    foreach (var str in item)
-                    {
-                        c.Add(str);
-                    }
-                }
-
-            return reqMsg;
-
-        }
+       
 
 
          static void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, IMB.ByteBuffers.TByteBuffer aPayload)
         {
-            const string cType = "type";
-            const string cMethod = "method";
-            const string cParameters = "parameters";
-
             string message= System.Text.Encoding.UTF8.GetString(aPayload.Buffer);
 
-           
+            ConvertEcoString(message);
 
-            var reader = new JsonTextReader(new StringReader(message));
-            while (reader.Read())
-            {
-                if (reader.Value != null)
-                    Console.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
-                else
-                    Console.WriteLine("Token: {0}", reader.TokenType);
-            }
-            string method = "";
-             var moduleID = "12";
-
-            switch (method)
-            {
-                case "getModules":
-                    SendKPIList();
-                    break;
-                case "selectModules":
-                    if (moduleID == Id)
-                    {
-                        SendSelectInfo();
-                    }
-                    break;
-                case "startModule":
-                    if (moduleID == Id)
-                    {
-                        SendStatus("Processing");
-                        StartModule();
-                        SendResult();
-                        SendStatus("Success");
-                    }
-                    break;
-            }
         }
+
+         private static IMessage ConvertEcoString(string message)
+         {
+             IMessage iMessage = Deserialize.JsonMessage(message);
+             return iMessage;
+
+             //if (iMessage is Ecodistrict.Messaging.GetModelsRequest)
+             //{
+             //    GetModelsRequest gmr = iMessage as GetModelsRequest;
+             //    var gmresp = new Ecodistrict.Messaging.GetModelsResponse(Config.name, Config.moduleId, Config.description, Config.kpiList);
+             //    var txt = Ecodistrict.Messaging.Serialize.Message(gmresp);
+             //}
+             //else if (iMessage is Ecodistrict.Messaging.SelectModelRequest)
+             //{
+             //    SelectModelRequest rq = iMessage as SelectModelRequest;
+             //    if (rq.moduleId == Id)
+             //    {
+
+             //    }
+
+
+             //}
+             //else if (iMessage is Ecodistrict.Messaging.StartModelRequest)
+             //{
+             //    StartModelRequest smr = iMessage as StartModelRequest;
+             //    //Här finnds indatalistan
+                 
+             //}
+             //else
+             //{
+             //}
+
+         }
 
         private static void SendResult()
         {
@@ -207,35 +235,25 @@ namespace Eco_Consol
             var sb = new StringBuilder();
             var sw = new StringWriter(sb);
             
-            using(var jtw=new JsonTextWriter(sw))
-            {
-                jtw.WriteStartObject();
-                jtw.WritePropertyName("Kpi");
-                jtw.WriteValue("energy-kpi");
-                jtw.WritePropertyName("Kpi");
-                jtw.WriteValue("ghg-kpi");
-                jtw.WriteEnd();
-                jtw.WriteEndObject();
-            }
+            //using(var jtw=new JsonTextWriter(sw))
+            //{
+            //    jtw.WriteStartObject();
+            //    jtw.WritePropertyName("Kpi");
+            //    jtw.WriteValue("energy-kpi");
+            //    jtw.WritePropertyName("Kpi");
+            //    jtw.WriteValue("ghg-kpi");
+            //    jtw.WriteEnd();
+            //    jtw.WriteEndObject();
+            //}
             PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, GetBytes(sb.ToString()));
         }
 
-        private static void StartModule()
-        {
-            RunExcel();
-            //SendResult();
-        }
 
-        private static void RunExcel()
-        {
-            var excel = new CExcel(XlsPath);
-        }
-
-        private static bool ReadConfigFile()
+        private static bool ReadServerConfigFile()
         {
             try
             {
-                ServerData=new CServerData();
+                ServerData=new ServerInfo();
                 using (var fs = new FileStream(UrlPath, FileMode.Open, FileAccess.Read))
                 {
                     using (var sr = new StreamReader(fs))
@@ -261,42 +279,6 @@ namespace Eco_Consol
             byte[] bytes = new byte[str.Length * sizeof(char)];
             System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length); //JSon??
             return bytes;
-        }
-
-        private static string[] JSonConv(string jsonStr)
-        {
-            int count = 0;
-            int count2 = 0;
-            int inOrOut = 0;
-            int nRecords = 1;
-            var reader = new JsonTextReader(new StringReader(jsonStr));
-            string[] rawData = new string[5];
-            while (reader.Read())
-            {
-                if (reader.Value != null)
-                    if (inOrOut == 1)
-                    {
-                        if (count == 6)
-                        {
-                            nRecords++;
-                            Array.Resize(ref rawData, nRecords);
-                            //textBox1.Text += "\r\n";
-                            count = 0;
-                        }
-                        rawData[count2] += reader.Value + ","; //+"\r\n"
-                        inOrOut = 0;
-                        count++;
-                        if (count2 == 500)
-                        {
-                            //MessageBox.Show(rawData[499]);
-                        }
-                    }
-                    else
-                    {
-                        inOrOut = 1;
-                    }
-            }
-            return rawData;
         }
     }
 }
