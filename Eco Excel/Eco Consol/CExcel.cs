@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Excel=Microsoft.Office.Interop.Excel;
@@ -12,7 +13,7 @@ namespace EcoExcel
     public class CExcel 
     {
         public string WorkBookFilePath { get; private set; }
-        private Excel.Application mExcel;
+        private Excel.Application excelApp;
         private Excel.Workbook wb;
         private Excel.Worksheet ws;
 
@@ -22,8 +23,8 @@ namespace EcoExcel
             
             try
             {
-                mExcel = new Excel.Application();
-                wb = mExcel.Workbooks.Open(WorkBookFilePath,ReadOnly:true);
+                excelApp = new Excel.Application();
+                wb = excelApp.Workbooks.Open(WorkBookFilePath,ReadOnly:true);
             }
             catch (Exception ex)
             {
@@ -33,13 +34,13 @@ namespace EcoExcel
 
         ~CExcel()
         {
-            if (mExcel != null)
+            if (excelApp != null)
             {
-                mExcel.DisplayAlerts = false;
+                excelApp.DisplayAlerts = false;
                 wb.Close(SaveChanges:false);
                 //mExcel.Workbooks.Close();
-                mExcel.Quit();
-                mExcel = null;
+                excelApp.Quit();
+                excelApp = null;
             }
         }
 
@@ -107,6 +108,40 @@ namespace EcoExcel
             {
                 throw new Exception(string.Format("Could not read worksheet:{0} row:{1} col:{2}", sheet, row, col));
             }
+        }
+
+        public void CloseExcel()
+        {
+            GC.Collect();
+            if (ws != null)
+            {
+                excelApp.DisplayAlerts = false;
+                Marshal.FinalReleaseComObject(ws);
+                ws = null;
+                GC.Collect();
+            }
+            if (wb != null)
+            {
+                excelApp.DisplayAlerts = false;
+                wb.Close(false, Type.Missing,Type.Missing);
+                Marshal.FinalReleaseComObject(wb);
+                wb = null;
+                GC.Collect();
+            }
+            if (excelApp.Workbooks != null)
+            {
+                excelApp.Workbooks.Close();
+                Marshal.FinalReleaseComObject(excelApp.Workbooks);
+                GC.Collect();
+            }
+            if (excelApp != null)
+            {
+                excelApp.Quit();
+                Marshal.FinalReleaseComObject(excelApp);
+                excelApp = null;
+                GC.Collect();
+            }
+
         }
     }
 }

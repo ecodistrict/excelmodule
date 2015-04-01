@@ -1,7 +1,7 @@
 {
   "type": "request",
-  "method": "selectModel",
+  "method": "selectModule",
   "moduleId": "SP_Excelmodule",
   "variantId": "503f191e8fcc19729de860ea",
-  "kpiId": "SP_Excelmodule-kpi-1"
+  "kpiId": "SP_Energy-1"
 }

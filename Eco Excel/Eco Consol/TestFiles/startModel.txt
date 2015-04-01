@@ -1,9 +1,9 @@
 {
   "type": "request",
-  "method": "startModel",
+  "method": "startModule",
   "moduleId": "SP_Excelmodule",
   "variantId": "503f191e8fcc19729de860ea",
-  "kpiId": "SP_Excelmodule-kpi-1",
+  "kpiId": "SP_Energy-1",
   "inputData": {
     "Testvalue_1": "5",
     "Testvalue_2": "6",

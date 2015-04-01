@@ -1,9 +1,15 @@
-﻿using System;
+﻿
+//#define NoServer
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
+using System.Threading;
 using EcoExcel;
 using IMB;
 using Microsoft.Office.Interop.Excel;
@@ -16,31 +22,44 @@ namespace Eco_Consol
 {
     class Program
     {
-        //Debug
-        private const string UrlPath = @"C:\Users\perbe\Documents\EcoDistr\Kod\Eco Excel\ServerInfo.txt";
-        //End debug
+        private static string SubScribedEventName { get; set; }
+        private static string PublishedEventName { get; set; }
         private static TConnection Connection { get; set; }
         private static TEventEntry SubscribedEvent { get; set; }
         private static TEventEntry PublichedEvent { get; set; }
-        private static string Id { get; set; } //Self.ID
-        private static ServerInfo ServerData { get; set; }
+        private static ServerInfo serverInfo { get; set; }
         private static dynamic Config { get; set; }
 
-        
+        /// <summary>
+        /// Main routine 
+        /// </summary>
+        /// <param name="args">Not used</param>
         static void Main(string[] args)
         {    
-            ReadConfiguration();
+            
+           
 
-#if (DEBUG)
-            DebugReadTestFiles();
-#endif
             try
             {
                 bool startupStatus = true;
-                if (!ReadServerConfigFile())
+
+                if (!ReadConfigurationFile())
                 {
-                    Console.WriteLine("Ending program");
                     startupStatus = false;
+                }
+#if (NoServer)
+                DebugReadTestFiles();
+#endif
+                if (!GetServerConfiguration())
+                {
+                    Console.WriteLine("Error reading serverinfo from Config file!");
+                    startupStatus = false;
+                }
+                else
+                {
+                    Console.WriteLine("connecting {0} Port {1} User:{2} UserId:{3} Federation: {4}",
+                        serverInfo.ServerAdress, serverInfo.Port, serverInfo.UserName, serverInfo.UserId,
+                        serverInfo.Federation);
                 }
 
                 if (!ConnectToServer())
@@ -48,11 +67,24 @@ namespace Eco_Consol
                     Console.WriteLine("Ending program");
                     startupStatus = false;
                 }
-                if (!startupStatus)
+                else
+                {
+                    Console.WriteLine("Connected..");
+                }
+
+                if (startupStatus)
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
                 }
+                else
+                {
+                    Console.WriteLine("**** Errors detected! ****");
+                    Console.WriteLine(">> Press return to close connection");
+                    Console.ReadLine();
+                }
+
+                
 
         }
             finally
@@ -65,31 +97,34 @@ namespace Eco_Consol
         {
            //Receive and Respond to getModels
             string msg = File.ReadAllText(@"..\..\TestFiles\getModels.txt", new UTF8Encoding());
-            GetModelsRequest gmReq= ConvertEcoString(msg) as GetModelsRequest;
+            GetModulesRequest gmReq = Deserialize.JsonString(msg) as GetModulesRequest;
             var kpiList = new List<string>();
             foreach (var item in Config.kpiList)
                 kpiList.Add(item);
-            GetModelsResponse gmRes=new GetModelsResponse(Config.name,Config.moduleId,Config.description,kpiList);
-            var gmResString=Ecodistrict.Messaging.Serialize.Message(gmRes);
+            GetModulesResponse gmRes=new GetModulesResponse(Config.name,Config.moduleId,Config.description,kpiList);
+            var gmResString=Ecodistrict.Messaging.Serialize.ToJsonString(gmRes, true);
            //Send gmResString
 
             
             //Receive and response to selectModel
             msg = File.ReadAllText(@"..\..\TestFiles\selectModel.txt", new UTF8Encoding());
-            SelectModelRequest smReq = ConvertEcoString(msg) as SelectModelRequest;
+            SelectModuleRequest smReq = Deserialize.JsonString(msg) as SelectModuleRequest;
             string variantId = smReq.variantId;
             string kpiId = smReq.kpiId;
-            SelectModelResponse smRes = new SelectModelResponse(Config.moduleId, variantId,kpiId,Config.input_specification());
-            var smResString = Ecodistrict.Messaging.Serialize.Message(smRes);
+            if (Config.kpiId_Exists(kpiId))
+            {
+                SelectModuleResponse smRes = new SelectModuleResponse(Config.moduleId, variantId,kpiId,Config.input_specification(kpiId));
+                var smResString = Ecodistrict.Messaging.Serialize.ToJsonString(smRes, true);
+            }
             //Send smResString
 
             //Receive and response to startModule
             msg = File.ReadAllText(@"..\..\TestFiles\startModel.txt", new UTF8Encoding());
-            StartModelRequest stmReq = ConvertEcoString(msg) as StartModelRequest;
+            StartModuleRequest stmReq = Deserialize.JsonString(msg) as StartModuleRequest;
             string smVariantId = stmReq.variantId;
             string smkpiId = smReq.kpiId;
-            StartModelResponse stmResp=new StartModelResponse(Config.moduleId,smVariantId,smkpiId,ModelStatus.Processing);
-            var stmRespString=Ecodistrict.Messaging.Serialize.Message(stmResp);
+            StartModuleResponse stmResp=new StartModuleResponse(Config.moduleId,smVariantId,smkpiId,ModuleStatus.Processing);
+            var stmRespString=Ecodistrict.Messaging.Serialize.ToJsonString(stmResp, true);
             //Send stmRespString
 
             CExcel exls;
@@ -101,7 +136,7 @@ namespace Eco_Consol
                 if (File.Exists(Config.path))
                 {
                     exls = new CExcel(Config.path);
-                    _outputs = Config.run(stmReq.inputData, exls);
+                    _outputs = Config.run(stmReq.inputData,smkpiId, exls);
                 }
                 else
                 {
@@ -118,40 +153,75 @@ namespace Eco_Consol
                 exls = null;    
             }
 
-            ModelResult _result = new ModelResult(Config.moduleId, smVariantId, smkpiId,_outputs);
-            var modResString=Ecodistrict.Messaging.Serialize.Message(_result);
+            ModuleResult _result = new ModuleResult(Config.moduleId, smVariantId, smkpiId,_outputs);
+            var modResString=Ecodistrict.Messaging.Serialize.ToJsonString(_result, true);
             
-            StartModelResponse stmResp2 = new StartModelResponse(Config.moduleId, smVariantId, smkpiId, ModelStatus.Success);
-            var stmRespString2 = Ecodistrict.Messaging.Serialize.Message(stmResp);
+            StartModuleResponse stmResp2 = new StartModuleResponse(Config.moduleId, smVariantId, smkpiId, ModuleStatus.Success);
+            var stmRespString2 = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp,true);
             //Send stmRespString2
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void ReadConfiguration()
+       
+        private static bool ReadConfigurationFile()
         {
-            var ipy = Python.CreateRuntime();
-            Config = ipy.UseFile("../ModuleConfig.py");
+            const string fileName = "ModuleConfig.py";
+            
+            try
+            {
+                var exeName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                var exeDirectory = Path.GetDirectoryName(exeName);
+                var filePath = Path.Combine(exeDirectory, fileName);
+                //var filePathPy = "../" + fileName;
 
-            Ecodistrict.Messaging.InputSpecification inputSpec = Config.input_specification();
+                var fi = new FileInfo(filePath);
+                if (!fi.Exists)
+                {
+                    Console.WriteLine("Can´t find file: {0}",fi.FullName);
+                    return false;
+                }
+                var ipy = Python.CreateRuntime();
+                Config = ipy.UseFile(filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
-            //var myString=Ecodistrict.Messaging.Serialize.InputSpecification(inputSpec,true);
-            //Gå igenom och beräkna
-            //List<Ecodistrict.Messaging.Output> myRes=Config.run("startModuleRequest", ExcelObj);
+        private static bool GetServerConfiguration()
+        {
+            try
+            {
+                SubScribedEventName = Config.subScribedEvent;
+                PublishedEventName = Config.publishedEvent;
+                serverInfo=new ServerInfo();
+                serverInfo.ServerAdress = Config.serverAdress;
+                serverInfo.Port = (int) Config.port;
+                serverInfo.UserId = Config.userId;
+                serverInfo.UserName = Config.userName;
+                serverInfo.Federation = Config.federation;
 
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         private static bool ConnectToServer()
         {
             bool res=true;
-            Connection = new TConnection("localhost", 4000, "TNODemo", 0, TConnection.DefaultFederation);
+            Connection = new TConnection(serverInfo.ServerAdress, serverInfo.Port,serverInfo.UserName , serverInfo.UserId,serverInfo.Federation);
             try
             {
                 if (Connection.Connected)
                 {
-                    SubscribedEvent = Connection.Subscribe("SubscribedEventName");
-                    PublichedEvent = Connection.Publish("PublishedEventName");
+                    SubscribedEvent = Connection.Subscribe(SubScribedEventName);
+                    PublichedEvent = Connection.Publish(PublishedEventName);
 
                     // set event handler for change object on subscribedEvent
                     SubscribedEvent.OnNormalEvent += SubscribedEvent_OnNormalEvent;
@@ -171,114 +241,114 @@ namespace Eco_Consol
             return res;
         }
 
-       
-
-
          static void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, IMB.ByteBuffers.TByteBuffer aPayload)
-        {
-            string message= System.Text.Encoding.UTF8.GetString(aPayload.Buffer);
-
-            ConvertEcoString(message);
-
-        }
-
-         private static IMessage ConvertEcoString(string message)
          {
-             IMessage iMessage = Deserialize.JsonMessage(message);
-             return iMessage;
+             var nByteArr = new byte[aPayload.Buffer.Length - 12];
+             Buffer.BlockCopy(aPayload.Buffer, 12, nByteArr, 0, aPayload.Buffer.Length - 12);
 
-             //if (iMessage is Ecodistrict.Messaging.GetModelsRequest)
-             //{
-             //    GetModelsRequest gmr = iMessage as GetModelsRequest;
-             //    var gmresp = new Ecodistrict.Messaging.GetModelsResponse(Config.name, Config.moduleId, Config.description, Config.kpiList);
-             //    var txt = Ecodistrict.Messaging.Serialize.Message(gmresp);
-             //}
-             //else if (iMessage is Ecodistrict.Messaging.SelectModelRequest)
-             //{
-             //    SelectModelRequest rq = iMessage as SelectModelRequest;
-             //    if (rq.moduleId == Id)
-             //    {
+             IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonByteArr(nByteArr);
 
-             //    }
-
-
-             //}
-             //else if (iMessage is Ecodistrict.Messaging.StartModelRequest)
-             //{
-             //    StartModelRequest smr = iMessage as StartModelRequest;
-             //    //Här finnds indatalistan
-                 
-             //}
-             //else
-             //{
-             //}
-
-         }
-
-        private static void SendResult()
-        {
-            throw new NotImplementedException();
+             if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
+             {
+                 SendGetModulesResponse();
+             }
+             else if (iMessage is SelectModuleRequest)
+             {
+                 var SMR = iMessage as SelectModuleRequest;
+                 if(Config.moduleId==SMR.moduleId)
+                 {
+                     SendSelectModuleResponse(SMR);    
+                 }
+             }
+             else if (iMessage is StartModuleRequest)
+             {
+                 var SMR = iMessage as StartModuleRequest;
+                 if (Config.moduleId == SMR.moduleId)
+                 {
+                    
+                     SendModuleResult(SMR);
+                 }
+             }
         }
 
-        private static void SendStatus(string processing)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void SendSelectInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void SendKPIList()
-        {
-            var sb = new StringBuilder();
-            var sw = new StringWriter(sb);
-            
-            //using(var jtw=new JsonTextWriter(sw))
-            //{
-            //    jtw.WriteStartObject();
-            //    jtw.WritePropertyName("Kpi");
-            //    jtw.WriteValue("energy-kpi");
-            //    jtw.WritePropertyName("Kpi");
-            //    jtw.WriteValue("ghg-kpi");
-            //    jtw.WriteEnd();
-            //    jtw.WriteEndObject();
-            //}
-            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, GetBytes(sb.ToString()));
-        }
-
-
-        private static bool ReadServerConfigFile()
+        private static bool SendGetModulesResponse()
         {
             try
             {
-                ServerData=new ServerInfo();
-                using (var fs = new FileStream(UrlPath, FileMode.Open, FileAccess.Read))
-                {
-                    using (var sr = new StreamReader(fs))
-                    {
-                        ServerData.ServerAdress = sr.ReadLine();
-                        ServerData.Port = int.Parse(sr.ReadLine());
-                        ServerData.UserId = sr.ReadLine();
-                        ServerData.UserName = sr.ReadLine();
-                        ServerData.Federation = sr.ReadLine();
-                    }
-                }
+                var kpiList = new List<string>();
+                foreach (var item in Config.kpiList)
+                    kpiList.Add(item);
+                GetModulesResponse gmRes = new GetModulesResponse(Config.name, Config.moduleId, Config.description, kpiList);
+
+                var msgBytes = Serialize.ToJsonByteArr(gmRes);
+                PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, msgBytes);
                 return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static bool SendSelectModuleResponse(SelectModuleRequest request)
+        {
+            var variantId = request.variantId;
+            var kpiId = request.kpiId;
+            SelectModuleResponse smResponse=new SelectModuleResponse(Config.moduleId,variantId,kpiId,Config.input_specification(kpiId));
+            var smRespBytes = Serialize.ToJsonByteArr(smResponse);
+            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, smRespBytes);
+            return true;
+        }
+
+        private static bool SendModuleResult(StartModuleRequest request)
+        {
+            var smr =new StartModuleResponse(Config.moduleId,request.variantId,request.kpiId,ModuleStatus.Processing);
+            var respBytes = Serialize.ToJsonByteArr(smr);
+            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, respBytes);
+
+            CExcel exls=null;
+            Outputs outputs = null;
+
+
+            try
+            {
+                if (File.Exists(Config.path))
+                {
+                    exls = new CExcel(Config.path);
+                    outputs = Config.run(request.inputData,request.kpiId ,exls);
+                }
+                else
+                {
+                    Console.WriteLine("Excelfile <{0}> not found", Config.path);
+                }
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
             }
+            finally
+            {
+                if(exls!=null)
+                    exls.CloseExcel();
+                exls = null;
+            }
+
+            ModuleResult result = new ModuleResult(Config.moduleId, request.variantId, request.kpiId, outputs);
+            var modResString=Ecodistrict.Messaging.Serialize.ToJsonString(result, true);
+            var modResBytes = Ecodistrict.Messaging.Serialize.ToJsonByteArr(result);
+            var mres = (ModuleResult) Deserialize.JsonByteArr(modResBytes);
+            var mres2 = (ModuleResult)Deserialize.JsonString(modResString);
+
+            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, modResBytes);
+
+            StartModuleResponse stmResp2 = new StartModuleResponse(Config.moduleId, request.variantId, request.kpiId, ModuleStatus.Success);
+            var stmRespString2 = Ecodistrict.Messaging.Serialize.ToJsonByteArr(stmResp2);
+            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, stmRespString2);
+            return true;
         }
 
-        public static byte[] GetBytes(string str)
-        {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length); //JSon??
-            return bytes;
-        }
+
     }
 }
