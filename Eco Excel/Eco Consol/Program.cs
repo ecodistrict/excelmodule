@@ -1,6 +1,4 @@
 ﻿
-//#define NoServer
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,19 +18,48 @@ using IronPython.Hosting;
 
 namespace Eco_Consol
 {
-    class Program
+    /// <summary>
+    /// Eco Excel application.<br/>
+    /// Module that connects an Excel document to the ECOdistr-ICT dashboard.
+    /// <remarks>
+    /// The application is a console application that starts with reading a
+    /// configuration file, ModuleConfig.py, that should reside in the same directory as the application.
+    /// Failure reading the file will result in that the application closes down after having written
+    /// a message describing the error to the consol.<br/>
+    /// After having read the congiguration file the application tries to connect to the IMB hub using the 
+    /// parameters: serverAdress, port, userId, userName and federation.<br/>
+    /// If it succeeds it uses the information from the config file, subscribedEvent, to subscribe for dashboard
+    /// calls.<br/>
+    /// 
+    /// 
+    /// </remarks>
+    /// </summary>
+    public class Program
     {
         private static string SubScribedEventName { get; set; }
         private static string PublishedEventName { get; set; }
         private static TConnection Connection { get; set; }
         private static TEventEntry SubscribedEvent { get; set; }
         private static TEventEntry PublichedEvent { get; set; }
-        private static ServerInfo serverInfo { get; set; }
         private static dynamic Config { get; set; }
+
+        private static string ServerAdress { get; set; }
+        private static int Port { get; set; }
+        private static int UserId { get; set; }
+        private static string UserName { get; set; }
+        private static string Federation { get; set; }
 
         /// <summary>
         /// Main routine 
         /// </summary>
+        /// <remarks>
+        /// 1. Reads the config file<br/>
+        /// 2. Connects to IMB hub<br/>
+        /// 3. Waits and answers calls from dashboard until Return is peressed on the keyboard<br/>
+        /// 
+        /// If anything fails during startup the application sends an errormessage to the console and finishes
+        /// 
+        /// </remarks>
         /// <param name="args">Not used</param>
         static void Main(string[] args)
         {    
@@ -47,9 +74,7 @@ namespace Eco_Consol
                 {
                     startupStatus = false;
                 }
-#if (NoServer)
-                DebugReadTestFiles();
-#endif
+
                 if (!GetServerConfiguration())
                 {
                     Console.WriteLine("Error reading serverinfo from Config file!");
@@ -58,8 +83,7 @@ namespace Eco_Consol
                 else
                 {
                     Console.WriteLine("connecting {0} Port {1} User:{2} UserId:{3} Federation: {4}",
-                        serverInfo.ServerAdress, serverInfo.Port, serverInfo.UserName, serverInfo.UserId,
-                        serverInfo.Federation);
+                        ServerAdress, Port, UserName, UserId, Federation);
                 }
 
                 if (!ConnectToServer())
@@ -82,9 +106,9 @@ namespace Eco_Consol
                     Console.WriteLine("**** Errors detected! ****");
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
+                    if (Connection.Connected) 
+                        Connection.Close();
                 }
-
-                
 
         }
             finally
@@ -92,76 +116,11 @@ namespace Eco_Consol
                 Connection.Close();
             }
         }
-
-        private static void DebugReadTestFiles()
-        {
-           //Receive and Respond to getModels
-            string msg = File.ReadAllText(@"..\..\TestFiles\getModels.txt", new UTF8Encoding());
-            GetModulesRequest gmReq = Deserialize.JsonString(msg) as GetModulesRequest;
-            var kpiList = new List<string>();
-            foreach (var item in Config.kpiList)
-                kpiList.Add(item);
-            GetModulesResponse gmRes=new GetModulesResponse(Config.name,Config.moduleId,Config.description,kpiList);
-            var gmResString=Ecodistrict.Messaging.Serialize.ToJsonString(gmRes, true);
-           //Send gmResString
-
-            
-            //Receive and response to selectModel
-            msg = File.ReadAllText(@"..\..\TestFiles\selectModel.txt", new UTF8Encoding());
-            SelectModuleRequest smReq = Deserialize.JsonString(msg) as SelectModuleRequest;
-            string variantId = smReq.variantId;
-            string kpiId = smReq.kpiId;
-            if (Config.kpiId_Exists(kpiId))
-            {
-                SelectModuleResponse smRes = new SelectModuleResponse(Config.moduleId, variantId,kpiId,Config.input_specification(kpiId));
-                var smResString = Ecodistrict.Messaging.Serialize.ToJsonString(smRes, true);
-            }
-            //Send smResString
-
-            //Receive and response to startModule
-            msg = File.ReadAllText(@"..\..\TestFiles\startModel.txt", new UTF8Encoding());
-            StartModuleRequest stmReq = Deserialize.JsonString(msg) as StartModuleRequest;
-            string smVariantId = stmReq.variantId;
-            string smkpiId = smReq.kpiId;
-            StartModuleResponse stmResp=new StartModuleResponse(Config.moduleId,smVariantId,smkpiId,ModuleStatus.Processing);
-            var stmRespString=Ecodistrict.Messaging.Serialize.ToJsonString(stmResp, true);
-            //Send stmRespString
-
-            CExcel exls;
-            Outputs _outputs=null;
-            try
-            {
-
-
-                if (File.Exists(Config.path))
-                {
-                    exls = new CExcel(Config.path);
-                    _outputs = Config.run(stmReq.inputData,smkpiId, exls);
-                }
-                else
-                {
-                    Console.WriteLine("Excelfile <{0}> not found", Config.path);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                exls = null;    
-            }
-
-            ModuleResult _result = new ModuleResult(Config.moduleId, smVariantId, smkpiId,_outputs);
-            var modResString=Ecodistrict.Messaging.Serialize.ToJsonString(_result, true);
-            
-            StartModuleResponse stmResp2 = new StartModuleResponse(Config.moduleId, smVariantId, smkpiId, ModuleStatus.Success);
-            var stmRespString2 = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp,true);
-            //Send stmRespString2
-
-        }
        
+        /// <summary>
+        /// Reads the configuration file
+        /// </summary>
+        /// <returns></returns>
         private static bool ReadConfigurationFile()
         {
             const string fileName = "ModuleConfig.py";
@@ -190,18 +149,21 @@ namespace Eco_Consol
             }
         }
 
+        /// <summary>
+        /// Reads the serverconfiguration settings from configuration file 
+        /// </summary>
+        /// <returns></returns>
         private static bool GetServerConfiguration()
         {
             try
             {
                 SubScribedEventName = Config.subScribedEvent;
                 PublishedEventName = Config.publishedEvent;
-                serverInfo=new ServerInfo();
-                serverInfo.ServerAdress = Config.serverAdress;
-                serverInfo.Port = (int) Config.port;
-                serverInfo.UserId = Config.userId;
-                serverInfo.UserName = Config.userName;
-                serverInfo.Federation = Config.federation;
+                ServerAdress = Config.serverAdress;
+                Port = (int) Config.port;
+                UserId = Config.userId;
+                UserName = Config.userName;
+                Federation = Config.federation;
 
                 return true;
             }
@@ -212,10 +174,14 @@ namespace Eco_Consol
             }
         }
 
+        /// <summary>
+        /// Connects to the IMB server using the settings found in the config file.
+        /// </summary>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private static bool ConnectToServer()
         {
             bool res=true;
-            Connection = new TConnection(serverInfo.ServerAdress, serverInfo.Port,serverInfo.UserName , serverInfo.UserId,serverInfo.Federation);
+            Connection = new TConnection(ServerAdress, Port, UserName , UserId, Federation);
             try
             {
                 if (Connection.Connected)
@@ -241,6 +207,11 @@ namespace Eco_Consol
             return res;
         }
 
+         /// <summary>
+         /// Calls from dashboard handles here
+         /// </summary>
+         /// <param name="aEvent">EventInformation, TEventEntry</param>
+         /// <param name="aPayload">Payload, TByteBuffer</param>
          static void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, IMB.ByteBuffers.TByteBuffer aPayload)
          {
              var nByteArr = new byte[aPayload.Buffer.Length - 12];
@@ -271,6 +242,10 @@ namespace Eco_Consol
              }
         }
 
+        /// <summary>
+        /// Handles GetModules request
+        /// </summary>
+         /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private static bool SendGetModulesResponse()
         {
             try
@@ -290,6 +265,11 @@ namespace Eco_Consol
             }
         }
 
+        /// <summary>
+        /// Handles SelectModule requests
+        /// </summary>
+        /// <param name="request">Request, SelectModuleRequest</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private static bool SendSelectModuleResponse(SelectModuleRequest request)
         {
             var variantId = request.variantId;
@@ -300,6 +280,11 @@ namespace Eco_Consol
             return true;
         }
 
+        /// <summary>
+        /// Handles StartModule requests
+        /// </summary>
+        /// <param name="request">Request, StartModuleRequest</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private static bool SendModuleResult(StartModuleRequest request)
         {
             var smr =new StartModuleResponse(Config.moduleId,request.variantId,request.kpiId,ModuleStatus.Processing);
@@ -331,8 +316,10 @@ namespace Eco_Consol
             finally
             {
                 if(exls!=null)
+                {
                     exls.CloseExcel();
-                exls = null;
+                    exls = null;
+                }
             }
 
             ModuleResult result = new ModuleResult(Config.moduleId, request.variantId, request.kpiId, outputs);

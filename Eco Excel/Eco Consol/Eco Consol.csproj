@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\Eco Consol.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,12 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
     <Compile Include="CExcel.cs" />
-    <Compile Include="CExcelRef.cs" />
-    <Compile Include="ModelInfo.cs" />
-    <Compile Include="ServerInfo.cs" />
-    <Compile Include="GlobalParameters.cs" />
+    <Compile Include="EcoExcel.cs" />
+    <Compile Include="Eco_Consol.cs" />
     <Compile Include="imb\ByteBuffers.cs" />
     <Compile Include="imb\IMBclients.cs" />
     <Compile Include="imb\IMBlocator.cs" />

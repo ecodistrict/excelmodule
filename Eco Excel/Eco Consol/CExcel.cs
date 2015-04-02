@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,13 +11,25 @@ using Excel=Microsoft.Office.Interop.Excel;
 
 namespace EcoExcel
 {
+    /// <summary>
+    /// Class that handles interaction with Microsoft Excel
+    /// </summary>
+    /// <remarks>
+    /// This class opens the workbook referenced in the constructor in readonly mode.<br/>
+    /// The Excelfile can be in Excel 97-2003 format (*.xls) or Later (*.xlsx)<br/>
+    /// The class uses Microsoft.Office.Interop.Excel which means that Excel is started as a com object.
+    /// </remarks>
     public class CExcel 
     {
-        public string WorkBookFilePath { get; private set; }
+        private string WorkBookFilePath { get; set; }
         private Excel.Application excelApp;
         private Excel.Workbook wb;
         private Excel.Worksheet ws;
 
+        /// <summary>
+        /// Constructor. Opens the workbook related in the parameter workbookFilePath in readonly mode.
+        /// </summary>
+        /// <param name="workBookFilePath">The complete path to the workbook the class will use. </param>
         public CExcel(string workBookFilePath)
         {
             WorkBookFilePath = workBookFilePath;
@@ -32,18 +45,26 @@ namespace EcoExcel
             }
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        /// <remarks>
+        /// Closes down Excel if it is not already closed. 
+        /// Uses the same code as <see cref="CloseExcel"/>
+        /// </remarks>
         ~CExcel()
         {
-            if (excelApp != null)
-            {
-                excelApp.DisplayAlerts = false;
-                wb.Close(SaveChanges:false);
-                //mExcel.Workbooks.Close();
-                excelApp.Quit();
-                excelApp = null;
-            }
+            CloseExcel();
         }
 
+        /// <summary>
+        /// Sets the value using the specified parameters, using row and column syntax 
+        /// </summary>
+        /// <param name="sheet">Sheetname, string</param>
+        /// <param name="row">Row, integer</param>
+        /// <param name="col">Column, integer</param>
+        /// <param name="value">Value, Object</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public bool SetCellValue(string sheet, int row, int col,object value)
         {
             try
@@ -60,6 +81,14 @@ namespace EcoExcel
                 return false;
             }
         }
+
+        /// <summary>
+        /// Sets the value using the specified parameters, using A1, A2, B1 syntax.
+        /// </summary>
+        /// <param name="sheet">Sheetname, string</param>
+        /// <param name="cell">Cell, string (A1, A2, B1 syntax)</param>
+        /// <param name="value">Value, object</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public bool SetCellValue(string sheet, string cell, object value)
         {
             try
@@ -72,11 +101,17 @@ namespace EcoExcel
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
 
+        /// <summary>
+        /// Returns a cell value as object, using A1, A2, B1 syntax.
+        /// </summary>
+        /// <remarks>Throws an exception if operation fails</remarks>
+        /// <param name="sheet">Sheetname, string</param>
+        /// <param name="cell">Cell, string (A1, A2, B1 syntax)</param>
+        /// <returns>Cellvalue as object</returns>
         public object GetCellValue(string sheet, string cell)
         {
             try
@@ -93,6 +128,15 @@ namespace EcoExcel
                 throw new Exception(string.Format("Could not read worksheet:{0} cell:{1}" , sheet, cell));
             }
         }
+
+        /// <summary>
+        /// Returns a cell value as object, using row and column syntax
+        /// </summary>
+        /// <remarks>Throws an exception if operation fails</remarks>
+        /// <param name="sheet">Sheetname, string</param>
+        /// <param name="row">Row, integer</param>
+        /// <param name="col">Column, integer</param>
+        /// <returns>Cellvalue as object</returns>
         public object GetCellValue(string sheet, int row, int col)
         {
             try
@@ -110,36 +154,67 @@ namespace EcoExcel
             }
         }
 
+        /// <summary>
+        /// Close the workbook and close the excel com object.
+        /// </summary>
+        /// <remarks>
+        /// IMPORTANT!<br/>
+        /// This routine should be used to ensure that excel closes down.
+        /// </remarks>
         public void CloseExcel()
         {
             GC.Collect();
             if (ws != null)
             {
-                excelApp.DisplayAlerts = false;
-                Marshal.FinalReleaseComObject(ws);
-                ws = null;
-                GC.Collect();
+                try
+                {
+                    excelApp.DisplayAlerts = false;
+                    Marshal.FinalReleaseComObject(ws);
+                    ws = null;
+                    GC.Collect();
+                }
+                catch (Exception)
+                {   
+                }
             }
             if (wb != null)
             {
-                excelApp.DisplayAlerts = false;
-                wb.Close(false, Type.Missing,Type.Missing);
-                Marshal.FinalReleaseComObject(wb);
-                wb = null;
-                GC.Collect();
+                try
+                {
+                    excelApp.DisplayAlerts = false;
+                    wb.Close(false, Type.Missing, Type.Missing);
+                    Marshal.FinalReleaseComObject(wb);
+                    wb = null;
+                    GC.Collect();
+                }
+                catch (Exception)
+                {                    
+                }
             }
             if (excelApp.Workbooks != null)
             {
-                excelApp.Workbooks.Close();
-                Marshal.FinalReleaseComObject(excelApp.Workbooks);
-                GC.Collect();
+                try
+                {
+                    excelApp.Workbooks.Close();
+                    Marshal.FinalReleaseComObject(excelApp.Workbooks);
+                    GC.Collect();
+                }
+                catch (Exception)
+                {                   
+                }
             }
             if (excelApp != null)
             {
-                excelApp.Quit();
-                Marshal.FinalReleaseComObject(excelApp);
-                excelApp = null;
-                GC.Collect();
+                try
+                {
+                    excelApp.Quit();
+                    Marshal.FinalReleaseComObject(excelApp);
+                    excelApp = null;
+                    GC.Collect();
+                }
+                catch (Exception)
+                {
+                }
             }
 
         }
