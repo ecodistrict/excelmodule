@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using EcoExcel;
 using IMB;
+using IMB.ByteBuffers;
 using Microsoft.Office.Interop.Excel;
 using IronPython;
 using Ecodistrict.Messaging;
@@ -47,7 +48,7 @@ namespace Eco_Consol
 
         private static TConnection Connection { get; set; }
         private static TEventEntry SubscribedEvent { get; set; }
-        private static TEventEntry PublichedEvent { get; set; }
+        private static TEventEntry PublishedEvent { get; set; }
         private static dynamic Config { get; set; }
 
         private static string ServerAdress { get; set; }
@@ -223,7 +224,7 @@ namespace Eco_Consol
                 if (Connection.Connected)
                 {
                     SubscribedEvent = Connection.Subscribe(SubScribedEventName);
-                    PublichedEvent = Connection.Publish(PublishedEventName);
+                    PublishedEvent = Connection.Publish(PublishedEventName);
 
                     // set event handler for change object on subscribedEvent
                     SubscribedEvent.OnNormalEvent += SubscribedEvent_OnNormalEvent;
@@ -250,10 +251,14 @@ namespace Eco_Consol
          /// <param name="aPayload">Payload, TByteBuffer</param>
          static void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, IMB.ByteBuffers.TByteBuffer aPayload)
          {
-             var nByteArr = new byte[aPayload.Buffer.Length - 12];
-             Buffer.BlockCopy(aPayload.Buffer, 12, nByteArr, 0, aPayload.Buffer.Length - 12);
 
-             IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonByteArr(nByteArr);
+             String msg = "";
+             aPayload.Read(out msg);
+
+             //var nByteArr = new byte[aPayload.Buffer.Length - 12];
+             //Buffer.BlockCopy(aPayload.Buffer, 12, nByteArr, 0, aPayload.Buffer.Length - 12);
+
+             IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonString(msg);
 
              if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
              {
@@ -291,8 +296,13 @@ namespace Eco_Consol
                     kpiList.Add(item);
                 GetModulesResponse gmRes = new GetModulesResponse(Config.name, Config.moduleId, Config.description, kpiList);
 
-                var msgBytes = Serialize.ToJsonByteArr(gmRes);
-                PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, msgBytes);
+                var str = Serialize.ToJsonString(gmRes);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                
                 return true;
             }
             catch (Exception)
@@ -310,9 +320,15 @@ namespace Eco_Consol
         {
             var variantId = request.variantId;
             var kpiId = request.kpiId;
-            SelectModuleResponse smResponse=new SelectModuleResponse(Config.moduleId,variantId,kpiId,Config.input_specification(kpiId));
-            var smRespBytes = Serialize.ToJsonByteArr(smResponse);
-            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, smRespBytes);
+            var smResponse=new SelectModuleResponse(Config.moduleId,variantId,kpiId,Config.input_specification(kpiId));
+            
+            var str = Serialize.ToJsonString(smResponse);
+            var payload = new TByteBuffer();
+            payload.Prepare(str);
+            payload.PrepareApply();
+            payload.QWrite(str);
+            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+
             return true;
         }
 
@@ -325,7 +341,7 @@ namespace Eco_Consol
         {
             var smr =new StartModuleResponse(Config.moduleId,request.variantId,request.kpiId,ModuleStatus.Processing);
             var respBytes = Serialize.ToJsonByteArr(smr);
-            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, respBytes);
+            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, respBytes);
 
             CExcel exls=null;
             Outputs outputs = null;
@@ -359,16 +375,21 @@ namespace Eco_Consol
             }
 
             ModuleResult result = new ModuleResult(Config.moduleId, request.variantId, request.kpiId, outputs);
-            var modResString=Ecodistrict.Messaging.Serialize.ToJsonString(result, true);
-            var modResBytes = Ecodistrict.Messaging.Serialize.ToJsonByteArr(result);
-            var mres = (ModuleResult) Deserialize.JsonByteArr(modResBytes);
-            var mres2 = (ModuleResult)Deserialize.JsonString(modResString);
-
-            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, modResBytes);
+            var str=Ecodistrict.Messaging.Serialize.ToJsonString(result);
+            var payload = new TByteBuffer(); 
+            payload.Prepare(str);
+            payload.PrepareApply();
+            payload.QWrite(str);
+            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
 
             StartModuleResponse stmResp2 = new StartModuleResponse(Config.moduleId, request.variantId, request.kpiId, ModuleStatus.Success);
-            var stmRespString2 = Ecodistrict.Messaging.Serialize.ToJsonByteArr(stmResp2);
-            PublichedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, stmRespString2);
+            str = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp2);
+            payload = new TByteBuffer();
+            payload.Prepare(str);
+            payload.PrepareApply();
+            payload.QWrite(str);
+            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+
             return true;
         }
 
