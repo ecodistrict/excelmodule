@@ -21,10 +21,22 @@ namespace EcoExcel
     /// </remarks>
     public class CExcel 
     {
+        /// <summary>
+        /// /complete path to the excel document that shuld be used, string
+        /// </summary>
         private string WorkBookFilePath { get; set; }
+        /// <summary>
+        /// The Excel application object, com object
+        /// </summary>
         private Excel.Application excelApp;
-        private Excel.Workbook wb;
-        private Excel.Worksheet ws;
+        /// <summary>
+        /// Excel workbook object
+        /// </summary>
+        private Excel.Workbook _wb;
+        /// <summary>
+        /// Excel worksheet object
+        /// </summary>
+        private Excel.Worksheet _ws;
 
         /// <summary>
         /// Constructor. Opens the workbook related in the parameter workbookFilePath in readonly mode.
@@ -37,7 +49,7 @@ namespace EcoExcel
             try
             {
                 excelApp = new Excel.Application();
-                wb = excelApp.Workbooks.Open(WorkBookFilePath,ReadOnly:true);
+                _wb = excelApp.Workbooks.Open(WorkBookFilePath,ReadOnly:true);
             }
             catch (Exception ex)
             {
@@ -69,10 +81,10 @@ namespace EcoExcel
         {
             try
             {
-                if (ws == null || ws.Name != sheet)
-                    ws = wb.Worksheets[sheet];
+                if (_ws == null || _ws.Name != sheet)
+                    _ws = _wb.Worksheets[sheet];
 
-                ws.Range[row, col].Value = value;
+                _ws.Range[row, col].Value = value;
                 return true;
             }
             catch (Exception)
@@ -93,10 +105,10 @@ namespace EcoExcel
         {
             try
             {
-                if (ws == null || ws.Name != sheet)
-                    ws = wb.Worksheets[sheet];
+                if (_ws == null || _ws.Name != sheet)
+                    _ws = _wb.Worksheets[sheet];
 
-                ws.Range[cell].Value = value;
+                _ws.Range[cell].Value = value;
                 return true;
             }
             catch (Exception)
@@ -116,11 +128,11 @@ namespace EcoExcel
         {
             try
             {
-                if (ws == null || ws.Name != sheet)
-                    ws = wb.Worksheets[sheet];
+                if (_ws == null || _ws.Name != sheet)
+                    _ws = _wb.Worksheets[sheet];
 
                 //celltype = ws.Range[cell].Value.GetType();
-                return ws.Range[cell].Value;
+                return _ws.Range[cell].Value;
 
             }
             catch (Exception)
@@ -141,11 +153,11 @@ namespace EcoExcel
         {
             try
             {
-                if (ws == null || ws.Name != sheet)
-                    ws = wb.Worksheets[sheet];
+                if (_ws == null || _ws.Name != sheet)
+                    _ws = _wb.Worksheets[sheet];
 
                 //celltype = ws.Range[row, col].Value.GetType();
-                return ws.Range[row, col].Value;
+                return _ws.Range[row, col].Value;
 
             }
             catch (Exception)
@@ -164,45 +176,45 @@ namespace EcoExcel
         public void CloseExcel()
         {
             GC.Collect();
-            if (ws != null)
+            if (_ws != null)
             {
                 try
                 {
                     excelApp.DisplayAlerts = false;
-                    Marshal.FinalReleaseComObject(ws);
-                    ws = null;
+                    Marshal.FinalReleaseComObject(_ws);
+                    _ws = null;
                     GC.Collect();
                 }
                 catch (Exception)
                 {   
                 }
             }
-            if (wb != null)
+            if (_wb != null)
             {
                 try
                 {
                     excelApp.DisplayAlerts = false;
-                    wb.Close(false, Type.Missing, Type.Missing);
-                    Marshal.FinalReleaseComObject(wb);
-                    wb = null;
+                    _wb.Close(false, Type.Missing, Type.Missing);
+                    Marshal.FinalReleaseComObject(_wb);
+                    _wb = null;
                     GC.Collect();
                 }
                 catch (Exception)
                 {                    
                 }
             }
-            if (excelApp.Workbooks != null)
-            {
-                try
-                {
-                    excelApp.Workbooks.Close();
-                    Marshal.FinalReleaseComObject(excelApp.Workbooks);
-                    GC.Collect();
-                }
-                catch (Exception)
-                {                   
-                }
-            }
+            //if (excelApp.Workbooks != null)
+            //{
+            //    try
+            //    {
+            //        excelApp.Workbooks.Close();
+            //        Marshal.FinalReleaseComObject(excelApp.Workbooks);
+            //        GC.Collect();
+            //    }
+            //    catch (Exception)
+            //    {                   
+            //    }
+            //}
             if (excelApp != null)
             {
                 try

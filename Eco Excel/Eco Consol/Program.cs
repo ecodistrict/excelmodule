@@ -36,8 +36,15 @@ namespace Eco_Consol
     /// </summary>
     public class Program
     {
+        /// <summary>
+        /// The name of the IMB subscription the application uses. Read from the configuration file
+        /// </summary>
         private static string SubScribedEventName { get; set; }
+        /// <summary>
+        /// The name the application uses when sending back information to the dashboard
+        /// </summary>
         private static string PublishedEventName { get; set; }
+
         private static TConnection Connection { get; set; }
         private static TEventEntry SubscribedEvent { get; set; }
         private static TEventEntry PublichedEvent { get; set; }
@@ -46,6 +53,7 @@ namespace Eco_Consol
         private static string ServerAdress { get; set; }
         private static int Port { get; set; }
         private static int UserId { get; set; }
+        private static string ModuleId { get; set; }
         private static string UserName { get; set; }
         private static string Federation { get; set; }
 
@@ -71,11 +79,6 @@ namespace Eco_Consol
                 bool startupStatus = true;
 
                 if (!ReadConfigurationFile())
-                {
-                    startupStatus = false;
-                }
-
-                if (!GetServerConfiguration())
                 {
                     Console.WriteLine("Error reading serverinfo from Config file!");
                     startupStatus = false;
@@ -123,23 +126,55 @@ namespace Eco_Consol
         /// <returns></returns>
         private static bool ReadConfigurationFile()
         {
-            const string fileName = "ModuleConfig.py";
+            const string serverFileName="ServerConfig.py";
+            const string moduleFileName = "ModuleConfig.py";
             
             try
             {
-                var exeName = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                var exeDirectory = Path.GetDirectoryName(exeName);
-                var filePath = Path.Combine(exeDirectory, fileName);
-                //var filePathPy = "../" + fileName;
+                var filePathServerConfig = Path.Combine(GetExeDirectory(), serverFileName);
+                var filePathModuleConfig = Path.Combine(GetExeDirectory(), moduleFileName);
 
-                var fi = new FileInfo(filePath);
+
+                var fi = new FileInfo(filePathServerConfig);
+                if (!fi.Exists)
+                {
+
+                    Console.WriteLine("Can´t find file: {0}", fi.FullName);
+                    return false;
+                }
+                else
+                {
+                    try
+                    {
+                        var ipyS = Python.CreateRuntime();
+                        dynamic ServerConfig = ipyS.UseFile(filePathServerConfig);
+                        ServerAdress = ServerConfig.serverAdress;
+                        Port = ServerConfig.port;
+                        UserId = ServerConfig.userId;
+                        UserName = ServerConfig.userName;
+                        Federation = ServerConfig.federation;
+                        SubScribedEventName = ServerConfig.subScribedEvent;
+                        PublishedEventName = ServerConfig.publishedEvent;
+                        ServerConfig = null;
+                        ipyS = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return false;
+                    }
+                }
+                
+
+                
+                fi = new FileInfo(filePathModuleConfig);
                 if (!fi.Exists)
                 {
                     Console.WriteLine("Can´t find file: {0}",fi.FullName);
                     return false;
                 }
                 var ipy = Python.CreateRuntime();
-                Config = ipy.UseFile(filePath);
+                Config = ipy.UseFile(filePathModuleConfig);
                 return true;
             }
             catch (Exception ex)
@@ -153,26 +188,27 @@ namespace Eco_Consol
         /// Reads the serverconfiguration settings from configuration file 
         /// </summary>
         /// <returns></returns>
-        private static bool GetServerConfiguration()
-        {
-            try
-            {
-                SubScribedEventName = Config.subScribedEvent;
-                PublishedEventName = Config.publishedEvent;
-                ServerAdress = Config.serverAdress;
-                Port = (int) Config.port;
-                UserId = Config.userId;
-                UserName = Config.userName;
-                Federation = Config.federation;
+        //private static bool GetServerConfiguration()
+        //{
+        //    try
+        //    {
+        //        SubScribedEventName = Config.subScribedEvent;
+        //        PublishedEventName = Config.publishedEvent;
+        //        ServerAdress = Config.serverAdress;
+        //        Port = (int) Config.port;
+        //        UserId = Config.userId;
+        //        UserName = Config.userName;
+        //        ModuleId = Config.moduleId;
+        //        Federation = Config.federation;
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return false;
+        //    }
+        //}
 
         /// <summary>
         /// Connects to the IMB server using the settings found in the config file.
@@ -336,6 +372,11 @@ namespace Eco_Consol
             return true;
         }
 
+        private static string GetExeDirectory()
+        {
+            var exeName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            return Path.GetDirectoryName(exeName);
+        }
 
     }
 }

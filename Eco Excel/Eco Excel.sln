@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eco Consol", "Eco Consol\Ec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{057B3081-3E40-488E-9BFB-16493CDD70EF}"
 	ProjectSection(SolutionItems) = preProject
-		ServerInfo.txt = ServerInfo.txt
+		Documentation\Instuctions for using EcoExcel.docx = Documentation\Instuctions for using EcoExcel.docx
 	EndProjectSection
 EndProject
 Global
