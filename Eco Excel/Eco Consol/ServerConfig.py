@@ -1,7 +1,7 @@
-serverAdress="localhost" #"vps17642.public.cloudvps.com" #localhost"
+serverAdress="vps17642.public.cloudvps.com"
 port=4000
 userId=123
 userName="SP"
-federation="TNODemo"
+federation="EcoDistrict"
 subScribedEvent="dashboard"
 publishedEvent="modules"

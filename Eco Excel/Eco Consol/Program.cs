@@ -340,8 +340,14 @@ namespace Eco_Consol
         private static bool SendModuleResult(StartModuleRequest request)
         {
             var smr =new StartModuleResponse(Config.moduleId,request.variantId,request.kpiId,ModuleStatus.Processing);
-            var respBytes = Serialize.ToJsonByteArr(smr);
-            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, respBytes);
+
+            var str = Serialize.ToJsonString(smr);
+            var payload = new TByteBuffer();
+            payload.Prepare(str);
+            payload.PrepareApply();
+            payload.QWrite(str);
+            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+
 
             CExcel exls=null;
             Outputs outputs = null;
@@ -375,8 +381,8 @@ namespace Eco_Consol
             }
 
             ModuleResult result = new ModuleResult(Config.moduleId, request.variantId, request.kpiId, outputs);
-            var str=Ecodistrict.Messaging.Serialize.ToJsonString(result);
-            var payload = new TByteBuffer(); 
+            str=Ecodistrict.Messaging.Serialize.ToJsonString(result);
+            payload = new TByteBuffer(); 
             payload.Prepare(str);
             payload.PrepareApply();
             payload.QWrite(str);
