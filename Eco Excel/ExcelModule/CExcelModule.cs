@@ -9,10 +9,10 @@ using Ecodistrict.Messaging;
 
 namespace Ecodistrict.Excel
 {
+    public delegate void ErrorEventHandler(object sender, EventArgs e);
+
     public abstract class CExcelModule
     {
-        
-
         /// <summary>
         /// The name of the IMB subscription the application uses. Read from the configuration file
         /// </summary>
@@ -26,6 +26,8 @@ namespace Ecodistrict.Excel
         private  TEventEntry SubscribedEvent { get; set; }
         private  TEventEntry PublishedEvent { get; set; }
 
+        public event ErrorEventHandler ErrorRaised;
+            
         private CExcel excelApplikation { get; set; }
 
         protected  string  ServerAdress { get; set; }
@@ -54,13 +56,27 @@ namespace Ecodistrict.Excel
 
         ~CExcelModule()
         {
-            if(excelApplikation!=null)
-                excelApplikation.CloseExcel();
-
-            excelApplikation = null;
+            Close();
         }
 
-        public bool ConnectToServer()
+        public virtual void Close()
+        {
+            try
+            {
+                if (excelApplikation != null)
+                    excelApplikation.CloseExcel();
+
+                excelApplikation = null;
+
+                if (Connection.Connected)
+                    Connection.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public virtual bool ConnectToServer()
         {
             bool res = true;
             
@@ -232,6 +248,6 @@ namespace Ecodistrict.Excel
 
         }
 
-
+        //Private
     }
 }
