@@ -1,0 +1,7 @@
+---
+# Information needed in order to connect to the IMB-hub
+serverAdress: csocks://vps17642.public.cloudvps.com
+port: 4000
+federation: EcoDistrict
+subScribedEventName: dashboard
+publishedEventName: modules
