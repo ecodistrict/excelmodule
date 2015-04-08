@@ -29,6 +29,8 @@ namespace Ecodistrict.Excel
 
         public event ErrorEventHandler ErrorRaised;
         public event StatusEventHandler StatusMessage;
+
+        protected bool ShowOnlyOwnStatus { get; set; }
             
         private CExcel excelApplikation { get; set; }
 
@@ -48,6 +50,7 @@ namespace Ecodistrict.Excel
         {
             try
             {
+                ShowOnlyOwnStatus = true;
                 excelApplikation = new CExcel();
             }
             catch (Exception ex)
@@ -143,7 +146,9 @@ namespace Ecodistrict.Excel
                     }
                     else if (iMessage is SelectModuleRequest)
                     {
-                        SendStatusMessage("SelectModuleRequest received");
+                        if(!ShowOnlyOwnStatus)
+                            SendStatusMessage("SelectModuleRequest received");
+
                         var smr = iMessage as SelectModuleRequest;
                         if (ModuleId == smr.moduleId)
                         {
@@ -153,7 +158,9 @@ namespace Ecodistrict.Excel
                     }
                     else if (iMessage is StartModuleRequest)
                     {
-                        SendStatusMessage("StartModuleRequest received");
+                        if (!ShowOnlyOwnStatus) 
+                            SendStatusMessage("StartModuleRequest received");
+
                         var SMR = iMessage as StartModuleRequest;
                         if (ModuleId == SMR.moduleId)
                         {
