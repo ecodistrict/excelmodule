@@ -123,7 +123,10 @@ namespace Ecodistrict.Excel
             try
             {
                 if (_workbook != null)
+                {
                     _workbook.Close(SaveChanges: false);
+                    GC.Collect();
+                }
             }
             catch (Exception Ex)
             {

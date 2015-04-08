@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CExcel.cs" />
     <Compile Include="CExcelModule.cs" />
+    <Compile Include="ErrorMessage.cs" />
     <Compile Include="imb\ByteBuffers.cs" />
     <Compile Include="imb\IMBclients.cs" />
     <Compile Include="imb\IMBlocator.cs" />

@@ -9,7 +9,7 @@ using Ecodistrict.Messaging;
 
 namespace Ecodistrict.Excel
 {
-    public delegate void ErrorEventHandler(object sender, EventArgs e);
+    public delegate void ErrorEventHandler(object sender, ErrorMessage e);
 
     public abstract class CExcelModule
     {
@@ -220,7 +220,7 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 return false;
             }
             finally
@@ -248,6 +248,13 @@ namespace Ecodistrict.Excel
 
         }
 
-        //Private
+        private void OnErrorMessage(string message)
+        {
+            if (ErrorRaised != null)
+            {
+                var e = new ErrorMessage() {Message = message};
+                ErrorRaised(this, e);
+            }        
+        }
     }
 }
