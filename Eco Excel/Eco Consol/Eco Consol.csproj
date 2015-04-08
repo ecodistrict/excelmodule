@@ -36,9 +36,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EcodistrictMessaging">
-      <HintPath>..\MessagingDll\EcodistrictMessaging.dll</HintPath>
-    </Reference>
     <Reference Include="IronPython, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.dll</HintPath>
@@ -106,6 +103,12 @@
     <Content Include="TestFiles\selectModel.txt" />
     <Content Include="TestFiles\ServerInfo.txt" />
     <Content Include="TestFiles\startModel.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj">
+      <Project>{3d653c56-9397-49f6-bd9a-7d48d2c76ba2}</Project>
+      <Name>EcodistrictMessaging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

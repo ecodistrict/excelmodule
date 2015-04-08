@@ -9,7 +9,8 @@ using Ecodistrict.Messaging;
 
 namespace Ecodistrict.Excel
 {
-    public delegate void ErrorEventHandler(object sender, ErrorMessage e);
+    public delegate void ErrorEventHandler(object sender, ErrorMessageEventArg e);
+    public delegate void StatusEventHandler(object sender, StatusEventArg e);
 
     public abstract class CExcelModule
     {
@@ -27,6 +28,7 @@ namespace Ecodistrict.Excel
         private  TEventEntry PublishedEvent { get; set; }
 
         public event ErrorEventHandler ErrorRaised;
+        public event StatusEventHandler StatusMessage;
             
         private CExcel excelApplikation { get; set; }
 
@@ -50,7 +52,7 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message:ex.Message,sourceFunction:"CExcel Constructor" );
+                SendErrorMessage(message: ex.Message, sourceFunction: "CExcel Constructor", exception: ex);
                 return;
             }
         }
@@ -74,7 +76,7 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message:ex.Message,sourceFunction:"Close" );
+                SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
                 return;
 
             }
@@ -105,7 +107,7 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "ConnectToServer");
+                SendErrorMessage(message: ex.Message, sourceFunction: "ConnectToServer", exception: ex);
                 res = false;
             }
             return res;
@@ -132,30 +134,38 @@ namespace Ecodistrict.Excel
 
                 IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonString(msg);
 
-                if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
+                if (iMessage!=null)
                 {
-                    SendGetModulesResponse();
-                }
-                else if (iMessage is SelectModuleRequest)
-                {
-                    var smr = iMessage as SelectModuleRequest;
-                    if (ModuleId == smr.moduleId)
+                    if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
                     {
-                        SendSelectModuleResponse(smr);
+                        SendStatusMessage("GetModulesRequest received");
+                        SendGetModulesResponse();
                     }
-                }
-                else if (iMessage is StartModuleRequest)
-                {
-                    var SMR = iMessage as StartModuleRequest;
-                    if (ModuleId == SMR.moduleId)
+                    else if (iMessage is SelectModuleRequest)
                     {
-                        SendModuleResult(SMR);
+                        SendStatusMessage("SelectModuleRequest received");
+                        var smr = iMessage as SelectModuleRequest;
+                        if (ModuleId == smr.moduleId)
+                        {
+                            SendStatusMessage("Handles SelectModuleRequest");
+                            SendSelectModuleResponse(smr);
+                        }
+                    }
+                    else if (iMessage is StartModuleRequest)
+                    {
+                        SendStatusMessage("StartModuleRequest received");
+                        var SMR = iMessage as StartModuleRequest;
+                        if (ModuleId == SMR.moduleId)
+                        {
+                            SendStatusMessage("Handles StartModuleRequest");
+                            SendModuleResult(SMR);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
                 return;
             }
         }
@@ -173,12 +183,12 @@ namespace Ecodistrict.Excel
                 payload.PrepareApply();
                 payload.QWrite(str);
                 PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
-
+                SendStatusMessage("GetModulesResponse sent");    
                 return true;
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendGetModulesResponse");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendGetModulesResponse", exception: ex);
                 return false;
             }
 
@@ -198,10 +208,11 @@ namespace Ecodistrict.Excel
                 payload.PrepareApply();
                 payload.QWrite(str);
                 PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                SendStatusMessage("SelectModuleResponse sent"); 
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendSelectModuleResponse");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendSelectModuleResponse", exception: ex);
                 return false;
             }
 
@@ -219,10 +230,11 @@ namespace Ecodistrict.Excel
                 payload.PrepareApply();
                 payload.QWrite(str);
                 PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                SendStatusMessage("StartModuleResponse processing sent"); 
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse",exception:ex);
                 return false;
             }
 
@@ -240,14 +252,14 @@ namespace Ecodistrict.Excel
                 }
                 else
                 {
-                    OnErrorMessage(string.Format("Excelfile <{0}> not found", workBookPath), sourceFunction: "SendModuleResult-FileNotFound");
+                    SendErrorMessage(string.Format("Excelfile <{0}> not found", workBookPath), sourceFunction: "SendModuleResult-FileNotFound");
                     return false;
                 }
 
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi", exception: ex);
                 return false;
             }
             finally
@@ -264,10 +276,11 @@ namespace Ecodistrict.Excel
                 payload.PrepareApply();
                 payload.QWrite(str);
                 PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                SendStatusMessage("ModuleResult sent"); 
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendModuleResult");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendModuleResult", exception: ex);
                 return false;
             }
 
@@ -281,10 +294,11 @@ namespace Ecodistrict.Excel
                 payload.PrepareApply();
                 payload.QWrite(str);
                 PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                SendStatusMessage("StartModuleResponse success sent"); 
             }
             catch (Exception ex)
             {
-                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendRSuccessResponse");
+                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendRSuccessResponse",exception:ex);
                 return false;
             }
 
@@ -292,11 +306,20 @@ namespace Ecodistrict.Excel
 
         }
 
-        private void OnErrorMessage(string message, string sourceFunction)
+        private void SendStatusMessage(string message)
+        {
+            if (StatusMessage != null)
+            {
+                var e = new StatusEventArg() {StatusMessage = message};
+                StatusMessage(this, e);
+            }
+        }
+
+        private void SendErrorMessage(string message, string sourceFunction, Exception exception=null)
         {
             if (ErrorRaised != null)
             {
-                var e = new ErrorMessage() {Message = message,SourceFunction =sourceFunction };
+                var e = new ErrorMessageEventArg() {Message = message,SourceFunction =sourceFunction, Exception = exception};
                 ErrorRaised(this, e);
             }        
         }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ecodistrict.Excel
 {
-    public class ErrorMessageEventArg:EventArgs
+    public class StatusEventArg:EventArgs
     {
-        public string SourceFunction;
-        public string Message;
-        public Exception Exception=null;
+        public string StatusMessage;
     }
 }
