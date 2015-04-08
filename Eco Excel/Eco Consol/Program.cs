@@ -72,9 +72,6 @@ namespace Eco_Consol
         /// <param name="args">Not used</param>
         static void Main(string[] args)
         {    
-            
-           
-
             try
             {
                 bool startupStatus = true;

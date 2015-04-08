@@ -38,6 +38,8 @@ namespace EcoExcel
         /// </summary>
         private Excel.Worksheet _ws;
 
+
+
         /// <summary>
         /// Constructor. Opens the workbook related in the parameter workbookFilePath in readonly mode.
         /// </summary>
