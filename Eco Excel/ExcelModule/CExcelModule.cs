@@ -50,7 +50,8 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                
+                OnErrorMessage(message:ex.Message,sourceFunction:"CExcel Constructor" );
+                return;
             }
         }
 
@@ -73,6 +74,9 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
+                OnErrorMessage(message:ex.Message,sourceFunction:"Close" );
+                return;
+
             }
         }
 
@@ -101,7 +105,7 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                OnErrorMessage(message: ex.Message, sourceFunction: "ConnectToServer");
                 res = false;
             }
             return res;
@@ -121,30 +125,38 @@ namespace Ecodistrict.Excel
 
         private void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, TByteBuffer aPayload)
         {
-            String msg = "";
-            aPayload.Read(out msg);
-
-            IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonString(msg);
-
-            if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
+            try
             {
-                SendGetModulesResponse();
-            }
-            else if (iMessage is SelectModuleRequest)
-            {
-                var smr = iMessage as SelectModuleRequest;
-                if (ModuleId == smr.moduleId)
+                String msg = "";
+                aPayload.Read(out msg);
+
+                IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonString(msg);
+
+                if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
                 {
-                    SendSelectModuleResponse(smr);
+                    SendGetModulesResponse();
+                }
+                else if (iMessage is SelectModuleRequest)
+                {
+                    var smr = iMessage as SelectModuleRequest;
+                    if (ModuleId == smr.moduleId)
+                    {
+                        SendSelectModuleResponse(smr);
+                    }
+                }
+                else if (iMessage is StartModuleRequest)
+                {
+                    var SMR = iMessage as StartModuleRequest;
+                    if (ModuleId == SMR.moduleId)
+                    {
+                        SendModuleResult(SMR);
+                    }
                 }
             }
-            else if (iMessage is StartModuleRequest)
+            catch (Exception ex)
             {
-                var SMR = iMessage as StartModuleRequest;
-                if (ModuleId == SMR.moduleId)
-                {
-                    SendModuleResult(SMR);
-                }
+                OnErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent");
+                return;
             }
         }
 
@@ -164,8 +176,9 @@ namespace Ecodistrict.Excel
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendGetModulesResponse");
                 return false;
             }
 
@@ -173,33 +186,46 @@ namespace Ecodistrict.Excel
 
         private bool SendSelectModuleResponse(SelectModuleRequest request)
         {
-            var variantId = request.variantId;
-            var kpiId = request.kpiId;
-            var smResponse = new SelectModuleResponse(ModuleId, variantId, kpiId, GetInputSpecification(kpiId));
+            try
+            {
+                var variantId = request.variantId;
+                var kpiId = request.kpiId;
+                var smResponse = new SelectModuleResponse(ModuleId, variantId, kpiId, GetInputSpecification(kpiId));
 
-            var str = Serialize.ToJsonString(smResponse);
-            var payload = new TByteBuffer();
-            payload.Prepare(str);
-            payload.PrepareApply();
-            payload.QWrite(str);
-            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                var str = Serialize.ToJsonString(smResponse);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            }
+            catch (Exception ex)
+            {
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendSelectModuleResponse");
+                return false;
+            }
 
             return true;
         }
 
         private bool SendModuleResult(StartModuleRequest request)
         {
-            var smr = new StartModuleResponse(ModuleId, request.variantId, request.kpiId, ModuleStatus.Processing);
+            try
+            {
+                var smr = new StartModuleResponse(ModuleId, request.variantId, request.kpiId, ModuleStatus.Processing);
+                var str = Serialize.ToJsonString(smr);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            }
+            catch (Exception ex)
+            {
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse");
+                return false;
+            }
 
-            var str = Serialize.ToJsonString(smr);
-            var payload = new TByteBuffer();
-            payload.Prepare(str);
-            payload.PrepareApply();
-            payload.QWrite(str);
-            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
-
-
-            CExcel exls = null;
             Outputs outputs = null;
 
 
@@ -214,45 +240,63 @@ namespace Ecodistrict.Excel
                 }
                 else
                 {
-                    Console.WriteLine("Excelfile <{0}> not found", workBookPath);
+                    OnErrorMessage(string.Format("Excelfile <{0}> not found", workBookPath), sourceFunction: "SendModuleResult-FileNotFound");
+                    return false;
                 }
 
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi");
                 return false;
             }
             finally
             {
-               exls.CloseWorkBook();
+               excelApplikation.CloseWorkBook();
             }
 
-            ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
-            str = Ecodistrict.Messaging.Serialize.ToJsonString(result);
-            payload = new TByteBuffer();
-            payload.Prepare(str);
-            payload.PrepareApply();
-            payload.QWrite(str);
-            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            try
+            {
+                ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
+                var str = Ecodistrict.Messaging.Serialize.ToJsonString(result);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            }
+            catch (Exception ex)
+            {
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendModuleResult");
+                return false;
+            }
 
-            StartModuleResponse stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId, ModuleStatus.Success);
-            str = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp2);
-            payload = new TByteBuffer();
-            payload.Prepare(str);
-            payload.PrepareApply();
-            payload.QWrite(str);
-            PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            try
+            {
+                StartModuleResponse stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
+                    ModuleStatus.Success);
+                var str = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp2);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+            }
+            catch (Exception ex)
+            {
+                OnErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendRSuccessResponse");
+                return false;
+            }
 
             return true;
 
         }
 
-        private void OnErrorMessage(string message)
+        private void OnErrorMessage(string message, string sourceFunction)
         {
             if (ErrorRaised != null)
             {
-                var e = new ErrorMessage() {Message = message};
+                var e = new ErrorMessage() {Message = message,SourceFunction =sourceFunction };
                 ErrorRaised(this, e);
             }        
         }

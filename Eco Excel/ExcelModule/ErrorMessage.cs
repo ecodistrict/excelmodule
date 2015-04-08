@@ -8,6 +8,7 @@ namespace Ecodistrict.Excel
 {
     public class ErrorMessage:EventArgs
     {
+        public string SourceFunction;
         public string Message;
     }
 }
