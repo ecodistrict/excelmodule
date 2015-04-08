@@ -84,12 +84,12 @@ namespace Ecodistrict.Excel
 
         }
 
-        protected Ecodistrict.Messaging.InputSpecification GetInputSpecification(string kpiId)
+        protected virtual Ecodistrict.Messaging.InputSpecification GetInputSpecification(string kpiId)
         {
             throw new NotImplementedException();
         }
 
-        protected Ecodistrict.Messaging.Outputs CalculateKpi(Dictionary<string,object> indata,string kpiId, CExcel exls)
+        protected virtual Ecodistrict.Messaging.Outputs CalculateKpi(Dictionary<string,object> indata,string kpiId, CExcel exls)
         {
             throw new NotImplementedException();
             
