@@ -23,9 +23,17 @@ namespace RenobuildModule
 
             //Error handler
             this.ErrorRaised += RenobuildModule_ErrorRaised;
+
+            //Notification
+            this.StatusMessage += RenobuildModule_StatusMessage;
         }
 
-        void RenobuildModule_ErrorRaised(object sender, ErrorMessage e)
+        void RenobuildModule_StatusMessage(object sender, StatusEventArg e)
+        {
+            Console.WriteLine(String.Format("Status message:\n\t{0}",e.StatusMessage));
+        }
+
+        void RenobuildModule_ErrorRaised(object sender, ErrorMessageEventArg e)
         {
             Console.WriteLine(e.Message);
             if (e.SourceFunction != null & e.SourceFunction != "")
@@ -34,7 +42,7 @@ namespace RenobuildModule
 
         void RenobuildModule_ErrorRaised(object sender, Exception ex)
         {
-            ErrorMessage em = new ErrorMessage();
+            ErrorMessageEventArg em = new ErrorMessageEventArg();
             em.Message = ex.Message;
             RenobuildModule_ErrorRaised(sender, em);
         }
