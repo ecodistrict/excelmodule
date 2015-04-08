@@ -41,7 +41,7 @@ namespace Ecodistrict.Excel
             CloseExcel();
         }
 
-        protected void CloseExcel()
+        public void CloseExcel()
         {
             GC.Collect();
             if (_worksheets != null)

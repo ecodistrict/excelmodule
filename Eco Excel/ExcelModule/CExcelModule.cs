@@ -52,7 +52,15 @@ namespace Ecodistrict.Excel
             }
         }
 
-        protected bool ConnectToServer()
+        ~CExcelModule()
+        {
+            if(excelApplikation!=null)
+                excelApplikation.CloseExcel();
+
+            excelApplikation = null;
+        }
+
+        public bool ConnectToServer()
         {
             bool res = true;
             
@@ -202,8 +210,6 @@ namespace Ecodistrict.Excel
             finally
             {
                exls.CloseWorkBook();
-               exls = null;
-               
             }
 
             ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
