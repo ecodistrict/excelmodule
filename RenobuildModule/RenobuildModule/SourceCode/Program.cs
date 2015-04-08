@@ -23,7 +23,7 @@ namespace RenobuildModule
 
                 if (!module.ConnectToServer())
                 {
-                    Console.WriteLine("Ending program");
+                    Console.WriteLine("Could not connect to the IMB-hub");
                     startupStatus = false;
                 }
                 else

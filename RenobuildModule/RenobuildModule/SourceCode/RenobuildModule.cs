@@ -28,6 +28,8 @@ namespace RenobuildModule
         void RenobuildModule_ErrorRaised(object sender, ErrorMessage e)
         {
             Console.WriteLine(e.Message);
+            if (e.SourceFunction != null & e.SourceFunction != "")
+                Console.WriteLine(String.Format("In {0}", e.SourceFunction));
         }
 
         void RenobuildModule_ErrorRaised(object sender, Exception ex)
@@ -44,9 +46,11 @@ namespace RenobuildModule
             switch(kpiId)
             {
                 case "kpi1":
+                    iSpec.Add("asd", new Number(label: "A number", value: 1));
                     //Your input spec def.
                     break;
-                case "kp12":
+                case "kpi2":
+                    iSpec.Add("asd", new Text(label:"A text", value: "fgr"));
                     //Your input spec def.
                     break;
                 default:
