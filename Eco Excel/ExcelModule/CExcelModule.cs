@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using IMB;
 using IMB.ByteBuffers;
@@ -32,7 +30,7 @@ namespace Ecodistrict.Excel
 
         protected bool ShowOnlyOwnStatus { get; set; }
             
-        private CExcel excelApplikation { get; set; }
+        private CExcel ExcelApplikation { get; set; }
 
         protected  string  ServerAdress { get; set; }
         protected  int Port { get; set; }
@@ -51,12 +49,11 @@ namespace Ecodistrict.Excel
             try
             {
                 ShowOnlyOwnStatus = true;
-                excelApplikation = new CExcel();
+                ExcelApplikation = new CExcel();
             }
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "CExcel Constructor", exception: ex);
-                return;
             }
         }
 
@@ -69,10 +66,10 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                if (excelApplikation != null)
-                    excelApplikation.CloseExcel();
+                if (ExcelApplikation != null)
+                    ExcelApplikation.CloseExcel();
 
-                excelApplikation = null;
+                ExcelApplikation = null;
 
                 if (Connection.Connected)
                     Connection.Close();
@@ -80,8 +77,6 @@ namespace Ecodistrict.Excel
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
-                return;
-
             }
         }
 
@@ -117,12 +112,12 @@ namespace Ecodistrict.Excel
 
         }
 
-        protected virtual Ecodistrict.Messaging.InputSpecification GetInputSpecification(string kpiId)
+        protected virtual InputSpecification GetInputSpecification(string kpiId)
         {
             throw new NotImplementedException();
         }
 
-        protected virtual Ecodistrict.Messaging.Outputs CalculateKpi(Dictionary<string,object> indata,string kpiId, CExcel exls)
+        protected virtual Outputs CalculateKpi(Dictionary<string,object> indata,string kpiId, CExcel exls)
         {
             throw new NotImplementedException();
             
@@ -132,17 +127,18 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                String msg = "";
+                String msg;
                 aPayload.Read(out msg);
 
-                IMessage iMessage = Ecodistrict.Messaging.Deserialize.JsonString(msg);
+                IMessage iMessage = Deserialize.JsonString(msg);
 
                 if (iMessage!=null)
                 {
-                    if (iMessage is Ecodistrict.Messaging.GetModulesRequest)
+                    if (iMessage is GetModulesRequest)
                     {
                         SendStatusMessage("GetModulesRequest received");
-                        SendGetModulesResponse();
+                        if(!SendGetModulesResponse())
+                            SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
                     }
                     else if (iMessage is SelectModuleRequest)
                     {
@@ -153,7 +149,8 @@ namespace Ecodistrict.Excel
                         if (ModuleId == smr.moduleId)
                         {
                             SendStatusMessage("Handles SelectModuleRequest");
-                            SendSelectModuleResponse(smr);
+                            if(!SendSelectModuleResponse(smr))
+                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
                         }
                     }
                     else if (iMessage is StartModuleRequest)
@@ -161,11 +158,12 @@ namespace Ecodistrict.Excel
                         if (!ShowOnlyOwnStatus) 
                             SendStatusMessage("StartModuleRequest received");
 
-                        var SMR = iMessage as StartModuleRequest;
-                        if (ModuleId == SMR.moduleId)
+                        var smr = iMessage as StartModuleRequest;
+                        if (ModuleId == smr.moduleId)
                         {
                             SendStatusMessage("Handles StartModuleRequest");
-                            SendModuleResult(SMR);
+                            if(!SendModuleResult(smr))
+                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
                         }
                     }
                 }
@@ -173,7 +171,6 @@ namespace Ecodistrict.Excel
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
-                return;
             }
         }
 
@@ -252,9 +249,9 @@ namespace Ecodistrict.Excel
             {
                 if (File.Exists(workBookPath))
                 {
-                if (excelApplikation.OpenWorkBook(workBookPath))
+                if (ExcelApplikation.OpenWorkBook(workBookPath))
                 {
-                    outputs=CalculateKpi(request.inputData, request.kpiId, excelApplikation);
+                    outputs=CalculateKpi(request.inputData, request.kpiId, ExcelApplikation);
                 }
                 }
                 else
@@ -271,13 +268,13 @@ namespace Ecodistrict.Excel
             }
             finally
             {
-               excelApplikation.CloseWorkBook();
+               ExcelApplikation.CloseWorkBook();
             }
 
             try
             {
                 ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
-                var str = Ecodistrict.Messaging.Serialize.ToJsonString(result);
+                var str = Serialize.ToJsonString(result);
                 var payload = new TByteBuffer();
                 payload.Prepare(str);
                 payload.PrepareApply();
@@ -295,7 +292,7 @@ namespace Ecodistrict.Excel
             {
                 StartModuleResponse stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
                     ModuleStatus.Success);
-                var str = Ecodistrict.Messaging.Serialize.ToJsonString(stmResp2);
+                var str = Serialize.ToJsonString(stmResp2);
                 var payload = new TByteBuffer();
                 payload.Prepare(str);
                 payload.PrepareApply();
@@ -317,7 +314,7 @@ namespace Ecodistrict.Excel
         {
             if (StatusMessage != null)
             {
-                var e = new StatusEventArg() {StatusMessage = message};
+                var e = new StatusEventArg {StatusMessage = message};
                 StatusMessage(this, e);
             }
         }
@@ -326,7 +323,7 @@ namespace Ecodistrict.Excel
         {
             if (ErrorRaised != null)
             {
-                var e = new ErrorMessageEventArg() {Message = message,SourceFunction =sourceFunction, Exception = exception};
+                var e = new ErrorMessageEventArg {Message = message,SourceFunction =sourceFunction, Exception = exception};
                 ErrorRaised(this, e);
             }        
         }
