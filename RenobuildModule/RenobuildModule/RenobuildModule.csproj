@@ -35,9 +35,6 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EcodistrictMessaging">
-      <HintPath>..\MessagingDll\EcodistrictMessaging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +58,16 @@
     <None Include="Config\IMB_config.yaml" />
     <None Include="Config\Module_config.yaml" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj">
+      <Project>{3d653c56-9397-49f6-bd9a-7d48d2c76ba2}</Project>
+      <Name>EcodistrictMessaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Eco Excel\ExcelModule\ExcelModule.csproj">
+      <Project>{9f352281-0169-4a2f-887c-4888d402c708}</Project>
+      <Name>ExcelModule</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenobuildModule", "RenobuildModule\RenobuildModule.csproj", "{AE317C51-D6D0-4A22-B9AC-608E4E11437E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelModule", "..\Eco Excel\ExcelModule\ExcelModule.csproj", "{9F352281-0169-4A2F-887C-4888D402C708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcodistrictMessaging", "..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj", "{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{AE317C51-D6D0-4A22-B9AC-608E4E11437E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE317C51-D6D0-4A22-B9AC-608E4E11437E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE317C51-D6D0-4A22-B9AC-608E4E11437E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F352281-0169-4A2F-887C-4888D402C708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F352281-0169-4A2F-887C-4888D402C708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F352281-0169-4A2F-887C-4888D402C708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F352281-0169-4A2F-887C-4888D402C708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
