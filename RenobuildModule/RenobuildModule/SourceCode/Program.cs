@@ -20,21 +20,16 @@ namespace RenobuildModule
                 {
                     startupStatus = false;
                 }
+
+                if (!module.ConnectToServer())
+                {
+                    Console.WriteLine("Ending program");
+                    startupStatus = false;
+                }
                 else
                 {
-                    //Console.WriteLine("connecting {0} Port {1} User:{2} UserId:{3} Federation: {4}",
-                    //    ServerAdress, Port, UserName, UserId, Federation);
+                    Console.WriteLine("Connected..");
                 }
-
-                //if (!module.Connect())
-                //{
-                //    Console.WriteLine("Ending program");
-                //    startupStatus = false;
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Connected..");
-                //}
 
                 if (startupStatus)
                 {
@@ -44,16 +39,14 @@ namespace RenobuildModule
                 else
                 {
                     Console.WriteLine("**** Errors detected! ****");
-                    Console.WriteLine(">> Press return to close connection");
+                    Console.WriteLine(">> Press return to close");
                     Console.ReadLine();
-                    //if (Connection.Connected)
-                    //    Connection.Close();
+                    module.Close();
                 }
-
             }
             finally
             {
-                //Connection.Close();
+                module.Close();
             }
         }
     }
