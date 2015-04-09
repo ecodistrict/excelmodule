@@ -69,19 +69,26 @@ namespace RenobuildModule
             {
                 case kpi_gwp:
                 case kpi_peu:
+                    // - ## Common Properties
+                    InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
+                    commonProp.Add("period", new Number(label: "LCA calculation period", min: 1, unit: "years", order: 1));
+                    //Applicable to disctrict heating system
+                    InputGroup igAtDHS = new InputGroup(label: "Applicable to disctrict heating system (inputs required if district heating is used (before/after renovation))", order: 2);
+                    igAtDHS.Add(key: "gwp_district", item: new Number(label: "Global warming potential of district heating", min: 0, unit: "g CO2 eq/kWh", order: 1));
+                    igAtDHS.Add(key: "peu_district", item: new Number(label: "Primary energy use of district heating", min: 0, order: 2));
+                    commonProp.Add("applicable_to_disctrict_heating_system", igAtDHS);
+
+                    // - ## Building Specific
+                    InputGroup buildingSpecificProp = new InputGroup(label: "Buildning specific properties", order: 1);
+                    GeoJson buildning_specific_data = new GeoJson(label: "Geograpich data of buildnings", order: -1);
                     //Group: Applicable to building                 
                     InputGroup igAtB = new InputGroup(label: "Applicable to building", order: 1);
                     igAtB.Add(key: "period", item: new Number(label: "LCA calculation period", min: 1, unit: "years", order: 1));                   
                     igAtB.Add(key: "nr_apartments", item: new Number(label: "Number of apartments", min: 1, order: 2));
                     igAtB.Add(key: "heat_source_before", item: new Select(label: "Heat source before renovation", options: heat_sources, order: 3));
                     igAtB.Add(key: "heat_source_after", item: new Select(label: "Heat source after renovation", options: heat_sources, order: 4));
-                    iSpec.Add("applicable_to_building", igAtB);
-                    //Applicable to disctrict heating system
-                    InputGroup igAtDHS = new InputGroup(label: "Applicable to disctrict heating system (inputs required if district heating is used (before/after renovation))", order: 2);
-                    igAtDHS.Add(key: "gwp_district", item: new Number(label: "Global warming potential of district heating", min: 0, unit: "g CO2 eq/kWh", order: 1));
-                    igAtDHS.Add(key: "peu_district", item: new Number(label: "Primary energy use of district heating", min: 0, order: 2));
-                    iSpec.Add("applicable_to_disctrict_heating_system", igAtDHS);
-                    //Applicable to building heating system
+                    buildning_specific_data.Add("applicable_to_building", igAtB);
+                    //Group: Applicable to building heating system
                     InputGroup igAtBHS = new InputGroup(label: "Applicable to building heating system (inputs required if heat source is replaced)", order: 3);
                     igAtBHS.Add(key: "ahd_after_renovation", item: new Number(label: "Annual heat demand after renovation (Required if heating system is replaced)", min: 0, unit: "kWh/year", order: 1));
                     igAtBHS.Add(key: "life_of_product", item: new Number(label: "Life of product (Practical time of life of the products and materials used)", min: 0, unit: "years", order: 2));
@@ -91,8 +98,8 @@ namespace RenobuildModule
                     igAtBHS.Add(key: "transport_to_building_truck", item: new Number(label: "Transport to building by truck (Distance from production site to building)", min: 0, unit: "km", order: 6));
                     igAtBHS.Add(key: "transport_to_building_train", item: new Number(label: "Transport to building by train (Distance from production site to building)", min: 0, unit: "km", order: 7));
                     igAtBHS.Add(key: "transport_to_building_ferry", item: new Number(label: "Transport to building by ferry (Distance from production site to building)", min: 0, unit: "km", order: 8));
-                    iSpec.Add("applicable_to_building_heating_system", igAtBHS);
-                    //Applicable to pump in building heating system
+                    buildning_specific_data.Add("applicable_to_building_heating_system", igAtBHS);
+                    //Group: Applicable to pump in building heating system
                     InputGroup igAtPiBHS = new InputGroup(label: "Applicable to pump in building heating system (inputs required if circulation pump in building heating system is replaced)", order: 4);
                     igAtPiBHS.Add(key: "life_of_product", item: new Number(label: "Practical time of life of the products and materials used", min: 0, unit: "years", order: 1));
                     igAtPiBHS.Add(key: "design_pressure_head", item: new Number(label: "Design pressure head ()", min: 0, unit: "kPa", order: 2));
@@ -102,8 +109,14 @@ namespace RenobuildModule
                     igAtPiBHS.Add(key: "transport_to_building_truck", item: new Number(label: "Transport to building by truck (Distance from production site to building)", min: 0, unit: "km", order: 6));
                     igAtPiBHS.Add(key: "transport_to_building_train", item: new Number(label: "Transport to building by train (Distance from production site to building)", min: 0, unit: "km", order: 7));
                     igAtPiBHS.Add(key: "transport_to_building_ferry", item: new Number(label: "Transport to building by ferry (Distance from production site to building)", min: 0, unit: "km", order: 8));
-                    iSpec.Add("applicable_to_pump_in_building_heating_system", igAtPiBHS);
-                    
+                    buildning_specific_data.Add("applicable_to_pump_in_building_heating_system", igAtPiBHS);
+                    //...
+
+                    buildingSpecificProp.Add(key: "buildnings", item: buildning_specific_data);
+
+
+                    iSpec.Add("commonProp", buildingSpecificProp);
+                    iSpec.Add("buildingSpecificProp", commonProp);
 
                     break;
                 default:
