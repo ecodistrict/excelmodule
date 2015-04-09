@@ -19,10 +19,11 @@ namespace Ecodistrict.Excel
         /// Excel workbook object
         /// </summary>
         private MsExcel.Workbook _workbook;
+
         /// <summary>
         /// Excel worksheet object
         /// </summary>
-        private MsExcel.Worksheet _worksheets;
+        private MsExcel.Worksheet _worksheet;
 
         public CExcel()
         {
@@ -44,13 +45,13 @@ namespace Ecodistrict.Excel
         public void CloseExcel()
         {
             GC.Collect();
-            if (_worksheets != null)
+            if (_worksheet != null)
             {
                 try
                 {
                     _excelApp.DisplayAlerts = false;
-                    Marshal.FinalReleaseComObject(_worksheets);
-                    _worksheets = null;
+                    Marshal.FinalReleaseComObject(_worksheet);
+                    _worksheet = null;
                     GC.Collect();
                 }
                 catch (Exception)
@@ -124,7 +125,11 @@ namespace Ecodistrict.Excel
             {
                 if (_workbook != null)
                 {
+                    _worksheet = null;
+
                     _workbook.Close(SaveChanges: false);
+                    _workbook = null;
+
                     GC.Collect();
                 }
             }
@@ -147,10 +152,10 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                if (_worksheets == null || _worksheets.Name != sheet)
-                    _worksheets = _workbook.Worksheets[sheet];
+                if (_worksheet == null || _worksheet.Name != sheet)
+                    _worksheet = _workbook.Worksheets[sheet];
 
-                _worksheets.Range[row, col].Value = value;
+                _worksheet.Range[row, col].Value = value;
                 return true;
             }
             catch (Exception)
@@ -171,10 +176,10 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                if (_worksheets == null || _worksheets.Name != sheet)
-                    _worksheets = _workbook.Worksheets[sheet];
+                if (_worksheet == null || _worksheet.Name != sheet)
+                    _worksheet = _workbook.Worksheets[sheet];
 
-                _worksheets.Range[cell].Value = value;
+                _worksheet.Range[cell].Value = value;
                 return true;
             }
             catch (Exception)
@@ -194,11 +199,11 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                if (_worksheets == null || _worksheets.Name != sheet)
-                    _worksheets = _workbook.Worksheets[sheet];
+                if (_worksheet == null || _worksheet.Name != sheet)
+                    _worksheet = _workbook.Worksheets[sheet];
 
                 //celltype = ws.Range[cell].Value.GetType();
-                return _worksheets.Range[cell].Value;
+                return _worksheet.Range[cell].Value;
 
             }
             catch (Exception)
@@ -219,11 +224,11 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                if (_worksheets == null || _worksheets.Name != sheet)
-                    _worksheets = _workbook.Worksheets[sheet];
+                if (_worksheet == null || _worksheet.Name != sheet)
+                    _worksheet = _workbook.Worksheets[sheet];
 
                 //celltype = ws.Range[row, col].Value.GetType();
-                return _worksheets.Range[row, col].Value;
+                return _worksheet.Range[row, col].Value;
 
             }
             catch (Exception)

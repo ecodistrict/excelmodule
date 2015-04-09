@@ -263,7 +263,19 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
+
                 SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi", exception: ex);
+
+                var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
+                    ModuleStatus.Failed);
+                var str = Serialize.ToJsonString(stmResp2);
+                var payload = new TByteBuffer();
+                payload.Prepare(str);
+                payload.PrepareApply();
+                payload.QWrite(str);
+                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                SendStatusMessage("StartModuleResponse Failed sent"); 
+               
                 return false;
             }
             finally
