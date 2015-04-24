@@ -22,6 +22,8 @@ namespace RenobuildModule
         Options heat_sources;
         Options type_of_flow_control_in_heating_system_opts;
         Options type_of_insulation;
+        Options type_of_fascade_system;
+        Options type_of_windows;
 
         void DefineHeatSources()
         {
@@ -68,6 +70,33 @@ namespace RenobuildModule
                 RenobuildModule_ErrorRaised(this, ex);
             }
         }
+        void DefineTypeOfFascadeSystem()
+        {
+            try
+            {
+                type_of_fascade_system = new Options();
+                type_of_insulation.Add(new Option(value: @"A\8-15mm\Non ventilated\EPS\200mm", label: @"A\8-15mm\Non ventilated\EPS\200mm"));
+                type_of_insulation.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\50mm", label: @"B\4-8mm\Ventilated\Rock wool\50mm"));
+                type_of_insulation.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\80mm", label: @"B\4-8mm\Ventilated\Rock wool\80mm"));
+                type_of_insulation.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\100mm", label: @"B\4-8mm\Ventilated\Rock wool\100mm"));
+                type_of_insulation.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\50mm", label: @"C\8-12mm\Non ventilated\EPS\50mm"));
+                type_of_insulation.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\80mm", label: @"C\8-12mm\Non ventilated\EPS\80mm"));
+                type_of_insulation.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\100mm", label: @"C\8-12mm\Non ventilated\EPS\100mm"));
+                type_of_insulation.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\50mm", label: @"D\20-mm\Non ventilated\Rock wool\50mm"));
+                type_of_insulation.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\80mm", label: @"D\20-mm\Non ventilated\Rock wool\80mm"));
+                type_of_insulation.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\100mm", label: @"D\20-mm\Non ventilated\Rock wool\100mm"));
+                type_of_insulation.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\50mm", label: @"E\10-15mm\Non ventilated\Rock wool\50mm"));
+                type_of_insulation.Add(new Option(value: @"E\10-15mmNon ventilated\Rock wool\80mm", label: @"E\10-15mmNon ventilated\Rock wool\80mm"));
+                type_of_insulation.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\100mm", label: @"E\10-15mm\Non ventilated\Rock wool\100mm"));
+                type_of_insulation.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm", label: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm"));
+                type_of_insulation.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\80mm", label: @"F\4-8mm\Ventilated\Rock wool\80mm"));
+                type_of_insulation.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\100mm", label: @"F\4-8mm\Ventilated\Rock wool\100mm"));
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
         void DefineInputSpecifications()
         {
             try
@@ -75,6 +104,21 @@ namespace RenobuildModule
 	            inputSpecifications = new Dictionary<string, InputSpecification>();
 	            inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
 	            inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
+        void DefineTypeOfWindows()
+        {
+            try
+            {
+                type_of_insulation = new Options();
+                type_of_insulation.Add(new Option(value: "aluminium", label: "Aluminium"));
+                type_of_insulation.Add(new Option(value: "plastic", label: "Plastic"));
+                type_of_insulation.Add(new Option(value: "wood_metal", label: "Wood-metal"));
+                type_of_insulation.Add(new Option(value: "wood", label: "Wood"));
             }
             catch (System.Exception ex)
             {
@@ -90,7 +134,7 @@ namespace RenobuildModule
         //Building Common
         // Inputs required in all cases
         string heated_area = "heated_area";
-        string heated_area_lbl = "Heated Area";
+        string heated_area_lbl = "Heated area";
         string nr_apartments = "nr_apartments";
         string nr_apartments_lbl = "Number of apartments";
         string heat_source_before = "heat_source_before";
@@ -150,6 +194,8 @@ namespace RenobuildModule
         #region Building Shell
         //Building Shell
         // Insulation material 1
+        string change_insulation_material_1 = "change_insulation_material_1";
+        string change_insulation_material_1_lbl = "Use insulation material 1";
         string insulation_material_1_life_of_product = "insulation_material_1_life_of_product";
         string insulation_material_1_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
         string insulation_material_1_type_of_insulation = "insulation_material_1_type_of_insulation";
@@ -164,6 +210,61 @@ namespace RenobuildModule
         string insulation_material_1_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
         string insulation_material_1_transport_to_building_by_ferry = "insulation_material_1_transport_to_building_by_ferry";
         string insulation_material_1_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Insulation material 2
+        string change_insulation_material_2 = "change_insulation_material_2";
+        string change_insulation_material_2_lbl = "Use insulation material 2";
+        string insulation_material_2_life_of_product = "insulation_material_2_life_of_product";
+        string insulation_material_2_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string insulation_material_2_type_of_insulation = "insulation_material_2_type_of_insulation";
+        string insulation_material_2_type_of_insulation_lbl = "Type of insulation";
+        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation = "insulation_material_2_change_in_annual_heat_demand_due_to_insulation";
+        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
+        string insulation_material_2_amount_of_new_insulation_material = "insulation_material_2_amount_of_new_insulation_material";
+        string insulation_material_2_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
+        string insulation_material_2_transport_to_building_by_truck = "insulation_material_2_transport_to_building_by_truck";
+        string insulation_material_2_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string insulation_material_2_transport_to_building_by_train = "insulation_material_2_transport_to_building_by_train";
+        string insulation_material_2_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string insulation_material_2_transport_to_building_by_ferry = "insulation_material_2_transport_to_building_by_ferry";
+        string insulation_material_2_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Fascade system
+        string change_fascade_system = "change_fascade_system";
+        string change_fascade_system_lbl = "Change fascade";
+        string fascade_system_life_of_product = "fascade_system_life_of_product";
+        string fascade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string fascade_system_type_fascade_system = "fascade_system_type_fascade_system";
+        string fascade_system_type_of_fascade_system_lbl = "Type of facade system";
+        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "fascade_system_change_in_annual_heat_demand_due_to_insulation";
+        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to fascade system (an energy saving is given as a negative value)";
+        string fascade_system_area_of_new_fascade_system = "fascade_system_amount_of_new_insulation_material";
+        string fascade_system_area_of_new_fascade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
+        string fascade_system_transport_to_building_by_truck = "fascade_system_transport_to_building_by_truck";
+        string fascade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string fascade_system_transport_to_building_by_train = "fascade_system_transport_to_building_by_train";
+        string fascade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string fascade_system_transport_to_building_by_ferry = "fascade_system_transport_to_building_by_ferry";
+        string fascade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+
+        // Windows
+        string change_windows = "change_windows";
+        string change_windows_lbl = "Change windows";
+        string windows_life_of_product = "windows_life_of_product";
+        string windows_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string windows_type_windows = "windows_type_windows";
+        string windows_type_of_windows_lbl = "Material in frame";
+        string windows_change_in_annual_heat_demand_due_to_windows = "windows_change_in_annual_heat_demand_due_to_insulation";
+        string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
+        string windows_area_of_new_windows = "windows_amount_of_new_insulation_material";
+        string windows_area_of_new_windows_lbl = "Area of windows (required if renovation includes new windows)";
+        string windows_transport_to_building_by_truck = "windows_transport_to_building_by_truck";
+        string windows_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string windows_transport_to_building_by_train = "windows_transport_to_building_by_train";
+        string windows_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string windows_transport_to_building_by_ferry = "windows_transport_to_building_by_ferry";
+        string windows_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         #endregion
 
@@ -190,6 +291,7 @@ namespace RenobuildModule
             DefineHeatSources();
             DefineTypeOfFlowControl();
             DefineTypeOfIsulation();
+            DefineTypeOfFascadeSystem();
 
             //Define the input specification for the different kpis
             DefineInputSpecifications();
@@ -258,6 +360,9 @@ namespace RenobuildModule
             // Heating System
             buildning_specific_data.Add(key: "heating_system", item: HeatingSystem());
 
+            // Building Shell
+            buildning_specific_data.Add(key: "building_shell", item: BuildingShell());
+
             return buildning_specific_data;
         }
 
@@ -295,16 +400,48 @@ namespace RenobuildModule
         {
 
             int order = 0;
-            InputGroup igBuildingShell = new InputGroup("Heating system");
+            InputGroup igBuildingShell = new InputGroup("Building Shell");
 
             // Insulation material 1
+            igBuildingShell.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
             igBuildingShell.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             igBuildingShell.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
-            igBuildingShell.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
             igBuildingShell.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
             igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_train, item: new Number(label: insulation_material_1_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_ferry, item: new Number(label: insulation_material_1_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Insulation material 2
+            igBuildingShell.Add(key: change_insulation_material_2, item: new Checkbox(label: change_insulation_material_2_lbl, order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_life_of_product, item: new Number(label: insulation_material_2_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_type_of_insulation, item: new Select(label: insulation_material_2_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_amount_of_new_insulation_material, item: new Number(label: insulation_material_2_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_transport_to_building_by_truck, item: new Number(label: insulation_material_2_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_transport_to_building_by_train, item: new Number(label: insulation_material_2_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: insulation_material_2_transport_to_building_by_ferry, item: new Number(label: insulation_material_2_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Fascade System
+            igBuildingShell.Add(key: change_fascade_system, item: new Checkbox(label: change_fascade_system_lbl, order: ++order));
+            igBuildingShell.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igBuildingShell.Add(key: fascade_system_type_fascade_system, item: new Select(label: fascade_system_type_of_fascade_system_lbl, options: type_of_fascade_system, order: ++order));
+            igBuildingShell.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
+            igBuildingShell.Add(key: fascade_system_area_of_new_fascade_system, item: new Number(label: fascade_system_area_of_new_fascade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
+            igBuildingShell.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: fascade_system_transport_to_building_by_train, item: new Number(label: fascade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: fascade_system_transport_to_building_by_ferry, item: new Number(label: fascade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Windows
+            igBuildingShell.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
+            igBuildingShell.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igBuildingShell.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
+            igBuildingShell.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
+            igBuildingShell.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
+            igBuildingShell.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: windows_transport_to_building_by_train, item: new Number(label: windows_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: windows_transport_to_building_by_ferry, item: new Number(label: windows_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
 
             return igBuildingShell;
         }
