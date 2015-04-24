@@ -117,7 +117,7 @@ namespace Ecodistrict.Excel
             throw new NotImplementedException();
         }
 
-        protected virtual Outputs CalculateKpi(Dictionary<string,object> indata,string kpiId, CExcel exls)
+        protected virtual Outputs CalculateKpi(Dictionary<string,Input> indata,string kpiId, CExcel exls)
         {
             throw new NotImplementedException();
             
@@ -251,7 +251,7 @@ namespace Ecodistrict.Excel
                 {
                 if (ExcelApplikation.OpenWorkBook(workBookPath))
                 {
-                    outputs=CalculateKpi(request.inputData, request.kpiId, ExcelApplikation);
+                    outputs=CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
                 }
                 }
                 else
