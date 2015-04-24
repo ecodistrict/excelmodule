@@ -21,28 +21,72 @@ namespace RenobuildModule
 
         Options heat_sources;
         Options type_of_flow_control_in_heating_system_opts;
+        Options type_of_insulation;
 
         void DefineHeatSources()
         {
-            heat_sources = new Options();
-            heat_sources.Add(new Option(value: "geothermal_heat_pump", label: "Geothermal heat pump"));
-            heat_sources.Add(new Option(value: "district_heating", label: "District heating"));
-            heat_sources.Add(new Option(value: "pellet_boiler", label: "Pellet boiler"));
-            heat_sources.Add(new Option(value: "oil_boiler", label: "Oil boiler"));
-            heat_sources.Add(new Option(value: "electric_boiler", label: "Electric boiler"));
-            heat_sources.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
+            try
+            {
+                heat_sources = new Options();
+                heat_sources.Add(new Option(value: "geothermal_heat_pump", label: "Geothermal heat pump"));
+                heat_sources.Add(new Option(value: "district_heating", label: "District heating"));
+                heat_sources.Add(new Option(value: "pellet_boiler", label: "Pellet boiler"));
+                heat_sources.Add(new Option(value: "oil_boiler", label: "Oil boiler"));
+                heat_sources.Add(new Option(value: "electric_boiler", label: "Electric boiler"));
+                heat_sources.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
+            }
+            catch(Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
         }
         void DefineTypeOfFlowControl()
         {
-            type_of_flow_control_in_heating_system_opts = new Options();
-            type_of_flow_control_in_heating_system_opts.Add(new Option("constant", "Constant"));
-            type_of_flow_control_in_heating_system_opts.Add(new Option("variable", "Variable"));
+            try
+            {
+	            type_of_flow_control_in_heating_system_opts = new Options();
+	            type_of_flow_control_in_heating_system_opts.Add(new Option("constant", "Constant"));
+	            type_of_flow_control_in_heating_system_opts.Add(new Option("variable", "Variable"));
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
+        void DefineTypeOfIsulation()
+        {
+            try
+            {
+	            type_of_insulation = new Options();
+	            type_of_insulation.Add(new Option(value: "cellulose_fiber", label: "Cellulose fiber"));
+	            type_of_insulation.Add(new Option(value: "glass_wool", label: "Glass wool"));
+	            type_of_insulation.Add(new Option(value: "rock_wool", label: "Rock wool"));
+	            type_of_insulation.Add(new Option(value: "polystyrene_foam", label: "Polystyrene foam"));
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
+        void DefineInputSpecifications()
+        {
+            try
+            {
+	            inputSpecifications = new Dictionary<string, InputSpecification>();
+	            inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
+	            inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
         }
 
         #region Input Specification (Names and Labels)
         // - Input Specification (Names and Labels)
         //Common
 
+        #region Building Common
         //Building Common
         // Inputs required in all cases
         string heated_area = "heated_area";
@@ -58,7 +102,9 @@ namespace RenobuildModule
         string gwp_district_lbl = "Global warming potential of district heating (If district heating is used before/after renovation)";
         string peu_district = "peu_district";
         string peu_district_lbl = "Primary energy use of district heating (If district heating is used before/after renovation)";
-        
+        #endregion
+
+        #region Heating System
         //Heating System
         // Change Heating System
         string change_heating_system = "change_heating_system";
@@ -101,6 +147,28 @@ namespace RenobuildModule
         string circulationpump_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
         #endregion
 
+        #region Building Shell
+        //Building Shell
+        // Insulation material 1
+        string insulation_material_1_life_of_product = "insulation_material_1_life_of_product";
+        string insulation_material_1_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string insulation_material_1_type_of_insulation = "insulation_material_1_type_of_insulation";
+        string insulation_material_1_type_of_insulation_lbl = "Type of insulation";
+        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation = "insulation_material_1_change_in_annual_heat_demand_due_to_insulation";
+        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
+        string insulation_material_1_amount_of_new_insulation_material = "insulation_material_1_amount_of_new_insulation_material";
+        string insulation_material_1_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
+        string insulation_material_1_transport_to_building_by_truck = "insulation_material_1_transport_to_building_by_truck";
+        string insulation_material_1_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string insulation_material_1_transport_to_building_by_train = "insulation_material_1_transport_to_building_by_train";
+        string insulation_material_1_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string insulation_material_1_transport_to_building_by_ferry = "insulation_material_1_transport_to_building_by_ferry";
+        string insulation_material_1_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        #endregion
+
+        #endregion
+
         #endregion
 
         public RenobuildModule()
@@ -118,8 +186,13 @@ namespace RenobuildModule
             //Notification
             this.StatusMessage += RenobuildModule_StatusMessage;
 
+            //Define parameter options
             DefineHeatSources();
             DefineTypeOfFlowControl();
+            DefineTypeOfIsulation();
+
+            //Define the input specification for the different kpis
+            DefineInputSpecifications();
         }
 
         void RenobuildModule_StatusMessage(object sender, StatusEventArg e)
@@ -217,24 +290,31 @@ namespace RenobuildModule
             
             return igHeatingSystem;
         }
+
+        InputGroup BuildingShell()
+        {
+
+            int order = 0;
+            InputGroup igBuildingShell = new InputGroup("Heating system");
+
+            // Insulation material 1
+            igBuildingShell.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_train, item: new Number(label: insulation_material_1_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igBuildingShell.Add(key: insulation_material_1_transport_to_building_by_ferry, item: new Number(label: insulation_material_1_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            return igBuildingShell;
+        }
         
         protected override InputSpecification GetInputSpecification(string kpiId)
         {
-            DefineHeatSources();
+            if(!inputSpecifications.ContainsKey(kpiId))
+                throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
 
-            InputSpecification iSpec = new InputSpecification();
-
-            switch (kpiId)
-            {
-                case kpi_gwp:
-                case kpi_peu:
-                    iSpec = GetInputSpecificationGeoJson();
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
-            }
-
-            return iSpec;
+            return inputSpecifications[kpiId];
         }
 
         protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
@@ -250,7 +330,7 @@ namespace RenobuildModule
                     //Do your calculations here.
                     break;
                 default:
-                    throw new ApplicationException(String.Format("No calcualtion procedure could be found for '{0}'", kpiId));
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
             }
 
             //tmp
