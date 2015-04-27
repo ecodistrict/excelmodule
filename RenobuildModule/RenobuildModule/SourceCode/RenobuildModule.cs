@@ -193,8 +193,16 @@ namespace RenobuildModule
 
         #region Input Specification (Names and Labels)
         // - Input Specification (Names and Labels)
-        //Common
+        #region Common Properties
+        // Common
+        string common_properties = "common_properties";
+        string lca_calculation_period = "lca_calculation_period";
 
+        #endregion
+
+        #region Building specific Properties
+        // Building specific Properties
+        string buildings = "buildings";
         #region Building Common
         //Building Common
         // Inputs required in all cases
@@ -526,6 +534,8 @@ namespace RenobuildModule
 
         #endregion
 
+        #endregion
+
         public RenobuildModule()
         {
             //IMB-hub info (not used)
@@ -583,11 +593,11 @@ namespace RenobuildModule
             InputSpecification iSpec = new InputSpecification();
 
             // - ## Common Properties
-            iSpec.Add("commonProperties", CommonSpec());
+            iSpec.Add(common_properties, CommonSpec());
 
             // - ## Building Specific
             iSpec.Add("buildingProperties", new InputGroup(label: "Building specific properties", order: 2));
-            iSpec.Add("buildings", BuildingSpecificSpecGeoJson());
+            iSpec.Add(buildings, BuildingSpecificSpecGeoJson());
 
             return iSpec;
         }
@@ -596,7 +606,7 @@ namespace RenobuildModule
         {
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
-            commonProp.Add("period", new Number(label: "LCA calculation period", min: 1, unit: "years", order: 1));
+            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: 1));
             ////Applicable to district heating system
             //commonProp.Add("applicable_to_disctrict_heating_system", ApplicableToDistrictHeatingSystem());
 
