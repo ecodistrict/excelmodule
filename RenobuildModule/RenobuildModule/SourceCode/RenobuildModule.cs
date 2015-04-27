@@ -30,6 +30,8 @@ namespace RenobuildModule
         Options type_of_ventilation_ducts_material;
         Options type_of_airflow_assembly;
 
+        Options type_of_radiators;
+
         void DefineHeatSources()
         {
             try
@@ -161,6 +163,19 @@ namespace RenobuildModule
             }
         }
 
+        void DefineTypeOfRadiators()
+        {
+            try
+            {
+                type_of_radiators = new Options();
+                type_of_radiators.Add(new Option(value: "waterborne", label: "Waterborne"));
+                type_of_radiators.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
+            }
+            catch (System.Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
 
         void DefineInputSpecifications()
         {
@@ -353,7 +368,7 @@ namespace RenobuildModule
         string ventilation_ducts_transport_to_building_by_ferry = "ventilation_ducts_transport_to_building_by_ferry";
         string ventilation_ducts_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
-        // Insulation material 2
+        // Airflow assembly
         string change_airflow_assembly = "change_airflow_assembly";
         string change_airflow_assembly_lbl = "....";
         string airflow_assembly_life_of_product = "airflow_assembly_life_of_product";
@@ -369,67 +384,142 @@ namespace RenobuildModule
         string airflow_assembly_transport_to_building_by_ferry = "airflow_assembly_transport_to_building_by_ferry";
         string airflow_assembly_transport_to_building_by_ferry_lbl = "Transport of airflow assembly to building by ferry (distance from production site to building)";
 
-        //// Fascade system
-        //string change_fascade_system = "change_fascade_system";
-        //string change_fascade_system_lbl = "Change fascade";
-        //string fascade_system_life_of_product = "fascade_system_life_of_product";
-        //string fascade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string fascade_system_type_fascade_system = "fascade_system_type_fascade_system";
-        //string fascade_system_type_of_fascade_system_lbl = "Type of facade system";
-        //string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "fascade_system_change_in_annual_heat_demand_due_to_fascade_system";
-        //string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to fascade system (an energy saving is given as a negative value)";
-        //string fascade_system_area_of_new_fascade_system = "fascade_system_amount_of_new_insulation_material";
-        //string fascade_system_area_of_new_fascade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
-        //string fascade_system_transport_to_building_by_truck = "fascade_system_transport_to_building_by_truck";
-        //string fascade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        //string fascade_system_transport_to_building_by_train = "fascade_system_transport_to_building_by_train";
-        //string fascade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        //string fascade_system_transport_to_building_by_ferry = "fascade_system_transport_to_building_by_ferry";
-        //string fascade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
-
-
-        //// Windows
-        //string change_windows = "change_windows";
-        //string change_windows_lbl = "Change windows";
-        //string windows_life_of_product = "windows_life_of_product";
-        //string windows_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string windows_type_windows = "windows_type_windows";
-        //string windows_type_of_windows_lbl = "Material in frame";
-        //string windows_change_in_annual_heat_demand_due_to_windows = "windows_change_in_annual_heat_demand_due_to_windows";
-        //string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
-        //string windows_area_of_new_windows = "windows_amount_of_new_insulation_material";
-        //string windows_area_of_new_windows_lbl = "Area of windows (required if renovation includes new windows)";
-        //string windows_transport_to_building_by_truck = "windows_transport_to_building_by_truck";
-        //string windows_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        //string windows_transport_to_building_by_train = "windows_transport_to_building_by_train";
-        //string windows_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        //string windows_transport_to_building_by_ferry = "windows_transport_to_building_by_ferry";
-        //string windows_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
-
-        //// Doors
-        //string change_doors = "change_doors";
-        //string change_doors_lbl = "Change doors";
-        //string doors_life_of_product = "doors_life_of_product";
-        //string doors_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string doors_type_doors = "doors_type_doors";
-        //string doors_type_of_doors_lbl = "Type of doors";
-        //string doors_change_in_annual_heat_demand_due_to_doors = "doors_change_in_annual_heat_demand_due_to_insulation";
-        //string doors_change_in_annual_heat_demand_due_to_doors_lbl = "Change in annual heat demand due to doors (an energy saving is given as a negative value)";
-        //string doors_number_of_new_front_doors = "doors_amount_of_new_insulation_material";
-        //string doors_number_of_new_front_doors_lbl = "Number of new front doors (required if renovation includes new doors)";
-        //string doors_transport_to_building_by_truck = "doors_transport_to_building_by_truck";
-        //string doors_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        //string doors_transport_to_building_by_train = "doors_transport_to_building_by_train";
-        //string doors_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        //string doors_transport_to_building_by_ferry = "doors_transport_to_building_by_ferry";
-        //string doors_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
-
+        // Air distribution housings and silencer
+        string change_air_distribution_housings_and_silencers = "change_air_distribution_housings_and_silencers";
+        string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
+        string air_distribution_housings_and_silencers_life_of_product = "air_distribution_housings_and_silencers_life_of_product";
+        string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
+        string air_distribution_housings_and_silencers_transport_to_building_by_truck = "air_distribution_housings_and_silencers_transport_to_building_by_truck";
+        string air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string air_distribution_housings_and_silencers_transport_to_building_by_train = "air_distribution_housings_and_silencers_transport_to_building_by_train";
+        string air_distribution_housings_and_silencers_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string air_distribution_housings_and_silencers_transport_to_building_by_ferry = "air_distribution_housings_and_silencers_transport_to_building_by_ferry";
+        string air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        
         //Ventilation renovation
         string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation";
         string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl = "Change in annual heat demand due ventilation systems renovation (an energy saving is given as a negative value)";
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation";
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
        
+        #endregion
+
+        #region Radiators, pipes and electricity
+        // Radiators, pipes and electricity
+        // Radiators
+        string change_radiators = "change_radiators";
+        string change_radiators_lbl = "Change radiators";
+        string radiators_life_of_product = "radiators_life_of_product";
+        string radiators_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string radiators_type_of_radiators = "radiators_type_of_radiators";
+        string radiators_type_of_radiators_lbl = "Type of radiators";
+        string radiators_weight_of_radiators = "radiators_weight_of_radiators";
+        string radiators_weight_of_radiators_lbl = "Weight of new radiators";
+        string radiators_transport_to_building_by_truck = "radiators_transport_to_building_by_truck";
+        string radiators_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string radiators_transport_to_building_by_train = "radiators_transport_to_building_by_train";
+        string radiators_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string radiators_transport_to_building_by_ferry = "radiators_transport_to_building_by_ferry";
+        string radiators_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - Copper
+        string change_piping_copper = "change_piping_copper";
+        string change_piping_copper_lbl = "Change copper pipes";
+        string piping_copper_life_of_product = "piping_copper_life_of_product";
+        string piping_copper_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_copper_weight_of_copper_pipes = "piping_copper_weight_of_copper_pipes";
+        string piping_copper_weight_of_copper_pipes_lbl = "Weight of new pipes";
+        string piping_copper_transport_to_building_by_truck = "piping_copper_transport_to_building_by_truck";
+        string piping_copper_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_copper_transport_to_building_by_train = "piping_copper_transport_to_building_by_train";
+        string piping_copper_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_copper_transport_to_building_by_ferry = "piping_copper_transport_to_building_by_ferry";
+        string piping_copper_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - PEX
+        string change_piping_pex = "change_piping_pex";
+        string change_piping_pex_lbl = "Change PEX pipes";
+        string piping_pex_life_of_product = "piping_pex_life_of_product";
+        string piping_pex_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_pex_weight_of_pex_pipes = "piping_pex_weight_of_pex_pipes";
+        string piping_pex_weight_of_pex_pipes_lbl = "Weight of new pipes";
+        string piping_pex_transport_to_building_by_truck = "piping_pex_transport_to_building_by_truck";
+        string piping_pex_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_pex_transport_to_building_by_train = "piping_pex_transport_to_building_by_train";
+        string piping_pex_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_pex_transport_to_building_by_ferry = "piping_pex_transport_to_building_by_ferry";
+        string piping_pex_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - PP
+        string change_piping_pp = "change_piping_pp";
+        string change_piping_pp_lbl = "Change PP pipes";
+        string piping_pp_life_of_product = "piping_pp_life_of_product";
+        string piping_pp_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_pp_weight_of_pp_pipes = "piping_pp_weight_of_pp_pipes";
+        string piping_pp_weight_of_pp_pipes_lbl = "Weight of new pipes";
+        string piping_pp_transport_to_building_by_truck = "piping_pp_transport_to_building_by_truck";
+        string piping_pp_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_pp_transport_to_building_by_train = "piping_pp_transport_to_building_by_train";
+        string piping_pp_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_pp_transport_to_building_by_ferry = "piping_pp_transport_to_building_by_ferry";
+        string piping_pp_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - Cast Iron
+        string change_piping_cast_iron = "change_piping_cast_iron";
+        string change_piping_cast_iron_lbl = "Change cast iron pipes";
+        string piping_cast_iron_life_of_product = "piping_cast_iron_life_of_product";
+        string piping_cast_iron_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_cast_iron_weight_of_cast_iron_pipes = "piping_cast_iron_weight_of_cast_iron_pipes";
+        string piping_cast_iron_weight_of_cast_iron_pipes_lbl = "Weight of new pipes";
+        string piping_cast_iron_transport_to_building_by_truck = "piping_cast_iron_transport_to_building_by_truck";
+        string piping_cast_iron_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_cast_iron_transport_to_building_by_train = "piping_cast_iron_transport_to_building_by_train";
+        string piping_cast_iron_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_cast_iron_transport_to_building_by_ferry = "piping_cast_iron_transport_to_building_by_ferry";
+        string piping_cast_iron_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - Galvanized Steel
+        string change_piping_galvanized_steel = "change_piping_galvanized_steel";
+        string change_piping_galvanized_steel_lbl = "Change galvanized steel pipes";
+        string piping_galvanized_steel_life_of_product = "piping_galvanized_steel_life_of_product";
+        string piping_galvanized_steel_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "piping_galvanized_steel_weight_of_galvanized_steel_pipes";
+        string piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl = "Weight of new pipes";
+        string piping_galvanized_steel_transport_to_building_by_truck = "piping_galvanized_steel_transport_to_building_by_truck";
+        string piping_galvanized_steel_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_galvanized_steel_transport_to_building_by_train = "piping_galvanized_steel_transport_to_building_by_train";
+        string piping_galvanized_steel_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_galvanized_steel_transport_to_building_by_ferry = "piping_galvanized_steel_transport_to_building_by_ferry";
+        string piping_galvanized_steel_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Piping System - Relining
+        string change_piping_relining = "change_piping_relining";
+        string change_piping_relining_lbl = "Relining of pipes";
+        string piping_relining_life_of_product = "piping_relining_life_of_product";
+        string piping_relining_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string piping_relining_weight_of_relining_pipes = "piping_relining_weight_of_relining_pipes";
+        string piping_relining_weight_of_relining_pipes_lbl = "Weight of new pipes";
+        string piping_relining_transport_to_building_by_truck = "piping_relining_transport_to_building_by_truck";
+        string piping_relining_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string piping_relining_transport_to_building_by_train = "piping_relining_transport_to_building_by_train";
+        string piping_relining_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string piping_relining_transport_to_building_by_ferry = "piping_relining_transport_to_building_by_ferry";
+        string piping_relining_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
+        // Electrical wiring
+        string change_electrical_wiring = "change_electrical_wiring";
+        string change_electrical_wiring_lbl = "Replace electrical wiring";
+        string electrical_wiring_life_of_product = "electrical_wiring_life_of_product";
+        string electrical_wiring_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string electrical_wiring_weight_of_electrical_wiring = "electrical_wiring_weight_of_electrical_wiring";
+        string electrical_wiring_weight_of_electrical_wiring_lbl = "Weight of new wires";
+        string electrical_wiring_transport_to_building_by_truck = "electrical_wiring_transport_to_building_by_truck";
+        string electrical_wiring_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string electrical_wiring_transport_to_building_by_train = "electrical_wiring_transport_to_building_by_train";
+        string electrical_wiring_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string electrical_wiring_transport_to_building_by_ferry = "electrical_wiring_transport_to_building_by_ferry";
+        string electrical_wiring_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+
         #endregion
 
         #endregion
@@ -462,6 +552,8 @@ namespace RenobuildModule
 
             DefineTypeOfVentilationDuctsMaterial();
             DefineTypeOfAirflowAssembly();
+
+            DefineTypeOfRadiators();
 
             //Define the input specification for the different kpis
             DefineInputSpecifications();
@@ -536,6 +628,8 @@ namespace RenobuildModule
             // Ventilation System
             buildning_specific_data.Add(key: "ventilation_system", item: VentilationSystem());
 
+            // Radiators, pipes and electricity
+            buildning_specific_data.Add(key: "ventilation_system", item: RadiatorsPipesElectricity());
 
             return buildning_specific_data;
         }
@@ -654,41 +748,95 @@ namespace RenobuildModule
             igVentilationSystem.Add(key: airflow_assembly_transport_to_building_by_train, item: new Number(label: airflow_assembly_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             igVentilationSystem.Add(key: airflow_assembly_transport_to_building_by_ferry, item: new Number(label: airflow_assembly_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
-            //// Fascade System
-            //igVentilationSystem.Add(key: change_fascade_system, item: new Checkbox(label: change_fascade_system_lbl, order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_type_fascade_system, item: new Select(label: fascade_system_type_of_fascade_system_lbl, options: type_of_fascade_system, order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_area_of_new_fascade_system, item: new Number(label: fascade_system_area_of_new_fascade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_transport_to_building_by_train, item: new Number(label: fascade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: fascade_system_transport_to_building_by_ferry, item: new Number(label: fascade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            // Air distribution housings and silencers
+            igVentilationSystem.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));
+            igVentilationSystem.Add(key: air_distribution_housings_and_silencers_life_of_product, item: new Number(label: air_distribution_housings_and_silencers_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igVentilationSystem.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igVentilationSystem.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igVentilationSystem.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
-            //// Windows
-            //igVentilationSystem.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
-            //igVentilationSystem.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //igVentilationSystem.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
-            //igVentilationSystem.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
-            //igVentilationSystem.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            //igVentilationSystem.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: windows_transport_to_building_by_train, item: new Number(label: windows_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: windows_transport_to_building_by_ferry, item: new Number(label: windows_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-
-            //// Doors
-            //igVentilationSystem.Add(key: change_doors, item: new Checkbox(label: change_doors_lbl, order: ++order));
-            //igVentilationSystem.Add(key: doors_life_of_product, item: new Number(label: doors_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //igVentilationSystem.Add(key: doors_type_doors, item: new Select(label: doors_type_of_doors_lbl, options: type_of_doors, order: ++order));
-            //igVentilationSystem.Add(key: doors_change_in_annual_heat_demand_due_to_doors, item: new Number(label: doors_change_in_annual_heat_demand_due_to_doors_lbl, unit: "kWh/year", order: ++order));
-            //igVentilationSystem.Add(key: doors_number_of_new_front_doors, item: new Number(label: doors_number_of_new_front_doors_lbl, min: 0, order: ++order));
-            //igVentilationSystem.Add(key: doors_transport_to_building_by_truck, item: new Number(label: doors_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: doors_transport_to_building_by_train, item: new Number(label: doors_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //igVentilationSystem.Add(key: doors_transport_to_building_by_ferry, item: new Number(label: doors_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //Ventilation renovation
+            igVentilationSystem.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            igVentilationSystem.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
 
 
 
             return igVentilationSystem;
         }
-        
+
+        InputGroup RadiatorsPipesElectricity()
+        {
+            int order = 0;
+            InputGroup igRadiatorsPipesElectricity = new InputGroup("Ventilation System");
+
+            // Radiators
+            igRadiatorsPipesElectricity.Add(key: change_radiators, item: new Checkbox(label: change_radiators_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_life_of_product, item: new Number(label: radiators_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_type_of_radiators, item: new Select(label: radiators_type_of_radiators_lbl, options: type_of_radiators, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_weight_of_radiators, item: new Number(label: radiators_weight_of_radiators_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_ferry, item: new Number(label: radiators_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            
+            // Piping System - Copper
+            igRadiatorsPipesElectricity.Add(key: change_piping_copper, item: new Checkbox(label: change_piping_copper_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_copper_life_of_product, item: new Number(label: piping_copper_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_copper_weight_of_copper_pipes, item: new Number(label: piping_copper_weight_of_copper_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_truck, item: new Number(label: piping_copper_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_train, item: new Number(label: piping_copper_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_ferry, item: new Number(label: piping_copper_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            
+            // Piping System - PEX
+            igRadiatorsPipesElectricity.Add(key: change_piping_pex, item: new Checkbox(label: change_piping_pex_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pex_life_of_product, item: new Number(label: piping_pex_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pex_weight_of_pex_pipes, item: new Number(label: piping_pex_weight_of_pex_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pex_transport_to_building_by_truck, item: new Number(label: piping_pex_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pex_transport_to_building_by_train, item: new Number(label: piping_pex_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pex_transport_to_building_by_ferry, item: new Number(label: piping_pex_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Piping System - PP
+            igRadiatorsPipesElectricity.Add(key: change_piping_pp, item: new Checkbox(label: change_piping_pp_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pp_life_of_product, item: new Number(label: piping_pp_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pp_weight_of_pp_pipes, item: new Number(label: piping_pp_weight_of_pp_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pp_transport_to_building_by_truck, item: new Number(label: piping_pp_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pp_transport_to_building_by_train, item: new Number(label: piping_pp_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_pp_transport_to_building_by_ferry, item: new Number(label: piping_pp_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Piping System - Cast Iron
+            igRadiatorsPipesElectricity.Add(key: change_piping_cast_iron, item: new Checkbox(label: change_piping_cast_iron_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_cast_iron_life_of_product, item: new Number(label: piping_cast_iron_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_cast_iron_weight_of_cast_iron_pipes, item: new Number(label: piping_cast_iron_weight_of_cast_iron_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_cast_iron_transport_to_building_by_truck, item: new Number(label: piping_cast_iron_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_cast_iron_transport_to_building_by_train, item: new Number(label: piping_cast_iron_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_cast_iron_transport_to_building_by_ferry, item: new Number(label: piping_cast_iron_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Piping System - Galvanized Steel
+            igRadiatorsPipesElectricity.Add(key: change_piping_galvanized_steel, item: new Checkbox(label: change_piping_galvanized_steel_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_galvanized_steel_life_of_product, item: new Number(label: piping_galvanized_steel_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_galvanized_steel_weight_of_galvanized_steel_pipes, item: new Number(label: piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_galvanized_steel_transport_to_building_by_truck, item: new Number(label: piping_galvanized_steel_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_galvanized_steel_transport_to_building_by_train, item: new Number(label: piping_galvanized_steel_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_galvanized_steel_transport_to_building_by_ferry, item: new Number(label: piping_galvanized_steel_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Piping System - Relining
+            igRadiatorsPipesElectricity.Add(key: change_piping_relining, item: new Checkbox(label: change_piping_relining_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_relining_life_of_product, item: new Number(label: piping_relining_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_relining_weight_of_relining_pipes, item: new Number(label: piping_relining_weight_of_relining_pipes_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_relining_transport_to_building_by_truck, item: new Number(label: piping_relining_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_relining_transport_to_building_by_train, item: new Number(label: piping_relining_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: piping_relining_transport_to_building_by_ferry, item: new Number(label: piping_relining_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            // Electrical wiring
+            igRadiatorsPipesElectricity.Add(key: change_electrical_wiring, item: new Checkbox(label: change_electrical_wiring_lbl, order: ++order));
+            igRadiatorsPipesElectricity.Add(key: electrical_wiring_life_of_product, item: new Number(label: electrical_wiring_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: electrical_wiring_weight_of_electrical_wiring, item: new Number(label: electrical_wiring_weight_of_electrical_wiring_lbl, unit: "kg", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: electrical_wiring_transport_to_building_by_truck, item: new Number(label: electrical_wiring_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: electrical_wiring_transport_to_building_by_train, item: new Number(label: electrical_wiring_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            igRadiatorsPipesElectricity.Add(key: electrical_wiring_transport_to_building_by_ferry, item: new Number(label: electrical_wiring_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            return igRadiatorsPipesElectricity;
+        }
+
         protected override InputSpecification GetInputSpecification(string kpiId)
         {
             if(!inputSpecifications.ContainsKey(kpiId))
