@@ -112,6 +112,24 @@ namespace Ecodistrict.Excel
 
         }
 
+        public virtual bool OpenWorkbook()
+        {
+            bool res = true;
+
+            try
+            {
+                ExcelApplikation.OpenWorkBook(workBookPath);
+
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "OpenWorkbook", exception: ex);
+                res = false;
+            }
+            return res;
+
+        }
+
         protected virtual InputSpecification GetInputSpecification(string kpiId)
         {
             throw new NotImplementedException();
