@@ -182,8 +182,14 @@ namespace RenobuildModule
             try
             {
                 inputSpecifications = new Dictionary<string, InputSpecification>();
-                inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
-                inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
+
+                //GeoJson
+                //inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
+                //inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
+
+                //One Building (simple)
+                inputSpecifications.Add(kpi_gwp, GetInputSpecificationOneBuilding());
+                inputSpecifications.Add(kpi_peu, GetInputSpecificationOneBuilding());
             }
             catch (System.Exception ex)
             {
@@ -216,9 +222,9 @@ namespace RenobuildModule
         string heat_source_after_lbl = "Heat source after renovation";
         // If district heating is used (before/after renovation)
         string gwp_district = "gwp_district";
-        string gwp_district_lbl = "Global warming potential of district heating (If district heating is used before/after renovation)";
+        string gwp_district_lbl = "Global warming potential of district heating. Required if building uses district heating (before/after renovation). Impact per unit energy delivered to building, i.e. including distribution losses.";
         string peu_district = "peu_district";
-        string peu_district_lbl = "Primary energy use of district heating (If district heating is used before/after renovation)";
+        string peu_district_lbl = "Primary energy use of district heating (before/after renovation). Impact per unit energy delivered to building, i.e. including distribution losses.";
         #endregion
 
         #region Heating System
@@ -249,13 +255,13 @@ namespace RenobuildModule
         string circulationpump_life_of_product = "circulationpump_life_of_product";
         string circulationpump_life_of_product_lbl = "Practical time of life of the products and materials used";
         string design_pressure_head = "design_pressure_head";
-        string design_pressure_head_lbl = "Design pressure head ()";
+        string design_pressure_head_lbl = "Design pressure head";
         string design_flow_rate = "design_flow_rate";
-        string design_flow_rate_lbl = "Design flow rate ()";
+        string design_flow_rate_lbl = "Design flow rate";
         string type_of_control_in_heating_system = "type_of_control_in_heating_system";
-        string type_of_control_in_heating_system_lbl = "Type of flow control in heating system ()";
+        string type_of_control_in_heating_system_lbl = "Type of flow control in heating system";
         string weight = "weight";
-        string weight_lbl = "Weight ()";
+        string weight_lbl = "Weight of new pump";
         string circulationpump_transport_to_building_truck = "circulationpump_transport_to_building_truck";
         string circulationpump_transport_to_building_truck_lbl = "Transport to building by truck (Distance from production site to building)";
         string circulationpump_transport_to_building_train = "circulationpump_transport_to_building_train";
@@ -378,7 +384,7 @@ namespace RenobuildModule
 
         // Airflow assembly
         string change_airflow_assembly = "change_airflow_assembly";
-        string change_airflow_assembly_lbl = "....";
+        string change_airflow_assembly_lbl = "Change airflow assembly";
         string airflow_assembly_life_of_product = "airflow_assembly_life_of_product";
         string airflow_assembly_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
         string airflow_assembly_type_of_airflow_assembly = "airflow_assembly_type_of_insulation";
@@ -596,7 +602,9 @@ namespace RenobuildModule
             iSpec.Add(common_properties, CommonSpec());
 
             // - ## Building Specific
-            iSpec.Add("buildingProperties", new InputGroup(label: "Building specific properties", order: 2));
+            string description = "Building specific properties (Use the geojson-upload functionality below the map, in order to upload you buildings)";
+
+            iSpec.Add("buildingProperties", new InputGroup(label: description, order: 2));
             iSpec.Add(buildings, BuildingSpecificSpecGeoJson());
 
             return iSpec;
@@ -619,35 +627,58 @@ namespace RenobuildModule
             GeoJson buildning_specific_data = new GeoJson(label: "Geographic data of buildings", order: 2);
 
             int order = 0;
-            // Inputs required in all cases
-            buildning_specific_data.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order));
-            buildning_specific_data.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order));
-            buildning_specific_data.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
-            buildning_specific_data.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, order: ++order));
 
-            // If district heating is used (before/after renovation)
-            buildning_specific_data.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
-            buildning_specific_data.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, order: ++order));
+            // Instructions
+            string intstr = "";
+            intstr = "Fill in the building specific data below. "; 
+            intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
+            intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
+            intstr += "If this is the as-is step leave all checkboxes unchecked and fill in only the building properties. ";
+            intstr += "If multiple buildings have common properties you may select all of them and assign them values simultaniously. ";
+            InputGroup instructions = new InputGroup(label: intstr, order: ++order);
+            buildning_specific_data.Add(key: "instructions", item: instructions);
+
+            // Building Common
+            buildning_specific_data.Add(key: "properties", item: BuildingProperties(++order));
 
             // Heating System
-            buildning_specific_data.Add(key: "heating_system", item: HeatingSystem());
+            buildning_specific_data.Add(key: "heating_system", item: HeatingSystem(++order));
 
             // Building Shell
-            buildning_specific_data.Add(key: "building_shell", item: BuildingShell());
+            buildning_specific_data.Add(key: "building_shell", item: BuildingShell(++order));
             
             // Ventilation System
-            buildning_specific_data.Add(key: "ventilation_system", item: VentilationSystem());
+            buildning_specific_data.Add(key: "ventilation_system", item: VentilationSystem(++order));
 
             // Radiators, pipes and electricity
-            buildning_specific_data.Add(key: "ventilation_system", item: RadiatorsPipesElectricity());
+            buildning_specific_data.Add(key: "radiators_pipes_and_electricity", item: RadiatorsPipesElectricity(++order));
 
             return buildning_specific_data;
         }
 
-        InputGroup HeatingSystem()
+        InputGroup BuildingProperties(int ipgOrder = -1)
         {
             int order = 0;
-            InputGroup igHeatingSystem = new InputGroup("Heating system");
+            InputGroup igBuildingCommon = new InputGroup("Building Properties", order: ++ipgOrder);
+
+            // Inputs required in all cases
+            igBuildingCommon.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order));
+            igBuildingCommon.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order));
+            igBuildingCommon.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
+            igBuildingCommon.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, order: ++order));
+
+            // If district heating is used (before/after renovation)
+            igBuildingCommon.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
+            igBuildingCommon.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
+
+
+            return igBuildingCommon;
+        }
+
+        InputGroup HeatingSystem(int ipgOrder = -1)
+        {
+            int order = 0;
+            InputGroup igHeatingSystem = new InputGroup("Heating system", ++ipgOrder);
 
             // Change Heating System
             igHeatingSystem.Add(key: change_heating_system, item: new Checkbox(label: change_heating_system_lbl, order: ++order));
@@ -674,11 +705,11 @@ namespace RenobuildModule
             return igHeatingSystem;
         }
 
-        InputGroup BuildingShell()
+        InputGroup BuildingShell(int ipgOrder = -1)
         {
 
             int order = 0;
-            InputGroup igBuildingShell = new InputGroup("Building Shell");
+            InputGroup igBuildingShell = new InputGroup("Building Shell",++ipgOrder);
 
             // Insulation material 1
             igBuildingShell.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
@@ -735,10 +766,10 @@ namespace RenobuildModule
             return igBuildingShell;
         }
 
-        InputGroup VentilationSystem()
+        InputGroup VentilationSystem(int ipgOrder = -1)
         {
             int order = 0;
-            InputGroup igVentilationSystem = new InputGroup("Ventilation System");
+            InputGroup igVentilationSystem = new InputGroup("Ventilation System", ++ipgOrder);
 
             // Ventilation ducts
             igVentilationSystem.Add(key: change_ventilation_ducts, item: new Checkbox(label: change_ventilation_ducts_lbl, order: ++order));
@@ -774,10 +805,10 @@ namespace RenobuildModule
             return igVentilationSystem;
         }
 
-        InputGroup RadiatorsPipesElectricity()
+        InputGroup RadiatorsPipesElectricity(int ipgOrder = -1)
         {
             int order = 0;
-            InputGroup igRadiatorsPipesElectricity = new InputGroup("Ventilation System");
+            InputGroup igRadiatorsPipesElectricity = new InputGroup("Radiators, Pipes and Electricity", ++ipgOrder);
 
             // Radiators
             igRadiatorsPipesElectricity.Add(key: change_radiators, item: new Checkbox(label: change_radiators_lbl, order: ++order));
@@ -847,6 +878,470 @@ namespace RenobuildModule
             return igRadiatorsPipesElectricity;
         }
 
+
+        // Simple version for one building
+
+        InputSpecification GetInputSpecificationOneBuilding()
+        {
+            InputSpecification iSpec = new InputSpecification();
+            
+            // - ## Building Specific
+            int order = 0;
+
+            // Instructions
+            string intstr = "";
+            intstr = "Fill in the building specific data below. ";
+            intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
+            intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
+            intstr += "If this is the as-is step leave all checkboxes unchecked and fill in only the building properties. ";
+            intstr += "If multiple buildings have common properties you may select all of them and assign them values simultaneously. ";
+            InputGroup instructions = new InputGroup(label: intstr, order: ++order);
+            iSpec.Add(key: "instructions", value: instructions);
+            iSpec.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: ++order));
+
+            // Building Common
+            iSpec.Add(key: "properties", value: BuildingProperties(++order));
+
+            // Heating System
+            iSpec.Add(key: "heating_system", value: HeatingSystem(++order));
+
+            // Building Shell
+            iSpec.Add(key: "building_shell", value: BuildingShell(++order));
+
+            // Ventilation System
+            iSpec.Add(key: "ventilation_system", value: VentilationSystem(++order));
+
+            // Radiators, pipes and electricity
+            iSpec.Add(key: "radiators_pipes_and_electricity", value: RadiatorsPipesElectricity(++order));
+
+            return iSpec;
+        }
+
+        void SetInputDataOneBuilding(Dictionary<string, Input> indata, ref CExcel exls)
+        {
+            // Single Building (simple)
+            #region LCA Calculation Period
+            String Key = lca_calculation_period;
+            if (indata[Key] is Number)
+            {
+                var value = indata[Key] as Number;
+                String cell = "C16";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    indata[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            SetBuildingProperties(indata["properties"], ref exls);
+            SetHeatingSystem(indata["heating_system"], ref exls);
+        }
+        //
+
+        void SetBuildingProperties(Input input, ref CExcel exls)
+        {
+            if (!(input is InputGroup))
+                throw new Exception("SetBuildingProperties: wrong input format!");
+
+            InputGroup igBuildingCommon = input as InputGroup;
+
+            Dictionary<string,Input> buildingCommonInputs = igBuildingCommon.GetInputs();
+            String Key;
+
+            // Inputs required in all cases
+            #region Heated Area
+            Key = heated_area;
+            if (buildingCommonInputs[Key] is Number)
+            {
+                var value = buildingCommonInputs[Key] as Number;
+                String cell = "C25";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}", 
+                    buildingCommonInputs[Key].GetType(), 
+                    typeof(Number)));
+            #endregion
+
+            #region Number of Apartments
+            Key = nr_apartments;
+            if (buildingCommonInputs[Key] is Number)
+            {
+                var value = buildingCommonInputs[Key] as Number;
+                String cell = "C26";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    buildingCommonInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+            
+            #region Heat Source Before
+            Key = heat_source_before;
+            if (buildingCommonInputs[Key] is Select)
+            {
+                var value = buildingCommonInputs[Key] as Select;
+                String cell = "C93";
+                if (value.SelectedIndex() >= 0)
+                {
+                    if (!exls.SetCellValue("Indata", cell, value.SelectedIndex()))
+                        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+                }
+                else
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    buildingCommonInputs[Key].GetType(),
+                    typeof(Select)));
+            #endregion
+
+            #region Heat Source After
+            Key = heat_source_after;
+            if (buildingCommonInputs[Key] is Select)
+            {
+                var value = buildingCommonInputs[Key] as Select;
+                String cell = "C93";
+                if (value.SelectedIndex() >= 0)
+                {
+                    if (!exls.SetCellValue("Indata", cell, value.SelectedIndex()))
+                        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+                }
+                else
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    buildingCommonInputs[Key].GetType(),
+                    typeof(Select)));
+            #endregion
+
+            // If district heating is used (before/after renovation)
+            #region Global warming potential of district heating
+            Key = gwp_district;
+            if (buildingCommonInputs[Key] is Number)
+            {
+                var value = buildingCommonInputs[Key] as Number;
+                String cell = "C26";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    buildingCommonInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region "Primary energy use of district heating
+            Key = peu_district;
+            if (buildingCommonInputs[Key] is Number)
+            {
+                var value = buildingCommonInputs[Key] as Number;
+                String cell = "C26";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    buildingCommonInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+        }
+
+        void SetHeatingSystem(Input input, ref CExcel exls)
+        {
+            if (!(input is InputGroup))
+                throw new Exception("SetHeatingSystem: wrong input format!");
+
+            InputGroup igHeatingSystem = input as InputGroup;
+
+            Dictionary<string, Input> heatingSystemInputs = igHeatingSystem.GetInputs();
+            String Key;
+
+            // Change Heating System
+            #region Change Heating System
+            Key = change_heating_system;
+            if (heatingSystemInputs[Key] is Checkbox)
+            {
+                var value = heatingSystemInputs[Key] as Checkbox;
+                String cell = "C99";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Checkbox)));
+            #endregion
+
+            #region Annual Heat Demand After Renovation
+            Key = ahd_after_renovation;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Heating System: Life of Product
+            Key = heating_system_life_of_product;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C100";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Design Capacity
+            Key = design_capacity;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Weight of boiler/heat pump/district heating substation
+            Key = weight_of_bhd;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region For geothermal heat pump: Depth of borehole
+            Key = depth_of_borehole;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by truck
+            Key = heating_system_transport_to_building_truck;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by train
+            Key = heating_system_transport_to_building_train;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by ferry
+            Key = heating_system_transport_to_building_ferry;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C103";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            // Change Circulation Pump
+            #region Change Circulation Pump
+            Key = change_circulationpump_in_heating_system;
+            if (heatingSystemInputs[Key] is Checkbox)
+            {
+                var value = heatingSystemInputs[Key] as Checkbox;
+                String cell = "C99";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Checkbox)));
+            #endregion
+
+            #region Circulation Pump: Life of Product
+            Key = circulationpump_life_of_product;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Design pressure head
+            Key = design_pressure_head;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Design flow rate
+            Key = design_flow_rate;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Type of flow control in heating system
+            Key = type_of_control_in_heating_system;
+            if (heatingSystemInputs[Key] is Select)
+            {
+                var value = heatingSystemInputs[Key] as Select;
+                String cell = "C93";
+                if (value.SelectedIndex() >= 0)
+                {
+                    if (!exls.SetCellValue("Indata", cell, value.SelectedIndex()))
+                        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+                }
+                else
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Select)));
+            #endregion
+
+            #region Weight
+            Key = weight;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by truck
+            Key = circulationpump_transport_to_building_truck;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by train
+            Key = circulationpump_transport_to_building_train;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+            #region Transport to building by ferry
+            Key = circulationpump_transport_to_building_ferry;
+            if (heatingSystemInputs[Key] is Number)
+            {
+                var value = heatingSystemInputs[Key] as Number;
+                String cell = "C95";
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
+            else
+                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
+                    heatingSystemInputs[Key].GetType(),
+                    typeof(Number)));
+            #endregion
+
+        }
+
         protected override InputSpecification GetInputSpecification(string kpiId)
         {
             if(!inputSpecifications.ContainsKey(kpiId))
@@ -859,13 +1354,18 @@ namespace RenobuildModule
         {
             Outputs outputs = new Outputs();
 
+            SetInputDataOneBuilding(indata, ref exls);
+
+
             switch (kpiId)
             {
                 case kpi_gwp:
-                    //Do your calculations here.
+                    var cgwp = exls.GetCellValue("Indata", "C31"); //Change of global warming potential
+                    outputs.Add(new Kpi(cgwp, "Change of global warming potential", "tonnes CO2 eq"));
                     break;
                 case kpi_peu:
-                    //Do your calculations here.
+                    var cpeu = exls.GetCellValue("Indata", "C32"); //Change of primary energy use                    
+                    outputs.Add(new Kpi(cpeu, "Change of primary energy use", "MWh"));                    
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));

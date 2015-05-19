@@ -18,9 +18,20 @@ namespace RenobuildModule
 
                 if (!module.Init("IMB_config.yaml", "Module_config.yaml"))
                 {
+                    Console.WriteLine("Could not read module settings");
                     startupStatus = false;
                 }
 
+                if (!module.OpenWorkbook())
+                {
+                    Console.WriteLine("Could not open the Excel-file");
+                    startupStatus = false;
+                }
+                else
+                {
+                    Console.WriteLine("Excel-file open..");
+                }
+                
                 if (!module.ConnectToServer())
                 {
                     Console.WriteLine("Could not connect to the IMB-hub");
@@ -28,7 +39,7 @@ namespace RenobuildModule
                 }
                 else
                 {
-                    Console.WriteLine("Connected..");
+                    Console.WriteLine("Connected to IMB-hub..");
                 }
 
                 if (startupStatus)
