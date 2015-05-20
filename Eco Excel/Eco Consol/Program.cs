@@ -355,7 +355,7 @@ namespace Eco_Consol
                 if (File.Exists(Config.path))
                 {
                     exls = new CExcel(Config.path);
-                    outputs = Config.run(request.inputData,request.kpiId ,exls);
+                    outputs = Config.run(request.inputs,request.kpiId ,exls);
                 }
                 else
                 {

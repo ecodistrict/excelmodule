@@ -8,6 +8,22 @@ using MsExcel = Microsoft.Office.Interop.Excel;
 
 namespace Ecodistrict.Excel
 {
+    /// <summary>
+    /// The class that handles comunication with Excel. After that it waits until it is ordered to open an existing workbook.
+    /// 
+    /// </summary>
+    /// <remarks> 
+    /// Usage: <br/>
+    /// 1. Create a new instance of CExcel. (CExcel cExcel=new CExcel)<br/>
+    /// 2. Open a existing Excel document (.xls or .xlsx) using the complete path to it (bool res = cExcel.OpenWorkBook(path))<br/>
+    /// 3. Read or Write to the document using some of the following functions: <br/>
+    /// <tb/>object obj = GetCellValue("Sheet1","A1")<br/>
+    /// <tb/>object obj = GetCellValue("Sheet1",row, column)<br/>
+    /// <tb/>bool res = SetCellValue("Sheet1","A1", obj)<br/>
+    /// <tb/>object obj = GetCellVAlue("Sheet1",,row, column, obj)<br/>
+    /// 4. Close Excel and documents using CloseExcel()<br/>    
+    /// </remarks> 
+
     public class CExcel
     {
         private string WorkBookFilePath { get; set; }
@@ -25,23 +41,32 @@ namespace Ecodistrict.Excel
         /// </summary>
         private MsExcel.Worksheet _worksheet;
 
+        /// <summary>
+        /// The constructor creates a new MsExcel.Application object
+        /// </summary>
         public CExcel()
         {
             try
             {
                 _excelApp = new MsExcel.Application();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }
         }
 
+        /// <summary>
+        /// The finalize method tries to close the Exceldocumnt and the Excel application object if this has not been done already
+        /// </summary>
         ~CExcel()
         {
             CloseExcel();
         }
 
+        /// <summary>
+        /// Closes all connection to Excel and used Excel documents. 
+        /// </summary>
         public void CloseExcel()
         {
             GC.Collect();
@@ -87,7 +112,11 @@ namespace Ecodistrict.Excel
             }
 
         }
-
+        /// <summary>
+        /// Opens a Excel document file (.xls or .xlsx) 
+        /// </summary>
+        /// <param name="path">A complete path to an existing Excel document file. (C:\library\myExcelfile.xlsx)</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public bool OpenWorkBook(string path)
         {
             try 
@@ -97,7 +126,7 @@ namespace Ecodistrict.Excel
                     _excelApp=new MsExcel.Application();
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return false;
             }
@@ -111,7 +140,7 @@ namespace Ecodistrict.Excel
             {
                _workbook = _excelApp.Workbooks.Open(path, ReadOnly: true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -119,6 +148,10 @@ namespace Ecodistrict.Excel
             return true;
         }
 
+        /// <summary>
+        /// Closes an open Excel workbook without saving any changes in it.
+        /// </summary>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public bool CloseWorkBook()
         {
             try
@@ -133,7 +166,7 @@ namespace Ecodistrict.Excel
                     GC.Collect();
                 }
             }
-            catch (Exception Ex)
+            catch (Exception)
             {
                 return false;
             }

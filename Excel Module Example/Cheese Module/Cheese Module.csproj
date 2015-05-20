@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F352281-0169-4A2F-887C-4888D402C708}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{6794C50F-1EFC-488A-B0E3-2C66DFDFFA0E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ecodistrict.Excel</RootNamespace>
-    <AssemblyName>EcodistrictExcel</AssemblyName>
+    <RootNamespace>Cheese_Module</RootNamespace>
+    <AssemblyName>Cheese Module</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,22 +21,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\EcodistrictExcel.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,21 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CExcel.cs" />
-    <Compile Include="CExcelModule.cs" />
-    <Compile Include="ErrorMessage.cs" />
-    <Compile Include="imb\ByteBuffers.cs" />
-    <Compile Include="imb\IMBclients.cs" />
-    <Compile Include="imb\IMBlocator.cs" />
-    <Compile Include="imb\IMBplatform.cs" />
-    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="CheeseModule.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatusEventArg.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="EcoCheeseSample.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj">
       <Project>{3d653c56-9397-49f6-bd9a-7d48d2c76ba2}</Project>
       <Name>EcodistrictMessaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Eco Excel\ExcelModule\ExcelModule.csproj">
+      <Project>{9f352281-0169-4a2f-887c-4888d402c708}</Project>
+      <Name>ExcelModule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

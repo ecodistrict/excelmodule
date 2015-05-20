@@ -7,9 +7,23 @@ using Ecodistrict.Messaging;
 
 namespace Ecodistrict.Excel
 {
+    /// <summary>
+    /// Eventhandler used for Error reporting
+    /// </summary>
+    /// <param name="sender">reference to the object that raised the event</param>
+    /// <param name="e">ErrorMessageEventArg that is inherited from EventArgs</param>
     public delegate void ErrorEventHandler(object sender, ErrorMessageEventArg e);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender">reference to the object that raised the event</param>
+    /// <param name="e">StatusEventArg, inherites from EventArg and includes a statusmessage string</param>
     public delegate void StatusEventHandler(object sender, StatusEventArg e);
 
+    /// <summary>
+    /// The main class that connects to the hub/dashboard and handles the connection with Excel.
+    /// This class is abstract and should be be inherited from.
+    /// </summary>
     public abstract class CExcelModule
     {
         /// <summary>
@@ -24,26 +38,73 @@ namespace Ecodistrict.Excel
         private  TConnection Connection { get; set; } 
         private  TEventEntry SubscribedEvent { get; set; }
         private  TEventEntry PublishedEvent { get; set; }
-
+        /// <summary>
+        /// The error event that could be subscribed to
+        /// </summary>
         public event ErrorEventHandler ErrorRaised;
+        /// <summary>
+        /// The status message event that could be subscribed to
+        /// </summary>
         public event StatusEventHandler StatusMessage;
 
+        /// <summary>
+        /// When set (default) statusmessages is only sent when the mudule sends something to the dashboard
+        /// not when it receives something from the dashboard.
+        /// </summary>
         protected bool ShowOnlyOwnStatus { get; set; }
             
         private CExcel ExcelApplikation { get; set; }
 
+        /// <summary>
+        /// Url adress to the server.
+        /// </summary>
         protected  string  ServerAdress { get; set; }
+        
+        /// <summary>
+        /// The port the server comunicates on.
+        /// </summary>
         protected  int Port { get; set; }
+
+        /// <summary>
+        /// UserId used for identification against the server. 
+        /// </summary>
         protected int UserId { get; set; }
+
+        /// <summary>
+        /// Name of this module.
+        /// </summary>
         protected string ModuleName { get; set; }
+
+        /// <summary>
+        /// Used to uniquely identify this module 
+        /// </summary>
         protected string ModuleId { get; set; }
+
+        /// <summary>
+        /// Name of the module owner/responsable
+        /// </summary>
         protected string UserName { get; set; }
+
+        /// <summary>
+        /// Dont know what to say ab out this
+        /// </summary>
         protected string Federation { get; set; }
+        /// <summary>
+        /// The complete path to the Excedocument document file that the module is going to use (*.xls, *.xlsx)
+        /// </summary>
         protected string workBookPath { get; set; }
+        /// <summary>
+        /// A list of strings with Kpis that the ExcelFile can calculate.
+        /// </summary>
         protected List<string> KpiList { get; set; }
+        /// <summary>
+        /// Description of the module.
+        /// </summary>
         protected string Description { get; set; }
 
-
+        /// <summary>
+        /// Creates a new CExcel instance that in turn creates a new instance of Excel.Application
+        /// </summary>
         protected CExcelModule()
         {
             try
@@ -56,12 +117,19 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "CExcel Constructor", exception: ex);
             }
         }
-
+        /// <summary>
+        /// If there is an instance of CExcel object it closes down both any opened Excel documents
+        ///  (without saving any data) and closes down Excel.Application before closing down the CExcelModule object.
+        /// </summary>
         ~CExcelModule()
         {
             Close();
         }
 
+        /// <summary>
+        /// Close any opened Excel dokument and Excel.Application as a preparation for closing down.
+        /// If anything more has to be done it can be overrided.
+        /// </summary>
         public virtual void Close()
         {
             try
@@ -79,7 +147,10 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
             }
         }
-
+        /// <summary>
+        /// Connects to hub/Server, prepares the publish event and starts subscription to dashboard events
+        /// </summary>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public virtual bool ConnectToServer()
         {
             bool res = true;
@@ -112,6 +183,11 @@ namespace Ecodistrict.Excel
 
         }
 
+        /// <summary>
+        /// This function is to be inherited. It receives a Kpi name as string and should return the Inputspecification for that Kpi
+        /// </summary>
+        /// <param name="kpiId">The name of the Kpi</param>
+        /// <returns>InputSpecification object that can be serialized and sent to th dashboard</returns>
         public virtual bool OpenWorkbook()
         {
             bool res = true;
@@ -130,17 +206,31 @@ namespace Ecodistrict.Excel
 
         }
 
+
         protected virtual InputSpecification GetInputSpecification(string kpiId)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// This function is to be inherited. It receives all indata parameters from the dashboard as a dictionary, the name of 
+        /// the Kpi that it should calculate and the Excel object that should be used for the calculations. 
+        /// </summary>
+        /// <param name="indata">indata from the dashboard</param>
+        /// <param name="kpiId">The name of the Kpi that is to be calculated</param>
+        /// <param name="exls">Excel object</param>
+        /// <returns>A output object that can be serialized and sent to th dashboard</returns>
         protected virtual Outputs CalculateKpi(Dictionary<string,Input> indata,string kpiId, CExcel exls)
         {
             throw new NotImplementedException();
             
         }
 
+        /// <summary>
+        /// Handles incoming comunication from hub/dashboard. dependent on the messagetype it decides what to do.
+        /// </summary>
+        /// <param name="aEvent">Event id</param>
+        /// <param name="aPayload">the incomming message as a TByteBuffer</param>
         private void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, TByteBuffer aPayload)
         {
             try
@@ -192,6 +282,10 @@ namespace Ecodistrict.Excel
             }
         }
 
+        /// <summary>
+        /// Returnes a GetModuleResponse to the dashboard
+        /// </summary>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private bool SendGetModulesResponse()
         {
             try
@@ -216,6 +310,11 @@ namespace Ecodistrict.Excel
 
         }
 
+        /// <summary>
+        /// Sends a SelectModuleResponse to the dashboard
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private bool SendSelectModuleResponse(SelectModuleRequest request)
         {
             try
@@ -241,6 +340,17 @@ namespace Ecodistrict.Excel
             return true;
         }
 
+        /// <summary>
+        /// Handles the StartModuleRequest from the dashboard.<br/> 
+        /// Starts with sending a StartModuleResponse processing message to the dashboard. After that
+        /// the Excel document file is opened and the function calculateKpi <see cref="CalculateKpi"/> function is called.
+        /// The result from the calculation is an ouputs object that is sent back to the dashboard.
+        /// The last message sent to the dashbord is a StartModuleResponse Success processing.<br/>
+        /// At last the >Excel document is closed. No changes i 
+        /// If anything goes wrong with the calculations a StartModuleResponse Failure is sent to the dashboard
+        /// </summary>
+        /// <param name="request">The requst sent from the dashboard.</param>
+        /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private bool SendModuleResult(StartModuleRequest request)
         {
             try
