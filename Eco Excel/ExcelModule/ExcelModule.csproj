@@ -49,10 +49,7 @@
     <Compile Include="CExcel.cs" />
     <Compile Include="CExcelModule.cs" />
     <Compile Include="ErrorMessage.cs" />
-    <Compile Include="imb\ByteBuffers.cs" />
-    <Compile Include="imb\IMBclients.cs" />
-    <Compile Include="imb\IMBlocator.cs" />
-    <Compile Include="imb\IMBplatform.cs" />
+    <Compile Include="imb\imb4.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusEventArg.cs" />
@@ -62,6 +59,14 @@
       <Project>{3d653c56-9397-49f6-bd9a-7d48d2c76ba2}</Project>
       <Name>EcodistrictMessaging</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="client-eco-district.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="root-ca-imb.crt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

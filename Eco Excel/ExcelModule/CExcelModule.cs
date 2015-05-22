@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using IMB;
-using IMB.ByteBuffers;
 using Ecodistrict.Messaging;
 
 namespace Ecodistrict.Excel
@@ -139,8 +138,8 @@ namespace Ecodistrict.Excel
 
                 ExcelApplikation = null;
 
-                if (Connection.Connected)
-                    Connection.Close();
+                if (Connection.connected)
+                    Connection.close();
             }
             catch (Exception ex)
             {
@@ -157,15 +156,15 @@ namespace Ecodistrict.Excel
             
             try
             {
-                Connection = new TConnection(ServerAdress, Port, UserName, UserId, Federation);
+                Connection = new TTLSConnection("client-eco-district.pfx", "&8dh48klosaxu90OKH", "root-ca-imb.crt", UserName, UserId);
 
-                if (Connection.Connected)
+                if (Connection.connected)
                 {
-                    SubscribedEvent = Connection.Subscribe(SubScribedEventName);
-                    PublishedEvent = Connection.Publish(PublishedEventName);
+                    SubscribedEvent = Connection.subscribe(SubScribedEventName);
+                    PublishedEvent = Connection.publish(PublishedEventName);
 
                     // set event handler for change object on subscribedEvent
-                    SubscribedEvent.OnNormalEvent += SubscribedEvent_OnNormalEvent;
+                    SubscribedEvent.onString += SubscribedEvent_onString;
                 }
                 else
                 {
@@ -181,6 +180,55 @@ namespace Ecodistrict.Excel
             }
             return res;
 
+        }
+
+        void SubscribedEvent_onString(TEventEntry aEventEntry, string msg)
+        {
+            try
+            {
+
+                IMessage iMessage = Deserialize.JsonString(msg);
+
+                if (iMessage != null)
+                {
+                    if (iMessage is GetModulesRequest)
+                    {
+                        SendStatusMessage("GetModulesRequest received");
+                        if (!SendGetModulesResponse())
+                            SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+                    }
+                    else if (iMessage is SelectModuleRequest)
+                    {
+                        if (!ShowOnlyOwnStatus)
+                            SendStatusMessage("SelectModuleRequest received");
+
+                        var smr = iMessage as SelectModuleRequest;
+                        if (ModuleId == smr.moduleId)
+                        {
+                            SendStatusMessage("Handles SelectModuleRequest");
+                            if (!SendSelectModuleResponse(smr))
+                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+                        }
+                    }
+                    else if (iMessage is StartModuleRequest)
+                    {
+                        if (!ShowOnlyOwnStatus)
+                            SendStatusMessage("StartModuleRequest received");
+
+                        var smr = iMessage as StartModuleRequest;
+                        if (ModuleId == smr.moduleId)
+                        {
+                            SendStatusMessage("Handles StartModuleRequest");
+                            if (!SendModuleResult(smr))
+                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
+            }
         }
 
         /// <summary>
@@ -227,62 +275,6 @@ namespace Ecodistrict.Excel
         }
 
         /// <summary>
-        /// Handles incoming comunication from hub/dashboard. dependent on the messagetype it decides what to do.
-        /// </summary>
-        /// <param name="aEvent">Event id</param>
-        /// <param name="aPayload">the incomming message as a TByteBuffer</param>
-        private void SubscribedEvent_OnNormalEvent(TEventEntry aEvent, TByteBuffer aPayload)
-        {
-            try
-            {
-                String msg;
-                aPayload.Read(out msg);
-
-                IMessage iMessage = Deserialize.JsonString(msg);
-
-                if (iMessage!=null)
-                {
-                    if (iMessage is GetModulesRequest)
-                    {
-                        SendStatusMessage("GetModulesRequest received");
-                        if(!SendGetModulesResponse())
-                            SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                    }
-                    else if (iMessage is SelectModuleRequest)
-                    {
-                        if(!ShowOnlyOwnStatus)
-                            SendStatusMessage("SelectModuleRequest received");
-
-                        var smr = iMessage as SelectModuleRequest;
-                        if (ModuleId == smr.moduleId)
-                        {
-                            SendStatusMessage("Handles SelectModuleRequest");
-                            if(!SendSelectModuleResponse(smr))
-                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                        }
-                    }
-                    else if (iMessage is StartModuleRequest)
-                    {
-                        if (!ShowOnlyOwnStatus) 
-                            SendStatusMessage("StartModuleRequest received");
-
-                        var smr = iMessage as StartModuleRequest;
-                        if (ModuleId == smr.moduleId)
-                        {
-                            SendStatusMessage("Handles StartModuleRequest");
-                            if(!SendModuleResult(smr))
-                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
-            }
-        }
-
-        /// <summary>
         /// Returnes a GetModuleResponse to the dashboard
         /// </summary>
         /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
@@ -294,11 +286,7 @@ namespace Ecodistrict.Excel
                 GetModulesResponse gmRes = new GetModulesResponse(ModuleName, ModuleId, Description, KpiList);
 
                 var str = Serialize.ToJsonString(gmRes);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("GetModulesResponse sent");    
                 return true;
             }
@@ -324,11 +312,7 @@ namespace Ecodistrict.Excel
                 var smResponse = new SelectModuleResponse(ModuleId, variantId, kpiId, GetInputSpecification(kpiId));
 
                 var str = Serialize.ToJsonString(smResponse);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("SelectModuleResponse sent"); 
             }
             catch (Exception ex)
@@ -357,11 +341,7 @@ namespace Ecodistrict.Excel
             {
                 var smr = new StartModuleResponse(ModuleId, request.variantId, request.kpiId, ModuleStatus.Processing);
                 var str = Serialize.ToJsonString(smr);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("StartModuleResponse processing sent"); 
             }
             catch (Exception ex)
@@ -397,11 +377,7 @@ namespace Ecodistrict.Excel
                 var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
                     ModuleStatus.Failed);
                 var str = Serialize.ToJsonString(stmResp2);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("StartModuleResponse Failed sent"); 
                
                 return false;
@@ -415,11 +391,7 @@ namespace Ecodistrict.Excel
             {
                 ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
                 var str = Serialize.ToJsonString(result);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("ModuleResult sent"); 
             }
             catch (Exception ex)
@@ -433,11 +405,7 @@ namespace Ecodistrict.Excel
                 StartModuleResponse stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
                     ModuleStatus.Success);
                 var str = Serialize.ToJsonString(stmResp2);
-                var payload = new TByteBuffer();
-                payload.Prepare(str);
-                payload.PrepareApply();
-                payload.QWrite(str);
-                PublishedEvent.SignalEvent(TEventEntry.TEventKind.ekNormalEvent, payload.Buffer);
+                PublishedEvent.signalString(str);
                 SendStatusMessage("StartModuleResponse success sent"); 
             }
             catch (Exception ex)
