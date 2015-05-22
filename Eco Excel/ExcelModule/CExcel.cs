@@ -235,6 +235,8 @@ namespace Ecodistrict.Excel
                 if (_worksheet == null || _worksheet.Name != sheet)
                     _worksheet = _workbook.Worksheets[sheet];
 
+                _excelApp.CalculateFull();
+
                 //celltype = ws.Range[cell].Value.GetType();
                 return _worksheet.Range[cell].Value;
 
@@ -259,6 +261,8 @@ namespace Ecodistrict.Excel
             {
                 if (_worksheet == null || _worksheet.Name != sheet)
                     _worksheet = _workbook.Worksheets[sheet];
+
+                _excelApp.Calculate();
 
                 //celltype = ws.Range[row, col].Value.GetType();
                 return _worksheet.Range[row, col].Value;

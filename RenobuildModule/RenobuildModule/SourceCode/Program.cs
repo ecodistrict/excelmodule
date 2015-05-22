@@ -22,15 +22,15 @@ namespace RenobuildModule
                     startupStatus = false;
                 }
 
-                if (!module.OpenWorkbook())
-                {
-                    Console.WriteLine("Could not open the Excel-file");
-                    startupStatus = false;
-                }
-                else
-                {
-                    Console.WriteLine("Excel-file open..");
-                }
+                //if (!module.OpenWorkbook())
+                //{
+                //    Console.WriteLine("Could not open the Excel-file");
+                //    startupStatus = false;
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Excel-file open..");
+                //}
                 
                 if (!module.ConnectToServer())
                 {
