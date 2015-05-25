@@ -1567,9 +1567,6 @@ namespace RenobuildModule
                 var serializer = new YamlSerializer();
                 var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
 
-                this.ServerAdress = ((IMB_Settings)imb_settings).serverAdress;
-                this.Port = ((IMB_Settings)imb_settings).port;
-                this.Federation = ((IMB_Settings)imb_settings).federation;
                 this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
                 this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
             }

@@ -1,6 +1,6 @@
 ---
 # Module information
 name: Renobuild
-description: SP Tool...
-moduleId: SP_LCC_v1.0.0.4
-path: C:\Users\johannesma\Documents\!Ecodistr-ICT\Renobuild\Renobuild Miljokalkyl final.xlsx #C:\Users\johannesma\Documents\!Ecodistr-ICT\Renobuild\Tmp.xlsx #C:\Users\johannesma\Documents\!Ecodistr-ICT\Renobuild\Renobuild Miljokalkyl final.xlsx
+description: Renoubuild a LCA tool for renovation options, developed by SP.
+moduleId: SP_LCC_v1.0.0.5
+path: C:\Users\johannesma\Documents\!Ecodistr-ICT\Renobuild\Renobuild Miljokalkyl final.xlsx 

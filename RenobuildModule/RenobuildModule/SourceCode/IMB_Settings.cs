@@ -8,9 +8,6 @@ namespace RenobuildModule
 {
     public class IMB_Settings
     {
-        public string serverAdress;
-        public int port;
-        public string federation;
         public string subScribedEventName;
         public string publishedEventName;
     }

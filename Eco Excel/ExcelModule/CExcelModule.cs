@@ -53,17 +53,7 @@ namespace Ecodistrict.Excel
         protected bool ShowOnlyOwnStatus { get; set; }
             
         private CExcel ExcelApplikation { get; set; }
-
-        /// <summary>
-        /// Url adress to the server.
-        /// </summary>
-        protected  string  ServerAdress { get; set; }
         
-        /// <summary>
-        /// The port the server comunicates on.
-        /// </summary>
-        protected  int Port { get; set; }
-
         /// <summary>
         /// UserId used for identification against the server. 
         /// </summary>
@@ -84,10 +74,6 @@ namespace Ecodistrict.Excel
         /// </summary>
         protected string UserName { get; set; }
 
-        /// <summary>
-        /// Dont know what to say ab out this
-        /// </summary>
-        protected string Federation { get; set; }
         /// <summary>
         /// The complete path to the Excedocument document file that the module is going to use (*.xls, *.xlsx)
         /// </summary>
