@@ -1495,47 +1495,52 @@ namespace RenobuildModule
                 if ((bool)building.properties[change_heating_system]) //TODO the others
                 {
                     SetInputDataOneBuilding(commonProperties.GetInputs(), building, ref exls);
-                    var ngt = exls.GetCellValue("Indata", "C16");
-                    ngt = exls.GetCellValue("Indata", "C25");
-                    ngt = exls.GetCellValue("Indata", "C26");
-                    ngt = exls.GetCellValue("Indata", "C93");
-                    ngt = exls.GetCellValue("Indata", "C94");
-                    ngt = exls.GetCellValue("Indata", "C20");
-                    ngt = exls.GetCellValue("Indata", "C21");
-                    ngt = exls.GetCellValue("Indata", "C99");
-                    ngt = exls.GetCellValue("Indata", "C95");
-                    ngt = exls.GetCellValue("Indata", "C100");
-                    ngt = exls.GetCellValue("Indata", "C103");
-                    ngt = exls.GetCellValue("Indata", "C104");
-                    ngt = exls.GetCellValue("Indata", "C109");
-                    ngt = exls.GetCellValue("Indata", "C106");
-                    ngt = exls.GetCellValue("Indata", "C107");
-                    ngt = exls.GetCellValue("Indata", "C108");
-                    kpi += (double)exls.GetCellValue("Indata", "C31");
-                    ngt = exls.GetCellValue("Indata", "C31");
+                    //var ngt = exls.GetCellValue("Indata", "C16");
+                    //ngt = exls.GetCellValue("Indata", "C25");
+                    //ngt = exls.GetCellValue("Indata", "C26");
+                    //ngt = exls.GetCellValue("Indata", "C93");
+                    //ngt = exls.GetCellValue("Indata", "C94");
+                    //ngt = exls.GetCellValue("Indata", "C20");
+                    //ngt = exls.GetCellValue("Indata", "C21");
+                    //ngt = exls.GetCellValue("Indata", "C99");
+                    //ngt = exls.GetCellValue("Indata", "C95");
+                    //ngt = exls.GetCellValue("Indata", "C100");
+                    //ngt = exls.GetCellValue("Indata", "C103");
+                    //ngt = exls.GetCellValue("Indata", "C104");
+                    //ngt = exls.GetCellValue("Indata", "C109");
+                    //ngt = exls.GetCellValue("Indata", "C106");
+                    //ngt = exls.GetCellValue("Indata", "C107");
+                    //ngt = exls.GetCellValue("Indata", "C108");
+                    //ngt = exls.GetCellValue("Indata", "C31");
+                    //kpi += (double)exls.GetCellValue("Indata", "C31");
+
+                    switch (kpiId)
+                    {
+                        case kpi_gwp:
+                            kpi += (double)exls.GetCellValue("Indata", "C31"); //Change of global warming potential
+                            break;
+                        case kpi_peu:
+                            kpi += (double)exls.GetCellValue("Indata", "C32"); //Change of primary energy use  
+                            break;
+                        default:
+                            throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+                    }
+
                 }
-                    
+
             }
 
-            outputs.Add(new Kpi(kpi, "Change of global warming potential", "tonnes CO2 eq"));
-            
-
-            //switch (kpiId)
-            //{
-            //    case kpi_gwp:
-            //        var cgwp = exls.GetCellValue("Indata", "C31"); //Change of global warming potential
-            //        outputs.Add(new Kpi(cgwp, "Change of global warming potential", "tonnes CO2 eq"));
-            //        break;
-            //    case kpi_peu:
-            //        var cpeu = exls.GetCellValue("Indata", "C32"); //Change of primary energy use                    
-            //        outputs.Add(new Kpi(cpeu, "Change of primary energy use", "MWh"));                    
-            //        break;
-            //    default:
-            //        throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            //}
-
-            ////tmp
-            //outputs.Add(new Kpi(1, "info", "unit"));
+            switch (kpiId)
+            {
+                case kpi_gwp:
+                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of global warming potential", "tonnes CO2 eq"));
+                    break;
+                case kpi_peu:
+                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of primary energy use", "MWh"));
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
 
             return outputs;
         }
