@@ -250,7 +250,7 @@ namespace RenobuildModule
         string heating_system_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
 
         // Change Circulation Pump
-        string change_circulationpump_in_heating_system = "change_circulationpump_in_heating_system";
+        string change_circulationpump_in_heating_system = "PUMP__CHANGE_PUMP";
         string change_circulationpump_in_heating_system_lbl = "Replace circulation pump in building heating system";
         string circulationpump_life_of_product = "PUMP__LIFE_OF_PRODUCT";
         string circulationpump_life_of_product_lbl = "Practical time of life of the products and materials used";
@@ -273,94 +273,94 @@ namespace RenobuildModule
         #region Building Shell
         //Building Shell
         // Insulation material 1
-        string change_insulation_material_1 = "change_insulation_material_1";
+        string change_insulation_material_1 = "INSULATION_MATERIAL_ONE__CHANGE";
         string change_insulation_material_1_lbl = "Use insulation material 1";
-        string insulation_material_1_life_of_product = "insulation_material_1_life_of_product";
+        string insulation_material_1_life_of_product = "INSULATION_MATERIAL_ONE__LIFE_OF_PRODUCT";
         string insulation_material_1_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string insulation_material_1_type_of_insulation = "insulation_material_1_type_of_insulation";
+        string insulation_material_1_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
         string insulation_material_1_type_of_insulation_lbl = "Type of insulation";
-        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation = "insulation_material_1_change_in_annual_heat_demand_due_to_insulation";
+        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation = "INSULATION_MATERIAL_ONE__CHANGE_IN_AHD_DUE_TO_INSULATION";
         string insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
-        string insulation_material_1_amount_of_new_insulation_material = "insulation_material_1_amount_of_new_insulation_material";
+        string insulation_material_1_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
         string insulation_material_1_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
-        string insulation_material_1_transport_to_building_by_truck = "insulation_material_1_transport_to_building_by_truck";
+        string insulation_material_1_transport_to_building_by_truck = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string insulation_material_1_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string insulation_material_1_transport_to_building_by_train = "insulation_material_1_transport_to_building_by_train";
+        string insulation_material_1_transport_to_building_by_train = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string insulation_material_1_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string insulation_material_1_transport_to_building_by_ferry = "insulation_material_1_transport_to_building_by_ferry";
+        string insulation_material_1_transport_to_building_by_ferry = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_FERRY";
         string insulation_material_1_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Insulation material 2
-        string change_insulation_material_2 = "change_insulation_material_2";
+        string change_insulation_material_2 = "INSULATION_MATERIAL_TWO__CHANGE";
         string change_insulation_material_2_lbl = "Use insulation material 2";
-        string insulation_material_2_life_of_product = "insulation_material_2_life_of_product";
+        string insulation_material_2_life_of_product = "INSULATION_MATERIAL_TWO__LIFE_OF_PRODUCT";
         string insulation_material_2_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string insulation_material_2_type_of_insulation = "insulation_material_2_type_of_insulation";
+        string insulation_material_2_type_of_insulation = "INSULATION_MATERIAL_TWO__TYPE_OF_INSULATION";
         string insulation_material_2_type_of_insulation_lbl = "Type of insulation";
-        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation = "insulation_material_2_change_in_annual_heat_demand_due_to_insulation";
+        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation = "INSULATION_MATERIAL_TWO__CHANGE_IN_AHD_DUE_TO_INSULATION";
         string insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
-        string insulation_material_2_amount_of_new_insulation_material = "insulation_material_2_amount_of_new_insulation_material";
+        string insulation_material_2_amount_of_new_insulation_material = "INSULATION_MATERIAL_TWO__AMOUNT_OF_NEW_INSULATION_MATERIAL";
         string insulation_material_2_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
-        string insulation_material_2_transport_to_building_by_truck = "insulation_material_2_transport_to_building_by_truck";
+        string insulation_material_2_transport_to_building_by_truck = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string insulation_material_2_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string insulation_material_2_transport_to_building_by_train = "insulation_material_2_transport_to_building_by_train";
+        string insulation_material_2_transport_to_building_by_train = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string insulation_material_2_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string insulation_material_2_transport_to_building_by_ferry = "insulation_material_2_transport_to_building_by_ferry";
+        string insulation_material_2_transport_to_building_by_ferry = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_FERRY";
         string insulation_material_2_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Fascade system
-        string change_fascade_system = "change_fascade_system";
+        string change_fascade_system = "FASCADE__CHANGE";
         string change_fascade_system_lbl = "Change fascade";
-        string fascade_system_life_of_product = "fascade_system_life_of_product";
+        string fascade_system_life_of_product = "FASCADE__LIFE_OF_PRODUCT";
         string fascade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string fascade_system_type_fascade_system = "fascade_system_type_fascade_system";
+        string fascade_system_type_fascade_system = "FASCADE__TYPE_OF_FASCADE_SYSTEM";
         string fascade_system_type_of_fascade_system_lbl = "Type of facade system";
-        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "fascade_system_change_in_annual_heat_demand_due_to_fascade_system";
+        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "FASCADE__CHANGE_IN_AHD_DUE_TO_FASCADE_SYSTEM";
         string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to fascade system (an energy saving is given as a negative value)";
-        string fascade_system_area_of_new_fascade_system = "fascade_system_amount_of_new_insulation_material";
+        string fascade_system_area_of_new_fascade_system = "FASCADE__AREA_OF_NEW_FASCADE_SYSTEM";
         string fascade_system_area_of_new_fascade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
-        string fascade_system_transport_to_building_by_truck = "fascade_system_transport_to_building_by_truck";
+        string fascade_system_transport_to_building_by_truck = "FASCADE__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string fascade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string fascade_system_transport_to_building_by_train = "fascade_system_transport_to_building_by_train";
+        string fascade_system_transport_to_building_by_train = "FASCADE__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string fascade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string fascade_system_transport_to_building_by_ferry = "fascade_system_transport_to_building_by_ferry";
+        string fascade_system_transport_to_building_by_ferry = "FASCADE__TRANSPORT_TO_BUILDING_BY_FERRY";
         string fascade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
 
         // Windows
-        string change_windows = "change_windows";
+        string change_windows = "WINDOWS__CHANGE";
         string change_windows_lbl = "Change windows";
-        string windows_life_of_product = "windows_life_of_product";
+        string windows_life_of_product = "WINDOWS__LIFE_OF_PRODUCT";
         string windows_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string windows_type_windows = "windows_type_windows";
+        string windows_type_windows = "WINDOWS__TYPE_OF_WINDOWS";
         string windows_type_of_windows_lbl = "Material in frame";
-        string windows_change_in_annual_heat_demand_due_to_windows = "windows_change_in_annual_heat_demand_due_to_windows";
+        string windows_change_in_annual_heat_demand_due_to_windows = "WINDOWS__CHANGE_IN_AHD_DUE_TO_WINDOWS";
         string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
-        string windows_area_of_new_windows = "windows_amount_of_new_insulation_material";
+        string windows_area_of_new_windows = "WINDOWS__AREA_OF_NEW_WINDOWS";
         string windows_area_of_new_windows_lbl = "Area of windows (required if renovation includes new windows)";
-        string windows_transport_to_building_by_truck = "windows_transport_to_building_by_truck";
+        string windows_transport_to_building_by_truck = "WINDOWS__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string windows_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string windows_transport_to_building_by_train = "windows_transport_to_building_by_train";
+        string windows_transport_to_building_by_train = "WINDOWS__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string windows_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string windows_transport_to_building_by_ferry = "windows_transport_to_building_by_ferry";
+        string windows_transport_to_building_by_ferry = "WINDOWS__TRANSPORT_TO_BUILDING_BY_FERRY";
         string windows_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Doors
-        string change_doors = "change_doors";
+        string change_doors = "DOORS__CHANGE";
         string change_doors_lbl = "Change doors";
-        string doors_life_of_product = "doors_life_of_product";
+        string doors_life_of_product = "DOORS__LIFE_OF_PRODUCT";
         string doors_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string doors_type_doors = "doors_type_doors";
+        string doors_type_doors = "DOORS__TYPE_OF_DOORS";
         string doors_type_of_doors_lbl = "Type of doors";
-        string doors_change_in_annual_heat_demand_due_to_doors = "doors_change_in_annual_heat_demand_due_to_insulation";
+        string doors_change_in_annual_heat_demand_due_to_doors = "DOORS__CHANGE_IN_AHD_DUE_TO_DOORS";
         string doors_change_in_annual_heat_demand_due_to_doors_lbl = "Change in annual heat demand due to doors (an energy saving is given as a negative value)";
-        string doors_number_of_new_front_doors = "doors_amount_of_new_insulation_material";
+        string doors_number_of_new_front_doors = "DOORS__NUMBER_OF_NEW_FRONT_DOORS";
         string doors_number_of_new_front_doors_lbl = "Number of new front doors (required if renovation includes new doors)";
-        string doors_transport_to_building_by_truck = "doors_transport_to_building_by_truck";
+        string doors_transport_to_building_by_truck = "DOORS__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string doors_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string doors_transport_to_building_by_train = "doors_transport_to_building_by_train";
+        string doors_transport_to_building_by_train = "DOORS__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string doors_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string doors_transport_to_building_by_ferry = "doors_transport_to_building_by_ferry";
+        string doors_transport_to_building_by_ferry = "DOORS__TRANSPORT_TO_BUILDING_BY_FERRY";
         string doors_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
         #endregion
 
@@ -906,7 +906,7 @@ namespace RenobuildModule
 
             // Building Shell
             ++order;
-            //BuildingShell2(ref buildning_specific_data, ref order);
+            BuildingShell2(ref buildning_specific_data, ref order);
 
             // Ventilation System
             ++order;
@@ -951,16 +951,16 @@ namespace RenobuildModule
             input.Add(key: heating_system_transport_to_building_train, item: new Number(label: heating_system_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: heating_system_transport_to_building_ferry, item: new Number(label: heating_system_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
 
-            // Change Circulation Pump
-            input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
-            input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
-            input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
-            input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
-            input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //// Change Circulation Pump
+            //input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
+            //input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            //input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
+            //input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
+            //input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
+            //input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
 
         }
 
@@ -1333,144 +1333,346 @@ namespace RenobuildModule
             //// Change Circulation Pump
             //#region Change Circulation Pump
             //Key = change_circulationpump_in_heating_system;
-            //if (building.properties[Key] is Checkbox)
-            //{
-            //    var value = building.properties[Key] as Checkbox;
-            //    String cell = "C99";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Checkbox)));
+            //cell = "C113";
+            //value = (bool)(building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Circulation Pump: Life of Product
             //Key = circulationpump_life_of_product;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C114";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Design pressure head
             //Key = design_pressure_head;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C115";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Design flow rate
             //Key = design_flow_rate;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C116";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Type of flow control in heating system
             //Key = type_of_control_in_heating_system;
-            //if (building.properties[Key] is Select)
-            //{
-            //    var value = building.properties[Key] as Select;
-            //    String cell = "C93";
-            //    if (value.SelectedIndex() >= 0)
-            //    {
-            //        if (!exls.SetCellValue("Indata", cell, value.SelectedIndex()))
-            //            throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
-            //    }
-            //    else
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.SelectedIndex()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Select)));
+            //cell = "C117";
+            //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));  
             //#endregion
 
             //#region Weight
             //Key = weight;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C118";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Transport to building by truck
             //Key = circulationpump_transport_to_building_truck;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C120";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Transport to building by train
             //Key = circulationpump_transport_to_building_train;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C121";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
             //#region Transport to building by ferry
             //Key = circulationpump_transport_to_building_ferry;
-            //if (building.properties[Key] is Number)
-            //{
-            //    var value = building.properties[Key] as Number;
-            //    String cell = "C95";
-            //    if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-            //        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value.GetValue()));
-            //}
-            //else
-            //    throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-            //        building.properties[Key].GetType(),
-            //        typeof(Number)));
+            //cell = "C122";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             //#endregion
 
+        }
+
+        void SetBuildingShell(Feature building, ref CExcel exls)
+        {
+
+            String Key;
+            object value;
+            String cell;
+
+            // Insulation material 1
+            #region Change Insulation Material 1
+            #region Change Insulation Material 1?
+            Key = change_insulation_material_1;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C126", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Life of Product
+            Key = insulation_material_1_life_of_product;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Type of Material
+            Key = insulation_material_1_type_of_insulation;
+            value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+            Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Change AHD due to New Insulation
+            Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Amount of Insulation Material
+            Key = insulation_material_1_amount_of_new_insulation_material;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Transport by Truck [km]
+            Key = insulation_material_1_transport_to_building_by_truck;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Transport by Truck [km]
+            Key = insulation_material_1_transport_to_building_by_train;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
+            #endregion
+
+            #region Change Insulation Material 1: Transport by Truck [km]
+            Key = insulation_material_1_transport_to_building_by_ferry;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
+            #endregion
+            #endregion
+
+            // Insulation material 2
+            #region Change Insulation Material 2
+            #region Change Insulation Material 2?
+            Key = change_insulation_material_2;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C137", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Life of Product
+            Key = insulation_material_2_life_of_product;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Type of Material
+            Key = insulation_material_2_type_of_insulation;
+            value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+            Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Change AHD due to New Insulation
+            Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Amount of Insulation Material
+            Key = insulation_material_2_amount_of_new_insulation_material;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Transport by Truck [km]
+            Key = insulation_material_2_transport_to_building_by_truck;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Transport by Truck [km]
+            Key = insulation_material_2_transport_to_building_by_train;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
+            #endregion
+
+            #region Insulation Material 2: Transport by Truck [km]
+            Key = insulation_material_2_transport_to_building_by_ferry;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
+            #endregion
+            #endregion
+
+            // Fascade System
+            #region Change Fascade System
+            #region Change Fascade System?
+            Key = change_fascade_system;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Life of Product
+            Key = fascade_system_life_of_product;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Type of Fascade System
+            Key = fascade_system_type_fascade_system;
+            value = type_of_fascade_system.GetIndex((string)building.properties[Key]) + 1;
+            Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Change AHD due to New Fascade System
+            Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Area of New Fascade System
+            Key = fascade_system_area_of_new_fascade_system;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Transport by Truck [km]
+            Key = fascade_system_transport_to_building_by_truck;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Transport by Truck [km]
+            Key = fascade_system_transport_to_building_by_train;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
+            #endregion
+
+            #region Fascade System: Transport by Truck [km]
+            Key = fascade_system_transport_to_building_by_ferry;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
+            #endregion
+            #endregion
+
+            // Windows
+            #region Change Windows
+            #region Change Windows?
+            Key = change_windows;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C159", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Life of Product
+            Key = windows_life_of_product;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Type of Windows
+            Key = windows_type_windows;
+            value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
+            Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Change AHD due to New Windows
+            Key = windows_change_in_annual_heat_demand_due_to_windows;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Area of New Windows
+            Key = windows_area_of_new_windows;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Transport by Truck [km]
+            Key = windows_transport_to_building_by_truck;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Transport by Truck [km]
+            Key = windows_transport_to_building_by_train;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
+            #endregion
+
+            #region Windows: Transport by Truck [km]
+            Key = windows_transport_to_building_by_ferry;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
+            #endregion
+            #endregion
+
+            // Doors
+            #region Change Doors
+            #region Change Doors?
+            Key = change_doors;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C170", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Life of Product
+            Key = doors_life_of_product;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Type of Doors
+            Key = doors_type_doors;
+            value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
+            Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Change AHD due to New Doors
+            Key = doors_change_in_annual_heat_demand_due_to_doors;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Number of new Fron Doors
+            Key = doors_number_of_new_front_doors;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Transport by Truck [km]
+            Key = doors_transport_to_building_by_truck;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Transport by Truck [km]
+            Key = doors_transport_to_building_by_train;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
+            #endregion
+
+            #region Doors: Transport by Truck [km]
+            Key = doors_transport_to_building_by_ferry;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
+            #endregion
+            #endregion                       
+
+        }
+
+        private void Set(string sheet, string cell, object value, ref CExcel exls)
+        {
+            if (!exls.SetCellValue(sheet, cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
 
         protected override InputSpecification GetInputSpecification(string kpiId)
@@ -1492,7 +1694,13 @@ namespace RenobuildModule
 
             foreach (Feature building in buildingProperties.value.features)
             {
-                if ((bool)building.properties[change_heating_system]) //TODO the others
+                if ((bool)building.properties[change_heating_system] ||
+                    (bool)building.properties[change_circulationpump_in_heating_system] ||
+                    (bool)building.properties[change_insulation_material_1] ||
+                    (bool)building.properties[change_insulation_material_2] ||
+                    (bool)building.properties[change_fascade_system] ||
+                    (bool)building.properties[change_windows] ||
+                    (bool)building.properties[change_doors]) //TODO the others
                 {
                     SetInputDataOneBuilding(commonProperties.GetInputs(), building, ref exls);
                     //var ngt = exls.GetCellValue("Indata", "C16");
