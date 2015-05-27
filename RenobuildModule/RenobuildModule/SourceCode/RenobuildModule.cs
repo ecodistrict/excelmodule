@@ -940,9 +940,10 @@ namespace RenobuildModule
             //Header
             input.Add("heating_system", new InputGroup("Heating system", ++order));
 
+            input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+
             // Change Heating System
             input.Add(key: change_heating_system, item: new Checkbox(label: change_heating_system_lbl, order: ++order));
-            input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
             input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: design_capacity, item: new Number(label: design_capacity_lbl, min: 0, unit: "kW", order: ++order));
             input.Add(key: weight_of_bhd, item: new Number(label: weight_of_bhd_lbl, min: 0, unit: "kg", order: ++order));
@@ -951,16 +952,16 @@ namespace RenobuildModule
             input.Add(key: heating_system_transport_to_building_train, item: new Number(label: heating_system_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: heating_system_transport_to_building_ferry, item: new Number(label: heating_system_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
 
-            //// Change Circulation Pump
-            //input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
-            //input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
-            //input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
-            //input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
-            //input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
-            //input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
+            // Change Circulation Pump
+            input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
+            input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
+            input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
+            input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
+            input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
+            input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
+            input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
+            input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
 
         }
 
@@ -1331,78 +1332,78 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            //// Change Circulation Pump
-            //#region Change Circulation Pump
-            //Key = change_circulationpump_in_heating_system;
-            //cell = "C113";
-            //value = (bool)(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            // Change Circulation Pump
+            #region Change Circulation Pump
+            Key = change_circulationpump_in_heating_system;
+            cell = "C113";
+            value = (bool)(building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Circulation Pump: Life of Product
-            //Key = circulationpump_life_of_product;
-            //cell = "C114";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Circulation Pump: Life of Product
+            Key = circulationpump_life_of_product;
+            cell = "C114";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Design pressure head
-            //Key = design_pressure_head;
-            //cell = "C115";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Design pressure head
+            Key = design_pressure_head;
+            cell = "C115";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Design flow rate
-            //Key = design_flow_rate;
-            //cell = "C116";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Design flow rate
+            Key = design_flow_rate;
+            cell = "C116";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Type of flow control in heating system
-            //Key = type_of_control_in_heating_system;
-            //cell = "C117";
-            //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));  
-            //#endregion
+            #region Type of flow control in heating system
+            Key = type_of_control_in_heating_system;
+            cell = "C117";
+            value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Weight
-            //Key = weight;
-            //cell = "C118";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Weight
+            Key = weight;
+            cell = "C118";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Transport to building by truck
-            //Key = circulationpump_transport_to_building_truck;
-            //cell = "C120";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Transport to building by truck
+            Key = circulationpump_transport_to_building_truck;
+            cell = "C120";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Transport to building by train
-            //Key = circulationpump_transport_to_building_train;
-            //cell = "C121";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Transport to building by train
+            Key = circulationpump_transport_to_building_train;
+            cell = "C121";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
-            //#region Transport to building by ferry
-            //Key = circulationpump_transport_to_building_ferry;
-            //cell = "C122";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            #region Transport to building by ferry
+            Key = circulationpump_transport_to_building_ferry;
+            cell = "C122";
+            value = (building.properties[Key]);
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
 
         }
 
