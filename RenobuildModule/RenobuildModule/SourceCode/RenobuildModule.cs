@@ -44,7 +44,7 @@ namespace RenobuildModule
                 heat_sources.Add(new Option(value: "electric_boiler", label: "Electric boiler"));
                 heat_sources.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RenobuildModule_ErrorRaised(this, ex);
             }
@@ -53,9 +53,9 @@ namespace RenobuildModule
         {
             try
             {
-	            type_of_flow_control_in_heating_system_opts = new Options();
-	            type_of_flow_control_in_heating_system_opts.Add(new Option("constant", "Constant"));
-	            type_of_flow_control_in_heating_system_opts.Add(new Option("variable", "Variable"));
+                type_of_flow_control_in_heating_system_opts = new Options();
+                type_of_flow_control_in_heating_system_opts.Add(new Option("constant", "Constant"));
+                type_of_flow_control_in_heating_system_opts.Add(new Option("variable", "Variable"));
             }
             catch (System.Exception ex)
             {
@@ -67,11 +67,11 @@ namespace RenobuildModule
         {
             try
             {
-	            type_of_insulation = new Options();
-	            type_of_insulation.Add(new Option(value: "cellulose_fiber", label: "Cellulose fiber"));
-	            type_of_insulation.Add(new Option(value: "glass_wool", label: "Glass wool"));
-	            type_of_insulation.Add(new Option(value: "rock_wool", label: "Rock wool"));
-	            type_of_insulation.Add(new Option(value: "polystyrene_foam", label: "Polystyrene foam"));
+                type_of_insulation = new Options();
+                type_of_insulation.Add(new Option(value: "cellulose_fiber", label: "Cellulose fiber"));
+                type_of_insulation.Add(new Option(value: "glass_wool", label: "Glass wool"));
+                type_of_insulation.Add(new Option(value: "rock_wool", label: "Rock wool"));
+                type_of_insulation.Add(new Option(value: "polystyrene_foam", label: "Polystyrene foam"));
             }
             catch (System.Exception ex)
             {
@@ -135,7 +135,7 @@ namespace RenobuildModule
                 RenobuildModule_ErrorRaised(this, ex);
             }
         }
-        
+
         void DefineTypeOfVentilationDuctsMaterial()
         {
             try
@@ -409,13 +409,13 @@ namespace RenobuildModule
         string air_distribution_housings_and_silencers_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
         string air_distribution_housings_and_silencers_transport_to_building_by_ferry = "air_distribution_housings_and_silencers_transport_to_building_by_ferry";
         string air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
-        
+
         //Ventilation renovation
         string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation";
         string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl = "Change in annual heat demand due ventilation systems renovation (an energy saving is given as a negative value)";
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation";
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
-       
+
         #endregion
 
         #region Radiators, pipes and electricity
@@ -630,7 +630,7 @@ namespace RenobuildModule
 
             // Instructions
             string intstr = "";
-            intstr = "Fill in the building specific data below. "; 
+            intstr = "Fill in the building specific data below. ";
             intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
             intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
             intstr += "If this is the as-is step leave all checkboxes unchecked and fill in only the building properties. ";
@@ -646,7 +646,7 @@ namespace RenobuildModule
 
             // Building Shell
             buildning_specific_data.Add(key: "building_shell", item: BuildingShell(++order));
-            
+
             // Ventilation System
             buildning_specific_data.Add(key: "ventilation_system", item: VentilationSystem(++order));
 
@@ -655,7 +655,7 @@ namespace RenobuildModule
 
             return buildning_specific_data;
         }
-        
+
         InputGroup BuildingProperties(int ipgOrder = -1)
         {
             int order = 0;
@@ -690,18 +690,18 @@ namespace RenobuildModule
             igHeatingSystem.Add(key: heating_system_transport_to_building_truck, item: new Number(label: heating_system_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
             igHeatingSystem.Add(key: heating_system_transport_to_building_train, item: new Number(label: heating_system_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
             igHeatingSystem.Add(key: heating_system_transport_to_building_ferry, item: new Number(label: heating_system_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
             // Change Circulation Pump
             igHeatingSystem.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
             igHeatingSystem.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             igHeatingSystem.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
-            igHeatingSystem.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));            
+            igHeatingSystem.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
             igHeatingSystem.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
             igHeatingSystem.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
             igHeatingSystem.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
             igHeatingSystem.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
             igHeatingSystem.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
             return igHeatingSystem;
         }
 
@@ -709,7 +709,7 @@ namespace RenobuildModule
         {
 
             int order = 0;
-            InputGroup igBuildingShell = new InputGroup("Building Shell",++ipgOrder);
+            InputGroup igBuildingShell = new InputGroup("Building Shell", ++ipgOrder);
 
             // Insulation material 1
             igBuildingShell.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
@@ -818,7 +818,7 @@ namespace RenobuildModule
             igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             igRadiatorsPipesElectricity.Add(key: radiators_transport_to_building_by_ferry, item: new Number(label: radiators_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
             // Piping System - Copper
             igRadiatorsPipesElectricity.Add(key: change_piping_copper, item: new Checkbox(label: change_piping_copper_lbl, order: ++order));
             igRadiatorsPipesElectricity.Add(key: piping_copper_life_of_product, item: new Number(label: piping_copper_life_of_product_lbl, min: 0, unit: "years", order: ++order));
@@ -826,7 +826,7 @@ namespace RenobuildModule
             igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_truck, item: new Number(label: piping_copper_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_train, item: new Number(label: piping_copper_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             igRadiatorsPipesElectricity.Add(key: piping_copper_transport_to_building_by_ferry, item: new Number(label: piping_copper_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
             // Piping System - PEX
             igRadiatorsPipesElectricity.Add(key: change_piping_pex, item: new Checkbox(label: change_piping_pex_lbl, order: ++order));
             igRadiatorsPipesElectricity.Add(key: piping_pex_life_of_product, item: new Number(label: piping_pex_life_of_product_lbl, min: 0, unit: "years", order: ++order));
@@ -932,7 +932,7 @@ namespace RenobuildModule
 
             // If district heating is used (before/after renovation)
             input.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
-            input.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));    
+            input.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
         }
 
         void HeatingSystem2(ref GeoJson input, ref int order)
@@ -1126,7 +1126,7 @@ namespace RenobuildModule
             input.Add(key: electrical_wiring_transport_to_building_by_truck, item: new Number(label: electrical_wiring_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: electrical_wiring_transport_to_building_by_train, item: new Number(label: electrical_wiring_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: electrical_wiring_transport_to_building_by_ferry, item: new Number(label: electrical_wiring_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
         }
 
         // Simple version for one building
@@ -1134,7 +1134,7 @@ namespace RenobuildModule
         InputSpecification GetInputSpecificationOneBuilding()
         {
             InputSpecification iSpec = new InputSpecification();
-            
+
             // - ## Building Specific
             int order = 0;
 
@@ -1167,7 +1167,7 @@ namespace RenobuildModule
             return iSpec;
         }
 
-        void SetInputDataOneBuilding(Dictionary<String,Input> commonProperties, Feature building, ref CExcel exls)
+        void SetInputDataOneBuilding(Dictionary<String, Input> commonProperties, Feature building, ref CExcel exls)
         {
             // Single Building (simple)
             #region LCA Calculation Period
@@ -1187,6 +1187,7 @@ namespace RenobuildModule
 
             SetBuildingProperties(building, ref exls);
             SetHeatingSystem(building, ref exls);
+            SetBuildingShell(building, ref exls);
         }
         //
 
@@ -1202,7 +1203,7 @@ namespace RenobuildModule
             value = Convert.ToDouble(building.properties[Key]);
             cell = "C25";
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));            
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Number of Apartments
@@ -1210,23 +1211,23 @@ namespace RenobuildModule
             cell = "C26";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
-            
+
             #region Heat Source Before
             Key = heat_source_before;
             cell = "C93";
-            value = heat_sources.GetIndex((string)building.properties[Key])+1;
+            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));             
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Heat Source After
             Key = heat_source_after;
             cell = "C94";
-            value = heat_sources.GetIndex((string)building.properties[Key])+1;
+            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));   
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             // If district heating is used (before/after renovation)
@@ -1235,7 +1236,7 @@ namespace RenobuildModule
             cell = "C20";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region "Primary energy use of district heating
@@ -1245,7 +1246,7 @@ namespace RenobuildModule
             if (!exls.SetCellValue("Indata", cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             var thevalue = exls.GetCellValue("Indata", cell);
-            
+
 
             #endregion
         }
@@ -1263,7 +1264,7 @@ namespace RenobuildModule
             cell = "C99";
             value = (bool)building.properties[Key];
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Annual Heat Demand After Renovation
@@ -1271,7 +1272,7 @@ namespace RenobuildModule
             cell = "C95";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Heating System: Life of Product
@@ -1279,7 +1280,7 @@ namespace RenobuildModule
             cell = "C100";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Design Capacity
@@ -1287,7 +1288,7 @@ namespace RenobuildModule
             cell = "C103";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Weight of boiler/heat pump/district heating substation
@@ -1295,7 +1296,7 @@ namespace RenobuildModule
             cell = "C104";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region For geothermal heat pump: Depth of bore hole
@@ -1303,7 +1304,7 @@ namespace RenobuildModule
             cell = "C109";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Transport to building by truck
@@ -1311,7 +1312,7 @@ namespace RenobuildModule
             cell = "C106";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Transport to building by train
@@ -1319,7 +1320,7 @@ namespace RenobuildModule
             cell = "C107";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             #region Transport to building by ferry
@@ -1327,7 +1328,7 @@ namespace RenobuildModule
             cell = "C108";
             value = Convert.ToDouble(building.properties[Key]);
             if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value)); 
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
             //// Change Circulation Pump
@@ -1419,48 +1420,50 @@ namespace RenobuildModule
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C126", value: value, exls: ref exls);
             #endregion
+            if ((bool)value)
+            {
+                #region Change Insulation Material 1: Life of Product
+                Key = insulation_material_1_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Life of Product
-            Key = insulation_material_1_life_of_product;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Type of Material
+                Key = insulation_material_1_type_of_insulation;
+                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Type of Material
-            Key = insulation_material_1_type_of_insulation;
-            value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-            Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Change AHD due to New Insulation
+                Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Change AHD due to New Insulation
-            Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Amount of Insulation Material
+                Key = insulation_material_1_amount_of_new_insulation_material;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Amount of Insulation Material
-            Key = insulation_material_1_amount_of_new_insulation_material;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Transport by Truck [km]
+                Key = insulation_material_1_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Transport by Truck [km]
-            Key = insulation_material_1_transport_to_building_by_truck;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Transport by Truck [km]
+                Key = insulation_material_1_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
+                #endregion
 
-            #region Change Insulation Material 1: Transport by Truck [km]
-            Key = insulation_material_1_transport_to_building_by_train;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
-            #endregion
-
-            #region Change Insulation Material 1: Transport by Truck [km]
-            Key = insulation_material_1_transport_to_building_by_ferry;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
-            #endregion
+                #region Change Insulation Material 1: Transport by Truck [km]
+                Key = insulation_material_1_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
+                #endregion
+            }
             #endregion
 
             // Insulation material 2
@@ -1470,48 +1473,50 @@ namespace RenobuildModule
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C137", value: value, exls: ref exls);
             #endregion
+            if ((bool)value)
+            {
+                #region Insulation Material 2: Life of Product
+                Key = insulation_material_2_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Life of Product
-            Key = insulation_material_2_life_of_product;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Type of Material
+                Key = insulation_material_2_type_of_insulation;
+                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Type of Material
-            Key = insulation_material_2_type_of_insulation;
-            value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-            Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Change AHD due to New Insulation
+                Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Change AHD due to New Insulation
-            Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Amount of Insulation Material
+                Key = insulation_material_2_amount_of_new_insulation_material;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Amount of Insulation Material
-            Key = insulation_material_2_amount_of_new_insulation_material;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Transport by Truck [km]
+                Key = insulation_material_2_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Transport by Truck [km]
-            Key = insulation_material_2_transport_to_building_by_truck;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Transport by Truck [km]
+                Key = insulation_material_2_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
+                #endregion
 
-            #region Insulation Material 2: Transport by Truck [km]
-            Key = insulation_material_2_transport_to_building_by_train;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
-            #endregion
-
-            #region Insulation Material 2: Transport by Truck [km]
-            Key = insulation_material_2_transport_to_building_by_ferry;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
-            #endregion
+                #region Insulation Material 2: Transport by Truck [km]
+                Key = insulation_material_2_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
+                #endregion
+            }
             #endregion
 
             // Fascade System
@@ -1521,48 +1526,50 @@ namespace RenobuildModule
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
             #endregion
+            if ((bool)value)
+            {
+                #region Fascade System: Life of Product
+                Key = fascade_system_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Life of Product
-            Key = fascade_system_life_of_product;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Type of Fascade System
+                Key = fascade_system_type_fascade_system;
+                value = type_of_fascade_system.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Type of Fascade System
-            Key = fascade_system_type_fascade_system;
-            value = type_of_fascade_system.GetIndex((string)building.properties[Key]) + 1;
-            Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Change AHD due to New Fascade System
+                Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Change AHD due to New Fascade System
-            Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Area of New Fascade System
+                Key = fascade_system_area_of_new_fascade_system;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Area of New Fascade System
-            Key = fascade_system_area_of_new_fascade_system;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Transport by Truck [km]
+                Key = fascade_system_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Transport by Truck [km]
-            Key = fascade_system_transport_to_building_by_truck;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Transport by Truck [km]
+                Key = fascade_system_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
+                #endregion
 
-            #region Fascade System: Transport by Truck [km]
-            Key = fascade_system_transport_to_building_by_train;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
-            #endregion
-
-            #region Fascade System: Transport by Truck [km]
-            Key = fascade_system_transport_to_building_by_ferry;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
-            #endregion
+                #region Fascade System: Transport by Truck [km]
+                Key = fascade_system_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
+                #endregion
+            }
             #endregion
 
             // Windows
@@ -1572,48 +1579,50 @@ namespace RenobuildModule
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C159", value: value, exls: ref exls);
             #endregion
+            if ((bool)value)
+            {
+                #region Windows: Life of Product
+                Key = windows_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Life of Product
-            Key = windows_life_of_product;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Type of Windows
+                Key = windows_type_windows;
+                value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Type of Windows
-            Key = windows_type_windows;
-            value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
-            Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Change AHD due to New Windows
+                Key = windows_change_in_annual_heat_demand_due_to_windows;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Change AHD due to New Windows
-            Key = windows_change_in_annual_heat_demand_due_to_windows;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Area of New Windows
+                Key = windows_area_of_new_windows;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Area of New Windows
-            Key = windows_area_of_new_windows;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Transport by Truck [km]
+                Key = windows_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Transport by Truck [km]
-            Key = windows_transport_to_building_by_truck;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Transport by Truck [km]
+                Key = windows_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
+                #endregion
 
-            #region Windows: Transport by Truck [km]
-            Key = windows_transport_to_building_by_train;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
-            #endregion
-
-            #region Windows: Transport by Truck [km]
-            Key = windows_transport_to_building_by_ferry;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
-            #endregion
+                #region Windows: Transport by Truck [km]
+                Key = windows_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
+                #endregion
+            }
             #endregion
 
             // Doors
@@ -1623,49 +1632,52 @@ namespace RenobuildModule
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C170", value: value, exls: ref exls);
             #endregion
+            if ((bool)value)
+            {
+                #region Doors: Life of Product
+                Key = doors_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
+                #endregion
 
-            #region Doors: Life of Product
-            Key = doors_life_of_product;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
+                #region Doors: Type of Doors
+                Key = doors_type_doors;
+                value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
+                #endregion
+
+                #region Doors: Change AHD due to New Doors
+                Key = doors_change_in_annual_heat_demand_due_to_doors;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
+                #endregion
+
+                #region Doors: Number of new Fron Doors
+                Key = doors_number_of_new_front_doors;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
+                #endregion
+
+                #region Doors: Transport by Truck [km]
+                Key = doors_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
+                #endregion
+
+                #region Doors: Transport by Truck [km]
+                Key = doors_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
+                #endregion
+
+                #region Doors: Transport by Truck [km]
+                Key = doors_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
+                #endregion
+            }
             #endregion
 
-            #region Doors: Type of Doors
-            Key = doors_type_doors;
-            value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
-            Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
-            #endregion
-
-            #region Doors: Change AHD due to New Doors
-            Key = doors_change_in_annual_heat_demand_due_to_doors;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
-            #endregion
-
-            #region Doors: Number of new Fron Doors
-            Key = doors_number_of_new_front_doors;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
-            #endregion
-
-            #region Doors: Transport by Truck [km]
-            Key = doors_transport_to_building_by_truck;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
-            #endregion
-
-            #region Doors: Transport by Truck [km]
-            Key = doors_transport_to_building_by_train;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
-            #endregion
-
-            #region Doors: Transport by Truck [km]
-            Key = doors_transport_to_building_by_ferry;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
-            #endregion
-            #endregion                       
 
         }
 
@@ -1677,7 +1689,7 @@ namespace RenobuildModule
 
         protected override InputSpecification GetInputSpecification(string kpiId)
         {
-            if(!inputSpecifications.ContainsKey(kpiId))
+            if (!inputSpecifications.ContainsKey(kpiId))
                 throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
 
             return inputSpecifications[kpiId];
@@ -1725,10 +1737,11 @@ namespace RenobuildModule
                     switch (kpiId)
                     {
                         case kpi_gwp:
-                            kpi += (double)exls.GetCellValue("Indata", "C31"); //Change of global warming potential
+                            var resi = exls.GetCellValue("Indata", "C31");
+                            kpi += Convert.ToDouble(resi); //Change of global warming potential
                             break;
                         case kpi_peu:
-                            kpi += (double)exls.GetCellValue("Indata", "C32"); //Change of primary energy use  
+                            kpi += Convert.ToDouble(exls.GetCellValue("Indata", "C32")); //Change of primary energy use  
                             break;
                         default:
                             throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
