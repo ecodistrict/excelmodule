@@ -367,53 +367,53 @@ namespace RenobuildModule
         #region Ventilation
         // Ventilation
         // Ventilation ducts
-        string change_ventilation_ducts = "change_ventilation_ducts";
+        string change_ventilation_ducts = "VENTILATION_DUCTS__CHANGE";
         string change_ventilation_ducts_lbl = "Change ventilation ducts";
-        string ventilation_ducts_life_of_product = "ventilation_ducts_life_of_product";
+        string ventilation_ducts_life_of_product = "VENTILATION_DUCTS__LIFE_OF_PRODUCT";
         string ventilation_ducts_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string ventilation_ducts_type_of_material = "ventilation_ducts_type_of_material";
+        string ventilation_ducts_type_of_material = "VENTILATION_DUCTS__MATERIAL_OF_VENTILATION_DUCTS";
         string ventilation_ducts_type_of_material_lbl = "Material in ventilation ducts";
-        string ventilation_ducts_weight_of_ventilation_ducts = "ventilation_ducts_weight_of_ventilation_ducts (Required if renovation includes new ventilation ducts)";
-        string ventilation_ducts_weight_of_ventilation_ducts_lbl = "Weight of ventilation ducts";
-        string ventilation_ducts_transport_to_building_by_truck = "ventilation_ducts_transport_to_building_by_truck";
+        string ventilation_ducts_weight_of_ventilation_ducts = "VENTILATION_DUCTS__WEIGHT_OF_VENTILATION_DUCTS";
+        string ventilation_ducts_weight_of_ventilation_ducts_lbl = "Weight of ventilation ducts (Required if renovation includes new ventilation ducts)";
+        string ventilation_ducts_transport_to_building_by_truck = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string ventilation_ducts_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string ventilation_ducts_transport_to_building_by_train = "ventilation_ducts_transport_to_building_by_train";
+        string ventilation_ducts_transport_to_building_by_train = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string ventilation_ducts_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string ventilation_ducts_transport_to_building_by_ferry = "ventilation_ducts_transport_to_building_by_ferry";
+        string ventilation_ducts_transport_to_building_by_ferry = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_FERRY";
         string ventilation_ducts_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Airflow assembly
-        string change_airflow_assembly = "change_airflow_assembly";
+        string change_airflow_assembly = "AIR_FLOW_ASSEMBLY__CHANGE";
         string change_airflow_assembly_lbl = "Change airflow assembly";
-        string airflow_assembly_life_of_product = "airflow_assembly_life_of_product";
+        string airflow_assembly_life_of_product = "AIR_FLOW_ASSEMBLY__LIFE_OF_PRODUCT";
         string airflow_assembly_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string airflow_assembly_type_of_airflow_assembly = "airflow_assembly_type_of_insulation";
+        string airflow_assembly_type_of_airflow_assembly = "AIR_FLOW_ASSEMBLY__TYPE_OF_AIR_FLOW_ASSEMBLY";
         string airflow_assembly_type_of_airflow_assembly_lbl = "Type of airflow assembly";
-        string airflow_assembly_design_airflow_exhaust_air = "airflow_assembly_design_airflow_exhaust_air";
+        string airflow_assembly_design_airflow_exhaust_air = "AIR_FLOW_ASSEMBLY__DESIGN_AIR_FLOW";
         string airflow_assembly_design_airflow_exhaust_air_lbl = "Design airflow (exhaust air)";
-        string airflow_assembly_transport_to_building_by_truck = "airflow_assembly_transport_to_building_by_truck";
+        string airflow_assembly_transport_to_building_by_truck = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string airflow_assembly_transport_to_building_by_truck_lbl = "Transport of airflow assembly to building by truck (distance from production site to building)";
-        string airflow_assembly_transport_to_building_by_train = "airflow_assembly_transport_to_building_by_train";
+        string airflow_assembly_transport_to_building_by_train = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string airflow_assembly_transport_to_building_by_train_lbl = "Transport of airflow assembly to building by train (distance from production site to building)";
-        string airflow_assembly_transport_to_building_by_ferry = "airflow_assembly_transport_to_building_by_ferry";
+        string airflow_assembly_transport_to_building_by_ferry = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_FERRY";
         string airflow_assembly_transport_to_building_by_ferry_lbl = "Transport of airflow assembly to building by ferry (distance from production site to building)";
 
         // Air distribution housings and silencer
-        string change_air_distribution_housings_and_silencers = "change_air_distribution_housings_and_silencers";
+        string change_air_distribution_housings_and_silencers = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__CHANGE";
         string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
-        string air_distribution_housings_and_silencers_life_of_product = "air_distribution_housings_and_silencers_life_of_product";
+        string air_distribution_housings_and_silencers_life_of_product = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__LIFE_OF_PRODUCT";
         string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_truck = "air_distribution_housings_and_silencers_transport_to_building_by_truck";
+        string air_distribution_housings_and_silencers_transport_to_building_by_truck = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_train = "air_distribution_housings_and_silencers_transport_to_building_by_train";
+        string air_distribution_housings_and_silencers_transport_to_building_by_train = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string air_distribution_housings_and_silencers_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_ferry = "air_distribution_housings_and_silencers_transport_to_building_by_ferry";
+        string air_distribution_housings_and_silencers_transport_to_building_by_ferry = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_FERRY";
         string air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         //Ventilation renovation
-        string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation";
+        string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation = "VENTILATION_SYSTEM__CHANGE_IN_AHD_DUE_TO_VENTILATION_SYSTEM_RENOVATION";
         string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl = "Change in annual heat demand due ventilation systems renovation (an energy saving is given as a negative value)";
-        string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation = "ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation";
+        string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation = "VENTILATION_SYSTEM__CHANGE_IN_AED_DUE_TO_VENTILATION_SYSTEM_RENOVATION";
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
 
         #endregion
@@ -421,117 +421,117 @@ namespace RenobuildModule
         #region Radiators, pipes and electricity
         // Radiators, pipes and electricity
         // Radiators
-        string change_radiators = "change_radiators";
+        string change_radiators = "RADIATORS__CHANGE";
         string change_radiators_lbl = "Change radiators";
-        string radiators_life_of_product = "radiators_life_of_product";
+        string radiators_life_of_product = "RADIATORS__LIFE_OF_PRODUCT";
         string radiators_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string radiators_type_of_radiators = "radiators_type_of_radiators";
+        string radiators_type_of_radiators = "RADIATORS__TYPE_OF_RADIATORS";
         string radiators_type_of_radiators_lbl = "Type of radiators";
-        string radiators_weight_of_radiators = "radiators_weight_of_radiators";
+        string radiators_weight_of_radiators = "RADIATORS__WEIGHT_OF_NEW_RADIATORS";
         string radiators_weight_of_radiators_lbl = "Weight of new radiators";
-        string radiators_transport_to_building_by_truck = "radiators_transport_to_building_by_truck";
+        string radiators_transport_to_building_by_truck = "RADIATORS__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string radiators_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string radiators_transport_to_building_by_train = "radiators_transport_to_building_by_train";
+        string radiators_transport_to_building_by_train = "RADIATORS__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string radiators_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string radiators_transport_to_building_by_ferry = "radiators_transport_to_building_by_ferry";
+        string radiators_transport_to_building_by_ferry = "RADIATORS__TRANSPORT_TO_BUILDING_BY_FERRY";
         string radiators_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - Copper
-        string change_piping_copper = "change_piping_copper";
+        string change_piping_copper = "PIPING_SYSTEM_COPPER__CHANGE";
         string change_piping_copper_lbl = "Change copper pipes";
-        string piping_copper_life_of_product = "piping_copper_life_of_product";
+        string piping_copper_life_of_product = "PIPING_SYSTEM_COPPER__LIFE_OF_PRODUCT";
         string piping_copper_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_copper_weight_of_copper_pipes = "piping_copper_weight_of_copper_pipes";
+        string piping_copper_weight_of_copper_pipes = "PIPING_SYSTEM_COPPER__WEIGHT_OF_NEW_PIPES";
         string piping_copper_weight_of_copper_pipes_lbl = "Weight of new pipes";
-        string piping_copper_transport_to_building_by_truck = "piping_copper_transport_to_building_by_truck";
+        string piping_copper_transport_to_building_by_truck = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_copper_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_copper_transport_to_building_by_train = "piping_copper_transport_to_building_by_train";
+        string piping_copper_transport_to_building_by_train = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_copper_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_copper_transport_to_building_by_ferry = "piping_copper_transport_to_building_by_ferry";
+        string piping_copper_transport_to_building_by_ferry = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_copper_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - PEX
-        string change_piping_pex = "change_piping_pex";
+        string change_piping_pex = "PIPING_SYSTEM_PEX__CHANGE";
         string change_piping_pex_lbl = "Change PEX pipes";
-        string piping_pex_life_of_product = "piping_pex_life_of_product";
+        string piping_pex_life_of_product = "PIPING_SYSTEM_PEX__LIFE_OF_PRODUCT";
         string piping_pex_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_pex_weight_of_pex_pipes = "piping_pex_weight_of_pex_pipes";
+        string piping_pex_weight_of_pex_pipes = "PIPING_SYSTEM_PEX__WEIGHT_OF_NEW_PIPES";
         string piping_pex_weight_of_pex_pipes_lbl = "Weight of new pipes";
-        string piping_pex_transport_to_building_by_truck = "piping_pex_transport_to_building_by_truck";
+        string piping_pex_transport_to_building_by_truck = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_pex_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_pex_transport_to_building_by_train = "piping_pex_transport_to_building_by_train";
+        string piping_pex_transport_to_building_by_train = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_pex_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_pex_transport_to_building_by_ferry = "piping_pex_transport_to_building_by_ferry";
+        string piping_pex_transport_to_building_by_ferry = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_pex_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - PP
-        string change_piping_pp = "change_piping_pp";
+        string change_piping_pp = "PIPING_SYSTEM_PP__CHANGE";
         string change_piping_pp_lbl = "Change PP pipes";
-        string piping_pp_life_of_product = "piping_pp_life_of_product";
+        string piping_pp_life_of_product = "PIPING_SYSTEM_PP__LIFE_OF_PRODUCT";
         string piping_pp_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_pp_weight_of_pp_pipes = "piping_pp_weight_of_pp_pipes";
+        string piping_pp_weight_of_pp_pipes = "PIPING_SYSTEM_PP__WEIGHT_OF_NEW_PIPES";
         string piping_pp_weight_of_pp_pipes_lbl = "Weight of new pipes";
-        string piping_pp_transport_to_building_by_truck = "piping_pp_transport_to_building_by_truck";
+        string piping_pp_transport_to_building_by_truck = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_pp_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_pp_transport_to_building_by_train = "piping_pp_transport_to_building_by_train";
+        string piping_pp_transport_to_building_by_train = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_pp_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_pp_transport_to_building_by_ferry = "piping_pp_transport_to_building_by_ferry";
+        string piping_pp_transport_to_building_by_ferry = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_pp_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - Cast Iron
-        string change_piping_cast_iron = "change_piping_cast_iron";
+        string change_piping_cast_iron = "PIPING_SYSTEM_CAST_IRON__CHANGE";
         string change_piping_cast_iron_lbl = "Change cast iron pipes";
-        string piping_cast_iron_life_of_product = "piping_cast_iron_life_of_product";
+        string piping_cast_iron_life_of_product = "PIPING_SYSTEM_CAST_IRON__LIFE_OF_PRODUCT";
         string piping_cast_iron_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_cast_iron_weight_of_cast_iron_pipes = "piping_cast_iron_weight_of_cast_iron_pipes";
+        string piping_cast_iron_weight_of_cast_iron_pipes = "PIPING_SYSTEM_CAST_IRON__WEIGHT_OF_NEW_PIPES";
         string piping_cast_iron_weight_of_cast_iron_pipes_lbl = "Weight of new pipes";
-        string piping_cast_iron_transport_to_building_by_truck = "piping_cast_iron_transport_to_building_by_truck";
+        string piping_cast_iron_transport_to_building_by_truck = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_cast_iron_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_cast_iron_transport_to_building_by_train = "piping_cast_iron_transport_to_building_by_train";
+        string piping_cast_iron_transport_to_building_by_train = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_cast_iron_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_cast_iron_transport_to_building_by_ferry = "piping_cast_iron_transport_to_building_by_ferry";
+        string piping_cast_iron_transport_to_building_by_ferry = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_cast_iron_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - Galvanized Steel
-        string change_piping_galvanized_steel = "change_piping_galvanized_steel";
+        string change_piping_galvanized_steel = "PIPING_SYSTEM_GALVANISED_STEEL__CHANGE";
         string change_piping_galvanized_steel_lbl = "Change galvanized steel pipes";
-        string piping_galvanized_steel_life_of_product = "piping_galvanized_steel_life_of_product";
+        string piping_galvanized_steel_life_of_product = "PIPING_SYSTEM_GALVANISED_STEEL__LIFE_OF_PRODUCT";
         string piping_galvanized_steel_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "piping_galvanized_steel_weight_of_galvanized_steel_pipes";
+        string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "PIPING_SYSTEM_GALVANISED_STEEL__WEIGHT_OF_NEW_PIPES";
         string piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl = "Weight of new pipes";
-        string piping_galvanized_steel_transport_to_building_by_truck = "piping_galvanized_steel_transport_to_building_by_truck";
+        string piping_galvanized_steel_transport_to_building_by_truck = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_galvanized_steel_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_galvanized_steel_transport_to_building_by_train = "piping_galvanized_steel_transport_to_building_by_train";
+        string piping_galvanized_steel_transport_to_building_by_train = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_galvanized_steel_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_galvanized_steel_transport_to_building_by_ferry = "piping_galvanized_steel_transport_to_building_by_ferry";
+        string piping_galvanized_steel_transport_to_building_by_ferry = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_galvanized_steel_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Piping System - Relining
-        string change_piping_relining = "change_piping_relining";
+        string change_piping_relining = "PIPING_SYSTEM_RELINING__CHANGE";
         string change_piping_relining_lbl = "Relining of pipes";
-        string piping_relining_life_of_product = "piping_relining_life_of_product";
+        string piping_relining_life_of_product = "PIPING_SYSTEM_RELINING__LIFE_OF_PRODUCT";
         string piping_relining_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_relining_weight_of_relining_pipes = "piping_relining_weight_of_relining_pipes";
+        string piping_relining_weight_of_relining_pipes = "PIPING_SYSTEM_RELINING__WEIGHT_OF_NEW_PIPES";
         string piping_relining_weight_of_relining_pipes_lbl = "Weight of new pipes";
-        string piping_relining_transport_to_building_by_truck = "piping_relining_transport_to_building_by_truck";
+        string piping_relining_transport_to_building_by_truck = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string piping_relining_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_relining_transport_to_building_by_train = "piping_relining_transport_to_building_by_train";
+        string piping_relining_transport_to_building_by_train = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string piping_relining_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_relining_transport_to_building_by_ferry = "piping_relining_transport_to_building_by_ferry";
+        string piping_relining_transport_to_building_by_ferry = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_FERRY";
         string piping_relining_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // Electrical wiring
-        string change_electrical_wiring = "change_electrical_wiring";
+        string change_electrical_wiring = "ELECTRICAL_WIRING__CHANGE";
         string change_electrical_wiring_lbl = "Replace electrical wiring";
-        string electrical_wiring_life_of_product = "electrical_wiring_life_of_product";
+        string electrical_wiring_life_of_product = "ELECTRICAL_WIRING__LIFE_OF_PRODUCT";
         string electrical_wiring_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string electrical_wiring_weight_of_electrical_wiring = "electrical_wiring_weight_of_electrical_wiring";
+        string electrical_wiring_weight_of_electrical_wiring = "ELECTRICAL_WIRING__WEIGHT_OF_NEW_WIRES";
         string electrical_wiring_weight_of_electrical_wiring_lbl = "Weight of new wires";
-        string electrical_wiring_transport_to_building_by_truck = "electrical_wiring_transport_to_building_by_truck";
+        string electrical_wiring_transport_to_building_by_truck = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_TRUCK";
         string electrical_wiring_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string electrical_wiring_transport_to_building_by_train = "electrical_wiring_transport_to_building_by_train";
+        string electrical_wiring_transport_to_building_by_train = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_TRAIN";
         string electrical_wiring_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string electrical_wiring_transport_to_building_by_ferry = "electrical_wiring_transport_to_building_by_ferry";
+        string electrical_wiring_transport_to_building_by_ferry = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_FERRY";
         string electrical_wiring_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         #endregion
@@ -910,7 +910,7 @@ namespace RenobuildModule
 
             // Ventilation System
             ++order;
-            //VentilationSystem2(ref buildning_specific_data, ref order);
+            VentilationSystem2(ref buildning_specific_data, ref order);
 
             // Radiators, pipes and electricity
             ++order;
@@ -1189,6 +1189,7 @@ namespace RenobuildModule
             SetBuildingProperties(building, ref exls);
             SetHeatingSystem(building, ref exls);
             SetBuildingShell(building, ref exls);
+            SetVentilationSystem(building, ref exls);
         }
         //
 
@@ -1680,6 +1681,159 @@ namespace RenobuildModule
             #endregion
 
 
+        }
+
+        void SetVentilationSystem(Feature building, ref CExcel exls)
+        {
+
+            String Key;
+            object value;
+
+            // - Ventilation System
+            #region Ventilation System
+
+            #region Ventilation System: Change in AHD due to ventilation system renovation
+            Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
+            #endregion
+
+            #region Ventilation System: Change in AED due to ventilation system renovation
+            Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
+            #endregion
+
+            #endregion
+
+            // Ventilation Ducts
+            #region Ventilation Ducts
+            #region Ventilation Ducts?
+            Key = change_ventilation_ducts;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C182", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Ventilation Ducts: Life of Product
+                Key = ventilation_ducts_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C183", value: value, exls: ref exls);
+                #endregion
+
+                #region Ventilation Ducts: Type of Material
+                Key = ventilation_ducts_type_of_material;
+                value = type_of_ventilation_ducts_material.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C184", value: value, exls: ref exls);
+                #endregion
+
+                #region Ventilation Ducts: Weight of Ventilation Ducts
+                Key = ventilation_ducts_weight_of_ventilation_ducts;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C185", value: value, exls: ref exls);
+                #endregion
+
+                #region Ventilation Ducts: Transport by Truck [km]
+                Key = ventilation_ducts_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
+                #endregion
+
+                #region Ventilation Ducts: Transport by Truck [km]
+                Key = ventilation_ducts_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
+                #endregion
+
+                #region Ventilation Ducts: Transport by Truck [km]
+                Key = ventilation_ducts_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Airflow Assembly
+            #region Change Airflow Assembly
+            #region Change Airflow Assembly?
+            Key = change_airflow_assembly;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C192", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Airflow Assembly: Life of Product
+                Key = airflow_assembly_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C193", value: value, exls: ref exls);
+                #endregion
+
+                #region Airflow Assembly: Type of Airflow Assembly
+                Key = airflow_assembly_type_of_airflow_assembly;
+                value = type_of_airflow_assembly.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C194", value: value, exls: ref exls);
+                #endregion
+
+                #region Airflow Assembly: Area of New Airflow Assembly
+                Key = airflow_assembly_design_airflow_exhaust_air;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C195", value: value, exls: ref exls);
+                #endregion
+
+                #region Airflow Assembly: Transport by Truck [km]
+                Key = airflow_assembly_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
+                #endregion
+
+                #region Airflow Assembly: Transport by Truck [km]
+                Key = airflow_assembly_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
+                #endregion
+
+                #region Airflow Assembly: Transport by Truck [km]
+                Key = airflow_assembly_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Air Distribution Housings & Silencers
+            #region Change Air Distribution Housings & Silencers
+            #region Change Air Distribution Housings & Silencers?
+            Key = change_air_distribution_housings_and_silencers;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C202", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Air Distribution Housings & Silencers: Life of Product
+                Key = air_distribution_housings_and_silencers_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C203", value: value, exls: ref exls);
+                #endregion
+
+                #region Air Distribution Housings & Silencers: Transport by Truck [km]
+                Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
+                #endregion
+
+                #region Air Distribution Housings & Silencers: Transport by Truck [km]
+                Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
+                #endregion
+
+                #region Air Distribution Housings & Silencers: Transport by Truck [km]
+                Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
         }
 
         private void Set(string sheet, string cell, object value, ref CExcel exls)
