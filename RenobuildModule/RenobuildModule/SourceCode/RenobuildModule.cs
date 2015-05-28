@@ -1190,6 +1190,7 @@ namespace RenobuildModule
             SetHeatingSystem(building, ref exls);
             SetBuildingShell(building, ref exls);
             SetVentilationSystem(building, ref exls);
+            SetRadiatorsPipesElectricity(building, ref exls);
         }
         //
 
@@ -1836,7 +1837,6 @@ namespace RenobuildModule
             #endregion
         }
 
-
         void SetRadiatorsPipesElectricity(Feature building, ref CExcel exls)
         {
 
@@ -2226,7 +2226,15 @@ namespace RenobuildModule
                     (bool)building.properties[change_doors] ||
                     (bool)building.properties[change_ventilation_ducts] ||
                     (bool)building.properties[change_airflow_assembly] ||
-                    (bool)building.properties[change_air_distribution_housings_and_silencers]) //TODO the others
+                    (bool)building.properties[change_air_distribution_housings_and_silencers] ||
+                    (bool)building.properties[change_radiators] ||
+                    (bool)building.properties[change_piping_copper] ||
+                    (bool)building.properties[change_piping_pex] ||
+                    (bool)building.properties[change_piping_pp] ||
+                    (bool)building.properties[change_piping_cast_iron] ||
+                    (bool)building.properties[change_piping_galvanized_steel] ||
+                    (bool)building.properties[change_piping_relining] ||
+                    (bool)building.properties[change_electrical_wiring]) 
                 {
                     SetInputDataOneBuilding(commonProperties.GetInputs(), building, ref exls);
 
