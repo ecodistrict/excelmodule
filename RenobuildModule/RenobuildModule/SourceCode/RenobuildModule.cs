@@ -914,7 +914,7 @@ namespace RenobuildModule
 
             // Radiators, pipes and electricity
             ++order;
-            //RadiatorsPipesElectricity2(ref buildning_specific_data, ref order);
+            RadiatorsPipesElectricity2(ref buildning_specific_data, ref order);
 
             return buildning_specific_data;
         }
@@ -1834,6 +1834,349 @@ namespace RenobuildModule
                 #endregion
             }
             #endregion
+        }
+
+
+        void SetRadiatorsPipesElectricity(Feature building, ref CExcel exls)
+        {
+
+            String Key;
+            object value;
+
+            // Radiators
+            #region Radiators
+            #region Radiators?
+            Key = change_radiators;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C215", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Radiators: Life of Product
+                Key = radiators_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C216", value: value, exls: ref exls);
+                #endregion
+
+                #region Radiators: Type of Material
+                Key = radiators_type_of_radiators;
+                value = type_of_radiators.GetIndex((string)building.properties[Key]) + 1;
+                Set(sheet: "Indata", cell: "C217", value: value, exls: ref exls);
+                #endregion
+
+                #region Radiators: Weight of Radiators
+                Key = radiators_weight_of_radiators;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C218", value: value, exls: ref exls);
+                #endregion
+
+                #region Radiators: Transport by Truck [km]
+                Key = radiators_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
+                #endregion
+
+                #region Radiators: Transport by Truck [km]
+                Key = radiators_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
+                #endregion
+
+                #region Radiators: Transport by Truck [km]
+                Key = radiators_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+            
+            // Piping System Copper
+            #region Change Piping System Copper
+            #region Change Piping System Copper?
+            Key = change_piping_copper;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C225", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System Copper: Life of Product
+                Key = piping_copper_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C226", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Copper: Area of New Piping System Copper
+                Key = piping_copper_weight_of_copper_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C227", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Copper: Transport by Truck [km]
+                Key = piping_copper_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Copper: Transport by Truck [km]
+                Key = piping_copper_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Copper: Transport by Truck [km]
+                Key = piping_copper_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Piping System PEX
+            #region Change Piping System PEX
+            #region Change Piping System PEX?
+            Key = change_piping_pex;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C234", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System PEX: Life of Product
+                Key = piping_pex_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C235", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PEX: Area of New Piping System PEX
+                Key = piping_pex_weight_of_pex_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C236", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PEX: Transport by Truck [km]
+                Key = piping_pex_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PEX: Transport by Truck [km]
+                Key = piping_pex_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PEX: Transport by Truck [km]
+                Key = piping_pex_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Piping System PP
+            #region Change Piping System PP
+            #region Change Piping System PP?
+            Key = change_piping_pp;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C243", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System PP: Life of Product
+                Key = piping_pp_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C244", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PP: Area of New Piping System PP
+                Key = piping_pp_weight_of_pp_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C245", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PP: Transport by Truck [km]
+                Key = piping_pp_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PP: Transport by Truck [km]
+                Key = piping_pp_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System PP: Transport by Truck [km]
+                Key = piping_pp_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+            
+            // Piping System Cast Iron
+            #region Change Piping System Cast Iron
+            #region Change Piping System Cast Iron?
+            Key = change_piping_cast_iron;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C252", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System Cast Iron: Life of Product
+                Key = piping_cast_iron_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C253", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Cast Iron: Area of New Piping System Cast Iron
+                Key = piping_cast_iron_weight_of_cast_iron_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C254", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Cast Iron: Transport by Truck [km]
+                Key = piping_cast_iron_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Cast Iron: Transport by Truck [km]
+                Key = piping_cast_iron_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Cast Iron: Transport by Truck [km]
+                Key = piping_cast_iron_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Piping System Galvanized Steel
+            #region Change Piping System Galvanized Steel
+            #region Change Piping System Galvanized Steel?
+            Key = change_piping_galvanized_steel;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C261", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System Galvanized Steel: Life of Product
+                Key = piping_galvanized_steel_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C262", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Galvanized Steel: Area of New Piping System Galvanized Steel
+                Key = piping_galvanized_steel_weight_of_galvanized_steel_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C263", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Galvanized Steel: Transport by Truck [km]
+                Key = piping_galvanized_steel_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Galvanized Steel: Transport by Truck [km]
+                Key = piping_galvanized_steel_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Galvanized Steel: Transport by Truck [km]
+                Key = piping_galvanized_steel_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Piping System Relining
+            #region Change Piping System Relining
+            #region Change Piping System Relining?
+            Key = change_piping_relining;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C270", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Piping System Relining: Life of Product
+                Key = piping_relining_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C271", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Relining: Area of New Piping System Relining
+                Key = piping_relining_weight_of_relining_pipes;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C272", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Relining: Transport by Truck [km]
+                Key = piping_relining_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Relining: Transport by Truck [km]
+                Key = piping_relining_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
+                #endregion
+
+                #region Piping System Relining: Transport by Truck [km]
+                Key = piping_relining_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
+            // Electrical Wiring
+            #region Change Electrical Wiring
+            #region Change Electrical Wiring?
+            Key = change_electrical_wiring;
+            value = (bool)building.properties[Key];
+            Set(sheet: "Indata", cell: "C279", value: value, exls: ref exls);
+            #endregion
+            if ((bool)value)
+            {
+                #region Electrical Wiring: Life of Product
+                Key = electrical_wiring_life_of_product;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C280", value: value, exls: ref exls);
+                #endregion
+
+                #region Electrical Wiring: Area of New Electrical Wiring
+                Key = electrical_wiring_weight_of_electrical_wiring;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C281", value: value, exls: ref exls);
+                #endregion
+
+                #region Electrical Wiring: Transport by Truck [km]
+                Key = electrical_wiring_transport_to_building_by_truck;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
+                #endregion
+
+                #region Electrical Wiring: Transport by Truck [km]
+                Key = electrical_wiring_transport_to_building_by_train;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
+                #endregion
+
+                #region Electrical Wiring: Transport by Truck [km]
+                Key = electrical_wiring_transport_to_building_by_ferry;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
+                #endregion
+            }
+            #endregion
+
         }
 
         private void Set(string sheet, string cell, object value, ref CExcel exls)
