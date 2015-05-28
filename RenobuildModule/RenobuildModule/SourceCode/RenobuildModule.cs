@@ -1699,7 +1699,7 @@ namespace RenobuildModule
             #endregion
 
             #region Ventilation System: Change in AED due to ventilation system renovation
-            Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+            Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
             value = Convert.ToDouble(building.properties[Key]);
             Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
             #endregion
@@ -1858,6 +1858,19 @@ namespace RenobuildModule
             GeoJson buildingProperties = indata["buildings"] as GeoJson;
 
             double kpi = 0;
+            string resultCell;
+
+            switch (kpiId)
+            {
+                case kpi_gwp:
+                    resultCell = "C31"; //Change of global warming potential
+                    break;
+                case kpi_peu:
+                    resultCell = "C32"; //Change of primary energy use  
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
 
             foreach (Feature building in buildingProperties.value.features)
             {
@@ -1867,40 +1880,15 @@ namespace RenobuildModule
                     (bool)building.properties[change_insulation_material_2] ||
                     (bool)building.properties[change_fascade_system] ||
                     (bool)building.properties[change_windows] ||
-                    (bool)building.properties[change_doors]) //TODO the others
+                    (bool)building.properties[change_doors] ||
+                    (bool)building.properties[change_ventilation_ducts] ||
+                    (bool)building.properties[change_airflow_assembly] ||
+                    (bool)building.properties[change_air_distribution_housings_and_silencers]) //TODO the others
                 {
                     SetInputDataOneBuilding(commonProperties.GetInputs(), building, ref exls);
-                    //var ngt = exls.GetCellValue("Indata", "C16");
-                    //ngt = exls.GetCellValue("Indata", "C25");
-                    //ngt = exls.GetCellValue("Indata", "C26");
-                    //ngt = exls.GetCellValue("Indata", "C93");
-                    //ngt = exls.GetCellValue("Indata", "C94");
-                    //ngt = exls.GetCellValue("Indata", "C20");
-                    //ngt = exls.GetCellValue("Indata", "C21");
-                    //ngt = exls.GetCellValue("Indata", "C99");
-                    //ngt = exls.GetCellValue("Indata", "C95");
-                    //ngt = exls.GetCellValue("Indata", "C100");
-                    //ngt = exls.GetCellValue("Indata", "C103");
-                    //ngt = exls.GetCellValue("Indata", "C104");
-                    //ngt = exls.GetCellValue("Indata", "C109");
-                    //ngt = exls.GetCellValue("Indata", "C106");
-                    //ngt = exls.GetCellValue("Indata", "C107");
-                    //ngt = exls.GetCellValue("Indata", "C108");
-                    //ngt = exls.GetCellValue("Indata", "C31");
-                    //kpi += (double)exls.GetCellValue("Indata", "C31");
 
-                    switch (kpiId)
-                    {
-                        case kpi_gwp:
-                            var resi = exls.GetCellValue("Indata", "C31");
-                            kpi += Convert.ToDouble(resi); //Change of global warming potential
-                            break;
-                        case kpi_peu:
-                            kpi += Convert.ToDouble(exls.GetCellValue("Indata", "C32")); //Change of primary energy use  
-                            break;
-                        default:
-                            throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-                    }
+                    var resi = exls.GetCellValue("Indata", resultCell);
+                    kpi += Convert.ToDouble(resi);
 
                 }
 
