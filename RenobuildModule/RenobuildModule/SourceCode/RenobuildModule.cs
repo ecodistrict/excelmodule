@@ -308,15 +308,15 @@ namespace RenobuildModule
         string insulation_material_2_transport_to_building_by_ferry = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_FERRY";
         string insulation_material_2_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
-        // Fascade system
+        // facade system
         string change_fascade_system = "FASCADE__CHANGE";
-        string change_fascade_system_lbl = "Change fascade";
+        string change_fascade_system_lbl = "Change facade";
         string fascade_system_life_of_product = "FASCADE__LIFE_OF_PRODUCT";
         string fascade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
         string fascade_system_type_fascade_system = "FASCADE__TYPE_OF_FASCADE_SYSTEM";
         string fascade_system_type_of_fascade_system_lbl = "Type of facade system";
         string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "FASCADE__CHANGE_IN_AHD_DUE_TO_FASCADE_SYSTEM";
-        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to fascade system (an energy saving is given as a negative value)";
+        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
         string fascade_system_area_of_new_fascade_system = "FASCADE__AREA_OF_NEW_FASCADE_SYSTEM";
         string fascade_system_area_of_new_fascade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
         string fascade_system_transport_to_building_by_truck = "FASCADE__TRANSPORT_TO_BUILDING_BY_TRUCK";
@@ -602,7 +602,7 @@ namespace RenobuildModule
             iSpec.Add(common_properties, CommonSpec());
 
             // - ## Building Specific
-            string description = "Building specific properties (Use the geojson-upload functionality below the map, in order to upload you buildings)";
+            string description = "Building specific properties (Use the geojson-upload functionality below the map in order change renovation options for your buildings.)";
 
             iSpec.Add("buildingProperties", new InputGroup(label: description, order: 2));
             iSpec.Add(buildings, BuildingSpecificSpecGeoJson());
@@ -634,7 +634,7 @@ namespace RenobuildModule
             intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
             intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
             intstr += "If this is the as-is step leave all checkboxes unchecked and fill in only the building properties. ";
-            intstr += "If multiple buildings have common properties you may select all of them and assign them values simultaniously. ";
+            intstr += "If multiple buildings have common properties you may select all of them and assign them values simultaneously. ";
             InputGroup instructions = new InputGroup(label: intstr, order: ++order);
             buildning_specific_data.Add(key: "instructions", item: instructions);
 
@@ -667,10 +667,9 @@ namespace RenobuildModule
             input.Add("building_properties", new InputGroup("Building Properties", order: ++order));
 
             // Inputs required in all cases
+            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
             input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order, value: 99));
             input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
-            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
-            input.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, order: ++order));
 
             // If district heating is used (before/after renovation)
             input.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
@@ -680,12 +679,13 @@ namespace RenobuildModule
         void HeatingSystem(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("heating_system", new InputGroup("Heating system", ++order));
+            input.Add("heating_system", new InputGroup("Renovate Heating System", ++order));
 
             input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
 
             // Change Heating System
             input.Add(key: change_heating_system, item: new Checkbox(label: change_heating_system_lbl, order: ++order));
+            input.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, order: ++order));
             input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: design_capacity, item: new Number(label: design_capacity_lbl, min: 0, unit: "kW", order: ++order));
             input.Add(key: weight_of_bhd, item: new Number(label: weight_of_bhd_lbl, min: 0, unit: "kg", order: ++order));
@@ -696,10 +696,10 @@ namespace RenobuildModule
 
             // Change Circulation Pump
             input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
+            input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
             input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
             input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
-            input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
             input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
             input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
@@ -710,12 +710,12 @@ namespace RenobuildModule
         void BuildingShell(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("building_shell", new InputGroup("Building Shell", ++order));
+            input.Add("building_shell", new InputGroup("Renovate Building Shell", ++order));
 
             // Insulation material 1
             input.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
-            input.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            input.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
             input.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
@@ -724,8 +724,8 @@ namespace RenobuildModule
 
             // Insulation material 2
             input.Add(key: change_insulation_material_2, item: new Checkbox(label: change_insulation_material_2_lbl, order: ++order));
-            input.Add(key: insulation_material_2_life_of_product, item: new Number(label: insulation_material_2_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: insulation_material_2_type_of_insulation, item: new Select(label: insulation_material_2_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            input.Add(key: insulation_material_2_life_of_product, item: new Number(label: insulation_material_2_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: insulation_material_2_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: insulation_material_2_amount_of_new_insulation_material, item: new Number(label: insulation_material_2_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
             input.Add(key: insulation_material_2_transport_to_building_by_truck, item: new Number(label: insulation_material_2_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
@@ -734,8 +734,8 @@ namespace RenobuildModule
 
             // Fascade System
             input.Add(key: change_fascade_system, item: new Checkbox(label: change_fascade_system_lbl, order: ++order));
-            input.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: fascade_system_type_fascade_system, item: new Select(label: fascade_system_type_of_fascade_system_lbl, options: type_of_fascade_system, order: ++order));
+            input.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: fascade_system_area_of_new_fascade_system, item: new Number(label: fascade_system_area_of_new_fascade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
             input.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
@@ -744,8 +744,8 @@ namespace RenobuildModule
 
             // Windows
             input.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
-            input.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
+            input.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
             input.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
@@ -754,8 +754,8 @@ namespace RenobuildModule
 
             // Doors
             input.Add(key: change_doors, item: new Checkbox(label: change_doors_lbl, order: ++order));
-            input.Add(key: doors_life_of_product, item: new Number(label: doors_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: doors_type_doors, item: new Select(label: doors_type_of_doors_lbl, options: type_of_doors, order: ++order));
+            input.Add(key: doors_life_of_product, item: new Number(label: doors_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: doors_change_in_annual_heat_demand_due_to_doors, item: new Number(label: doors_change_in_annual_heat_demand_due_to_doors_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: doors_number_of_new_front_doors, item: new Number(label: doors_number_of_new_front_doors_lbl, min: 0, order: ++order));
             input.Add(key: doors_transport_to_building_by_truck, item: new Number(label: doors_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
@@ -767,12 +767,16 @@ namespace RenobuildModule
         void VentilationSystem(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("ventilation_system", new InputGroup("Ventilation System", ++order));
+            input.Add("ventilation_system", new InputGroup("Renovate Ventilation System", ++order));
+
+            //Ventilation renovation
+            input.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            input.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
 
             // Ventilation ducts
             input.Add(key: change_ventilation_ducts, item: new Checkbox(label: change_ventilation_ducts_lbl, order: ++order));
-            input.Add(key: ventilation_ducts_life_of_product, item: new Number(label: ventilation_ducts_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: ventilation_ducts_type_of_material, item: new Select(label: ventilation_ducts_type_of_material_lbl, options: type_of_ventilation_ducts_material, order: ++order));
+            input.Add(key: ventilation_ducts_life_of_product, item: new Number(label: ventilation_ducts_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: ventilation_ducts_weight_of_ventilation_ducts, item: new Number(label: ventilation_ducts_weight_of_ventilation_ducts_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: ventilation_ducts_transport_to_building_by_truck, item: new Number(label: ventilation_ducts_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: ventilation_ducts_transport_to_building_by_train, item: new Number(label: ventilation_ducts_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
@@ -780,8 +784,8 @@ namespace RenobuildModule
 
             // Airflow assembly
             input.Add(key: change_airflow_assembly, item: new Checkbox(label: change_airflow_assembly_lbl, order: ++order));
-            input.Add(key: airflow_assembly_life_of_product, item: new Number(label: airflow_assembly_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: airflow_assembly_type_of_airflow_assembly, item: new Select(label: airflow_assembly_type_of_airflow_assembly_lbl, options: type_of_airflow_assembly, order: ++order));
+            input.Add(key: airflow_assembly_life_of_product, item: new Number(label: airflow_assembly_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: airflow_assembly_design_airflow_exhaust_air, item: new Number(label: airflow_assembly_design_airflow_exhaust_air_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: airflow_assembly_transport_to_building_by_truck, item: new Number(label: airflow_assembly_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: airflow_assembly_transport_to_building_by_train, item: new Number(label: airflow_assembly_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
@@ -793,22 +797,18 @@ namespace RenobuildModule
             input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-
-            //Ventilation renovation
-            input.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
-            input.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
-
+            
         }
 
         void RadiatorsPipesElectricity(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("radiators_pipes_and_electricity", new InputGroup("Radiators, Pipes and Electricity", ++order));
+            input.Add("radiators_pipes_and_electricity", new InputGroup("Renovate Radiators, Pipes and/or Electricity", ++order));
 
             // Radiators
             input.Add(key: change_radiators, item: new Checkbox(label: change_radiators_lbl, order: ++order));
-            input.Add(key: radiators_life_of_product, item: new Number(label: radiators_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: radiators_type_of_radiators, item: new Select(label: radiators_type_of_radiators_lbl, options: type_of_radiators, order: ++order));
+            input.Add(key: radiators_life_of_product, item: new Number(label: radiators_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: radiators_weight_of_radiators, item: new Number(label: radiators_weight_of_radiators_lbl, unit: "kg", order: ++order));
             input.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             input.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
