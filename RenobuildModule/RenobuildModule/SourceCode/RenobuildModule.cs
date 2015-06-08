@@ -24,7 +24,7 @@ namespace RenobuildModule
         Options type_of_flow_control_in_heating_system_opts;
 
         Options type_of_insulation;
-        Options type_of_fascade_system;
+        Options type_of_facade_system;
         Options type_of_windows;
         Options type_of_doors;
 
@@ -99,23 +99,23 @@ namespace RenobuildModule
         {
             try
             {
-                type_of_fascade_system = new Options();
-                type_of_fascade_system.Add(new Option(value: @"A\8-15mm\Non ventilated\EPS\200mm", label: @"A\8-15mm\Non ventilated\EPS\200mm"));
-                type_of_fascade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\50mm", label: @"B\4-8mm\Ventilated\Rock wool\50mm"));
-                type_of_fascade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\80mm", label: @"B\4-8mm\Ventilated\Rock wool\80mm"));
-                type_of_fascade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\100mm", label: @"B\4-8mm\Ventilated\Rock wool\100mm"));
-                type_of_fascade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\50mm", label: @"C\8-12mm\Non ventilated\EPS\50mm"));
-                type_of_fascade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\80mm", label: @"C\8-12mm\Non ventilated\EPS\80mm"));
-                type_of_fascade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\100mm", label: @"C\8-12mm\Non ventilated\EPS\100mm"));
-                type_of_fascade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\50mm", label: @"D\20-mm\Non ventilated\Rock wool\50mm"));
-                type_of_fascade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\80mm", label: @"D\20-mm\Non ventilated\Rock wool\80mm"));
-                type_of_fascade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\100mm", label: @"D\20-mm\Non ventilated\Rock wool\100mm"));
-                type_of_fascade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\50mm", label: @"E\10-15mm\Non ventilated\Rock wool\50mm"));
-                type_of_fascade_system.Add(new Option(value: @"E\10-15mmNon ventilated\Rock wool\80mm", label: @"E\10-15mmNon ventilated\Rock wool\80mm"));
-                type_of_fascade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\100mm", label: @"E\10-15mm\Non ventilated\Rock wool\100mm"));
-                type_of_fascade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm", label: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm"));
-                type_of_fascade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\80mm", label: @"F\4-8mm\Ventilated\Rock wool\80mm"));
-                type_of_fascade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\100mm", label: @"F\4-8mm\Ventilated\Rock wool\100mm"));
+                type_of_facade_system = new Options();
+                type_of_facade_system.Add(new Option(value: @"A\8-15mm\Non ventilated\EPS\200mm", label: @"A\8-15mm\Non ventilated\EPS\200mm"));
+                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\50mm", label: @"B\4-8mm\Ventilated\Rock wool\50mm"));
+                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\80mm", label: @"B\4-8mm\Ventilated\Rock wool\80mm"));
+                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\100mm", label: @"B\4-8mm\Ventilated\Rock wool\100mm"));
+                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\50mm", label: @"C\8-12mm\Non ventilated\EPS\50mm"));
+                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\80mm", label: @"C\8-12mm\Non ventilated\EPS\80mm"));
+                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\100mm", label: @"C\8-12mm\Non ventilated\EPS\100mm"));
+                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\50mm", label: @"D\20-mm\Non ventilated\Rock wool\50mm"));
+                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\80mm", label: @"D\20-mm\Non ventilated\Rock wool\80mm"));
+                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\100mm", label: @"D\20-mm\Non ventilated\Rock wool\100mm"));
+                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\50mm", label: @"E\10-15mm\Non ventilated\Rock wool\50mm"));
+                type_of_facade_system.Add(new Option(value: @"E\10-15mmNon ventilated\Rock wool\80mm", label: @"E\10-15mmNon ventilated\Rock wool\80mm"));
+                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\100mm", label: @"E\10-15mm\Non ventilated\Rock wool\100mm"));
+                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm", label: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm"));
+                type_of_facade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\80mm", label: @"F\4-8mm\Ventilated\Rock wool\80mm"));
+                type_of_facade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\100mm", label: @"F\4-8mm\Ventilated\Rock wool\100mm"));
             }
             catch (System.Exception ex)
             {
@@ -323,22 +323,22 @@ namespace RenobuildModule
         string insulation_material_2_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
         // facade system
-        string change_fascade_system = "FASCADE__CHANGE";
-        string change_fascade_system_lbl = "Change facade";
-        string fascade_system_life_of_product = "FASCADE__LIFE_OF_PRODUCT";
-        string fascade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string fascade_system_type_fascade_system = "FASCADE__TYPE_OF_FASCADE_SYSTEM";
-        string fascade_system_type_of_fascade_system_lbl = "Type of facade system";
-        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system = "FASCADE__CHANGE_IN_AHD_DUE_TO_FASCADE_SYSTEM";
-        string fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
-        string fascade_system_area_of_new_fascade_system = "FASCADE__AREA_OF_NEW_FASCADE_SYSTEM";
-        string fascade_system_area_of_new_fascade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
-        string fascade_system_transport_to_building_by_truck = "FASCADE__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string fascade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string fascade_system_transport_to_building_by_train = "FASCADE__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string fascade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string fascade_system_transport_to_building_by_ferry = "FASCADE__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string fascade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        string change_facade_system = "FACADE__CHANGE";
+        string change_facade_system_lbl = "Change facade";
+        string facade_system_life_of_product = "FACADE__LIFE_OF_PRODUCT";
+        string facade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
+        string facade_system_type_facade_system = "FACADE__TYPE_OF_FACADE_SYSTEM";
+        string facade_system_type_of_facade_system_lbl = "Type of facade system";
+        string facade_system_change_in_annual_heat_demand_due_to_facade_system = "FACADE__CHANGE_IN_AHD_DUE_TO_FACADE_SYSTEM";
+        string facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
+        string facade_system_area_of_new_facade_system = "FACADE__AREA_OF_NEW_FACADE_SYSTEM";
+        string facade_system_area_of_new_facade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
+        string facade_system_transport_to_building_by_truck = "FACADE__TRANSPORT_TO_BUILDING_BY_TRUCK";
+        string facade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
+        string facade_system_transport_to_building_by_train = "FACADE__TRANSPORT_TO_BUILDING_BY_TRAIN";
+        string facade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
+        string facade_system_transport_to_building_by_ferry = "FACADE__TRANSPORT_TO_BUILDING_BY_FERRY";
+        string facade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
 
 
         // Windows
@@ -415,7 +415,7 @@ namespace RenobuildModule
         // Air distribution housings and silencer
         string change_air_distribution_housings_and_silencers = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__CHANGE";
         string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
-        string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_HOUSINGS";
+        string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_NEW_HOUSINGS";
         string air_distribution_housings_and_silencers_number_of_distribution_housings_lbl = "Number of air distribution housings";
         string air_distribution_housings_and_silencers_life_of_product = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__LIFE_OF_PRODUCT";
         string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
@@ -766,14 +766,14 @@ namespace RenobuildModule
             //input.Add(key: insulation_material_2_transport_to_building_by_ferry, item: new Number(label: insulation_material_2_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Fascade System
-            input.Add(key: change_fascade_system, item: new Checkbox(label: change_fascade_system_lbl, order: ++order));
-            input.Add(key: fascade_system_type_fascade_system, item: new Select(label: fascade_system_type_of_fascade_system_lbl, options: type_of_fascade_system, order: ++order));
-            input.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: fascade_system_area_of_new_fascade_system, item: new Number(label: fascade_system_area_of_new_fascade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            //input.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: fascade_system_transport_to_building_by_train, item: new Number(label: fascade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: fascade_system_transport_to_building_by_ferry, item: new Number(label: fascade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            input.Add(key: change_facade_system, item: new Checkbox(label: change_facade_system_lbl, order: ++order));
+            input.Add(key: facade_system_type_facade_system, item: new Select(label: facade_system_type_of_facade_system_lbl, options: type_of_facade_system, order: ++order));
+            input.Add(key: facade_system_life_of_product, item: new Number(label: facade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            //input.Add(key: facade_system_change_in_annual_heat_demand_due_to_facade_system, item: new Number(label: facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl, unit: "kWh/year", order: ++order));
+            input.Add(key: facade_system_area_of_new_facade_system, item: new Number(label: facade_system_area_of_new_facade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
+            //input.Add(key: facade_system_transport_to_building_by_truck, item: new Number(label: facade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: facade_system_transport_to_building_by_train, item: new Number(label: facade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: facade_system_transport_to_building_by_ferry, item: new Number(label: facade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Windows
             input.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
@@ -1241,50 +1241,50 @@ namespace RenobuildModule
             // Facade System
             #region Change Fascade System
             #region Change Fascade System?
-            Key = change_fascade_system;
+            Key = change_facade_system;
             value = (bool)building.properties[Key];
             Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Fascade System: Life of Product
-                Key = fascade_system_life_of_product;
+                Key = facade_system_life_of_product;
                 value = Convert.ToDouble(building.properties[Key]);
                 Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
                 #endregion
 
                 #region Fascade System: Type of Fascade System
-                Key = fascade_system_type_fascade_system;
-                value = type_of_fascade_system.GetIndex((string)building.properties[Key]) + 1;
+                Key = facade_system_type_facade_system;
+                value = type_of_facade_system.GetIndex((string)building.properties[Key]) + 1;
                 Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
                 #endregion
 
                 //#region Fascade System: Change AHD due to New Fascade System
-                //Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
+                //Key = facade_system_change_in_annual_heat_demand_due_to_facade_system;
                 //value = Convert.ToDouble(building.properties[Key]);
                 //Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
                 //#endregion
 
                 #region Fascade System: Area of New Fascade System
-                Key = fascade_system_area_of_new_fascade_system;
+                Key = facade_system_area_of_new_facade_system;
                 value = Convert.ToDouble(building.properties[Key]);
                 Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
                 #endregion
 
                 //#region Fascade System: Transport by Truck [km]
-                //Key = fascade_system_transport_to_building_by_truck;
+                //Key = facade_system_transport_to_building_by_truck;
                 //value = Convert.ToDouble(building.properties[Key]);
                 //Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
                 //#endregion
 
                 //#region Fascade System: Transport by Truck [km]
-                //Key = fascade_system_transport_to_building_by_train;
+                //Key = facade_system_transport_to_building_by_train;
                 //value = Convert.ToDouble(building.properties[Key]);
                 //Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
                 //#endregion
 
                 //#region Fascade System: Transport by Truck [km]
-                //Key = fascade_system_transport_to_building_by_ferry;
+                //Key = facade_system_transport_to_building_by_ferry;
                 //value = Convert.ToDouble(building.properties[Key]);
                 //Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
                 //#endregion
@@ -1973,7 +1973,7 @@ namespace RenobuildModule
                     (bool)building.properties[change_circulationpump_in_heating_system] ||
                     (bool)building.properties[change_insulation_material_1] ||
                     (bool)building.properties[change_insulation_material_2] ||
-                    (bool)building.properties[change_fascade_system] ||
+                    (bool)building.properties[change_facade_system] ||
                     (bool)building.properties[change_windows] ||
                     (bool)building.properties[change_doors] ||
                     (bool)building.properties[change_ventilation_ducts] ||
