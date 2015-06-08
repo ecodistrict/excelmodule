@@ -19,6 +19,7 @@ namespace RenobuildModule
 
         Dictionary<string, InputSpecification> inputSpecifications;
 
+        Options electricity_mix_opts;
         Options heat_sources;
         Options type_of_flow_control_in_heating_system_opts;
 
@@ -32,6 +33,22 @@ namespace RenobuildModule
 
         Options type_of_radiators;
 
+        void DefineElectricityMix()
+        {
+            try
+            {
+                electricity_mix_opts = new Options();
+                electricity_mix_opts.Add(new Option(value: "em_sweden", label: "Sweden"));
+                electricity_mix_opts.Add(new Option(value: "em_netherlands", label: "Netherlands"));
+                electricity_mix_opts.Add(new Option(value: "em_spain", label: "Spain"));
+                electricity_mix_opts.Add(new Option(value: "em_poland", label: "Poland"));
+                electricity_mix_opts.Add(new Option(value: "em_belgium", label: "Belgium"));
+            }
+            catch (Exception ex)
+            {
+                RenobuildModule_ErrorRaised(this, ex);
+            }
+        }
         void DefineHeatSources()
         {
             try
@@ -186,10 +203,6 @@ namespace RenobuildModule
                 //GeoJson
                 inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
                 inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
-
-                //One Building (simple)
-                //inputSpecifications.Add(kpi_gwp, GetInputSpecificationOneBuilding());
-                //inputSpecifications.Add(kpi_peu, GetInputSpecificationOneBuilding());
             }
             catch (System.Exception ex)
             {
@@ -203,6 +216,7 @@ namespace RenobuildModule
         // Common
         string common_properties = "common_properties";
         string lca_calculation_period = "lca_calculation_period";
+        string electricity_mix = "electricity_mix";
 
         #endregion
 
@@ -222,9 +236,9 @@ namespace RenobuildModule
         string heat_source_after_lbl = "Heat source after renovation";
         // If district heating is used (before/after renovation)
         string gwp_district = "GWP_OF_DISTRICT_HEATING";
-        string gwp_district_lbl = "Global warming potential of district heating. Required if building uses district heating (before/after renovation). Impact per unit energy delivered to building, i.e. including distribution losses.";
+        string gwp_district_lbl = "Global warming potential of district heating. Required if any building uses district heating before or after renovation. Impact per unit energy delivered to building, i.e. including distribution losses.";
         string peu_district = "PRIMARY_ENERGY_USE_OF_DISTRICT_HEATING";
-        string peu_district_lbl = "Primary energy use of district heating (before/after renovation). Impact per unit energy delivered to building, i.e. including distribution losses.";
+        string peu_district_lbl = "Primary energy factor of district heating. Required if any building uses district heating before or after renovation. Impact per unit energy delivered to building, i.e. including distribution losses.";
         #endregion
 
         #region Heating System
@@ -269,7 +283,7 @@ namespace RenobuildModule
         string circulationpump_transport_to_building_ferry = "PUMP__TRANSPORT_TO_BUILDING_BY_FERRY";
         string circulationpump_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
         #endregion
-
+        
         #region Building Shell
         //Building Shell
         // Insulation material 1
@@ -401,6 +415,8 @@ namespace RenobuildModule
         // Air distribution housings and silencer
         string change_air_distribution_housings_and_silencers = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__CHANGE";
         string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
+        string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_HOUSINGS";
+        string air_distribution_housings_and_silencers_number_of_distribution_housings_lbl = "Number of air distribution housings";
         string air_distribution_housings_and_silencers_life_of_product = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__LIFE_OF_PRODUCT";
         string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
         string air_distribution_housings_and_silencers_transport_to_building_by_truck = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_TRUCK";
@@ -417,6 +433,11 @@ namespace RenobuildModule
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
 
         #endregion
+        
+        string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AHD_DUE_TO_RENOVATIONS";
+        string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump_lbl = "Change in annual heat demand";
+        string change_in_aed_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AED_DUE_TO_RENOVATIONS";
+        string change_in_aed_due_to_renovations_of_bshell_ventilation_pump_lbl = "Change in annual energy demand";
 
         #region Radiators, pipes and electricity
         // Radiators, pipes and electricity
@@ -558,6 +579,7 @@ namespace RenobuildModule
             this.StatusMessage += RenobuildModule_StatusMessage;
 
             //Define parameter options
+            DefineElectricityMix();
             DefineHeatSources();
             DefineTypeOfFlowControl();
 
@@ -602,7 +624,7 @@ namespace RenobuildModule
             iSpec.Add(common_properties, CommonSpec());
 
             // - ## Building Specific
-            string description = "Building specific properties (Use the geojson-upload functionality below the map in order change renovation options for your buildings.)";
+            string description = "Building specific properties (Use the geojson-upload functionality below the map in order change renovation options for your buildings. You can select one or more buildings at the time by clicking on them, when you are finished with the selected building(s) press OK for the input sheet and continue selecting other buildings. When you have supplied all data scroll all the way down and press OK.)";
 
             iSpec.Add("buildingProperties", new InputGroup(label: description, order: 2));
             iSpec.Add(buildings, BuildingSpecificSpecGeoJson());
@@ -612,19 +634,23 @@ namespace RenobuildModule
 
         InputGroup CommonSpec()
         {
+            int order = 0;
+
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
-            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: 1));
-            ////Applicable to district heating system
-            //commonProp.Add("applicable_to_disctrict_heating_system", ApplicableToDistrictHeatingSystem());
+            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: ++order));
+            commonProp.Add(electricity_mix, new Select(label: "Electricity mix", options: electricity_mix_opts, order: ++order));
+            // If district heating is used (before/after renovation)
+            commonProp.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
+            commonProp.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
 
             return commonProp;
         }
-        
+
         GeoJson BuildingSpecificSpecGeoJson()
         {
             // - ## Building Specific
-            GeoJson buildning_specific_data = new GeoJson(label: "Geographic data of buildings", order: 2);
+            GeoJson buildning_specific_data = new GeoJson(label: "Geographic data of buildings");
 
             int order = 0;
 
@@ -654,6 +680,13 @@ namespace RenobuildModule
             ++order;
             VentilationSystem(ref buildning_specific_data, ref order);
 
+            //
+            ++order;
+            buildning_specific_data.Add(key: "changes_ian_ahe_and_aed", item: new InputGroup(label: "Changes due to renovation of building shell, ventilation and/or circulation pump.", order: ++order));
+            buildning_specific_data.Add(key: change_in_ahd_due_to_renovations_of_bshell_ventilation_pump, item: new Number(label: change_in_ahd_due_to_renovations_of_bshell_ventilation_pump_lbl, unit: "kWh/year", order: ++order));
+            buildning_specific_data.Add(key: change_in_aed_due_to_renovations_of_bshell_ventilation_pump, item: new Number(label: change_in_aed_due_to_renovations_of_bshell_ventilation_pump_lbl, unit: "MWh/year", order: ++order));
+
+
             // Radiators, pipes and electricity
             ++order;
             RadiatorsPipesElectricity(ref buildning_specific_data, ref order);
@@ -667,13 +700,10 @@ namespace RenobuildModule
             input.Add("building_properties", new InputGroup("Building Properties", order: ++order));
 
             // Inputs required in all cases
-            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
+            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, value: heat_sources.Last(), order: ++order));
             input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order, value: 99));
-            input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
-
-            // If district heating is used (before/after renovation)
-            input.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
-            input.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
+            //input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
+                        
         }
 
         void HeatingSystem(ref GeoJson input, ref int order)
@@ -681,86 +711,89 @@ namespace RenobuildModule
             //Header
             input.Add("heating_system", new InputGroup("Renovate Heating System", ++order));
 
-            input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            //input.Add(key: "1", item: new InputGroup(label: "-      Change Heating System", order: ++order));
 
             // Change Heating System
             input.Add(key: change_heating_system, item: new Checkbox(label: change_heating_system_lbl, order: ++order));
-            input.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, order: ++order));
+            input.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, value: heat_sources.First(), order: ++order));
             input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
             input.Add(key: design_capacity, item: new Number(label: design_capacity_lbl, min: 0, unit: "kW", order: ++order));
             input.Add(key: weight_of_bhd, item: new Number(label: weight_of_bhd_lbl, min: 0, unit: "kg", order: ++order));
             input.Add(key: depth_of_borehole, item: new Number(label: depth_of_borehole_lbl, min: 0, unit: "m", order: ++order));
-            input.Add(key: heating_system_transport_to_building_truck, item: new Number(label: heating_system_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: heating_system_transport_to_building_train, item: new Number(label: heating_system_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: heating_system_transport_to_building_ferry, item: new Number(label: heating_system_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: heating_system_transport_to_building_truck, item: new Number(label: heating_system_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: heating_system_transport_to_building_train, item: new Number(label: heating_system_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: heating_system_transport_to_building_ferry, item: new Number(label: heating_system_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
+
+            //input.Add(key: "2", item: new InputGroup(label: "-      Change Circulation Pump", order: ++order));
 
             // Change Circulation Pump
             input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
-            input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
+            //input.Add(key: type_of_control_in_heating_system, item: new Select(label: type_of_control_in_heating_system_lbl, options: type_of_flow_control_in_heating_system_opts, order: ++order));
             input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
-            input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
+            //input.Add(key: design_pressure_head, item: new Number(label: design_pressure_head_lbl, min: 0, unit: "kPa", order: ++order));
+            //input.Add(key: design_flow_rate, item: new Number(label: design_flow_rate_lbl, min: 0, unit: "m\u00b3/h", order: ++order));
             input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_truck, item: new Number(label: circulationpump_transport_to_building_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_train, item: new Number(label: circulationpump_transport_to_building_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: circulationpump_transport_to_building_ferry, item: new Number(label: circulationpump_transport_to_building_ferry_lbl, min: 0, unit: "km", order: ++order));
 
         }
 
         void BuildingShell(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("building_shell", new InputGroup("Renovate Building Shell", ++order));
+            input.Add("building_shell", new InputGroup("Renovate Building Shell", ++order));                      
 
             // Insulation material 1
             input.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
             input.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
             input.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
+            //input.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
-            input.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: insulation_material_1_transport_to_building_by_train, item: new Number(label: insulation_material_1_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: insulation_material_1_transport_to_building_by_ferry, item: new Number(label: insulation_material_1_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_1_transport_to_building_by_train, item: new Number(label: insulation_material_1_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_1_transport_to_building_by_ferry, item: new Number(label: insulation_material_1_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Insulation material 2
             input.Add(key: change_insulation_material_2, item: new Checkbox(label: change_insulation_material_2_lbl, order: ++order));
             input.Add(key: insulation_material_2_type_of_insulation, item: new Select(label: insulation_material_2_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
             input.Add(key: insulation_material_2_life_of_product, item: new Number(label: insulation_material_2_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: insulation_material_2_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
+            //input.Add(key: insulation_material_2_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: insulation_material_2_amount_of_new_insulation_material, item: new Number(label: insulation_material_2_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
-            input.Add(key: insulation_material_2_transport_to_building_by_truck, item: new Number(label: insulation_material_2_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: insulation_material_2_transport_to_building_by_train, item: new Number(label: insulation_material_2_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: insulation_material_2_transport_to_building_by_ferry, item: new Number(label: insulation_material_2_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_2_transport_to_building_by_truck, item: new Number(label: insulation_material_2_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_2_transport_to_building_by_train, item: new Number(label: insulation_material_2_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_2_transport_to_building_by_ferry, item: new Number(label: insulation_material_2_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Fascade System
             input.Add(key: change_fascade_system, item: new Checkbox(label: change_fascade_system_lbl, order: ++order));
             input.Add(key: fascade_system_type_fascade_system, item: new Select(label: fascade_system_type_of_fascade_system_lbl, options: type_of_fascade_system, order: ++order));
             input.Add(key: fascade_system_life_of_product, item: new Number(label: fascade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
+            //input.Add(key: fascade_system_change_in_annual_heat_demand_due_to_fascade_system, item: new Number(label: fascade_system_change_in_annual_heat_demand_due_to_fascade_system_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: fascade_system_area_of_new_fascade_system, item: new Number(label: fascade_system_area_of_new_fascade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            input.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: fascade_system_transport_to_building_by_train, item: new Number(label: fascade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: fascade_system_transport_to_building_by_ferry, item: new Number(label: fascade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: fascade_system_transport_to_building_by_truck, item: new Number(label: fascade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: fascade_system_transport_to_building_by_train, item: new Number(label: fascade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: fascade_system_transport_to_building_by_ferry, item: new Number(label: fascade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Windows
             input.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
             input.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
             input.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
+            //input.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            input.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: windows_transport_to_building_by_train, item: new Number(label: windows_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: windows_transport_to_building_by_ferry, item: new Number(label: windows_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: windows_transport_to_building_by_train, item: new Number(label: windows_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: windows_transport_to_building_by_ferry, item: new Number(label: windows_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Doors
             input.Add(key: change_doors, item: new Checkbox(label: change_doors_lbl, order: ++order));
             input.Add(key: doors_type_doors, item: new Select(label: doors_type_of_doors_lbl, options: type_of_doors, order: ++order));
             input.Add(key: doors_life_of_product, item: new Number(label: doors_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: doors_change_in_annual_heat_demand_due_to_doors, item: new Number(label: doors_change_in_annual_heat_demand_due_to_doors_lbl, unit: "kWh/year", order: ++order));
+            //input.Add(key: doors_change_in_annual_heat_demand_due_to_doors, item: new Number(label: doors_change_in_annual_heat_demand_due_to_doors_lbl, unit: "kWh/year", order: ++order));
             input.Add(key: doors_number_of_new_front_doors, item: new Number(label: doors_number_of_new_front_doors_lbl, min: 0, order: ++order));
-            input.Add(key: doors_transport_to_building_by_truck, item: new Number(label: doors_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: doors_transport_to_building_by_train, item: new Number(label: doors_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: doors_transport_to_building_by_ferry, item: new Number(label: doors_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: doors_transport_to_building_by_truck, item: new Number(label: doors_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: doors_transport_to_building_by_train, item: new Number(label: doors_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: doors_transport_to_building_by_ferry, item: new Number(label: doors_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
         }
 
@@ -768,35 +801,36 @@ namespace RenobuildModule
         {
             //Header
             input.Add("ventilation_system", new InputGroup("Renovate Ventilation System", ++order));
-
+            
             //Ventilation renovation
-            input.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
-            input.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            //input.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
+            //input.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
 
             // Ventilation ducts
             input.Add(key: change_ventilation_ducts, item: new Checkbox(label: change_ventilation_ducts_lbl, order: ++order));
             input.Add(key: ventilation_ducts_type_of_material, item: new Select(label: ventilation_ducts_type_of_material_lbl, options: type_of_ventilation_ducts_material, order: ++order));
             input.Add(key: ventilation_ducts_life_of_product, item: new Number(label: ventilation_ducts_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: ventilation_ducts_weight_of_ventilation_ducts, item: new Number(label: ventilation_ducts_weight_of_ventilation_ducts_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: ventilation_ducts_transport_to_building_by_truck, item: new Number(label: ventilation_ducts_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: ventilation_ducts_transport_to_building_by_train, item: new Number(label: ventilation_ducts_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: ventilation_ducts_transport_to_building_by_ferry, item: new Number(label: ventilation_ducts_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: ventilation_ducts_transport_to_building_by_truck, item: new Number(label: ventilation_ducts_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: ventilation_ducts_transport_to_building_by_train, item: new Number(label: ventilation_ducts_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: ventilation_ducts_transport_to_building_by_ferry, item: new Number(label: ventilation_ducts_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Airflow assembly
             input.Add(key: change_airflow_assembly, item: new Checkbox(label: change_airflow_assembly_lbl, order: ++order));
             input.Add(key: airflow_assembly_type_of_airflow_assembly, item: new Select(label: airflow_assembly_type_of_airflow_assembly_lbl, options: type_of_airflow_assembly, order: ++order));
             input.Add(key: airflow_assembly_life_of_product, item: new Number(label: airflow_assembly_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: airflow_assembly_design_airflow_exhaust_air, item: new Number(label: airflow_assembly_design_airflow_exhaust_air_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: airflow_assembly_transport_to_building_by_truck, item: new Number(label: airflow_assembly_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: airflow_assembly_transport_to_building_by_train, item: new Number(label: airflow_assembly_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: airflow_assembly_transport_to_building_by_ferry, item: new Number(label: airflow_assembly_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: airflow_assembly_transport_to_building_by_truck, item: new Number(label: airflow_assembly_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: airflow_assembly_transport_to_building_by_train, item: new Number(label: airflow_assembly_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: airflow_assembly_transport_to_building_by_ferry, item: new Number(label: airflow_assembly_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Air distribution housings and silencers
-            input.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));
+            input.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));            
+            input.Add(key: air_distribution_housings_and_silencers_number_of_distribution_housings, item: new Number(label: air_distribution_housings_and_silencers_number_of_distribution_housings_lbl, min: 0, order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_life_of_product, item: new Number(label: air_distribution_housings_and_silencers_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
             
         }
 
@@ -810,90 +844,88 @@ namespace RenobuildModule
             input.Add(key: radiators_type_of_radiators, item: new Select(label: radiators_type_of_radiators_lbl, options: type_of_radiators, order: ++order));
             input.Add(key: radiators_life_of_product, item: new Number(label: radiators_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: radiators_weight_of_radiators, item: new Number(label: radiators_weight_of_radiators_lbl, unit: "kg", order: ++order));
-            input.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: radiators_transport_to_building_by_ferry, item: new Number(label: radiators_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: radiators_transport_to_building_by_ferry, item: new Number(label: radiators_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - Copper
             input.Add(key: change_piping_copper, item: new Checkbox(label: change_piping_copper_lbl, order: ++order));
             input.Add(key: piping_copper_life_of_product, item: new Number(label: piping_copper_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_copper_weight_of_copper_pipes, item: new Number(label: piping_copper_weight_of_copper_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_copper_transport_to_building_by_truck, item: new Number(label: piping_copper_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_copper_transport_to_building_by_train, item: new Number(label: piping_copper_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_copper_transport_to_building_by_ferry, item: new Number(label: piping_copper_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_copper_transport_to_building_by_truck, item: new Number(label: piping_copper_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_copper_transport_to_building_by_train, item: new Number(label: piping_copper_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_copper_transport_to_building_by_ferry, item: new Number(label: piping_copper_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - PEX
             input.Add(key: change_piping_pex, item: new Checkbox(label: change_piping_pex_lbl, order: ++order));
             input.Add(key: piping_pex_life_of_product, item: new Number(label: piping_pex_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_pex_weight_of_pex_pipes, item: new Number(label: piping_pex_weight_of_pex_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_pex_transport_to_building_by_truck, item: new Number(label: piping_pex_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_pex_transport_to_building_by_train, item: new Number(label: piping_pex_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_pex_transport_to_building_by_ferry, item: new Number(label: piping_pex_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pex_transport_to_building_by_truck, item: new Number(label: piping_pex_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pex_transport_to_building_by_train, item: new Number(label: piping_pex_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pex_transport_to_building_by_ferry, item: new Number(label: piping_pex_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - PP
             input.Add(key: change_piping_pp, item: new Checkbox(label: change_piping_pp_lbl, order: ++order));
             input.Add(key: piping_pp_life_of_product, item: new Number(label: piping_pp_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_pp_weight_of_pp_pipes, item: new Number(label: piping_pp_weight_of_pp_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_pp_transport_to_building_by_truck, item: new Number(label: piping_pp_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_pp_transport_to_building_by_train, item: new Number(label: piping_pp_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_pp_transport_to_building_by_ferry, item: new Number(label: piping_pp_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pp_transport_to_building_by_truck, item: new Number(label: piping_pp_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pp_transport_to_building_by_train, item: new Number(label: piping_pp_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pp_transport_to_building_by_ferry, item: new Number(label: piping_pp_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - Cast Iron
             input.Add(key: change_piping_cast_iron, item: new Checkbox(label: change_piping_cast_iron_lbl, order: ++order));
             input.Add(key: piping_cast_iron_life_of_product, item: new Number(label: piping_cast_iron_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_cast_iron_weight_of_cast_iron_pipes, item: new Number(label: piping_cast_iron_weight_of_cast_iron_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_cast_iron_transport_to_building_by_truck, item: new Number(label: piping_cast_iron_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_cast_iron_transport_to_building_by_train, item: new Number(label: piping_cast_iron_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_cast_iron_transport_to_building_by_ferry, item: new Number(label: piping_cast_iron_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_cast_iron_transport_to_building_by_truck, item: new Number(label: piping_cast_iron_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_cast_iron_transport_to_building_by_train, item: new Number(label: piping_cast_iron_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_cast_iron_transport_to_building_by_ferry, item: new Number(label: piping_cast_iron_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - Galvanized Steel
             input.Add(key: change_piping_galvanized_steel, item: new Checkbox(label: change_piping_galvanized_steel_lbl, order: ++order));
             input.Add(key: piping_galvanized_steel_life_of_product, item: new Number(label: piping_galvanized_steel_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_galvanized_steel_weight_of_galvanized_steel_pipes, item: new Number(label: piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_galvanized_steel_transport_to_building_by_truck, item: new Number(label: piping_galvanized_steel_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_galvanized_steel_transport_to_building_by_train, item: new Number(label: piping_galvanized_steel_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_galvanized_steel_transport_to_building_by_ferry, item: new Number(label: piping_galvanized_steel_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_galvanized_steel_transport_to_building_by_truck, item: new Number(label: piping_galvanized_steel_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_galvanized_steel_transport_to_building_by_train, item: new Number(label: piping_galvanized_steel_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_galvanized_steel_transport_to_building_by_ferry, item: new Number(label: piping_galvanized_steel_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Piping System - Relining
             input.Add(key: change_piping_relining, item: new Checkbox(label: change_piping_relining_lbl, order: ++order));
             input.Add(key: piping_relining_life_of_product, item: new Number(label: piping_relining_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: piping_relining_weight_of_relining_pipes, item: new Number(label: piping_relining_weight_of_relining_pipes_lbl, unit: "kg", order: ++order));
-            input.Add(key: piping_relining_transport_to_building_by_truck, item: new Number(label: piping_relining_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_relining_transport_to_building_by_train, item: new Number(label: piping_relining_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: piping_relining_transport_to_building_by_ferry, item: new Number(label: piping_relining_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_relining_transport_to_building_by_truck, item: new Number(label: piping_relining_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_relining_transport_to_building_by_train, item: new Number(label: piping_relining_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_relining_transport_to_building_by_ferry, item: new Number(label: piping_relining_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Electrical wiring
             input.Add(key: change_electrical_wiring, item: new Checkbox(label: change_electrical_wiring_lbl, order: ++order));
             input.Add(key: electrical_wiring_life_of_product, item: new Number(label: electrical_wiring_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: electrical_wiring_weight_of_electrical_wiring, item: new Number(label: electrical_wiring_weight_of_electrical_wiring_lbl, unit: "kg", order: ++order));
-            input.Add(key: electrical_wiring_transport_to_building_by_truck, item: new Number(label: electrical_wiring_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: electrical_wiring_transport_to_building_by_train, item: new Number(label: electrical_wiring_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            input.Add(key: electrical_wiring_transport_to_building_by_ferry, item: new Number(label: electrical_wiring_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: electrical_wiring_transport_to_building_by_truck, item: new Number(label: electrical_wiring_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: electrical_wiring_transport_to_building_by_train, item: new Number(label: electrical_wiring_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: electrical_wiring_transport_to_building_by_ferry, item: new Number(label: electrical_wiring_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
         }
 
-        void SetInputDataOneBuilding(Dictionary<String, Input> commonProperties, Feature building, ref CExcel exls)
+        void SetInputDataOneBuilding(Feature building, ref CExcel exls)
         {
-            // Single Building (simple)
-            #region LCA Calculation Period
-            String Key = lca_calculation_period;
-            if (commonProperties[Key] is Number)
-            {
-                Number value = commonProperties[Key] as Number;
-                String cell = "C16";
-                if (!exls.SetCellValue("Indata", cell, value.GetValue()))
-                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            }
-            else
-                throw new Exception(String.Format("Could not set cell, data in the wrong format. {0} instead of {1}",
-                    commonProperties[Key].GetType(),
-                    typeof(Number)));
-            #endregion
-
             SetBuildingProperties(building, ref exls);
             SetHeatingSystem(building, ref exls);
             SetBuildingShell(building, ref exls);
             SetVentilationSystem(building, ref exls);
+
+            #region Change...
+            String Key;
+            object value;
+
+            Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
+
+            Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
+            value = Convert.ToDouble(building.properties[Key]);
+            Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
+            #endregion
+
             SetRadiatorsPipesElectricity(building, ref exls);
         }
 
@@ -912,13 +944,13 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            #region Number of Apartments
-            Key = nr_apartments;
-            cell = "C26";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Number of Apartments
+            //Key = nr_apartments;
+            //cell = "C26";
+            //value = Convert.ToDouble(building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
             #region Heat Source Before
             Key = heat_source_before;
@@ -927,34 +959,7 @@ namespace RenobuildModule
             if (!exls.SetCellValue("Indata", cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
-
-            #region Heat Source After
-            Key = heat_source_after;
-            cell = "C94";
-            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            // If district heating is used (before/after renovation)
-            #region Global warming potential of district heating
-            Key = gwp_district;
-            cell = "C20";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region "Primary energy use of district heating
-            Key = peu_district;
-            cell = "C21";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            var thevalue = exls.GetCellValue("Indata", cell);
-
-
-            #endregion
+            
         }
 
         void SetHeatingSystem(Feature building, ref CExcel exls)
@@ -969,6 +974,14 @@ namespace RenobuildModule
             Key = change_heating_system;
             cell = "C99";
             value = (bool)building.properties[Key];
+            if (!exls.SetCellValue("Indata", cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            #endregion
+            
+            #region Heat Source After
+            Key = heat_source_after;
+            cell = "C94";
+            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
             if (!exls.SetCellValue("Indata", cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
@@ -1013,29 +1026,29 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            #region Transport to building by truck
-            Key = heating_system_transport_to_building_truck;
-            cell = "C106";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by truck
+            //Key = heating_system_transport_to_building_truck;
+            //cell = "C106";
+            //value = Convert.ToDouble(building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Transport to building by train
-            Key = heating_system_transport_to_building_train;
-            cell = "C107";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by train
+            //Key = heating_system_transport_to_building_train;
+            //cell = "C107";
+            //value = Convert.ToDouble(building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Transport to building by ferry
-            Key = heating_system_transport_to_building_ferry;
-            cell = "C108";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by ferry
+            //Key = heating_system_transport_to_building_ferry;
+            //cell = "C108";
+            //value = Convert.ToDouble(building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
             // Change Circulation Pump
             #region Change Circulation Pump
@@ -1054,29 +1067,29 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            #region Design pressure head
-            Key = design_pressure_head;
-            cell = "C115";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Design pressure head
+            //Key = design_pressure_head;
+            //cell = "C115";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Design flow rate
-            Key = design_flow_rate;
-            cell = "C116";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Design flow rate
+            //Key = design_flow_rate;
+            //cell = "C116";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Type of flow control in heating system
-            Key = type_of_control_in_heating_system;
-            cell = "C117";
-            value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Type of flow control in heating system
+            //Key = type_of_control_in_heating_system;
+            //cell = "C117";
+            //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
             #region Weight
             Key = weight;
@@ -1086,29 +1099,29 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            #region Transport to building by truck
-            Key = circulationpump_transport_to_building_truck;
-            cell = "C120";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by truck
+            //Key = circulationpump_transport_to_building_truck;
+            //cell = "C120";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Transport to building by train
-            Key = circulationpump_transport_to_building_train;
-            cell = "C121";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by train
+            //Key = circulationpump_transport_to_building_train;
+            //cell = "C121";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
-            #region Transport to building by ferry
-            Key = circulationpump_transport_to_building_ferry;
-            cell = "C122";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            //#region Transport to building by ferry
+            //Key = circulationpump_transport_to_building_ferry;
+            //cell = "C122";
+            //value = (building.properties[Key]);
+            //if (!exls.SetCellValue("Indata", cell, value))
+            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            //#endregion
 
         }
 
@@ -1140,11 +1153,11 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
                 #endregion
 
-                #region Change Insulation Material 1: Change AHD due to New Insulation
-                Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
-                #endregion
+                //#region Change Insulation Material 1: Change AHD due to New Insulation
+                //Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
+                //#endregion
 
                 #region Change Insulation Material 1: Amount of Insulation Material
                 Key = insulation_material_1_amount_of_new_insulation_material;
@@ -1152,23 +1165,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
                 #endregion
 
-                #region Change Insulation Material 1: Transport by Truck [km]
-                Key = insulation_material_1_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
-                #endregion
+                //#region Change Insulation Material 1: Transport by Truck [km]
+                //Key = insulation_material_1_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
+                //#endregion
 
-                #region Change Insulation Material 1: Transport by Truck [km]
-                Key = insulation_material_1_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
-                #endregion
+                //#region Change Insulation Material 1: Transport by Truck [km]
+                //Key = insulation_material_1_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
+                //#endregion
 
-                #region Change Insulation Material 1: Transport by Truck [km]
-                Key = insulation_material_1_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
-                #endregion
+                //#region Change Insulation Material 1: Transport by Truck [km]
+                //Key = insulation_material_1_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1193,11 +1206,11 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
                 #endregion
 
-                #region Insulation Material 2: Change AHD due to New Insulation
-                Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
-                #endregion
+                //#region Insulation Material 2: Change AHD due to New Insulation
+                //Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
+                //#endregion
 
                 #region Insulation Material 2: Amount of Insulation Material
                 Key = insulation_material_2_amount_of_new_insulation_material;
@@ -1205,27 +1218,27 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
                 #endregion
 
-                #region Insulation Material 2: Transport by Truck [km]
-                Key = insulation_material_2_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
-                #endregion
+                //#region Insulation Material 2: Transport by Truck [km]
+                //Key = insulation_material_2_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
+                //#endregion
 
-                #region Insulation Material 2: Transport by Truck [km]
-                Key = insulation_material_2_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
-                #endregion
+                //#region Insulation Material 2: Transport by Truck [km]
+                //Key = insulation_material_2_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
+                //#endregion
 
-                #region Insulation Material 2: Transport by Truck [km]
-                Key = insulation_material_2_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
-                #endregion
+                //#region Insulation Material 2: Transport by Truck [km]
+                //Key = insulation_material_2_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
-            // Fascade System
+            // Facade System
             #region Change Fascade System
             #region Change Fascade System?
             Key = change_fascade_system;
@@ -1246,11 +1259,11 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
                 #endregion
 
-                #region Fascade System: Change AHD due to New Fascade System
-                Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
-                #endregion
+                //#region Fascade System: Change AHD due to New Fascade System
+                //Key = fascade_system_change_in_annual_heat_demand_due_to_fascade_system;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
+                //#endregion
 
                 #region Fascade System: Area of New Fascade System
                 Key = fascade_system_area_of_new_fascade_system;
@@ -1258,23 +1271,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
                 #endregion
 
-                #region Fascade System: Transport by Truck [km]
-                Key = fascade_system_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
-                #endregion
+                //#region Fascade System: Transport by Truck [km]
+                //Key = fascade_system_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
+                //#endregion
 
-                #region Fascade System: Transport by Truck [km]
-                Key = fascade_system_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
-                #endregion
+                //#region Fascade System: Transport by Truck [km]
+                //Key = fascade_system_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
+                //#endregion
 
-                #region Fascade System: Transport by Truck [km]
-                Key = fascade_system_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
-                #endregion
+                //#region Fascade System: Transport by Truck [km]
+                //Key = fascade_system_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1299,11 +1312,11 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
                 #endregion
 
-                #region Windows: Change AHD due to New Windows
-                Key = windows_change_in_annual_heat_demand_due_to_windows;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
-                #endregion
+                //#region Windows: Change AHD due to New Windows
+                //Key = windows_change_in_annual_heat_demand_due_to_windows;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
+                //#endregion
 
                 #region Windows: Area of New Windows
                 Key = windows_area_of_new_windows;
@@ -1311,23 +1324,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
                 #endregion
 
-                #region Windows: Transport by Truck [km]
-                Key = windows_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
-                #endregion
+                //#region Windows: Transport by Truck [km]
+                //Key = windows_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
+                //#endregion
 
-                #region Windows: Transport by Truck [km]
-                Key = windows_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
-                #endregion
+                //#region Windows: Transport by Truck [km]
+                //Key = windows_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
+                //#endregion
 
-                #region Windows: Transport by Truck [km]
-                Key = windows_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
-                #endregion
+                //#region Windows: Transport by Truck [km]
+                //Key = windows_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1352,11 +1365,11 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
                 #endregion
 
-                #region Doors: Change AHD due to New Doors
-                Key = doors_change_in_annual_heat_demand_due_to_doors;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
-                #endregion
+                //#region Doors: Change AHD due to New Doors
+                //Key = doors_change_in_annual_heat_demand_due_to_doors;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
+                //#endregion
 
                 #region Doors: Number of new Fron Doors
                 Key = doors_number_of_new_front_doors;
@@ -1364,26 +1377,25 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
                 #endregion
 
-                #region Doors: Transport by Truck [km]
-                Key = doors_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
-                #endregion
+                //#region Doors: Transport by Truck [km]
+                //Key = doors_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
+                //#endregion
 
-                #region Doors: Transport by Truck [km]
-                Key = doors_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
-                #endregion
+                //#region Doors: Transport by Truck [km]
+                //Key = doors_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
+                //#endregion
 
-                #region Doors: Transport by Truck [km]
-                Key = doors_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
-                #endregion
+                //#region Doors: Transport by Truck [km]
+                //Key = doors_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
-
 
         }
 
@@ -1396,17 +1408,17 @@ namespace RenobuildModule
             // - Ventilation System
             #region Ventilation System
 
-            #region Ventilation System: Change in AHD due to ventilation system renovation
-            Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
-            #endregion
+            //#region Ventilation System: Change in AHD due to ventilation system renovation
+            //Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
+            //value = Convert.ToDouble(building.properties[Key]);
+            //Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
+            //#endregion
 
-            #region Ventilation System: Change in AED due to ventilation system renovation
-            Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
-            #endregion
+            //#region Ventilation System: Change in AED due to ventilation system renovation
+            //Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
+            //value = Convert.ToDouble(building.properties[Key]);
+            //Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
+            //#endregion
 
             #endregion
 
@@ -1437,23 +1449,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C185", value: value, exls: ref exls);
                 #endregion
 
-                #region Ventilation Ducts: Transport by Truck [km]
-                Key = ventilation_ducts_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
-                #endregion
+                //#region Ventilation Ducts: Transport by Truck [km]
+                //Key = ventilation_ducts_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
+                //#endregion
 
-                #region Ventilation Ducts: Transport by Truck [km]
-                Key = ventilation_ducts_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
-                #endregion
+                //#region Ventilation Ducts: Transport by Truck [km]
+                //Key = ventilation_ducts_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
+                //#endregion
 
-                #region Ventilation Ducts: Transport by Truck [km]
-                Key = ventilation_ducts_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
-                #endregion
+                //#region Ventilation Ducts: Transport by Truck [km]
+                //Key = ventilation_ducts_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1484,23 +1496,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C195", value: value, exls: ref exls);
                 #endregion
 
-                #region Airflow Assembly: Transport by Truck [km]
-                Key = airflow_assembly_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
-                #endregion
+                //#region Airflow Assembly: Transport by Truck [km]
+                //Key = airflow_assembly_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
+                //#endregion
 
-                #region Airflow Assembly: Transport by Truck [km]
-                Key = airflow_assembly_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
-                #endregion
+                //#region Airflow Assembly: Transport by Truck [km]
+                //Key = airflow_assembly_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
+                //#endregion
 
-                #region Airflow Assembly: Transport by Truck [km]
-                Key = airflow_assembly_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
-                #endregion
+                //#region Airflow Assembly: Transport by Truck [km]
+                //Key = airflow_assembly_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1513,29 +1525,35 @@ namespace RenobuildModule
             #endregion
             if ((bool)value)
             {
+                #region Air Distribution Housings & Silencers: Number of Housings
+                Key = air_distribution_housings_and_silencers_number_of_distribution_housings;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);  
+                #endregion
+
                 #region Air Distribution Housings & Silencers: Life of Product
                 Key = air_distribution_housings_and_silencers_life_of_product;
                 value = Convert.ToDouble(building.properties[Key]);
                 Set(sheet: "Indata", cell: "C203", value: value, exls: ref exls);
                 #endregion
 
-                #region Air Distribution Housings & Silencers: Transport by Truck [km]
-                Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
-                #endregion
+                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                //Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
+                //#endregion
 
-                #region Air Distribution Housings & Silencers: Transport by Truck [km]
-                Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
-                #endregion
+                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                //Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
+                //#endregion
 
-                #region Air Distribution Housings & Silencers: Transport by Truck [km]
-                Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
-                #endregion
+                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                //Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
         }
@@ -1573,23 +1591,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C218", value: value, exls: ref exls);
                 #endregion
 
-                #region Radiators: Transport by Truck [km]
-                Key = radiators_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
-                #endregion
+                //#region Radiators: Transport by Truck [km]
+                //Key = radiators_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
+                //#endregion
 
-                #region Radiators: Transport by Truck [km]
-                Key = radiators_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
-                #endregion
+                //#region Radiators: Transport by Truck [km]
+                //Key = radiators_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
+                //#endregion
 
-                #region Radiators: Transport by Truck [km]
-                Key = radiators_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
-                #endregion
+                //#region Radiators: Transport by Truck [km]
+                //Key = radiators_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
             
@@ -1614,23 +1632,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C227", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System Copper: Transport by Truck [km]
-                Key = piping_copper_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Copper: Transport by Truck [km]
+                //Key = piping_copper_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Copper: Transport by Truck [km]
-                Key = piping_copper_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Copper: Transport by Truck [km]
+                //Key = piping_copper_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Copper: Transport by Truck [km]
-                Key = piping_copper_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Copper: Transport by Truck [km]
+                //Key = piping_copper_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1655,23 +1673,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C236", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System PEX: Transport by Truck [km]
-                Key = piping_pex_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PEX: Transport by Truck [km]
+                //Key = piping_pex_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System PEX: Transport by Truck [km]
-                Key = piping_pex_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PEX: Transport by Truck [km]
+                //Key = piping_pex_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System PEX: Transport by Truck [km]
-                Key = piping_pex_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PEX: Transport by Truck [km]
+                //Key = piping_pex_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1696,23 +1714,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C245", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System PP: Transport by Truck [km]
-                Key = piping_pp_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PP: Transport by Truck [km]
+                //Key = piping_pp_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System PP: Transport by Truck [km]
-                Key = piping_pp_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PP: Transport by Truck [km]
+                //Key = piping_pp_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System PP: Transport by Truck [km]
-                Key = piping_pp_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System PP: Transport by Truck [km]
+                //Key = piping_pp_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
             
@@ -1737,23 +1755,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C254", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System Cast Iron: Transport by Truck [km]
-                Key = piping_cast_iron_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Cast Iron: Transport by Truck [km]
+                //Key = piping_cast_iron_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Cast Iron: Transport by Truck [km]
-                Key = piping_cast_iron_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Cast Iron: Transport by Truck [km]
+                //Key = piping_cast_iron_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Cast Iron: Transport by Truck [km]
-                Key = piping_cast_iron_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Cast Iron: Transport by Truck [km]
+                //Key = piping_cast_iron_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1778,23 +1796,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C263", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System Galvanized Steel: Transport by Truck [km]
-                Key = piping_galvanized_steel_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Galvanized Steel: Transport by Truck [km]
+                //Key = piping_galvanized_steel_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Galvanized Steel: Transport by Truck [km]
-                Key = piping_galvanized_steel_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Galvanized Steel: Transport by Truck [km]
+                //Key = piping_galvanized_steel_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Galvanized Steel: Transport by Truck [km]
-                Key = piping_galvanized_steel_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Galvanized Steel: Transport by Truck [km]
+                //Key = piping_galvanized_steel_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1819,23 +1837,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C272", value: value, exls: ref exls);
                 #endregion
 
-                #region Piping System Relining: Transport by Truck [km]
-                Key = piping_relining_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Relining: Transport by Truck [km]
+                //Key = piping_relining_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Relining: Transport by Truck [km]
-                Key = piping_relining_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Relining: Transport by Truck [km]
+                //Key = piping_relining_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
+                //#endregion
 
-                #region Piping System Relining: Transport by Truck [km]
-                Key = piping_relining_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
-                #endregion
+                //#region Piping System Relining: Transport by Truck [km]
+                //Key = piping_relining_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1860,23 +1878,23 @@ namespace RenobuildModule
                 Set(sheet: "Indata", cell: "C281", value: value, exls: ref exls);
                 #endregion
 
-                #region Electrical Wiring: Transport by Truck [km]
-                Key = electrical_wiring_transport_to_building_by_truck;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
-                #endregion
+                //#region Electrical Wiring: Transport by Truck [km]
+                //Key = electrical_wiring_transport_to_building_by_truck;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
+                //#endregion
 
-                #region Electrical Wiring: Transport by Truck [km]
-                Key = electrical_wiring_transport_to_building_by_train;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
-                #endregion
+                //#region Electrical Wiring: Transport by Truck [km]
+                //Key = electrical_wiring_transport_to_building_by_train;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
+                //#endregion
 
-                #region Electrical Wiring: Transport by Truck [km]
-                Key = electrical_wiring_transport_to_building_by_ferry;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
-                #endregion
+                //#region Electrical Wiring: Transport by Truck [km]
+                //Key = electrical_wiring_transport_to_building_by_ferry;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
+                //#endregion
             }
             #endregion
 
@@ -1900,7 +1918,8 @@ namespace RenobuildModule
         {
             Outputs outputs = new Outputs();
 
-            InputGroup commonProperties = indata[common_properties] as InputGroup;
+            InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
+            Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
             GeoJson buildingProperties = indata["buildings"] as GeoJson;
 
             double kpi = 0;
@@ -1917,6 +1936,36 @@ namespace RenobuildModule
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
             }
+
+            #region Set Common Properties
+            String Key;
+            object value = 0;
+
+            #region LCA Calculation Period
+            Key = lca_calculation_period;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C16", value: value, exls: ref exls);
+            #endregion
+
+            #region Electricity Mix
+            Key = electricity_mix;
+            value = ((Select)commonProperties[Key]).SelectedIndex() + 1;
+            Set(sheet: "Indata", cell: "C17", value: value, exls: ref exls);
+            #endregion
+
+            // If district heating is used (before/after renovation)
+            #region Global warming potential of district heating
+            Key = gwp_district;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C20", value: value, exls: ref exls);
+            #endregion
+
+            #region "Primary energy use of district heating
+            Key = peu_district;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C21", value: value, exls: ref exls);
+            #endregion
+            #endregion
 
             foreach (Feature building in buildingProperties.value.features)
             {
@@ -1939,7 +1988,7 @@ namespace RenobuildModule
                     (bool)building.properties[change_piping_relining] ||
                     (bool)building.properties[change_electrical_wiring]) 
                 {
-                    SetInputDataOneBuilding(commonProperties.GetInputs(), building, ref exls);
+                    SetInputDataOneBuilding(building, ref exls);
 
                     var resi = exls.GetCellValue("Indata", resultCell);
                     kpi += Convert.ToDouble(resi);
