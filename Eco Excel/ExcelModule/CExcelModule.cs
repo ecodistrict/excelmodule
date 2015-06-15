@@ -325,14 +325,24 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                var smr = new StartModuleResponse(ModuleId, request.variantId, request.kpiId, ModuleStatus.Processing);
+                var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Processing);
                 var str = Serialize.ToJsonString(smr);
                 PublishedEvent.signalString(str);
                 SendStatusMessage("StartModuleResponse processing sent"); 
             }
             catch (Exception ex)
             {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse",exception:ex);
+                try
+                {
+                    var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
+                    var str = Serialize.ToJsonString(smr);
+                    PublishedEvent.signalString(str);
+                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
+                }
+                catch 
+                {
+                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
+                }
                 return false;
             }
 
@@ -343,13 +353,16 @@ namespace Ecodistrict.Excel
             {
                 if (File.Exists(workBookPath))
                 {
-                if (ExcelApplikation.OpenWorkBook(workBookPath))
-                {
-                    outputs=CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
-                }
+                    if (ExcelApplikation.OpenWorkBook(workBookPath))
+                    {
+                        outputs = CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
+                    }
                 }
                 else
                 {
+                    var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
+                    var str = Serialize.ToJsonString(smr);
+                    PublishedEvent.signalString(str);
                     SendErrorMessage(string.Format("Excelfile <{0}> not found", workBookPath), sourceFunction: "SendModuleResult-FileNotFound");
                     return false;
                 }
@@ -360,8 +373,7 @@ namespace Ecodistrict.Excel
 
                 SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi", exception: ex);
 
-                var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
-                    ModuleStatus.Failed);
+                var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                 var str = Serialize.ToJsonString(stmResp2);
                 PublishedEvent.signalString(str);
                 SendStatusMessage("StartModuleResponse Failed sent"); 
@@ -375,7 +387,7 @@ namespace Ecodistrict.Excel
 
             try
             {
-                ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.kpiId, outputs);
+                ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
                 var str = Serialize.ToJsonString(result);
                 PublishedEvent.signalString(str);
                 SendStatusMessage("ModuleResult sent"); 
@@ -385,21 +397,7 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendModuleResult", exception: ex);
                 return false;
             }
-
-            try
-            {
-                StartModuleResponse stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.kpiId,
-                    ModuleStatus.Success);
-                var str = Serialize.ToJsonString(stmResp2);
-                PublishedEvent.signalString(str);
-                SendStatusMessage("StartModuleResponse success sent"); 
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendRSuccessResponse",exception:ex);
-                return false;
-            }
-
+            
             return true;
 
         }
