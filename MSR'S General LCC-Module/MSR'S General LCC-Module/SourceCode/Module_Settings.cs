@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSR_S_General_LCC_Module
+namespace MSR_LCC
 {
     public class Module_Settings
     {

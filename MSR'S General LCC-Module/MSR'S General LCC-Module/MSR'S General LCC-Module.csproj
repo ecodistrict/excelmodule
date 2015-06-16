@@ -7,8 +7,8 @@
     <ProjectGuid>{4E13446F-FE72-4AB8-A992-8BFEBBC9A525}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MSR_S_General_LCC_Module</RootNamespace>
-    <AssemblyName>MSR%27S General LCC-Module</AssemblyName>
+    <RootNamespace>MSR_LCC</RootNamespace>
+    <AssemblyName>MSR LCC-Module</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,14 +47,20 @@
     <Compile Include="SourceCode\IMB_Settings.cs" />
     <Compile Include="SourceCode\LCC_Module.cs" />
     <Compile Include="SourceCode\Module_Settings.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="SourceCode\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Config\IMB_config.yaml" />
-    <None Include="Config\Module_config.yaml" />
+    <None Include="client-eco-district.pfx" />
+    <None Include="Config\IMB_config.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Module_config.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="root-ca-imb.crt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj">
