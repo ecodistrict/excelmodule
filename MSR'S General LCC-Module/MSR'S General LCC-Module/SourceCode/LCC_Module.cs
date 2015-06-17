@@ -14,7 +14,7 @@ namespace MSR_LCC
     {
         #region Defines
         // - Kpis
-        const string kpi_roi = "roi";
+        const string kpi_lcc = "lcc";
 
         Dictionary<string, InputSpecification> inputSpecifications;
 
@@ -200,7 +200,7 @@ namespace MSR_LCC
                 inputSpecifications = new Dictionary<string, InputSpecification>();
 
                 //GeoJson
-                inputSpecifications.Add(kpi_roi, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_lcc, GetInputSpecificationGeoJson());
             }
             catch (System.Exception ex)
             {
@@ -213,8 +213,9 @@ namespace MSR_LCC
         #region Common Properties
         // Common
         string common_properties = "common_properties";
-        string lca_calculation_period = "lca_calculation_period";
-        string electricity_mix = "electricity_mix";
+        string lcc_calculation_period = "lcc_calculation_period";
+        string discount_rate = "discount_rate";
+        string discount_rate_lbl = "Discount rate";
 
         #endregion
 
@@ -226,15 +227,13 @@ namespace MSR_LCC
         // Inputs required in all cases
         string heated_area = "HEATED_AREA";
         string heated_area_lbl = "Heated area";
-        string nr_apartments = "NUMBER_OF_APARTMENTS";
-        string nr_apartments_lbl = "Number of apartments";
         string heat_source_before = "HEAT_SOURCE_BEFORE";
         string heat_source_before_lbl = "Heat source before renovation";
         string heat_source_after = "HEAT_SOURCE_AFTER";
         string heat_source_after_lbl = "Heat source after renovation";
         // If district heating is used (before/after renovation)
-        string gwp_district = "GWP_OF_DISTRICT_HEATING";
-        string gwp_district_lbl = "Global warming potential of district heating. Required if any building uses district heating before or after renovation. Impact per unit energy delivered to building, i.e. including distribution losses.";
+        string ep_district = "energy_price";
+        string ep_district_lbl = "Energy price";
         string peu_district = "PRIMARY_ENERGY_USE_OF_DISTRICT_HEATING";
         string peu_district_lbl = "Primary energy factor of district heating. Required if any building uses district heating before or after renovation. Impact per unit energy delivered to building, i.e. including distribution losses.";
         #endregion
@@ -248,38 +247,40 @@ namespace MSR_LCC
         string ahd_after_renovation_lbl = "Annual heat demand after renovation";
         string heating_system_life_of_product = "HEATING_SYSTEM__LIFE_OF_PRODUCT";
         string heating_system_life_of_product_lbl = "Life of product (Practical time of life of the products and materials used)";
-        string design_capacity = "HEATING_SYSTEM__DESIGN_CAPACITY";
-        string design_capacity_lbl = "Design capacity (Required for pellets boiler and oil boiler)";
-        string weight_of_bhd = "HEATING_SYSTEM__WEIGHT_OF_BHD";
-        string weight_of_bhd_lbl = "Weight of boiler/heat pump/district heating substation (Required except for direct electricity heating)";
-        string depth_of_borehole = "HEATING_SYSTEM__DEPTH_OF_BORE_HOLE";
-        string depth_of_borehole_lbl = "Depth of bore hole (For geothermal heat pump)";
-        string heating_system_transport_to_building_truck = "HEATING_SYSTEM__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string heating_system_transport_to_building_truck_lbl = "Transport to building by truck (Distance from production site to building)";
-        string heating_system_transport_to_building_train = "HEATING_SYSTEM__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string heating_system_transport_to_building_train_lbl = "Transport to building by train (Distance from production site to building)";
-        string heating_system_transport_to_building_ferry = "HEATING_SYSTEM__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string heating_system_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
+        string heating_system_initial_investment = "heating_system_initial_investment";
+        string heating_system_initial_investment_lbl = "Initial investment";
+        string heating_system_installation_cost = "heating_system_installation_cost";
+        string heating_system_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string heating_system_operating_cost = "heating_system_operating_cost";
+        string heating_system_operating_cost_lbl = "Total operating costs per year";
+        string heating_system_maintenance_cost = "heating_system_maintenance_cost";
+        string heating_system_maintenance_cost_lbl = "Total maintenance costs per year";
+        string heating_system_taxes_fees_cost = "heating_system_taxes_fees_cost";
+        string heating_system_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string heating_system_liquidation_cost = "heating_system_liquidation_cost";
+        string heating_system_liquidation_cost_lbl = "Cost of liquidation";
+        string heating_system_remnant_value = "heating_system_remnant_value";
+        string heating_system_remnant_value_lbl = "Remnant value";      
 
         // Change Circulation Pump
         string change_circulationpump_in_heating_system = "PUMP__CHANGE_PUMP";
         string change_circulationpump_in_heating_system_lbl = "Replace circulation pump in building heating system";
         string circulationpump_life_of_product = "PUMP__LIFE_OF_PRODUCT";
         string circulationpump_life_of_product_lbl = "Practical time of life of the products and materials used";
-        string design_pressure_head = "PUMP__DESIGN_PRESSURE_HEAD";
-        string design_pressure_head_lbl = "Design pressure head";
-        string design_flow_rate = "PUMP__DESIGN_FLOW_RATE";
-        string design_flow_rate_lbl = "Design flow rate";
-        string type_of_control_in_heating_system = "PUMP__TYPE_OF_FLOW_CONTROL";
-        string type_of_control_in_heating_system_lbl = "Type of flow control in heating system";
-        string weight = "PUMP__WEIGHT";
-        string weight_lbl = "Weight of new pump";
-        string circulationpump_transport_to_building_truck = "PUMP__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string circulationpump_transport_to_building_truck_lbl = "Transport to building by truck (Distance from production site to building)";
-        string circulationpump_transport_to_building_train = "PUMP__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string circulationpump_transport_to_building_train_lbl = "Transport to building by train (Distance from production site to building)";
-        string circulationpump_transport_to_building_ferry = "PUMP__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string circulationpump_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
+        string circulationpump_initial_investment = "circulationpump_initial_investment";
+        string circulationpump_initial_investment_lbl = "Initial investment";
+        string circulationpump_installation_cost = "circulationpump_installation_cost";
+        string circulationpump_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string circulationpump_operating_cost = "circulationpump_operating_cost";
+        string circulationpump_operating_cost_lbl = "Total operating costs per year";
+        string circulationpump_maintenance_cost = "circulationpump_maintenance_cost";
+        string circulationpump_maintenance_cost_lbl = "Total maintenance costs per year";
+        string circulationpump_taxes_fees_cost = "circulationpump_taxes_fees_cost";
+        string circulationpump_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string circulationpump_liquidation_cost = "circulationpump_liquidation_cost";
+        string circulationpump_liquidation_cost_lbl = "Cost of liquidation";
+        string circulationpump_remnant_value = "circulationpump_remnant_value";
+        string circulationpump_remnant_value_lbl = "Remnant value";
         #endregion
 
         #region Building Shell
@@ -568,7 +569,7 @@ namespace MSR_LCC
             this.UserName = "MSR_LCC";
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> {kpi_roi};
+            this.KpiList = new List<string> {kpi_lcc};
 
             //Error handler
             this.ErrorRaised += LCC_Module_ErrorRaised;
@@ -619,7 +620,7 @@ namespace MSR_LCC
             InputSpecification iSpec = new InputSpecification();
 
             // - ## Common Properties
-            //iSpec.Add(common_properties, CommonSpec());
+            iSpec.Add(common_properties, CommonSpec());
 
             // - ## Building Specific
             string description = "Building specific properties (Use the geojson-upload functionality below the map in order change renovation options for your buildings. You can select one or more buildings at the time by clicking on them, when you are finished with the selected building(s) press OK for the input sheet and continue selecting other buildings. When you have supplied all data scroll all the way down and press OK.)";
@@ -636,11 +637,11 @@ namespace MSR_LCC
 
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
-            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: ++order));
-            commonProp.Add(electricity_mix, new Select(label: "Electricity mix", options: electricity_mix_opts, order: ++order));
+            ///commonProp.Add(lcc_calculation_period, new Number(label: "Period of time for which total life cycle impact is summarized", min: 1, unit: "years", order: ++order));
+            commonProp.Add(discount_rate, new Number(label: discount_rate_lbl, unit: "%", order: ++order));
             // If district heating is used (before/after renovation)
-            commonProp.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, unit: "g CO2 eq/kWh", order: ++order));
-            commonProp.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
+            //commonProp.Add(key: ep_district, item: new Number(label: ep_district_lbl, min: 0, unit: "EUR", order: ++order));
+            //commonProp.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
 
             return commonProp;
         }
@@ -709,53 +710,27 @@ namespace MSR_LCC
             //Header
             input.Add("heating_system", new InputGroup("Renovate Heating System", ++order));
 
-            //input.Add(key: "1", item: new InputGroup(label: "-      Change Heating System", order: ++order));
-
             // Change Heating System
             input.Add(key: change_heating_system, item: new Checkbox(label: change_heating_system_lbl, order: ++order));
-            
-            input.Add(key: "heating_system_before", item: new Text(label: "", value: "Cost for current system...", order: ++order));
-            input.Add(key: "heating_system_before1", item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-
-            input.Add(key: "heating_system_new", item: new Text(label: "", value: "Cost for new system...", order: ++order));
             input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: "heating_system_discount_rate", item: new Number(label: "Discount rate", min: 0, unit: "%", order: ++order));
-            input.Add(key: "heating_system_initial_investment", item: new Number(label: "Initial investment", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "heating_system_installation_cost", item: new Number(label: "Installation cost (including possible cost of delivery)", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "heating_system_operating_cost", item: new Number(label: "Total operating costs per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "heating_system_maintenance_cost", item: new Number(label: "Total maintenance costs per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "heating_system_taxes_fees_cost", item: new Number(label: "Taxes / Fees per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "heating_system_liquidation_cost", item: new Number(label: "Cost of liquidation", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "heating_system_remnant_value", item: new Number(label: "Remnant value", min: 0, unit: "EUR", order: ++order));
-            
-
-            //input.Add(key: heat_source_after, item: new Select(label: heat_source_after_lbl, options: heat_sources, value: heat_sources.First(), order: ++order));
-            //input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: ahd_after_renovation, item: new Number(label: ahd_after_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
-            //input.Add(key: design_capacity, item: new Number(label: design_capacity_lbl, min: 0, unit: "kW", order: ++order));
-            //input.Add(key: weight_of_bhd, item: new Number(label: weight_of_bhd_lbl, min: 0, unit: "kg", order: ++order));
-            //input.Add(key: depth_of_borehole, item: new Number(label: depth_of_borehole_lbl, min: 0, unit: "m", order: ++order));
-            
+            input.Add(key: heating_system_initial_investment, item: new Number(label: heating_system_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: heating_system_installation_cost, item: new Number(label: heating_system_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: heating_system_operating_cost, item: new Number(label: heating_system_operating_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: heating_system_maintenance_cost, item: new Number(label: heating_system_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: heating_system_taxes_fees_cost, item: new Number(label: heating_system_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: heating_system_liquidation_cost, item: new Number(label: heating_system_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: heating_system_remnant_value, item: new Number(label: heating_system_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+                        
             // Change Circulation Pump
             input.Add(key: change_circulationpump_in_heating_system, item: new Checkbox(label: change_circulationpump_in_heating_system_lbl, order: ++order));
-
-            input.Add(key: "pump_before", item: new Text(label: "", value: "Cost for current system...", order: ++order));
-            input.Add(key: "pump_before1", item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-
-            input.Add(key: "pump_new", item: new Text(label: "", value: "Cost for new system...", order: ++order));
             input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: "pump_discount_rate", item: new Number(label: "Discount rate", min: 0, unit: "%", order: ++order));
-            input.Add(key: "pump_initial_investment", item: new Number(label: "Initial investment", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "pump_installation_cost", item: new Number(label: "Installation cost (including possible cost of delivery)", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "pump_operating_cost", item: new Number(label: "Total operating costs per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "pump_maintenance_cost", item: new Number(label: "Total maintenance costs per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "pump_taxes_fees_cost", item: new Number(label: "Taxes / Fees per year", min: 0, unit: "EUR/year", order: ++order));
-            input.Add(key: "pump_liquidation_cost", item: new Number(label: "Cost of liquidation", min: 0, unit: "EUR", order: ++order));
-            input.Add(key: "pump_remnant_value", item: new Number(label: "Remnant value", min: 0, unit: "EUR", order: ++order));
-
-            //input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: weight, item: new Number(label: weight_lbl, min: 0, unit: "kg", order: ++order));
-
+            input.Add(key: circulationpump_initial_investment, item: new Number(label: circulationpump_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: circulationpump_installation_cost, item: new Number(label: circulationpump_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: circulationpump_operating_cost, item: new Number(label: circulationpump_operating_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: circulationpump_maintenance_cost, item: new Number(label: circulationpump_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: circulationpump_taxes_fees_cost, item: new Number(label: circulationpump_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: circulationpump_liquidation_cost, item: new Number(label: circulationpump_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: circulationpump_remnant_value, item: new Number(label: circulationpump_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
         }
 
         void BuildingShell(ref GeoJson input, ref int order)
@@ -926,25 +901,25 @@ namespace MSR_LCC
 
         void SetInputDataOneBuilding(Feature building, ref CExcel exls)
         {
-            SetBuildingProperties(building, ref exls);
+            //SetBuildingProperties(building, ref exls);
             SetHeatingSystem(building, ref exls);
-            SetBuildingShell(building, ref exls);
-            SetVentilationSystem(building, ref exls);
+            //SetBuildingShell(building, ref exls);
+            //SetVentilationSystem(building, ref exls);
 
-            #region Change...
-            String Key;
-            object value;
+            //#region Change...
+            //String Key;
+            //object value;
 
-            Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
+            //Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
+            //value = Convert.ToDouble(building.properties[Key]);
+            //Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
 
-            Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
-            value = Convert.ToDouble(building.properties[Key]);
-            Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
-            #endregion
+            //Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
+            //value = Convert.ToDouble(building.properties[Key]);
+            //Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
+            //#endregion
 
-            SetRadiatorsPipesElectricity(building, ref exls);
+            //SetRadiatorsPipesElectricity(building, ref exls);
         }
 
         void SetBuildingProperties(Feature building, ref CExcel exls)
@@ -990,156 +965,149 @@ namespace MSR_LCC
             // Change Heating System
             #region Change Heating System
             Key = change_heating_system;
-            cell = "C99";
             value = (bool)building.properties[Key];
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            if ((bool)value)
+            {	
+	            #region Heating System: Life of Product
+	            Key = heating_system_life_of_product;
+	            cell = "E7";
+	            value = Convert.ToDouble(building.properties[Key]);
+	            if (!exls.SetCellValue("LCC", cell, value))
+	                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+	            #endregion	
+
+                #region Heating System: Initial Investment
+                Key = heating_system_initial_investment;
+                cell = "E12";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Total Installation Cost
+                Key = heating_system_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Operating Cost per Year
+                Key = heating_system_operating_cost;
+                cell = "E17";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Operating Cost per Year
+                Key = heating_system_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Operating Cost per Year
+                Key = heating_system_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Operating Cost per Year
+                Key = heating_system_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion	
+                
+                #region Heating System: Operating Cost per Year
+                Key = heating_system_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+            }
+
             #endregion
-
-            #region Heat Source After
-            Key = heat_source_after;
-            cell = "C94";
-            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region Annual Heat Demand After Renovation
-            Key = ahd_after_renovation;
-            cell = "C95";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region Heating System: Life of Product
-            Key = heating_system_life_of_product;
-            cell = "C100";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region Design Capacity
-            Key = design_capacity;
-            cell = "C103";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region Weight of boiler/heat pump/district heating substation
-            Key = weight_of_bhd;
-            cell = "C104";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            #region For geothermal heat pump: Depth of bore hole
-            Key = depth_of_borehole;
-            cell = "C109";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            //#region Transport to building by truck
-            //Key = heating_system_transport_to_building_truck;
-            //cell = "C106";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Transport to building by train
-            //Key = heating_system_transport_to_building_train;
-            //cell = "C107";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Transport to building by ferry
-            //Key = heating_system_transport_to_building_ferry;
-            //cell = "C108";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
 
             // Change Circulation Pump
             #region Change Circulation Pump
             Key = change_circulationpump_in_heating_system;
             cell = "C113";
             value = (bool)(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            if ((bool)value)
+            {
+                #region Circulation Pump: Life of Product
+                Key = circulationpump_life_of_product;
+                cell = "E7";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Initial Investment
+                Key = circulationpump_initial_investment;
+                cell = "E12";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Total Installation Cost
+                Key = circulationpump_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Operating Cost per Year
+                Key = circulationpump_operating_cost;
+                cell = "E17";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Operating Cost per Year
+                Key = circulationpump_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Operating Cost per Year
+                Key = circulationpump_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Operating Cost per Year
+                Key = circulationpump_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Circulation Pump: Operating Cost per Year
+                Key = circulationpump_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
             #endregion
-
-            #region Circulation Pump: Life of Product
-            Key = circulationpump_life_of_product;
-            cell = "C114";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            //#region Design pressure head
-            //Key = design_pressure_head;
-            //cell = "C115";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Design flow rate
-            //Key = design_flow_rate;
-            //cell = "C116";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Type of flow control in heating system
-            //Key = type_of_control_in_heating_system;
-            //cell = "C117";
-            //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            #region Weight
-            Key = weight;
-            cell = "C118";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
-
-            //#region Transport to building by truck
-            //Key = circulationpump_transport_to_building_truck;
-            //cell = "C120";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Transport to building by train
-            //Key = circulationpump_transport_to_building_train;
-            //cell = "C121";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Transport to building by ferry
-            //Key = circulationpump_transport_to_building_ferry;
-            //cell = "C122";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+            }
 
         }
 
@@ -1936,25 +1904,25 @@ namespace MSR_LCC
         {
             Outputs outputs = new Outputs();
 
-            //InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
-            //Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
-            //GeoJson buildingProperties = indata["buildings"] as GeoJson;
+            InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
+            Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
+            GeoJson buildingProperties = indata["buildings"] as GeoJson;
 
-            //double kpi = 0;
-            //string resultCell;
+            double kpi = 0;
+            string resultCell;
 
-            //switch (kpiId)
-            //{
-            //    case kpi_roi:
-            //        resultCell = "C31"; //Change of global warming potential
-            //        break;
-            //    default:
-            //        throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            //}
+            switch (kpiId)
+            {
+                case kpi_lcc:
+                    resultCell = "E30"; //Life cycle cost
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
 
-            //#region Set Common Properties
-            //String Key;
-            //object value = 0;
+            #region Set Common Properties
+            String Key;
+            object value = 0;
 
             //#region LCA Calculation Period
             //Key = lca_calculation_period;
@@ -1975,53 +1943,68 @@ namespace MSR_LCC
             //Set(sheet: "Indata", cell: "C20", value: value, exls: ref exls);
             //#endregion
 
-            //#region "Primary energy use of district heating
+            #region Quantity (one component at a time)
+            Set(sheet: "LCC", cell: "E6", value: 1, exls: ref exls);
+            #endregion
+
+            #region Discount rate
+            Key = discount_rate;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "LCC", cell: "E8", value: value, exls: ref exls);
+            #endregion
+
+            //#region Energy price
+            //Key = ep_district;
+            //value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            //Set(sheet: "Operating costs", cell: "C21", value: value, exls: ref exls);
+            //#endregion
+
+            //#region Primary energy use of district heating
             //Key = peu_district;
             //value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            //Set(sheet: "Indata", cell: "C21", value: value, exls: ref exls);
+            //Set(sheet: "Operating costs", cell: "C21", value: value, exls: ref exls);
             //#endregion
-            //#endregion
+            #endregion
 
-            //foreach (Feature building in buildingProperties.value.features)
-            //{
-            //    if ((bool)building.properties[change_heating_system] ||
-            //        (bool)building.properties[change_circulationpump_in_heating_system] ||
-            //        (bool)building.properties[change_insulation_material_1] ||
-            //        (bool)building.properties[change_insulation_material_2] ||
-            //        (bool)building.properties[change_facade_system] ||
-            //        (bool)building.properties[change_windows] ||
-            //        (bool)building.properties[change_doors] ||
-            //        (bool)building.properties[change_ventilation_ducts] ||
-            //        (bool)building.properties[change_airflow_assembly] ||
-            //        (bool)building.properties[change_air_distribution_housings_and_silencers] ||
-            //        (bool)building.properties[change_radiators] ||
-            //        (bool)building.properties[change_piping_copper] ||
-            //        (bool)building.properties[change_piping_pex] ||
-            //        (bool)building.properties[change_piping_pp] ||
-            //        (bool)building.properties[change_piping_cast_iron] ||
-            //        (bool)building.properties[change_piping_galvanized_steel] ||
-            //        (bool)building.properties[change_piping_relining] ||
-            //        (bool)building.properties[change_electrical_wiring])
-            //    {
-            //        SetInputDataOneBuilding(building, ref exls);
+            foreach (Feature building in buildingProperties.value.features)
+            {
+                if ((bool)building.properties[change_heating_system] ||
+                    (bool)building.properties[change_circulationpump_in_heating_system] ||
+                    (bool)building.properties[change_insulation_material_1] ||
+                    (bool)building.properties[change_insulation_material_2] ||
+                    (bool)building.properties[change_facade_system] ||
+                    (bool)building.properties[change_windows] ||
+                    (bool)building.properties[change_doors] ||
+                    (bool)building.properties[change_ventilation_ducts] ||
+                    (bool)building.properties[change_airflow_assembly] ||
+                    (bool)building.properties[change_air_distribution_housings_and_silencers] ||
+                    (bool)building.properties[change_radiators] ||
+                    (bool)building.properties[change_piping_copper] ||
+                    (bool)building.properties[change_piping_pex] ||
+                    (bool)building.properties[change_piping_pp] ||
+                    (bool)building.properties[change_piping_cast_iron] ||
+                    (bool)building.properties[change_piping_galvanized_steel] ||
+                    (bool)building.properties[change_piping_relining] ||
+                    (bool)building.properties[change_electrical_wiring])
+                {
+                    SetInputDataOneBuilding(building, ref exls);
 
-            //        var resi = exls.GetCellValue("Indata", resultCell);
-            //        kpi += Convert.ToDouble(resi);
+                    var resi = exls.GetCellValue("LCC", resultCell);
+                    kpi += Convert.ToDouble(resi);
 
-            //    }
+                }
 
-            //}
+            }
 
-            //switch (kpiId)
-            //{
-            //    case kpi_roi:
-            //        outputs.Add(new Kpi(Math.Round(kpi, 2), "Return of investment", ""));
-            //        break;
-            //    default:
-            //        throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            //}
+            switch (kpiId)
+            {
+                case kpi_lcc:
+                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Life cycle cost", "EUR"));
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
 
-            outputs.Add(new Kpi(1, "Return of investment", ""));
 
             return outputs;
         }
