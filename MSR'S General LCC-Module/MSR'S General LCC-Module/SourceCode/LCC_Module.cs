@@ -899,10 +899,13 @@ namespace MSR_LCC
 
         }
 
-        void SetInputDataOneBuilding(Feature building, ref CExcel exls)
+        double SetInputDataOneBuilding(Feature building, ref CExcel exls)
         {
+
+            double res = 0.0;
+
             //SetBuildingProperties(building, ref exls);
-            SetHeatingSystem(building, ref exls);
+            res += SetHeatingSystem(building, ref exls);
             //SetBuildingShell(building, ref exls);
             //SetVentilationSystem(building, ref exls);
 
@@ -920,6 +923,9 @@ namespace MSR_LCC
             //#endregion
 
             //SetRadiatorsPipesElectricity(building, ref exls);
+
+            return res;
+
         }
 
         void SetBuildingProperties(Feature building, ref CExcel exls)
@@ -955,12 +961,12 @@ namespace MSR_LCC
 
         }
 
-        void SetHeatingSystem(Feature building, ref CExcel exls)
+        double SetHeatingSystem(Feature building, ref CExcel exls)
         {
-
             String Key;
             object value;
             String cell;
+            double res = 0.0;
 
             // Change Heating System
             #region Change Heating System
@@ -1031,7 +1037,9 @@ namespace MSR_LCC
                 if (!exls.SetCellValue("LCC", cell, value))
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
-            }
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", "E30"));
+            }            
 
             #endregion
 
@@ -1106,8 +1114,12 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-            #endregion
+                res += Convert.ToDouble(exls.GetCellValue("LCC", "E30"));
             }
+
+            #endregion
+
+            return res;
 
         }
 
@@ -1987,11 +1999,7 @@ namespace MSR_LCC
                     (bool)building.properties[change_piping_relining] ||
                     (bool)building.properties[change_electrical_wiring])
                 {
-                    SetInputDataOneBuilding(building, ref exls);
-
-                    var resi = exls.GetCellValue("LCC", resultCell);
-                    kpi += Convert.ToDouble(resi);
-
+                    kpi += SetInputDataOneBuilding(building, ref exls);
                 }
 
             }
