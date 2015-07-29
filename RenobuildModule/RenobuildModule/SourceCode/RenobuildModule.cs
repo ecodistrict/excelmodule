@@ -15,7 +15,9 @@ namespace RenobuildModule
         #region Defines
         // - Kpis
         const string kpi_gwp = "change-of-global-warming-potential";
+        const string kpi_mean_gwp_per_heated_area = "mean-change-of-global-warming-potential-per-heated-area";
         const string kpi_peu = "change-of-primary-energy-use";
+        const string kpi_mean_peu_per_heated_area = "mean-change-of-primary-energy-use-per-heated-area";
 
         Dictionary<string, InputSpecification> inputSpecifications;
 
@@ -202,7 +204,9 @@ namespace RenobuildModule
 
                 //GeoJson
                 inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_mean_gwp_per_heated_area, GetInputSpecificationGeoJson());
                 inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_mean_peu_per_heated_area, GetInputSpecificationGeoJson());
             }
             catch (System.Exception ex)
             {
@@ -570,7 +574,7 @@ namespace RenobuildModule
             this.UserName = "Renobuild";
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_gwp, kpi_peu };
+            this.KpiList = new List<string> { kpi_gwp, kpi_mean_gwp_per_heated_area , kpi_peu, kpi_mean_peu_per_heated_area };
 
             //Error handler
             this.ErrorRaised += RenobuildModule_ErrorRaised;
@@ -1930,8 +1934,14 @@ namespace RenobuildModule
                 case kpi_gwp:
                     resultCell = "C31"; //Change of global warming potential
                     break;
+                case kpi_mean_gwp_per_heated_area:
+                    resultCell = "E31"; //Mean change of global warming potential per m^2
+                    break;
                 case kpi_peu:
                     resultCell = "C32"; //Change of primary energy use  
+                    break;
+                case kpi_mean_peu_per_heated_area:
+                    resultCell = "E32"; //Mean hange of primary energy use per m^2
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
@@ -1997,13 +2007,22 @@ namespace RenobuildModule
 
             }
 
+            if(buildingProperties.value.features.Count>0 & (kpiId == kpi_mean_gwp_per_heated_area | kpiId == kpi_mean_peu_per_heated_area))
+                kpi = kpi / (double)buildingProperties.value.features.Count;
+
             switch (kpiId)
             {
                 case kpi_gwp:
                     outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of global warming potential", "tonnes CO2 eq"));
                     break;
+                case kpi_mean_gwp_per_heated_area:
+                    outputs.Add(new Kpi(Math.Round(kpi, 3), "Mean change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
+                    break;
                 case kpi_peu:
                     outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of primary energy use", "MWh"));
+                    break;
+                case kpi_mean_peu_per_heated_area:
+                    outputs.Add(new Kpi(Math.Round(kpi, 3), "Mean change of primary energy use per heated area", "MWh / m\u00b2"));
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
