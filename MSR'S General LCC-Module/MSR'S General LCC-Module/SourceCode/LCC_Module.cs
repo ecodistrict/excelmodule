@@ -217,6 +217,16 @@ namespace MSR_LCC
         string discount_rate = "discount_rate";
         string discount_rate_lbl = "Discount rate";
 
+
+        string electric_cost = "elictric_cost";
+        string electric_cost_lbl = "Electric cost";
+        string water_cost = "water_cost";
+        string water_cost_lbl = "Water cost";
+        string heat_cost = "heat_cost";
+        string heat_cost_lbl = "Heat cost";
+        string natural_gas_cost = "natural_gas_cost";
+        string natural_gas_cost_lbl = "Natural gas cost";
+
         #endregion
 
         #region Building specific Properties
@@ -251,8 +261,22 @@ namespace MSR_LCC
         string heating_system_initial_investment_lbl = "Initial investment";
         string heating_system_installation_cost = "heating_system_installation_cost";
         string heating_system_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
-        string heating_system_operating_cost = "heating_system_operating_cost";
-        string heating_system_operating_cost_lbl = "Total operating costs per year";
+        string heating_system_heat_consumption = "heating_system_heat_consumption";
+        string heating_system_heat_consumption_lbl = "Heat consumption";
+        string heating_system_heat_annual_use = "heating_system_heat_annual_use";
+        string heating_system_heat_annual_use_lbl = "Annual use";  //Same for all components? (e.g. electric,water and natural gas)
+        string heating_system_natural_gas_consumption = "heating_system_natural_gas_consumption";
+        string heating_system_natural_gas_consumption_lbl = "Natural gas consumption";
+        string heating_system_natural_gas_annual_use = "heating_system_natural_gas_annual_use";
+        string heating_system_natural_gas_annual_use_lbl = "Natural gas annual use";
+        string heating_system_electric_consumption = "heating_system_electric_consumption";
+        string heating_system_electric_consumption_lbl = "Electric consumption";
+        string heating_system_electric_annual_use = "heating_system_electric_annual_use";
+        string heating_system_electric_annual_use_lbl = "Electric annual use";
+        string heating_system_water_consumption = "heating_system_water_consumption";
+        string heating_system_water_consumption_lbl = "Water consumption";
+        string heating_system_water_annual_use = "heating_system_water_annual_use";
+        string heating_system_water_annual_use_lbl = "Water annual use";
         string heating_system_maintenance_cost = "heating_system_maintenance_cost";
         string heating_system_maintenance_cost_lbl = "Total maintenance costs per year";
         string heating_system_taxes_fees_cost = "heating_system_taxes_fees_cost";
@@ -271,8 +295,10 @@ namespace MSR_LCC
         string circulationpump_initial_investment_lbl = "Initial investment";
         string circulationpump_installation_cost = "circulationpump_installation_cost";
         string circulationpump_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
-        string circulationpump_operating_cost = "circulationpump_operating_cost";
-        string circulationpump_operating_cost_lbl = "Total operating costs per year";
+        string circulationpump_electric_consumption = "circulationpump_electric_consumption";
+        string circulationpump_electric_consumption_lbl = "Electric consumption";
+        string circulationpump_electric_annual_use = "circulationpump_electric_annual_use";
+        string circulationpump_electric_annual_use_lbl = "Electric annual use";
         string circulationpump_maintenance_cost = "circulationpump_maintenance_cost";
         string circulationpump_maintenance_cost_lbl = "Total maintenance costs per year";
         string circulationpump_taxes_fees_cost = "circulationpump_taxes_fees_cost";
@@ -639,6 +665,10 @@ namespace MSR_LCC
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
             ///commonProp.Add(lcc_calculation_period, new Number(label: "Period of time for which total life cycle impact is summarized", min: 1, unit: "years", order: ++order));
             commonProp.Add(discount_rate, new Number(label: discount_rate_lbl, unit: "%", order: ++order));
+            commonProp.Add(electric_cost, new Number(label: electric_cost_lbl, unit: "EUR/kWh", value: 0.208, order: ++order));
+            commonProp.Add(heat_cost, new Number(label: heat_cost, unit: "EUR/kWh", value: 0.06, order: ++order));
+            commonProp.Add(water_cost, new Number(label: water_cost, unit: "EUR/1000 liters", value: 1.91, order: ++order));
+            commonProp.Add(natural_gas_cost, new Number(label: natural_gas_cost, unit: "EUR/kWh", value: 0.072, order: ++order));
             // If district heating is used (before/after renovation)
             //commonProp.Add(key: ep_district, item: new Number(label: ep_district_lbl, min: 0, unit: "EUR", order: ++order));
             //commonProp.Add(key: peu_district, item: new Number(label: peu_district_lbl, min: 0, unit: "kWh/kWh", order: ++order));
@@ -716,7 +746,14 @@ namespace MSR_LCC
             input.Add(key: heating_system_life_of_product, item: new Number(label: heating_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: heating_system_initial_investment, item: new Number(label: heating_system_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
             input.Add(key: heating_system_installation_cost, item: new Number(label: heating_system_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
-            input.Add(key: heating_system_operating_cost, item: new Number(label: heating_system_operating_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: heating_system_heat_consumption, item: new Number(label: heating_system_heat_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: heating_system_heat_annual_use, item: new Number(label: heating_system_heat_annual_use_lbl, min: 0, unit: "hours", order: ++order));
+            input.Add(key: heating_system_natural_gas_consumption, item: new Number(label: heating_system_natural_gas_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: heating_system_natural_gas_annual_use, item: new Number(label: heating_system_natural_gas_annual_use_lbl, min: 0, unit: "hours", order: ++order));
+            input.Add(key: heating_system_electric_consumption, item: new Number(label: heating_system_electric_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: heating_system_electric_annual_use, item: new Number(label: heating_system_electric_annual_use_lbl, min: 0, unit: "hours", order: ++order));
+            input.Add(key: heating_system_water_consumption, item: new Number(label: heating_system_water_consumption_lbl, min: 0, unit: "1000 liters", order: ++order));
+            input.Add(key: heating_system_water_annual_use, item: new Number(label: heating_system_water_annual_use_lbl, min: 0, unit: "hours", order: ++order));      
             input.Add(key: heating_system_maintenance_cost, item: new Number(label: heating_system_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
             input.Add(key: heating_system_taxes_fees_cost, item: new Number(label: heating_system_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
             input.Add(key: heating_system_liquidation_cost, item: new Number(label: heating_system_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
@@ -727,7 +764,8 @@ namespace MSR_LCC
             input.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             input.Add(key: circulationpump_initial_investment, item: new Number(label: circulationpump_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
             input.Add(key: circulationpump_installation_cost, item: new Number(label: circulationpump_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
-            input.Add(key: circulationpump_operating_cost, item: new Number(label: circulationpump_operating_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: circulationpump_electric_consumption, item: new Number(label: circulationpump_electric_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: circulationpump_electric_annual_use, item: new Number(label: circulationpump_electric_annual_use_lbl, min: 0, unit: "hours", order: ++order));
             input.Add(key: circulationpump_maintenance_cost, item: new Number(label: circulationpump_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
             input.Add(key: circulationpump_taxes_fees_cost, item: new Number(label: circulationpump_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
             input.Add(key: circulationpump_liquidation_cost, item: new Number(label: circulationpump_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
@@ -1020,7 +1058,7 @@ namespace MSR_LCC
                 #endregion	
                 
                 #region Heating System: Operating Cost per Year
-                Key = heating_system_operating_cost;
+                Key = heating_system_heat_consumption;
                 cell = "E17";
                 value = Convert.ToDouble(building.properties[Key]);
                 if (!exls.SetCellValue("LCC", cell, value))
@@ -1043,13 +1081,13 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion	
                 
-                #region Heating System: Operating Cost per Year
-                Key = heating_system_liquidation_cost;
-                cell = "E26";
-                value = Convert.ToDouble(building.properties[Key]);
-                if (!exls.SetCellValue("LCC", cell, value))
-                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-                #endregion	
+                //#region Heating System: Operating Cost per Year
+                //Key = heating_system_liquidation_cost; //TODO update
+                //cell = "E26";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("LCC", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion	
                 
                 #region Heating System: Operating Cost per Year
                 Key = heating_system_remnant_value;
@@ -1095,12 +1133,12 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Circulation Pump: Operating Cost per Year
-                Key = circulationpump_operating_cost;
-                cell = "E17";
-                value = Convert.ToDouble(building.properties[Key]);
-                if (!exls.SetCellValue("LCC", cell, value))
-                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #region Circulation Pump: Operating Cost per Year  
+                //Key = circulationpump_electric_consumption; //TODO update
+                //cell = "E17";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("LCC", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
                 #region Circulation Pump: Operating Cost per Year
