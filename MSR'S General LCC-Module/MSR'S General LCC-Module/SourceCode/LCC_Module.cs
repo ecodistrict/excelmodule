@@ -703,6 +703,7 @@ namespace MSR_LCC
             input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order, value: 99));
             //input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
 
+
         }
 
         void HeatingSystem(ref GeoJson input, ref int order)
@@ -731,6 +732,26 @@ namespace MSR_LCC
             input.Add(key: circulationpump_taxes_fees_cost, item: new Number(label: circulationpump_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
             input.Add(key: circulationpump_liquidation_cost, item: new Number(label: circulationpump_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
             input.Add(key: circulationpump_remnant_value, item: new Number(label: circulationpump_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+                        
+
+            //List aList = new List("Alist", ++order);
+            //Options opt = new Options();
+            //opt.Add(new Option("opt1","opt1"));
+            //opt.Add(new Option("opt2","opt2"));
+            //opt.Add(new Option("opt3","opt3"));
+            //Select sb = new Select("Select", opt, ++order, opt.First());
+            //aList.Add(key: "asd", item: sb);
+            //aList.Add(key: circulationpump_life_of_product, item: new Number(label: circulationpump_life_of_product_lbl, min: 0, unit: "years", order: ++order));
+            //aList.Add(key: circulationpump_initial_investment, item: new Number(label: circulationpump_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            //aList.Add(key: circulationpump_installation_cost, item: new Number(label: circulationpump_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            //aList.Add(key: circulationpump_operating_cost, item: new Number(label: circulationpump_operating_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            //aList.Add(key: circulationpump_maintenance_cost, item: new Number(label: circulationpump_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            //aList.Add(key: circulationpump_taxes_fees_cost, item: new Number(label: circulationpump_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            //aList.Add(key: circulationpump_liquidation_cost, item: new Number(label: circulationpump_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            //aList.Add(key: circulationpump_remnant_value, item: new Number(label: circulationpump_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
+            //input.Add("asdasd", aList);
+
         }
 
         void BuildingShell(ref GeoJson input, ref int order)
