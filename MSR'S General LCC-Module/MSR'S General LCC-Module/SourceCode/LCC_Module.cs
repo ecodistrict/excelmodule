@@ -505,114 +505,162 @@ namespace MSR_LCC
         string change_radiators_lbl = "Change radiators";
         string radiators_life_of_product = "RADIATORS__LIFE_OF_PRODUCT";
         string radiators_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string radiators_type_of_radiators = "RADIATORS__TYPE_OF_RADIATORS";
-        string radiators_type_of_radiators_lbl = "Type of radiators";
-        string radiators_weight_of_radiators = "RADIATORS__WEIGHT_OF_NEW_RADIATORS";
-        string radiators_weight_of_radiators_lbl = "Weight of new radiators";
-        string radiators_transport_to_building_by_truck = "RADIATORS__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string radiators_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string radiators_transport_to_building_by_train = "RADIATORS__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string radiators_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string radiators_transport_to_building_by_ferry = "RADIATORS__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string radiators_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string radiators_type_of_radiators = "RADIATORS__TYPE_OF_RADIATORS";
+        //string radiators_type_of_radiators_lbl = "Type of radiators";
+        //string radiators_weight_of_radiators = "RADIATORS__WEIGHT_OF_NEW_RADIATORS";
+        //string radiators_weight_of_radiators_lbl = "Weight of new radiators";
+        string radiators_initial_investment = "radiators_initial_investment";
+        string radiators_initial_investment_lbl = "Initial investment";
+        string radiators_installation_cost = "radiators_installation_cost";
+        string radiators_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string radiators_maintenance_cost = "radiators_maintenance_cost";
+        string radiators_maintenance_cost_lbl = "Total maintenance costs per year";
+        string radiators_taxes_fees_cost = "radiators_taxes_fees_cost";
+        string radiators_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string radiators_liquidation_cost = "radiators_liquidation_cost";
+        string radiators_liquidation_cost_lbl = "Cost of liquidation";
+        string radiators_remnant_value = "radiators_remnant_value";
+        string radiators_remnant_value_lbl = "Remnant value";
 
         // Piping System - Copper
         string change_piping_copper = "PIPING_SYSTEM_COPPER__CHANGE";
         string change_piping_copper_lbl = "Change copper pipes";
         string piping_copper_life_of_product = "PIPING_SYSTEM_COPPER__LIFE_OF_PRODUCT";
         string piping_copper_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_copper_weight_of_copper_pipes = "PIPING_SYSTEM_COPPER__WEIGHT_OF_NEW_PIPES";
-        string piping_copper_weight_of_copper_pipes_lbl = "Weight of new pipes";
-        string piping_copper_transport_to_building_by_truck = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_copper_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_copper_transport_to_building_by_train = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_copper_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_copper_transport_to_building_by_ferry = "PIPING_SYSTEM_COPPER__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_copper_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_copper_weight_of_copper_pipes = "PIPING_SYSTEM_COPPER__WEIGHT_OF_NEW_PIPES";
+        //string piping_copper_weight_of_copper_pipes_lbl = "Weight of new pipes";
+        string piping_copper_initial_investment = "piping_copper_initial_investment";
+        string piping_copper_initial_investment_lbl = "Initial investment";
+        string piping_copper_installation_cost = "piping_copper_installation_cost";
+        string piping_copper_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_copper_maintenance_cost = "piping_copper_maintenance_cost";
+        string piping_copper_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_copper_taxes_fees_cost = "piping_copper_taxes_fees_cost";
+        string piping_copper_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_copper_liquidation_cost = "piping_copper_liquidation_cost";
+        string piping_copper_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_copper_remnant_value = "piping_copper_remnant_value";
+        string piping_copper_remnant_value_lbl = "Remnant value";
 
         // Piping System - PEX
         string change_piping_pex = "PIPING_SYSTEM_PEX__CHANGE";
         string change_piping_pex_lbl = "Change PEX pipes";
         string piping_pex_life_of_product = "PIPING_SYSTEM_PEX__LIFE_OF_PRODUCT";
         string piping_pex_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_pex_weight_of_pex_pipes = "PIPING_SYSTEM_PEX__WEIGHT_OF_NEW_PIPES";
-        string piping_pex_weight_of_pex_pipes_lbl = "Weight of new pipes";
-        string piping_pex_transport_to_building_by_truck = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_pex_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_pex_transport_to_building_by_train = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_pex_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_pex_transport_to_building_by_ferry = "PIPING_SYSTEM_PEX__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_pex_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_pex_weight_of_pex_pipes = "PIPING_SYSTEM_PEX__WEIGHT_OF_NEW_PIPES";
+        //string piping_pex_weight_of_pex_pipes_lbl = "Weight of new pipes";
+        string piping_pex_initial_investment = "piping_pex_initial_investment";
+        string piping_pex_initial_investment_lbl = "Initial investment";
+        string piping_pex_installation_cost = "piping_pex_installation_cost";
+        string piping_pex_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_pex_maintenance_cost = "piping_pex_maintenance_cost";
+        string piping_pex_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_pex_taxes_fees_cost = "piping_pex_taxes_fees_cost";
+        string piping_pex_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_pex_liquidation_cost = "piping_pex_liquidation_cost";
+        string piping_pex_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_pex_remnant_value = "piping_pex_remnant_value";
+        string piping_pex_remnant_value_lbl = "Remnant value";
 
         // Piping System - PP
         string change_piping_pp = "PIPING_SYSTEM_PP__CHANGE";
         string change_piping_pp_lbl = "Change PP pipes";
         string piping_pp_life_of_product = "PIPING_SYSTEM_PP__LIFE_OF_PRODUCT";
         string piping_pp_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_pp_weight_of_pp_pipes = "PIPING_SYSTEM_PP__WEIGHT_OF_NEW_PIPES";
-        string piping_pp_weight_of_pp_pipes_lbl = "Weight of new pipes";
-        string piping_pp_transport_to_building_by_truck = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_pp_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_pp_transport_to_building_by_train = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_pp_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_pp_transport_to_building_by_ferry = "PIPING_SYSTEM_PP__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_pp_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_pp_weight_of_pp_pipes = "PIPING_SYSTEM_PP__WEIGHT_OF_NEW_PIPES";
+        //string piping_pp_weight_of_pp_pipes_lbl = "Weight of new pipes";
+        string piping_pp_initial_investment = "piping_pp_initial_investment";
+        string piping_pp_initial_investment_lbl = "Initial investment";
+        string piping_pp_installation_cost = "piping_pp_installation_cost";
+        string piping_pp_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_pp_maintenance_cost = "piping_pp_maintenance_cost";
+        string piping_pp_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_pp_taxes_fees_cost = "piping_pp_taxes_fees_cost";
+        string piping_pp_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_pp_liquidation_cost = "piping_pp_liquidation_cost";
+        string piping_pp_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_pp_remnant_value = "piping_pp_remnant_value";
+        string piping_pp_remnant_value_lbl = "Remnant value";
 
         // Piping System - Cast Iron
         string change_piping_cast_iron = "PIPING_SYSTEM_CAST_IRON__CHANGE";
         string change_piping_cast_iron_lbl = "Change cast iron pipes";
         string piping_cast_iron_life_of_product = "PIPING_SYSTEM_CAST_IRON__LIFE_OF_PRODUCT";
         string piping_cast_iron_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_cast_iron_weight_of_cast_iron_pipes = "PIPING_SYSTEM_CAST_IRON__WEIGHT_OF_NEW_PIPES";
-        string piping_cast_iron_weight_of_cast_iron_pipes_lbl = "Weight of new pipes";
-        string piping_cast_iron_transport_to_building_by_truck = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_cast_iron_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_cast_iron_transport_to_building_by_train = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_cast_iron_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_cast_iron_transport_to_building_by_ferry = "PIPING_SYSTEM_CAST_IRON__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_cast_iron_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_cast_iron_weight_of_cast_iron_pipes = "PIPING_SYSTEM_CAST_IRON__WEIGHT_OF_NEW_PIPES";
+        //string piping_cast_iron_weight_of_cast_iron_pipes_lbl = "Weight of new pipes";
+        string piping_cast_iron_initial_investment = "piping_cast_iron_initial_investment";
+        string piping_cast_iron_initial_investment_lbl = "Initial investment";
+        string piping_cast_iron_installation_cost = "piping_cast_iron_installation_cost";
+        string piping_cast_iron_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_cast_iron_maintenance_cost = "piping_cast_iron_maintenance_cost";
+        string piping_cast_iron_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_cast_iron_taxes_fees_cost = "piping_cast_iron_taxes_fees_cost";
+        string piping_cast_iron_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_cast_iron_liquidation_cost = "piping_cast_iron_liquidation_cost";
+        string piping_cast_iron_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_cast_iron_remnant_value = "piping_cast_iron_remnant_value";
+        string piping_cast_iron_remnant_value_lbl = "Remnant value";
 
         // Piping System - Galvanized Steel
         string change_piping_galvanized_steel = "PIPING_SYSTEM_GALVANISED_STEEL__CHANGE";
         string change_piping_galvanized_steel_lbl = "Change galvanized steel pipes";
         string piping_galvanized_steel_life_of_product = "PIPING_SYSTEM_GALVANISED_STEEL__LIFE_OF_PRODUCT";
         string piping_galvanized_steel_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "PIPING_SYSTEM_GALVANISED_STEEL__WEIGHT_OF_NEW_PIPES";
-        string piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl = "Weight of new pipes";
-        string piping_galvanized_steel_transport_to_building_by_truck = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_galvanized_steel_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_galvanized_steel_transport_to_building_by_train = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_galvanized_steel_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_galvanized_steel_transport_to_building_by_ferry = "PIPING_SYSTEM_GALVANISED_STEEL__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_galvanized_steel_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "PIPING_SYSTEM_GALVANISED_STEEL__WEIGHT_OF_NEW_PIPES";
+        //string piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl = "Weight of new pipes";
+        string piping_galvanized_steel_initial_investment = "piping_galvanized_steel_initial_investment";
+        string piping_galvanized_steel_initial_investment_lbl = "Initial investment";
+        string piping_galvanized_steel_installation_cost = "piping_galvanized_steel_installation_cost";
+        string piping_galvanized_steel_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_galvanized_steel_maintenance_cost = "piping_galvanized_steel_maintenance_cost";
+        string piping_galvanized_steel_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_galvanized_steel_taxes_fees_cost = "piping_galvanized_steel_taxes_fees_cost";
+        string piping_galvanized_steel_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_galvanized_steel_liquidation_cost = "piping_galvanized_steel_liquidation_cost";
+        string piping_galvanized_steel_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_galvanized_steel_remnant_value = "piping_galvanized_steel_remnant_value";
+        string piping_galvanized_steel_remnant_value_lbl = "Remnant value";
 
         // Piping System - Relining
         string change_piping_relining = "PIPING_SYSTEM_RELINING__CHANGE";
         string change_piping_relining_lbl = "Relining of pipes";
         string piping_relining_life_of_product = "PIPING_SYSTEM_RELINING__LIFE_OF_PRODUCT";
         string piping_relining_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string piping_relining_weight_of_relining_pipes = "PIPING_SYSTEM_RELINING__WEIGHT_OF_NEW_PIPES";
-        string piping_relining_weight_of_relining_pipes_lbl = "Weight of new pipes";
-        string piping_relining_transport_to_building_by_truck = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string piping_relining_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string piping_relining_transport_to_building_by_train = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string piping_relining_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string piping_relining_transport_to_building_by_ferry = "PIPING_SYSTEM_RELINING__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string piping_relining_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string piping_relining_weight_of_relining_pipes = "PIPING_SYSTEM_RELINING__WEIGHT_OF_NEW_PIPES";
+        //string piping_relining_weight_of_relining_pipes_lbl = "Weight of new pipes";
+        string piping_relining_initial_investment = "piping_relining_initial_investment";
+        string piping_relining_initial_investment_lbl = "Initial investment";
+        string piping_relining_installation_cost = "piping_relining_installation_cost";
+        string piping_relining_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string piping_relining_maintenance_cost = "piping_relining_maintenance_cost";
+        string piping_relining_maintenance_cost_lbl = "Total maintenance costs per year";
+        string piping_relining_taxes_fees_cost = "piping_relining_taxes_fees_cost";
+        string piping_relining_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_relining_liquidation_cost = "piping_relining_liquidation_cost";
+        string piping_relining_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_relining_remnant_value = "piping_relining_remnant_value";
+        string piping_relining_remnant_value_lbl = "Remnant value";
 
         // Electrical wiring
         string change_electrical_wiring = "ELECTRICAL_WIRING__CHANGE";
         string change_electrical_wiring_lbl = "Replace electrical wiring";
         string electrical_wiring_life_of_product = "ELECTRICAL_WIRING__LIFE_OF_PRODUCT";
         string electrical_wiring_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string electrical_wiring_weight_of_electrical_wiring = "ELECTRICAL_WIRING__WEIGHT_OF_NEW_WIRES";
-        string electrical_wiring_weight_of_electrical_wiring_lbl = "Weight of new wires";
-        string electrical_wiring_transport_to_building_by_truck = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string electrical_wiring_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string electrical_wiring_transport_to_building_by_train = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string electrical_wiring_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string electrical_wiring_transport_to_building_by_ferry = "ELECTRICAL_WIRING__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string electrical_wiring_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string electrical_wiring_weight_of_electrical_wiring = "ELECTRICAL_WIRING__WEIGHT_OF_NEW_WIRES";
+        //string electrical_wiring_weight_of_electrical_wiring_lbl = "Weight of new wires";
+        string electrical_wiring_initial_investment = "electrical_wiring_initial_investment";
+        string electrical_wiring_initial_investment_lbl = "Initial investment";
+        string electrical_wiring_installation_cost = "electrical_wiring_installation_cost";
+        string electrical_wiring_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string electrical_wiring_maintenance_cost = "electrical_wiring_maintenance_cost";
+        string electrical_wiring_maintenance_cost_lbl = "Total maintenance costs per year";
+        string electrical_wiring_taxes_fees_cost = "electrical_wiring_taxes_fees_cost";
+        string electrical_wiring_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string electrical_wiring_liquidation_cost = "electrical_wiring_liquidation_cost";
+        string electrical_wiring_liquidation_cost_lbl = "Cost of liquidation";
+        string electrical_wiring_remnant_value = "electrical_wiring_remnant_value";
+        string electrical_wiring_remnant_value_lbl = "Remnant value";
 
         #endregion
 
@@ -743,16 +791,9 @@ namespace MSR_LCC
             ++order;
             VentilationSystem(ref buildning_specific_data, ref order);
 
-            ////
-            //++order;
-            //buildning_specific_data.Add(key: "changes_ian_ahe_and_aed", item: new InputGroup(label: "Changes due to renovation of building shell, ventilation and/or circulation pump.", order: ++order));
-            //buildning_specific_data.Add(key: change_in_ahd_due_to_renovations_of_bshell_ventilation_pump, item: new Number(label: change_in_ahd_due_to_renovations_of_bshell_ventilation_pump_lbl, unit: "kWh/year", order: ++order));
-            //buildning_specific_data.Add(key: change_in_aed_due_to_renovations_of_bshell_ventilation_pump, item: new Number(label: change_in_aed_due_to_renovations_of_bshell_ventilation_pump_lbl, unit: "MWh/year", order: ++order));
-
-
             //// Radiators, pipes and electricity
-            //++order;
-            //RadiatorsPipesElectricity(ref buildning_specific_data, ref order);
+            ++order;
+            RadiatorsPipesElectricity(ref buildning_specific_data, ref order);
 
             return buildning_specific_data;
         }
@@ -930,68 +971,100 @@ namespace MSR_LCC
 
             // Radiators
             input.Add(key: change_radiators, item: new Checkbox(label: change_radiators_lbl, order: ++order));
-            input.Add(key: radiators_type_of_radiators, item: new Select(label: radiators_type_of_radiators_lbl, options: type_of_radiators, order: ++order));
+            //input.Add(key: radiators_type_of_radiators, item: new Select(label: radiators_type_of_radiators_lbl, options: type_of_radiators, order: ++order));
             input.Add(key: radiators_life_of_product, item: new Number(label: radiators_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: radiators_weight_of_radiators, item: new Number(label: radiators_weight_of_radiators_lbl, unit: "kg", order: ++order));
-            //input.Add(key: radiators_transport_to_building_by_truck, item: new Number(label: radiators_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: radiators_transport_to_building_by_train, item: new Number(label: radiators_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: radiators_transport_to_building_by_ferry, item: new Number(label: radiators_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: radiators_weight_of_radiators, item: new Number(label: radiators_weight_of_radiators_lbl, unit: "kg", order: ++order));
+            input.Add(key: radiators_initial_investment, item: new Number(label: radiators_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: radiators_installation_cost, item: new Number(label: radiators_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: radiators_maintenance_cost, item: new Number(label: radiators_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: radiators_taxes_fees_cost, item: new Number(label: radiators_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: radiators_liquidation_cost, item: new Number(label: radiators_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: radiators_remnant_value, item: new Number(label: radiators_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - Copper
             input.Add(key: change_piping_copper, item: new Checkbox(label: change_piping_copper_lbl, order: ++order));
             input.Add(key: piping_copper_life_of_product, item: new Number(label: piping_copper_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_copper_weight_of_copper_pipes, item: new Number(label: piping_copper_weight_of_copper_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_copper_transport_to_building_by_truck, item: new Number(label: piping_copper_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_copper_transport_to_building_by_train, item: new Number(label: piping_copper_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_copper_transport_to_building_by_ferry, item: new Number(label: piping_copper_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_copper_weight_of_copper_pipes, item: new Number(label: piping_copper_weight_of_copper_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_copper_initial_investment, item: new Number(label: piping_copper_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_copper_installation_cost, item: new Number(label: piping_copper_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_copper_maintenance_cost, item: new Number(label: piping_copper_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_copper_taxes_fees_cost, item: new Number(label: piping_copper_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_copper_liquidation_cost, item: new Number(label: piping_copper_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_copper_remnant_value, item: new Number(label: piping_copper_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - PEX
             input.Add(key: change_piping_pex, item: new Checkbox(label: change_piping_pex_lbl, order: ++order));
             input.Add(key: piping_pex_life_of_product, item: new Number(label: piping_pex_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_pex_weight_of_pex_pipes, item: new Number(label: piping_pex_weight_of_pex_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_pex_transport_to_building_by_truck, item: new Number(label: piping_pex_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_pex_transport_to_building_by_train, item: new Number(label: piping_pex_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_pex_transport_to_building_by_ferry, item: new Number(label: piping_pex_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pex_weight_of_pex_pipes, item: new Number(label: piping_pex_weight_of_pex_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_pex_initial_investment, item: new Number(label: piping_pex_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pex_installation_cost, item: new Number(label: piping_pex_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pex_maintenance_cost, item: new Number(label: piping_pex_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_pex_taxes_fees_cost, item: new Number(label: piping_pex_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_pex_liquidation_cost, item: new Number(label: piping_pex_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pex_remnant_value, item: new Number(label: piping_pex_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - PP
             input.Add(key: change_piping_pp, item: new Checkbox(label: change_piping_pp_lbl, order: ++order));
             input.Add(key: piping_pp_life_of_product, item: new Number(label: piping_pp_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_pp_weight_of_pp_pipes, item: new Number(label: piping_pp_weight_of_pp_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_pp_transport_to_building_by_truck, item: new Number(label: piping_pp_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_pp_transport_to_building_by_train, item: new Number(label: piping_pp_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_pp_transport_to_building_by_ferry, item: new Number(label: piping_pp_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_pp_weight_of_pp_pipes, item: new Number(label: piping_pp_weight_of_pp_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_pp_initial_investment, item: new Number(label: piping_pp_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pp_installation_cost, item: new Number(label: piping_pp_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pp_maintenance_cost, item: new Number(label: piping_pp_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_pp_taxes_fees_cost, item: new Number(label: piping_pp_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_pp_liquidation_cost, item: new Number(label: piping_pp_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_pp_remnant_value, item: new Number(label: piping_pp_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - Cast Iron
             input.Add(key: change_piping_cast_iron, item: new Checkbox(label: change_piping_cast_iron_lbl, order: ++order));
             input.Add(key: piping_cast_iron_life_of_product, item: new Number(label: piping_cast_iron_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_cast_iron_weight_of_cast_iron_pipes, item: new Number(label: piping_cast_iron_weight_of_cast_iron_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_cast_iron_transport_to_building_by_truck, item: new Number(label: piping_cast_iron_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_cast_iron_transport_to_building_by_train, item: new Number(label: piping_cast_iron_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_cast_iron_transport_to_building_by_ferry, item: new Number(label: piping_cast_iron_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_cast_iron_weight_of_cast_iron_pipes, item: new Number(label: piping_cast_iron_weight_of_cast_iron_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_cast_iron_initial_investment, item: new Number(label: piping_cast_iron_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_cast_iron_installation_cost, item: new Number(label: piping_cast_iron_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_cast_iron_maintenance_cost, item: new Number(label: piping_cast_iron_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_cast_iron_taxes_fees_cost, item: new Number(label: piping_cast_iron_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_cast_iron_liquidation_cost, item: new Number(label: piping_cast_iron_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_cast_iron_remnant_value, item: new Number(label: piping_cast_iron_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - Galvanized Steel
             input.Add(key: change_piping_galvanized_steel, item: new Checkbox(label: change_piping_galvanized_steel_lbl, order: ++order));
             input.Add(key: piping_galvanized_steel_life_of_product, item: new Number(label: piping_galvanized_steel_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_galvanized_steel_weight_of_galvanized_steel_pipes, item: new Number(label: piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_galvanized_steel_transport_to_building_by_truck, item: new Number(label: piping_galvanized_steel_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_galvanized_steel_transport_to_building_by_train, item: new Number(label: piping_galvanized_steel_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_galvanized_steel_transport_to_building_by_ferry, item: new Number(label: piping_galvanized_steel_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_galvanized_steel_weight_of_galvanized_steel_pipes, item: new Number(label: piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_galvanized_steel_initial_investment, item: new Number(label: piping_galvanized_steel_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_galvanized_steel_installation_cost, item: new Number(label: piping_galvanized_steel_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_galvanized_steel_maintenance_cost, item: new Number(label: piping_galvanized_steel_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_galvanized_steel_taxes_fees_cost, item: new Number(label: piping_galvanized_steel_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_galvanized_steel_liquidation_cost, item: new Number(label: piping_galvanized_steel_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_galvanized_steel_remnant_value, item: new Number(label: piping_galvanized_steel_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Piping System - Relining
             input.Add(key: change_piping_relining, item: new Checkbox(label: change_piping_relining_lbl, order: ++order));
             input.Add(key: piping_relining_life_of_product, item: new Number(label: piping_relining_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: piping_relining_weight_of_relining_pipes, item: new Number(label: piping_relining_weight_of_relining_pipes_lbl, unit: "kg", order: ++order));
-            //input.Add(key: piping_relining_transport_to_building_by_truck, item: new Number(label: piping_relining_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_relining_transport_to_building_by_train, item: new Number(label: piping_relining_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: piping_relining_transport_to_building_by_ferry, item: new Number(label: piping_relining_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: piping_relining_weight_of_relining_pipes, item: new Number(label: piping_relining_weight_of_relining_pipes_lbl, unit: "kg", order: ++order));
+            input.Add(key: piping_relining_initial_investment, item: new Number(label: piping_relining_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_relining_installation_cost, item: new Number(label: piping_relining_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_relining_maintenance_cost, item: new Number(label: piping_relining_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_relining_taxes_fees_cost, item: new Number(label: piping_relining_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: piping_relining_liquidation_cost, item: new Number(label: piping_relining_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: piping_relining_remnant_value, item: new Number(label: piping_relining_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
             // Electrical wiring
             input.Add(key: change_electrical_wiring, item: new Checkbox(label: change_electrical_wiring_lbl, order: ++order));
             input.Add(key: electrical_wiring_life_of_product, item: new Number(label: electrical_wiring_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: electrical_wiring_weight_of_electrical_wiring, item: new Number(label: electrical_wiring_weight_of_electrical_wiring_lbl, unit: "kg", order: ++order));
-            //input.Add(key: electrical_wiring_transport_to_building_by_truck, item: new Number(label: electrical_wiring_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: electrical_wiring_transport_to_building_by_train, item: new Number(label: electrical_wiring_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: electrical_wiring_transport_to_building_by_ferry, item: new Number(label: electrical_wiring_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: electrical_wiring_weight_of_electrical_wiring, item: new Number(label: electrical_wiring_weight_of_electrical_wiring_lbl, unit: "kg", order: ++order));
+            input.Add(key: electrical_wiring_initial_investment, item: new Number(label: electrical_wiring_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: electrical_wiring_installation_cost, item: new Number(label: electrical_wiring_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: electrical_wiring_maintenance_cost, item: new Number(label: electrical_wiring_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: electrical_wiring_taxes_fees_cost, item: new Number(label: electrical_wiring_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: electrical_wiring_liquidation_cost, item: new Number(label: electrical_wiring_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: electrical_wiring_remnant_value, item: new Number(label: electrical_wiring_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+
 
         }
 
@@ -1004,21 +1077,7 @@ namespace MSR_LCC
             res += SetHeatingSystem(building, ref exls);
             res += SetBuildingShell(building, ref exls);
             res += SetVentilationSystem(building, ref exls);
-
-            //#region Change...
-            //String Key;
-            //object value;
-
-            //Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
-            //value = Convert.ToDouble(building.properties[Key]);
-            //Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
-
-            //Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
-            //value = Convert.ToDouble(building.properties[Key]);
-            //Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
-            //#endregion
-
-            //SetRadiatorsPipesElectricity(building, ref exls);
+            res += SetRadiatorsPipesElectricity(building, ref exls);
 
             return res;
 
@@ -2268,56 +2327,129 @@ namespace MSR_LCC
             return res;
         }
 
-        void SetRadiatorsPipesElectricity(Feature building, ref CExcel exls)
+        double SetRadiatorsPipesElectricity(Feature building, ref CExcel exls)
         {
 
             String Key;
             object value;
+            String cell;
+            double res = 0;
 
             // Radiators
             #region Radiators
             #region Radiators?
             Key = change_radiators;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C215", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Radiators: Life of Product
                 Key = radiators_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C216", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Radiators: Type of Material
-                Key = radiators_type_of_radiators;
-                value = type_of_radiators.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C217", value: value, exls: ref exls);
-                #endregion
-
-                #region Radiators: Weight of Radiators
-                Key = radiators_weight_of_radiators;
+                #region Radiators: Initial Investment
+                Key = radiators_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C218", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Radiators: Transport by Truck [km]
-                //Key = radiators_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
-                //#endregion
+                #region Radiators: Total Installation Cost
+                Key = radiators_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Radiators: Transport by Truck [km]
-                //Key = radiators_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
-                //#endregion
+                #region Radiators: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Radiators: Transport by Truck [km]
-                //Key = radiators_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Radiators: Maintenace cost
+                Key = radiators_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Radiators: Taxes amd fees cost
+                Key = radiators_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Radiators: Liquidation cost
+                Key = radiators_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Radiators: Remnant value
+                Key = radiators_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2326,39 +2458,116 @@ namespace MSR_LCC
             #region Change Piping System Copper?
             Key = change_piping_copper;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C225", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System Copper: Life of Product
                 Key = piping_copper_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C226", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System Copper: Area of New Piping System Copper
-                Key = piping_copper_weight_of_copper_pipes;
+                #region Piping System Copper: Initial Investment
+                Key = piping_copper_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C227", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System Copper: Transport by Truck [km]
-                //Key = piping_copper_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Copper: Total Installation Cost
+                Key = piping_copper_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System Copper: Transport by Truck [km]
-                //Key = piping_copper_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Copper: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System Copper: Transport by Truck [km]
-                //Key = piping_copper_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System Copper: Maintenace cost
+                Key = piping_copper_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Copper: Taxes amd fees cost
+                Key = piping_copper_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Copper: Liquidation cost
+                Key = piping_copper_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Copper: Remnant value
+                Key = piping_copper_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2367,39 +2576,116 @@ namespace MSR_LCC
             #region Change Piping System PEX?
             Key = change_piping_pex;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C234", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System PEX: Life of Product
                 Key = piping_pex_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C235", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System PEX: Area of New Piping System PEX
-                Key = piping_pex_weight_of_pex_pipes;
+                #region Piping System PEX: Initial Investment
+                Key = piping_pex_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C236", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System PEX: Transport by Truck [km]
-                //Key = piping_pex_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System PEX: Total Installation Cost
+                Key = piping_pex_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System PEX: Transport by Truck [km]
-                //Key = piping_pex_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System PEX: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System PEX: Transport by Truck [km]
-                //Key = piping_pex_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System PEX: Maintenace cost
+                Key = piping_pex_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PEX: Taxes amd fees cost
+                Key = piping_pex_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PEX: Liquidation cost
+                Key = piping_pex_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PEX: Remnant value
+                Key = piping_pex_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2408,39 +2694,116 @@ namespace MSR_LCC
             #region Change Piping System PP?
             Key = change_piping_pp;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C243", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System PP: Life of Product
                 Key = piping_pp_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C244", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System PP: Area of New Piping System PP
-                Key = piping_pp_weight_of_pp_pipes;
+                #region Piping System PP: Initial Investment
+                Key = piping_pp_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C245", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System PP: Transport by Truck [km]
-                //Key = piping_pp_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System PP: Total Installation Cost
+                Key = piping_pp_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System PP: Transport by Truck [km]
-                //Key = piping_pp_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System PP: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System PP: Transport by Truck [km]
-                //Key = piping_pp_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System PP: Maintenace cost
+                Key = piping_pp_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PP: Taxes amd fees cost
+                Key = piping_pp_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PP: Liquidation cost
+                Key = piping_pp_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System PP: Remnant value
+                Key = piping_pp_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2449,39 +2812,116 @@ namespace MSR_LCC
             #region Change Piping System Cast Iron?
             Key = change_piping_cast_iron;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C252", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System Cast Iron: Life of Product
                 Key = piping_cast_iron_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C253", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System Cast Iron: Area of New Piping System Cast Iron
-                Key = piping_cast_iron_weight_of_cast_iron_pipes;
+                #region Piping System Cast Iron: Initial Investment
+                Key = piping_cast_iron_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C254", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System Cast Iron: Transport by Truck [km]
-                //Key = piping_cast_iron_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Cast Iron: Total Installation Cost
+                Key = piping_cast_iron_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System Cast Iron: Transport by Truck [km]
-                //Key = piping_cast_iron_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Cast Iron: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System Cast Iron: Transport by Truck [km]
-                //Key = piping_cast_iron_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System Cast Iron: Maintenace cost
+                Key = piping_cast_iron_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Cast Iron: Taxes amd fees cost
+                Key = piping_cast_iron_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Cast Iron: Liquidation cost
+                Key = piping_cast_iron_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Cast Iron: Remnant value
+                Key = piping_cast_iron_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2490,39 +2930,116 @@ namespace MSR_LCC
             #region Change Piping System Galvanized Steel?
             Key = change_piping_galvanized_steel;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C261", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System Galvanized Steel: Life of Product
                 Key = piping_galvanized_steel_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C262", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System Galvanized Steel: Area of New Piping System Galvanized Steel
-                Key = piping_galvanized_steel_weight_of_galvanized_steel_pipes;
+                #region Piping System Galvanized Steel: Initial Investment
+                Key = piping_galvanized_steel_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C263", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System Galvanized Steel: Transport by Truck [km]
-                //Key = piping_galvanized_steel_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Galvanized Steel: Total Installation Cost
+                Key = piping_galvanized_steel_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System Galvanized Steel: Transport by Truck [km]
-                //Key = piping_galvanized_steel_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Galvanized Steel: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System Galvanized Steel: Transport by Truck [km]
-                //Key = piping_galvanized_steel_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System Galvanized Steel: Maintenace cost
+                Key = piping_galvanized_steel_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Galvanized Steel: Taxes amd fees cost
+                Key = piping_galvanized_steel_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Galvanized Steel: Liquidation cost
+                Key = piping_galvanized_steel_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Galvanized Steel: Remnant value
+                Key = piping_galvanized_steel_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2531,39 +3048,116 @@ namespace MSR_LCC
             #region Change Piping System Relining?
             Key = change_piping_relining;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C270", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Piping System Relining: Life of Product
                 Key = piping_relining_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C271", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Piping System Relining: Area of New Piping System Relining
-                Key = piping_relining_weight_of_relining_pipes;
+                #region Piping System Relining: Initial Investment
+                Key = piping_relining_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C272", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Piping System Relining: Transport by Truck [km]
-                //Key = piping_relining_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Relining: Total Installation Cost
+                Key = piping_relining_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Piping System Relining: Transport by Truck [km]
-                //Key = piping_relining_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
-                //#endregion
+                #region Piping System Relining: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Piping System Relining: Transport by Truck [km]
-                //Key = piping_relining_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Piping System Relining: Maintenace cost
+                Key = piping_relining_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Relining: Taxes amd fees cost
+                Key = piping_relining_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Relining: Liquidation cost
+                Key = piping_relining_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Piping System Relining: Remnant value
+                Key = piping_relining_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -2572,42 +3166,120 @@ namespace MSR_LCC
             #region Change Electrical Wiring?
             Key = change_electrical_wiring;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C279", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Electrical Wiring: Life of Product
                 Key = electrical_wiring_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C280", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Electrical Wiring: Area of New Electrical Wiring
-                Key = electrical_wiring_weight_of_electrical_wiring;
+                #region Electrical Wiring: Initial Investment
+                Key = electrical_wiring_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C281", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Electrical Wiring: Transport by Truck [km]
-                //Key = electrical_wiring_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
-                //#endregion
+                #region Electrical Wiring: Total Installation Cost
+                Key = electrical_wiring_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Electrical Wiring: Transport by Truck [km]
-                //Key = electrical_wiring_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
-                //#endregion
+                #region Electrical Wiring: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Electrical Wiring: Transport by Truck [km]
-                //Key = electrical_wiring_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Electrical Wiring: Maintenace cost
+                Key = electrical_wiring_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electrical Wiring: Taxes amd fees cost
+                Key = electrical_wiring_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electrical Wiring: Liquidation cost
+                Key = electrical_wiring_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electrical Wiring: Remnant value
+                Key = electrical_wiring_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
+            return res;
         }
 
         private void Set(string sheet, string cell, object value, ref CExcel exls)
@@ -2690,15 +3362,15 @@ namespace MSR_LCC
                     (bool)building.properties[change_doors] ||
                     (bool)building.properties[change_ventilation_ducts] ||
                     (bool)building.properties[change_airflow_assembly] ||
-                    (bool)building.properties[change_air_distribution_housings_and_silencers])// ||
-                    //(bool)building.properties[change_radiators] ||
-                    //(bool)building.properties[change_piping_copper] ||
-                    //(bool)building.properties[change_piping_pex] ||
-                    //(bool)building.properties[change_piping_pp] ||
-                    //(bool)building.properties[change_piping_cast_iron] ||
-                    //(bool)building.properties[change_piping_galvanized_steel] ||
-                    //(bool)building.properties[change_piping_relining] ||
-                    //(bool)building.properties[change_electrical_wiring])
+                    (bool)building.properties[change_air_distribution_housings_and_silencers] ||
+                    (bool)building.properties[change_radiators] ||
+                    (bool)building.properties[change_piping_copper] ||
+                    (bool)building.properties[change_piping_pex] ||
+                    (bool)building.properties[change_piping_pp] ||
+                    (bool)building.properties[change_piping_cast_iron] ||
+                    (bool)building.properties[change_piping_galvanized_steel] ||
+                    (bool)building.properties[change_piping_relining] ||
+                    (bool)building.properties[change_electrical_wiring])
                 {
                     kpi += SetInputDataOneBuilding(building, ref exls);
                 }
