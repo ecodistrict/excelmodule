@@ -315,54 +315,66 @@ namespace MSR_LCC
         string change_insulation_material_1_lbl = "Use insulation material 1";
         string insulation_material_1_life_of_product = "INSULATION_MATERIAL_ONE__LIFE_OF_PRODUCT";
         string insulation_material_1_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string insulation_material_1_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
-        string insulation_material_1_type_of_insulation_lbl = "Type of insulation";
-        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation = "INSULATION_MATERIAL_ONE__CHANGE_IN_AHD_DUE_TO_INSULATION";
-        string insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
-        string insulation_material_1_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
-        string insulation_material_1_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
-        string insulation_material_1_transport_to_building_by_truck = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string insulation_material_1_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string insulation_material_1_transport_to_building_by_train = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string insulation_material_1_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string insulation_material_1_transport_to_building_by_ferry = "INSULATION_MATERIAL_ONE__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string insulation_material_1_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string insulation_material_1_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
+        //string insulation_material_1_type_of_insulation_lbl = "Type of insulation";
+        //string insulation_material_1_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
+        //string insulation_material_1_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
+        string insulation_material_1_initial_investment = "insulation_material_1_initial_investment";
+        string insulation_material_1_initial_investment_lbl = "Initial investment";
+        string insulation_material_1_installation_cost = "insulation_material_1_installation_cost";
+        string insulation_material_1_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string insulation_material_1_maintenance_cost = "insulation_material_1_maintenance_cost";
+        string insulation_material_1_maintenance_cost_lbl = "Total maintenance costs per year";
+        string insulation_material_1_taxes_fees_cost = "insulation_material_1_taxes_fees_cost";
+        string insulation_material_1_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string insulation_material_1_liquidation_cost = "insulation_material_1_liquidation_cost";
+        string insulation_material_1_liquidation_cost_lbl = "Cost of liquidation";
+        string insulation_material_1_remnant_value = "insulation_material_1_remnant_value";
+        string insulation_material_1_remnant_value_lbl = "Remnant value";
 
         // Insulation material 2
         string change_insulation_material_2 = "INSULATION_MATERIAL_TWO__CHANGE";
         string change_insulation_material_2_lbl = "Use insulation material 2";
         string insulation_material_2_life_of_product = "INSULATION_MATERIAL_TWO__LIFE_OF_PRODUCT";
         string insulation_material_2_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string insulation_material_2_type_of_insulation = "INSULATION_MATERIAL_TWO__TYPE_OF_INSULATION";
-        string insulation_material_2_type_of_insulation_lbl = "Type of insulation";
-        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation = "INSULATION_MATERIAL_TWO__CHANGE_IN_AHD_DUE_TO_INSULATION";
-        string insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl = "Change in annual heat demand due to insulation (an energy saving is given as a negative value)";
-        string insulation_material_2_amount_of_new_insulation_material = "INSULATION_MATERIAL_TWO__AMOUNT_OF_NEW_INSULATION_MATERIAL";
-        string insulation_material_2_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
-        string insulation_material_2_transport_to_building_by_truck = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string insulation_material_2_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string insulation_material_2_transport_to_building_by_train = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string insulation_material_2_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string insulation_material_2_transport_to_building_by_ferry = "INSULATION_MATERIAL_TWO__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string insulation_material_2_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string insulation_material_2_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
+        //string insulation_material_2_type_of_insulation_lbl = "Type of insulation";
+        //string insulation_material_2_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
+        //string insulation_material_2_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
+        string insulation_material_2_initial_investment = "insulation_material_2_initial_investment";
+        string insulation_material_2_initial_investment_lbl = "Initial investment";
+        string insulation_material_2_installation_cost = "insulation_material_2_installation_cost";
+        string insulation_material_2_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string insulation_material_2_maintenance_cost = "insulation_material_2_maintenance_cost";
+        string insulation_material_2_maintenance_cost_lbl = "Total maintenance costs per year";
+        string insulation_material_2_taxes_fees_cost = "insulation_material_2_taxes_fees_cost";
+        string insulation_material_2_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string insulation_material_2_liquidation_cost = "insulation_material_2_liquidation_cost";
+        string insulation_material_2_liquidation_cost_lbl = "Cost of liquidation";
+        string insulation_material_2_remnant_value = "insulation_material_2_remnant_value";
+        string insulation_material_2_remnant_value_lbl = "Remnant value";
 
         // facade system
         string change_facade_system = "FACADE__CHANGE";
         string change_facade_system_lbl = "Change facade";
         string facade_system_life_of_product = "FACADE__LIFE_OF_PRODUCT";
         string facade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string facade_system_type_facade_system = "FACADE__TYPE_OF_FACADE_SYSTEM";
-        string facade_system_type_of_facade_system_lbl = "Type of facade system";
-        string facade_system_change_in_annual_heat_demand_due_to_facade_system = "FACADE__CHANGE_IN_AHD_DUE_TO_FACADE_SYSTEM";
-        string facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
-        string facade_system_area_of_new_facade_system = "FACADE__AREA_OF_NEW_FACADE_SYSTEM";
-        string facade_system_area_of_new_facade_system_lbl = "Area of new facade system (required if renovation includes new facade system)";
-        string facade_system_transport_to_building_by_truck = "FACADE__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string facade_system_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string facade_system_transport_to_building_by_train = "FACADE__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string facade_system_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string facade_system_transport_to_building_by_ferry = "FACADE__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string facade_system_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string facade_system_type_facade_system = "FACADE__TYPE_OF_FACADE_SYSTEM";
+        //string facade_system_type_of_facade_system_lbl = "Type of facade system";
+        //string facade_system_change_in_annual_heat_demand_due_to_facade_system = "FACADE__CHANGE_IN_AHD_DUE_TO_FACADE_SYSTEM";
+        //string facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
+        string facade_system_initial_investment = "facade_system_initial_investment";
+        string facade_system_initial_investment_lbl = "Initial investment";
+        string facade_system_installation_cost = "facade_system_installation_cost";
+        string facade_system_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string facade_system_maintenance_cost = "facade_system_maintenance_cost";
+        string facade_system_maintenance_cost_lbl = "Total maintenance costs per year";
+        string facade_system_taxes_fees_cost = "facade_system_taxes_fees_cost";
+        string facade_system_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string facade_system_liquidation_cost = "facade_system_liquidation_cost";
+        string facade_system_liquidation_cost_lbl = "Cost of liquidation";
+        string facade_system_remnant_value = "facade_system_remnant_value";
+        string facade_system_remnant_value_lbl = "Remnant value";
 
 
         // Windows
@@ -370,36 +382,46 @@ namespace MSR_LCC
         string change_windows_lbl = "Change windows";
         string windows_life_of_product = "WINDOWS__LIFE_OF_PRODUCT";
         string windows_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string windows_type_windows = "WINDOWS__TYPE_OF_WINDOWS";
-        string windows_type_of_windows_lbl = "Material in frame";
-        string windows_change_in_annual_heat_demand_due_to_windows = "WINDOWS__CHANGE_IN_AHD_DUE_TO_WINDOWS";
-        string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
-        string windows_area_of_new_windows = "WINDOWS__AREA_OF_NEW_WINDOWS";
-        string windows_area_of_new_windows_lbl = "Area of windows (required if renovation includes new windows)";
-        string windows_transport_to_building_by_truck = "WINDOWS__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string windows_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string windows_transport_to_building_by_train = "WINDOWS__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string windows_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string windows_transport_to_building_by_ferry = "WINDOWS__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string windows_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string windows_type_windows = "WINDOWS__TYPE_OF_WINDOWS";
+        //string windows_type_of_windows_lbl = "Material in frame";
+        //string windows_change_in_annual_heat_demand_due_to_windows = "WINDOWS__CHANGE_IN_AHD_DUE_TO_WINDOWS";
+        //string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
+        string windows_initial_investment = "windows_initial_investment";
+        string windows_initial_investment_lbl = "Initial investment";
+        string windows_installation_cost = "windows_installation_cost";
+        string windows_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string windows_maintenance_cost = "windows_maintenance_cost";
+        string windows_maintenance_cost_lbl = "Total maintenance costs per year";
+        string windows_taxes_fees_cost = "windows_taxes_fees_cost";
+        string windows_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string windows_liquidation_cost = "windows_liquidation_cost";
+        string windows_liquidation_cost_lbl = "Cost of liquidation";
+        string windows_remnant_value = "windows_remnant_value";
+        string windows_remnant_value_lbl = "Remnant value";
 
         // Doors
         string change_doors = "DOORS__CHANGE";
         string change_doors_lbl = "Change doors";
         string doors_life_of_product = "DOORS__LIFE_OF_PRODUCT";
         string doors_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string doors_type_doors = "DOORS__TYPE_OF_DOORS";
-        string doors_type_of_doors_lbl = "Type of doors";
-        string doors_change_in_annual_heat_demand_due_to_doors = "DOORS__CHANGE_IN_AHD_DUE_TO_DOORS";
-        string doors_change_in_annual_heat_demand_due_to_doors_lbl = "Change in annual heat demand due to doors (an energy saving is given as a negative value)";
-        string doors_number_of_new_front_doors = "DOORS__NUMBER_OF_NEW_FRONT_DOORS";
-        string doors_number_of_new_front_doors_lbl = "Number of new front doors (required if renovation includes new doors)";
-        string doors_transport_to_building_by_truck = "DOORS__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string doors_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string doors_transport_to_building_by_train = "DOORS__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string doors_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string doors_transport_to_building_by_ferry = "DOORS__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string doors_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string doors_type_doors = "DOORS__TYPE_OF_DOORS";
+        //string doors_type_of_doors_lbl = "Type of doors";
+        //string doors_change_in_annual_heat_demand_due_to_doors = "DOORS__CHANGE_IN_AHD_DUE_TO_DOORS";
+        //string doors_change_in_annual_heat_demand_due_to_doors_lbl = "Change in annual heat demand due to doors (an energy saving is given as a negative value)";
+        //string doors_number_of_new_front_doors = "DOORS__NUMBER_OF_NEW_FRONT_DOORS";
+        //string doors_number_of_new_front_doors_lbl = "Number of new front doors (required if renovation includes new doors)";
+        string doors_initial_investment = "doors_initial_investment";
+        string doors_initial_investment_lbl = "Initial investment";
+        string doors_installation_cost = "doors_installation_cost";
+        string doors_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string doors_maintenance_cost = "doors_maintenance_cost";
+        string doors_maintenance_cost_lbl = "Total maintenance costs per year";
+        string doors_taxes_fees_cost = "doors_taxes_fees_cost";
+        string doors_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string doors_liquidation_cost = "doors_liquidation_cost";
+        string doors_liquidation_cost_lbl = "Cost of liquidation";
+        string doors_remnant_value = "doors_remnant_value";
+        string doors_remnant_value_lbl = "Remnant value";
         #endregion
 
         #region Ventilation
@@ -701,8 +723,8 @@ namespace MSR_LCC
             HeatingSystem(ref buildning_specific_data, ref order);
 
             //// Building Shell
-            //++order;
-            //BuildingShell(ref buildning_specific_data, ref order);
+            ++order;
+            BuildingShell(ref buildning_specific_data, ref order);
 
             //// Ventilation System
             //++order;
@@ -778,53 +800,63 @@ namespace MSR_LCC
 
             // Insulation material 1
             input.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
-            input.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            //input.Add(key: insulation_material_1_type_of_insulation, item: new Select(label: insulation_material_1_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
             input.Add(key: insulation_material_1_life_of_product, item: new Number(label: insulation_material_1_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: insulation_material_1_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_1_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
-            //input.Add(key: insulation_material_1_transport_to_building_by_truck, item: new Number(label: insulation_material_1_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: insulation_material_1_transport_to_building_by_train, item: new Number(label: insulation_material_1_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: insulation_material_1_transport_to_building_by_ferry, item: new Number(label: insulation_material_1_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_1_amount_of_new_insulation_material, item: new Number(label: insulation_material_1_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
+            input.Add(key: insulation_material_1_initial_investment, item: new Number(label: insulation_material_1_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_1_installation_cost, item: new Number(label: insulation_material_1_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_1_maintenance_cost, item: new Number(label: insulation_material_1_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: insulation_material_1_taxes_fees_cost, item: new Number(label: insulation_material_1_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: insulation_material_1_liquidation_cost, item: new Number(label: insulation_material_1_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_1_remnant_value, item: new Number(label: insulation_material_1_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
             // Insulation material 2
             input.Add(key: change_insulation_material_2, item: new Checkbox(label: change_insulation_material_2_lbl, order: ++order));
-            input.Add(key: insulation_material_2_type_of_insulation, item: new Select(label: insulation_material_2_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
+            //input.Add(key: insulation_material_2_type_of_insulation, item: new Select(label: insulation_material_2_type_of_insulation_lbl, options: type_of_insulation, order: ++order));
             input.Add(key: insulation_material_2_life_of_product, item: new Number(label: insulation_material_2_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: insulation_material_2_change_in_annual_heat_demand_due_to_insulation, item: new Number(label: insulation_material_2_change_in_annual_heat_demand_due_to_insulation_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: insulation_material_2_amount_of_new_insulation_material, item: new Number(label: insulation_material_2_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
-            //input.Add(key: insulation_material_2_transport_to_building_by_truck, item: new Number(label: insulation_material_2_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: insulation_material_2_transport_to_building_by_train, item: new Number(label: insulation_material_2_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: insulation_material_2_transport_to_building_by_ferry, item: new Number(label: insulation_material_2_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: insulation_material_2_amount_of_new_insulation_material, item: new Number(label: insulation_material_2_amount_of_new_insulation_material_lbl, min: 0, unit: "kg", order: ++order));
+            input.Add(key: insulation_material_2_initial_investment, item: new Number(label: insulation_material_2_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_2_installation_cost, item: new Number(label: insulation_material_2_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_2_maintenance_cost, item: new Number(label: insulation_material_2_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: insulation_material_2_taxes_fees_cost, item: new Number(label: insulation_material_2_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: insulation_material_2_liquidation_cost, item: new Number(label: insulation_material_2_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: insulation_material_2_remnant_value, item: new Number(label: insulation_material_2_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
-            // Fascade System
+            // facade System
             input.Add(key: change_facade_system, item: new Checkbox(label: change_facade_system_lbl, order: ++order));
-            input.Add(key: facade_system_type_facade_system, item: new Select(label: facade_system_type_of_facade_system_lbl, options: type_of_facade_system, order: ++order));
+            //input.Add(key: facade_system_type_facade_system, item: new Select(label: facade_system_type_of_facade_system_lbl, options: type_of_facade_system, order: ++order));
             input.Add(key: facade_system_life_of_product, item: new Number(label: facade_system_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: facade_system_change_in_annual_heat_demand_due_to_facade_system, item: new Number(label: facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: facade_system_area_of_new_facade_system, item: new Number(label: facade_system_area_of_new_facade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            //input.Add(key: facade_system_transport_to_building_by_truck, item: new Number(label: facade_system_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: facade_system_transport_to_building_by_train, item: new Number(label: facade_system_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: facade_system_transport_to_building_by_ferry, item: new Number(label: facade_system_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: facade_system_area_of_new_facade_system, item: new Number(label: facade_system_area_of_new_facade_system_lbl, min: 0, unit: "m\u00b2", order: ++order));
+            input.Add(key: facade_system_initial_investment, item: new Number(label: facade_system_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: facade_system_installation_cost, item: new Number(label: facade_system_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: facade_system_maintenance_cost, item: new Number(label: facade_system_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: facade_system_taxes_fees_cost, item: new Number(label: facade_system_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: facade_system_liquidation_cost, item: new Number(label: facade_system_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: facade_system_remnant_value, item: new Number(label: facade_system_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
             // Windows
             input.Add(key: change_windows, item: new Checkbox(label: change_windows_lbl, order: ++order));
-            input.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
+            //input.Add(key: windows_type_windows, item: new Select(label: windows_type_of_windows_lbl, options: type_of_windows, order: ++order));
             input.Add(key: windows_life_of_product, item: new Number(label: windows_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: windows_change_in_annual_heat_demand_due_to_windows, item: new Number(label: windows_change_in_annual_heat_demand_due_to_windows_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
-            //input.Add(key: windows_transport_to_building_by_truck, item: new Number(label: windows_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: windows_transport_to_building_by_train, item: new Number(label: windows_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: windows_transport_to_building_by_ferry, item: new Number(label: windows_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-
+            //input.Add(key: windows_area_of_new_windows, item: new Number(label: windows_area_of_new_windows_lbl, min: 0, unit: "m\u00b2", order: ++order));
+            input.Add(key: windows_initial_investment, item: new Number(label: windows_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: windows_installation_cost, item: new Number(label: windows_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: windows_maintenance_cost, item: new Number(label: windows_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: windows_taxes_fees_cost, item: new Number(label: windows_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: windows_liquidation_cost, item: new Number(label: windows_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: windows_remnant_value, item: new Number(label: windows_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
+            
             // Doors
             input.Add(key: change_doors, item: new Checkbox(label: change_doors_lbl, order: ++order));
-            input.Add(key: doors_type_doors, item: new Select(label: doors_type_of_doors_lbl, options: type_of_doors, order: ++order));
+            //input.Add(key: doors_type_doors, item: new Select(label: doors_type_of_doors_lbl, options: type_of_doors, order: ++order));
             input.Add(key: doors_life_of_product, item: new Number(label: doors_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: doors_change_in_annual_heat_demand_due_to_doors, item: new Number(label: doors_change_in_annual_heat_demand_due_to_doors_lbl, unit: "kWh/year", order: ++order));
-            input.Add(key: doors_number_of_new_front_doors, item: new Number(label: doors_number_of_new_front_doors_lbl, min: 0, order: ++order));
-            //input.Add(key: doors_transport_to_building_by_truck, item: new Number(label: doors_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: doors_transport_to_building_by_train, item: new Number(label: doors_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: doors_transport_to_building_by_ferry, item: new Number(label: doors_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: doors_number_of_new_front_doors, item: new Number(label: doors_number_of_new_front_doors_lbl, min: 0, order: ++order));
+            input.Add(key: doors_initial_investment, item: new Number(label: doors_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: doors_installation_cost, item: new Number(label: doors_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: doors_maintenance_cost, item: new Number(label: doors_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: doors_taxes_fees_cost, item: new Number(label: doors_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: doors_liquidation_cost, item: new Number(label: doors_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: doors_remnant_value, item: new Number(label: doors_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
         }
 
@@ -944,7 +976,7 @@ namespace MSR_LCC
 
             //SetBuildingProperties(building, ref exls);
             res += SetHeatingSystem(building, ref exls);
-            //SetBuildingShell(building, ref exls);
+            res += SetBuildingShell(building, ref exls);
             //SetVentilationSystem(building, ref exls);
 
             //#region Change...
@@ -1241,7 +1273,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                res += Convert.ToDouble(exls.GetCellValue("LCC", "E30"));
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
 
             #endregion
@@ -1250,277 +1282,595 @@ namespace MSR_LCC
 
         }
 
-        void SetBuildingShell(Feature building, ref CExcel exls)
+        double SetBuildingShell(Feature building, ref CExcel exls)
         {
 
             String Key;
             object value;
             String cell;
+            double res = 0.0;
 
-            // Insulation material 1
+            // Insulation Material 1
             #region Change Insulation Material 1
-            #region Change Insulation Material 1?
             Key = change_insulation_material_1;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C126", value: value, exls: ref exls);
-            #endregion
             if ((bool)value)
             {
-                #region Change Insulation Material 1: Life of Product
+                #region Insulation Material: Life of Product
                 Key = insulation_material_1_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Change Insulation Material 1: Type of Material
-                Key = insulation_material_1_type_of_insulation;
-                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
-                #endregion
-
-                //#region Change Insulation Material 1: Change AHD due to New Insulation
-                //Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
-                //#endregion
-
-                #region Change Insulation Material 1: Amount of Insulation Material
-                Key = insulation_material_1_amount_of_new_insulation_material;
+                #region Insulation Material: Initial Investment
+                Key = insulation_material_1_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                //#region Change Insulation Material 1: Transport by Truck [km]
-                //Key = insulation_material_1_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Total Installation Cost
+                Key = insulation_material_1_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-                //#region Change Insulation Material 1: Transport by Truck [km]
-                //Key = insulation_material_1_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
 
-                //#region Change Insulation Material 1: Transport by Truck [km]
-                //Key = insulation_material_1_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+                #endregion
+
+                #region Insulation Material: Maintenace cost
+                Key = insulation_material_1_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Insulation Material: Taxes amd fees cost
+                Key = insulation_material_1_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Insulation Material: Liquidation cost
+                Key = insulation_material_1_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Insulation Material: Remnant value
+                Key = insulation_material_1_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
-            #endregion
+            #endregion                      
 
             // Insulation material 2
             #region Change Insulation Material 2
-            #region Change Insulation Material 2?
             Key = change_insulation_material_2;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C137", value: value, exls: ref exls);
-            #endregion
             if ((bool)value)
             {
-                #region Insulation Material 2: Life of Product
+                #region Insulation Material: Life of Product
                 Key = insulation_material_2_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material 2: Type of Material
-                Key = insulation_material_2_type_of_insulation;
-                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
-                #endregion
-
-                //#region Insulation Material 2: Change AHD due to New Insulation
-                //Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
-                //#endregion
-
-                #region Insulation Material 2: Amount of Insulation Material
-                Key = insulation_material_2_amount_of_new_insulation_material;
+                #region Insulation Material: Initial Investment
+                Key = insulation_material_2_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Insulation Material 2: Transport by Truck [km]
-                //Key = insulation_material_2_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Total Installation Cost
+                Key = insulation_material_2_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Insulation Material 2: Transport by Truck [km]
-                //Key = insulation_material_2_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Insulation Material 2: Transport by Truck [km]
-                //Key = insulation_material_2_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Insulation Material: Maintenace cost
+                Key = insulation_material_2_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Taxes amd fees cost
+                Key = insulation_material_2_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Liquidation cost
+                Key = insulation_material_2_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Remnant value
+                Key = insulation_material_2_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
-            #endregion
+            #endregion                      
 
-            // Facade System
-            #region Change Fascade System
-            #region Change Fascade System?
+            // Facade System   
+            #region Change Facade System
             Key = change_facade_system;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
-            #endregion
             if ((bool)value)
             {
-                #region Fascade System: Life of Product
+                #region Insulation Material: Life of Product
                 Key = facade_system_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Fascade System: Type of Fascade System
-                Key = facade_system_type_facade_system;
-                value = type_of_facade_system.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
-                #endregion
-
-                //#region Fascade System: Change AHD due to New Fascade System
-                //Key = facade_system_change_in_annual_heat_demand_due_to_facade_system;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
-                //#endregion
-
-                #region Fascade System: Area of New Fascade System
-                Key = facade_system_area_of_new_facade_system;
+                #region Insulation Material: Initial Investment
+                Key = facade_system_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Fascade System: Transport by Truck [km]
-                //Key = facade_system_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Total Installation Cost
+                Key = facade_system_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Fascade System: Transport by Truck [km]
-                //Key = facade_system_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Fascade System: Transport by Truck [km]
-                //Key = facade_system_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Insulation Material: Maintenace cost
+                Key = facade_system_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Taxes amd fees cost
+                Key = facade_system_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Liquidation cost
+                Key = facade_system_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Remnant value
+                Key = facade_system_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
-            #endregion
+            #endregion 
 
             // Windows
             #region Change Windows
-            #region Change Windows?
             Key = change_windows;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C159", value: value, exls: ref exls);
-            #endregion
             if ((bool)value)
             {
-                #region Windows: Life of Product
+                #region Insulation Material: Life of Product
                 Key = windows_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Windows: Type of Windows
-                Key = windows_type_windows;
-                value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
-                #endregion
-
-                //#region Windows: Change AHD due to New Windows
-                //Key = windows_change_in_annual_heat_demand_due_to_windows;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
-                //#endregion
-
-                #region Windows: Area of New Windows
-                Key = windows_area_of_new_windows;
+                #region Insulation Material: Initial Investment
+                Key = windows_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Windows: Transport by Truck [km]
-                //Key = windows_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Total Installation Cost
+                Key = windows_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Windows: Transport by Truck [km]
-                //Key = windows_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Windows: Transport by Truck [km]
-                //Key = windows_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Insulation Material: Maintenace cost
+                Key = windows_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Taxes amd fees cost
+                Key = windows_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Liquidation cost
+                Key = windows_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Remnant value
+                Key = windows_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
-            #endregion
+            #endregion 
 
             // Doors
             #region Change Doors
-            #region Change Doors?
             Key = change_doors;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C170", value: value, exls: ref exls);
-            #endregion
             if ((bool)value)
             {
-                #region Doors: Life of Product
+                #region Insulation Material: Life of Product
                 Key = doors_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Doors: Type of Doors
-                Key = doors_type_doors;
-                value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
-                #endregion
-
-                //#region Doors: Change AHD due to New Doors
-                //Key = doors_change_in_annual_heat_demand_due_to_doors;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
-                //#endregion
-
-                #region Doors: Number of new Fron Doors
-                Key = doors_number_of_new_front_doors;
+                #region Insulation Material: Initial Investment
+                Key = doors_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Doors: Transport by Truck [km]
-                //Key = doors_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Total Installation Cost
+                Key = doors_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Doors: Transport by Truck [km]
-                //Key = doors_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
-                //#endregion
+                #region Insulation Material: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Doors: Transport by Truck [km]
-                //Key = doors_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Insulation Material: Maintenace cost
+                Key = doors_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Taxes amd fees cost
+                Key = doors_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Liquidation cost
+                Key = doors_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Insulation Material: Remnant value
+                Key = doors_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
-            #endregion
+            #endregion 
+
+            return res;
 
         }
 
@@ -2097,13 +2447,12 @@ namespace MSR_LCC
             foreach (Feature building in buildingProperties.value.features)
             {
                 if ((bool)building.properties[change_heating_system] ||
-                    (bool)building.properties[change_circulationpump_in_heating_system])
-                    //||
-                    //(bool)building.properties[change_insulation_material_1] ||
-                    //(bool)building.properties[change_insulation_material_2] ||
-                    //(bool)building.properties[change_facade_system] ||
-                    //(bool)building.properties[change_windows] ||
-                    //(bool)building.properties[change_doors] ||
+                    (bool)building.properties[change_circulationpump_in_heating_system] ||
+                    (bool)building.properties[change_insulation_material_1] ||
+                    (bool)building.properties[change_insulation_material_2] ||
+                    (bool)building.properties[change_facade_system] ||
+                    (bool)building.properties[change_windows] ||
+                    (bool)building.properties[change_doors])// ||
                     //(bool)building.properties[change_ventilation_ducts] ||
                     //(bool)building.properties[change_airflow_assembly] ||
                     //(bool)building.properties[change_air_distribution_housings_and_silencers] ||
