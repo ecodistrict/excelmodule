@@ -431,60 +431,73 @@ namespace MSR_LCC
         string change_ventilation_ducts_lbl = "Change ventilation ducts";
         string ventilation_ducts_life_of_product = "VENTILATION_DUCTS__LIFE_OF_PRODUCT";
         string ventilation_ducts_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string ventilation_ducts_type_of_material = "VENTILATION_DUCTS__MATERIAL_OF_VENTILATION_DUCTS";
-        string ventilation_ducts_type_of_material_lbl = "Material in ventilation ducts";
-        string ventilation_ducts_weight_of_ventilation_ducts = "VENTILATION_DUCTS__WEIGHT_OF_VENTILATION_DUCTS";
-        string ventilation_ducts_weight_of_ventilation_ducts_lbl = "Weight of ventilation ducts (Required if renovation includes new ventilation ducts)";
-        string ventilation_ducts_transport_to_building_by_truck = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string ventilation_ducts_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string ventilation_ducts_transport_to_building_by_train = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string ventilation_ducts_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string ventilation_ducts_transport_to_building_by_ferry = "VENTILATION_DUCTS__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string ventilation_ducts_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
+        //string ventilation_ducts_type_of_material = "VENTILATION_DUCTS__MATERIAL_OF_VENTILATION_DUCTS";
+        //string ventilation_ducts_type_of_material_lbl = "Material in ventilation ducts";
+        //string ventilation_ducts_weight_of_ventilation_ducts = "VENTILATION_DUCTS__WEIGHT_OF_VENTILATION_DUCTS";
+        //string ventilation_ducts_weight_of_ventilation_ducts_lbl = "Weight of ventilation ducts (Required if renovation includes new ventilation ducts)";
+        string ventilation_ducts_initial_investment = "ventilation_ducts_initial_investment";
+        string ventilation_ducts_initial_investment_lbl = "Initial investment";
+        string ventilation_ducts_installation_cost = "ventilation_ducts_installation_cost";
+        string ventilation_ducts_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string ventilation_ducts_maintenance_cost = "ventilation_ducts_maintenance_cost";
+        string ventilation_ducts_maintenance_cost_lbl = "Total maintenance costs per year";
+        string ventilation_ducts_taxes_fees_cost = "ventilation_ducts_taxes_fees_cost";
+        string ventilation_ducts_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string ventilation_ducts_liquidation_cost = "ventilation_ducts_liquidation_cost";
+        string ventilation_ducts_liquidation_cost_lbl = "Cost of liquidation";
+        string ventilation_ducts_remnant_value = "ventilation_ducts_remnant_value";
+        string ventilation_ducts_remnant_value_lbl = "Remnant value";
 
         // Airflow assembly
         string change_airflow_assembly = "AIR_FLOW_ASSEMBLY__CHANGE";
         string change_airflow_assembly_lbl = "Change airflow assembly";
         string airflow_assembly_life_of_product = "AIR_FLOW_ASSEMBLY__LIFE_OF_PRODUCT";
         string airflow_assembly_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        string airflow_assembly_type_of_airflow_assembly = "AIR_FLOW_ASSEMBLY__TYPE_OF_AIR_FLOW_ASSEMBLY";
-        string airflow_assembly_type_of_airflow_assembly_lbl = "Type of airflow assembly";
-        string airflow_assembly_design_airflow_exhaust_air = "AIR_FLOW_ASSEMBLY__DESIGN_AIR_FLOW";
-        string airflow_assembly_design_airflow_exhaust_air_lbl = "Design airflow (exhaust air)";
-        string airflow_assembly_transport_to_building_by_truck = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string airflow_assembly_transport_to_building_by_truck_lbl = "Transport of airflow assembly to building by truck (distance from production site to building)";
-        string airflow_assembly_transport_to_building_by_train = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string airflow_assembly_transport_to_building_by_train_lbl = "Transport of airflow assembly to building by train (distance from production site to building)";
-        string airflow_assembly_transport_to_building_by_ferry = "AIR_FLOW_ASSEMBLY__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string airflow_assembly_transport_to_building_by_ferry_lbl = "Transport of airflow assembly to building by ferry (distance from production site to building)";
+        //string airflow_assembly_type_of_airflow_assembly = "AIR_FLOW_ASSEMBLY__TYPE_OF_AIR_FLOW_ASSEMBLY";
+        //string airflow_assembly_type_of_airflow_assembly_lbl = "Type of airflow assembly";
+        string airflow_assembly_initial_investment = "airflow_assembly_initial_investment";
+        string airflow_assembly_initial_investment_lbl = "Initial investment";
+        string airflow_assembly_installation_cost = "airflow_assembly_installation_cost";
+        string airflow_assembly_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string airflow_assembly_heat_consumption = "airflow_assembly_heat_consumption";
+        string airflow_assembly_heat_consumption_lbl = "Heat consumption";
+        string airflow_assembly_heat_annual_use = "airflow_assembly_heat_annual_use";
+        string airflow_assembly_heat_annual_use_lbl = "Annual use";  //Same for all components? (e.g. electric,water and natural gas)
+        string airflow_assembly_electric_consumption = "airflow_assembly_electric_consumption";
+        string airflow_assembly_electric_consumption_lbl = "Electric consumption";
+        string airflow_assembly_electric_annual_use = "airflow_assembly_electric_annual_use";
+        string airflow_assembly_electric_annual_use_lbl = "Electric annual use";
+        string airflow_assembly_maintenance_cost = "airflow_assembly_maintenance_cost";
+        string airflow_assembly_maintenance_cost_lbl = "Total maintenance costs per year";
+        string airflow_assembly_taxes_fees_cost = "airflow_assembly_taxes_fees_cost";
+        string airflow_assembly_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string airflow_assembly_liquidation_cost = "airflow_assembly_liquidation_cost";
+        string airflow_assembly_liquidation_cost_lbl = "Cost of liquidation";
+        string airflow_assembly_remnant_value = "airflow_assembly_remnant_value";
+        string airflow_assembly_remnant_value_lbl = "Remnant value";
 
         // Air distribution housings and silencer
         string change_air_distribution_housings_and_silencers = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__CHANGE";
         string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
-        string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_NEW_HOUSINGS";
-        string air_distribution_housings_and_silencers_number_of_distribution_housings_lbl = "Number of air distribution housings";
+        //string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_NEW_HOUSINGS";
+        //string air_distribution_housings_and_silencers_number_of_distribution_housings_lbl = "Number of air distribution housings";
         string air_distribution_housings_and_silencers_life_of_product = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__LIFE_OF_PRODUCT";
         string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_truck = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_TRUCK";
-        string air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl = "Transport to building by truck (distance from production site to building)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_train = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_TRAIN";
-        string air_distribution_housings_and_silencers_transport_to_building_by_train_lbl = "Transport to building by train (distance from production site to building)";
-        string air_distribution_housings_and_silencers_transport_to_building_by_ferry = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__TRANSPORT_TO_BUILDING_BY_FERRY";
-        string air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl = "Transport to building by ferry (distance from production site to building)";
-
-        //Ventilation renovation
-        string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation = "VENTILATION_SYSTEM__CHANGE_IN_AHD_DUE_TO_VENTILATION_SYSTEM_RENOVATION";
-        string ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl = "Change in annual heat demand due ventilation systems renovation (an energy saving is given as a negative value)";
-        string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation = "VENTILATION_SYSTEM__CHANGE_IN_AED_DUE_TO_VENTILATION_SYSTEM_RENOVATION";
-        string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
+        string air_distribution_housings_and_silencers_initial_investment = "air_distribution_housings_and_silencers_initial_investment";
+        string air_distribution_housings_and_silencers_initial_investment_lbl = "Initial investment";
+        string air_distribution_housings_and_silencers_installation_cost = "air_distribution_housings_and_silencers_installation_cost";
+        string air_distribution_housings_and_silencers_installation_cost_lbl = "Installation cost (including possible cost of delivery)";
+        string air_distribution_housings_and_silencers_maintenance_cost = "air_distribution_housings_and_silencers_maintenance_cost";
+        string air_distribution_housings_and_silencers_maintenance_cost_lbl = "Total maintenance costs per year";
+        string air_distribution_housings_and_silencers_taxes_fees_cost = "air_distribution_housings_and_silencers_taxes_fees_cost";
+        string air_distribution_housings_and_silencers_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string air_distribution_housings_and_silencers_liquidation_cost = "air_distribution_housings_and_silencers_liquidation_cost";
+        string air_distribution_housings_and_silencers_liquidation_cost_lbl = "Cost of liquidation";
+        string air_distribution_housings_and_silencers_remnant_value = "air_distribution_housings_and_silencers_remnant_value";
+        string air_distribution_housings_and_silencers_remnant_value_lbl = "Remnant value";
 
         #endregion
-
-        string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AHD_DUE_TO_RENOVATIONS";
-        string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump_lbl = "Change in annual heat demand";
-        string change_in_aed_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AED_DUE_TO_RENOVATIONS";
-        string change_in_aed_due_to_renovations_of_bshell_ventilation_pump_lbl = "Change in annual energy demand";
-
+        
         #region Radiators, pipes and electricity
         // Radiators, pipes and electricity
         // Radiators
@@ -726,9 +739,9 @@ namespace MSR_LCC
             ++order;
             BuildingShell(ref buildning_specific_data, ref order);
 
-            //// Ventilation System
-            //++order;
-            //VentilationSystem(ref buildning_specific_data, ref order);
+            // Ventilation System
+            ++order;
+            VentilationSystem(ref buildning_specific_data, ref order);
 
             ////
             //++order;
@@ -871,29 +884,42 @@ namespace MSR_LCC
 
             // Ventilation ducts
             input.Add(key: change_ventilation_ducts, item: new Checkbox(label: change_ventilation_ducts_lbl, order: ++order));
-            input.Add(key: ventilation_ducts_type_of_material, item: new Select(label: ventilation_ducts_type_of_material_lbl, options: type_of_ventilation_ducts_material, order: ++order));
+            //input.Add(key: ventilation_ducts_type_of_material, item: new Select(label: ventilation_ducts_type_of_material_lbl, options: type_of_ventilation_ducts_material, order: ++order));
             input.Add(key: ventilation_ducts_life_of_product, item: new Number(label: ventilation_ducts_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: ventilation_ducts_weight_of_ventilation_ducts, item: new Number(label: ventilation_ducts_weight_of_ventilation_ducts_lbl, unit: "kWh/year", order: ++order));
-            //input.Add(key: ventilation_ducts_transport_to_building_by_truck, item: new Number(label: ventilation_ducts_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: ventilation_ducts_transport_to_building_by_train, item: new Number(label: ventilation_ducts_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: ventilation_ducts_transport_to_building_by_ferry, item: new Number(label: ventilation_ducts_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: ventilation_ducts_weight_of_ventilation_ducts, item: new Number(label: ventilation_ducts_weight_of_ventilation_ducts_lbl, unit: "kWh/year", order: ++order));
+            input.Add(key: ventilation_ducts_initial_investment, item: new Number(label: ventilation_ducts_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: ventilation_ducts_installation_cost, item: new Number(label: ventilation_ducts_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: ventilation_ducts_maintenance_cost, item: new Number(label: ventilation_ducts_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: ventilation_ducts_taxes_fees_cost, item: new Number(label: ventilation_ducts_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: ventilation_ducts_liquidation_cost, item: new Number(label: ventilation_ducts_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: ventilation_ducts_remnant_value, item: new Number(label: ventilation_ducts_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
             // Airflow assembly
             input.Add(key: change_airflow_assembly, item: new Checkbox(label: change_airflow_assembly_lbl, order: ++order));
-            input.Add(key: airflow_assembly_type_of_airflow_assembly, item: new Select(label: airflow_assembly_type_of_airflow_assembly_lbl, options: type_of_airflow_assembly, order: ++order));
+            //input.Add(key: airflow_assembly_type_of_airflow_assembly, item: new Select(label: airflow_assembly_type_of_airflow_assembly_lbl, options: type_of_airflow_assembly, order: ++order));
             input.Add(key: airflow_assembly_life_of_product, item: new Number(label: airflow_assembly_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            input.Add(key: airflow_assembly_design_airflow_exhaust_air, item: new Number(label: airflow_assembly_design_airflow_exhaust_air_lbl, unit: "kWh/year", order: ++order));
-            //input.Add(key: airflow_assembly_transport_to_building_by_truck, item: new Number(label: airflow_assembly_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: airflow_assembly_transport_to_building_by_train, item: new Number(label: airflow_assembly_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: airflow_assembly_transport_to_building_by_ferry, item: new Number(label: airflow_assembly_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            //input.Add(key: airflow_assembly_design_airflow_exhaust_air, item: new Number(label: airflow_assembly_design_airflow_exhaust_air_lbl, unit: "kWh/year", order: ++order));
+            input.Add(key: airflow_assembly_initial_investment, item: new Number(label: airflow_assembly_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: airflow_assembly_installation_cost, item: new Number(label: airflow_assembly_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: airflow_assembly_heat_consumption, item: new Number(label: airflow_assembly_heat_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: airflow_assembly_heat_annual_use, item: new Number(label: airflow_assembly_heat_annual_use_lbl, min: 0, unit: "hours", order: ++order));
+            input.Add(key: airflow_assembly_electric_consumption, item: new Number(label: airflow_assembly_electric_consumption_lbl, min: 0, unit: "kWh", order: ++order));
+            input.Add(key: airflow_assembly_electric_annual_use, item: new Number(label: airflow_assembly_electric_annual_use_lbl, min: 0, unit: "hours", order: ++order));
+            input.Add(key: airflow_assembly_maintenance_cost, item: new Number(label: airflow_assembly_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: airflow_assembly_taxes_fees_cost, item: new Number(label: airflow_assembly_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: airflow_assembly_liquidation_cost, item: new Number(label: airflow_assembly_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: airflow_assembly_remnant_value, item: new Number(label: airflow_assembly_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
             // Air distribution housings and silencers
             input.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));
-            input.Add(key: air_distribution_housings_and_silencers_number_of_distribution_housings, item: new Number(label: air_distribution_housings_and_silencers_number_of_distribution_housings_lbl, min: 0, order: ++order));
+            //input.Add(key: air_distribution_housings_and_silencers_number_of_distribution_housings, item: new Number(label: air_distribution_housings_and_silencers_number_of_distribution_housings_lbl, min: 0, order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_life_of_product, item: new Number(label: air_distribution_housings_and_silencers_life_of_product_lbl, min: 0, unit: "years", order: ++order));
-            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
-            //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_initial_investment, item: new Number(label: air_distribution_housings_and_silencers_initial_investment_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_installation_cost, item: new Number(label: air_distribution_housings_and_silencers_installation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_maintenance_cost, item: new Number(label: air_distribution_housings_and_silencers_maintenance_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_taxes_fees_cost, item: new Number(label: air_distribution_housings_and_silencers_taxes_fees_cost_lbl, min: 0, unit: "EUR/year", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_liquidation_cost, item: new Number(label: air_distribution_housings_and_silencers_liquidation_cost_lbl, min: 0, unit: "EUR", order: ++order));
+            input.Add(key: air_distribution_housings_and_silencers_remnant_value, item: new Number(label: air_distribution_housings_and_silencers_remnant_value_lbl, min: 0, unit: "EUR", order: ++order));
 
         }
 
@@ -977,7 +1003,7 @@ namespace MSR_LCC
             //SetBuildingProperties(building, ref exls);
             res += SetHeatingSystem(building, ref exls);
             res += SetBuildingShell(building, ref exls);
-            //SetVentilationSystem(building, ref exls);
+            res += SetVentilationSystem(building, ref exls);
 
             //#region Change...
             //String Key;
@@ -1296,7 +1322,7 @@ namespace MSR_LCC
             value = (bool)building.properties[Key];
             if ((bool)value)
             {
-                #region Insulation Material: Life of Product
+                #region Insulation Material 1: Life of Product
                 Key = insulation_material_1_life_of_product;
                 cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1304,7 +1330,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Initial Investment
+                #region Insulation Material 1: Initial Investment
                 Key = insulation_material_1_initial_investment;
                 cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1312,7 +1338,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Total Installation Cost
+                #region Insulation Material 1: Total Installation Cost
                 Key = insulation_material_1_installation_cost;
                 cell = "E13";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1320,7 +1346,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Operating Cost
+                #region Insulation Material 1: Operating Cost
                 #region Heat
                 cell = "E6";
                 value = 0.0;
@@ -1370,7 +1396,7 @@ namespace MSR_LCC
                 #endregion
                 #endregion
 
-                #region Insulation Material: Maintenace cost
+                #region Insulation Material 1: Maintenace cost
                 Key = insulation_material_1_maintenance_cost;
                 cell = "E21";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1378,7 +1404,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Taxes amd fees cost
+                #region Insulation Material 1: Taxes amd fees cost
                 Key = insulation_material_1_taxes_fees_cost;
                 cell = "E25";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1386,7 +1412,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Liquidation cost
+                #region Insulation Material 1: Liquidation cost
                 Key = insulation_material_1_liquidation_cost;
                 cell = "E26";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1394,7 +1420,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Insulation Material: Remnant value
+                #region Insulation Material 1: Remnant value
                 Key = insulation_material_1_remnant_value;
                 cell = "E28";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1412,7 +1438,7 @@ namespace MSR_LCC
             value = (bool)building.properties[Key];
             if ((bool)value)
             {
-                #region Insulation Material: Life of Product
+                #region Insulation Material 2: Life of Product
                 Key = insulation_material_2_life_of_product;
                 cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1420,7 +1446,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Initial Investment
+                #region Insulation Material 2: Initial Investment
                 Key = insulation_material_2_initial_investment;
                 cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1428,7 +1454,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Total Installation Cost
+                #region Insulation Material 2: Total Installation Cost
                 Key = insulation_material_2_installation_cost;
                 cell = "E13";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1436,7 +1462,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Operating Cost
+                #region Insulation Material 2: Operating Cost
                 #region Heat
                 cell = "E6";
                 value = 0.0;
@@ -1486,7 +1512,7 @@ namespace MSR_LCC
                 #endregion
                 #endregion
 
-                #region Insulation Material: Maintenace cost
+                #region Insulation Material 2: Maintenace cost
                 Key = insulation_material_2_maintenance_cost;
                 cell = "E21";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1494,7 +1520,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Taxes amd fees cost
+                #region Insulation Material 2: Taxes amd fees cost
                 Key = insulation_material_2_taxes_fees_cost;
                 cell = "E25";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1502,7 +1528,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Liquidation cost
+                #region Insulation Material 2: Liquidation cost
                 Key = insulation_material_2_liquidation_cost;
                 cell = "E26";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1510,7 +1536,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Remnant value
+                #region Insulation Material 2: Remnant value
                 Key = insulation_material_2_remnant_value;
                 cell = "E28";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1528,7 +1554,7 @@ namespace MSR_LCC
             value = (bool)building.properties[Key];
             if ((bool)value)
             {
-                #region Insulation Material: Life of Product
+                #region Facade System: Life of Product
                 Key = facade_system_life_of_product;
                 cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1536,7 +1562,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Initial Investment
+                #region Facade System: Initial Investment
                 Key = facade_system_initial_investment;
                 cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1544,7 +1570,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Total Installation Cost
+                #region Facade System: Total Installation Cost
                 Key = facade_system_installation_cost;
                 cell = "E13";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1552,7 +1578,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Operating Cost
+                #region Facade System: Operating Cost
                 #region Heat
                 cell = "E6";
                 value = 0.0;
@@ -1602,7 +1628,7 @@ namespace MSR_LCC
                 #endregion
                 #endregion
 
-                #region Insulation Material: Maintenace cost
+                #region Facade System: Maintenace cost
                 Key = facade_system_maintenance_cost;
                 cell = "E21";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1610,7 +1636,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Taxes amd fees cost
+                #region Facade System: Taxes amd fees cost
                 Key = facade_system_taxes_fees_cost;
                 cell = "E25";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1618,7 +1644,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Liquidation cost
+                #region Facade System: Liquidation cost
                 Key = facade_system_liquidation_cost;
                 cell = "E26";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1626,7 +1652,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Remnant value
+                #region Facade System: Remnant value
                 Key = facade_system_remnant_value;
                 cell = "E28";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1644,7 +1670,7 @@ namespace MSR_LCC
             value = (bool)building.properties[Key];
             if ((bool)value)
             {
-                #region Insulation Material: Life of Product
+                #region Windows: Life of Product
                 Key = windows_life_of_product;
                 cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1652,7 +1678,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Initial Investment
+                #region Windows: Initial Investment
                 Key = windows_initial_investment;
                 cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1660,7 +1686,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Total Installation Cost
+                #region Windows: Total Installation Cost
                 Key = windows_installation_cost;
                 cell = "E13";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1668,7 +1694,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Operating Cost
+                #region Windows: Operating Cost
                 #region Heat
                 cell = "E6";
                 value = 0.0;
@@ -1718,7 +1744,7 @@ namespace MSR_LCC
                 #endregion
                 #endregion
 
-                #region Insulation Material: Maintenace cost
+                #region Windows: Maintenace cost
                 Key = windows_maintenance_cost;
                 cell = "E21";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1726,7 +1752,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Taxes amd fees cost
+                #region Windows: Taxes amd fees cost
                 Key = windows_taxes_fees_cost;
                 cell = "E25";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1734,7 +1760,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Liquidation cost
+                #region Windows: Liquidation cost
                 Key = windows_liquidation_cost;
                 cell = "E26";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1742,7 +1768,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Remnant value
+                #region Windows: Remnant value
                 Key = windows_remnant_value;
                 cell = "E28";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1760,7 +1786,7 @@ namespace MSR_LCC
             value = (bool)building.properties[Key];
             if ((bool)value)
             {
-                #region Insulation Material: Life of Product
+                #region Doors: Life of Product
                 Key = doors_life_of_product;
                 cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1768,7 +1794,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Initial Investment
+                #region Doors: Initial Investment
                 Key = doors_initial_investment;
                 cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1776,7 +1802,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Total Installation Cost
+                #region Doors: Total Installation Cost
                 Key = doors_installation_cost;
                 cell = "E13";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1784,7 +1810,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Operating Cost
+                #region Doors: Operating Cost
                 #region Heat
                 cell = "E6";
                 value = 0.0;
@@ -1834,7 +1860,7 @@ namespace MSR_LCC
                 #endregion
                 #endregion
 
-                #region Insulation Material: Maintenace cost
+                #region Doors: Maintenace cost
                 Key = doors_maintenance_cost;
                 cell = "E21";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1842,7 +1868,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Taxes amd fees cost
+                #region Doors: Taxes amd fees cost
                 Key = doors_taxes_fees_cost;
                 cell = "E25";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1850,7 +1876,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Liquidation cost
+                #region Doors: Liquidation cost
                 Key = doors_liquidation_cost;
                 cell = "E26";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1858,7 +1884,7 @@ namespace MSR_LCC
                     throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Insulation Material: Remnant value
+                #region Doors: Remnant value
                 Key = doors_remnant_value;
                 cell = "E28";
                 value = Convert.ToDouble(building.properties[Key]);
@@ -1874,73 +1900,128 @@ namespace MSR_LCC
 
         }
 
-        void SetVentilationSystem(Feature building, ref CExcel exls)
+        double SetVentilationSystem(Feature building, ref CExcel exls)
         {
-
             String Key;
             object value;
-
-            // - Ventilation System
-            #region Ventilation System
-
-            //#region Ventilation System: Change in AHD due to ventilation system renovation
-            //Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
-            //value = Convert.ToDouble(building.properties[Key]);
-            //Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
-            //#endregion
-
-            //#region Ventilation System: Change in AED due to ventilation system renovation
-            //Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
-            //value = Convert.ToDouble(building.properties[Key]);
-            //Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
-            //#endregion
-
-            #endregion
+            String cell;
+            double res = 0;
 
             // Ventilation Ducts
-            #region Ventilation Ducts
+            #region Change Ventilation Ducts
             #region Ventilation Ducts?
             Key = change_ventilation_ducts;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C182", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Ventilation Ducts: Life of Product
                 Key = ventilation_ducts_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C183", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                #region Ventilation Ducts: Type of Material
-                Key = ventilation_ducts_type_of_material;
-                value = type_of_ventilation_ducts_material.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C184", value: value, exls: ref exls);
-                #endregion
-
-                #region Ventilation Ducts: Weight of Ventilation Ducts
-                Key = ventilation_ducts_weight_of_ventilation_ducts;
+                #region Ventilation Ducts: Initial Investment
+                Key = ventilation_ducts_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C185", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Ventilation Ducts: Transport by Truck [km]
-                //Key = ventilation_ducts_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
-                //#endregion
+                #region Ventilation Ducts: Total Installation Cost
+                Key = ventilation_ducts_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Ventilation Ducts: Transport by Truck [km]
-                //Key = ventilation_ducts_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
-                //#endregion
+                #region Ventilation Ducts: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
 
-                //#region Ventilation Ducts: Transport by Truck [km]
-                //Key = ventilation_ducts_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
-                //#endregion
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Ventilation Ducts: Maintenace cost
+                Key = ventilation_ducts_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Ventilation Ducts: Taxes amd fees cost
+                Key = ventilation_ducts_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Ventilation Ducts: Liquidation cost
+                Key = ventilation_ducts_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Ventilation Ducts: Remnant value
+                Key = ventilation_ducts_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -1949,45 +2030,120 @@ namespace MSR_LCC
             #region Change Airflow Assembly?
             Key = change_airflow_assembly;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C192", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
                 #region Airflow Assembly: Life of Product
                 Key = airflow_assembly_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C193", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                #region Airflow Assembly: Type of Airflow Assembly
-                Key = airflow_assembly_type_of_airflow_assembly;
-                value = type_of_airflow_assembly.GetIndex((string)building.properties[Key]) + 1;
-                Set(sheet: "Indata", cell: "C194", value: value, exls: ref exls);
-                #endregion
-
-                #region Airflow Assembly: Area of New Airflow Assembly
-                Key = airflow_assembly_design_airflow_exhaust_air;
+                #region Airflow Assembly: Initial Investment
+                Key = airflow_assembly_initial_investment;
+                cell = "E12";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C195", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
                 #endregion
 
-                //#region Airflow Assembly: Transport by Truck [km]
-                //Key = airflow_assembly_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
-                //#endregion
+                #region Airflow Assembly: Total Installation Cost
+                Key = airflow_assembly_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-                //#region Airflow Assembly: Transport by Truck [km]
-                //Key = airflow_assembly_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
-                //#endregion
+                #region Airflow Assembly: Operating Cost
+                #region Heat
+                Key = airflow_assembly_heat_consumption;
+                cell = "E6";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
 
-                //#region Airflow Assembly: Transport by Truck [km]
-                //Key = airflow_assembly_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
-                //#endregion
+                Key = airflow_assembly_heat_annual_use;
+                cell = "E7";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Electric
+                Key = airflow_assembly_electric_consumption;
+                cell = "E16";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                Key = airflow_assembly_electric_annual_use;
+                cell = "E17";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+                #endregion
+
+                #region Airflow Assembly: Maintenace cost
+                Key = airflow_assembly_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Airflow Assembly: Taxes amd fees cost
+                Key = airflow_assembly_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Airflow Assembly: Liquidation cost
+                Key = airflow_assembly_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                #region Airflow Assembly: Remnant value
+                Key = airflow_assembly_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
 
@@ -1996,41 +2152,120 @@ namespace MSR_LCC
             #region Change Air Distribution Housings & Silencers?
             Key = change_air_distribution_housings_and_silencers;
             value = (bool)building.properties[Key];
-            Set(sheet: "Indata", cell: "C202", value: value, exls: ref exls);
             #endregion
             if ((bool)value)
             {
-                #region Air Distribution Housings & Silencers: Number of Housings
-                Key = air_distribution_housings_and_silencers_number_of_distribution_housings;
-                value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);
-                #endregion
-
-                #region Air Distribution Housings & Silencers: Life of Product
+                #region Air Distribution Housings and Silencers: Life of Product
                 Key = air_distribution_housings_and_silencers_life_of_product;
+                cell = "E7";
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C203", value: value, exls: ref exls);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
                 #endregion
 
-                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-                //Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
-                //#endregion
+                #region Air Distribution Housings and Silencers: Initial Investment
+                Key = air_distribution_housings_and_silencers_initial_investment;
+                cell = "E12";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-                //Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
-                //#endregion
+                #region Air Distribution Housings and Silencers: Total Installation Cost
+                Key = air_distribution_housings_and_silencers_installation_cost;
+                cell = "E13";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
 
-                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-                //Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
-                //value = Convert.ToDouble(building.properties[Key]);
-                //Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
-                //#endregion
+                #region Air Distribution Housings and Silencers: Operating Cost
+                #region Heat
+                cell = "E6";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E7";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Water
+                cell = "E11";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E12";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Electric
+                cell = "E16";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E17";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Natural gas
+                cell = "E21";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+
+                cell = "E22";
+                value = 0.0;
+                if (!exls.SetCellValue("Operating costs", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+                #endregion
+
+                #region Air Distribution Housings and Silencers: Maintenace cost
+                Key = air_distribution_housings_and_silencers_maintenance_cost;
+                cell = "E21";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Air Distribution Housings and Silencers: Taxes amd fees cost
+                Key = air_distribution_housings_and_silencers_taxes_fees_cost;
+                cell = "E25";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Air Distribution Housings and Silencers: Liquidation cost
+                Key = air_distribution_housings_and_silencers_liquidation_cost;
+                cell = "E26";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                #region Air Distribution Housings and Silencers: Remnant value
+                Key = air_distribution_housings_and_silencers_remnant_value;
+                cell = "E28";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("LCC", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {2}", cell, value));
+                #endregion
+
+                res += Convert.ToDouble(exls.GetCellValue("LCC", result_cell));
             }
             #endregion
+
+            return res;
         }
 
         void SetRadiatorsPipesElectricity(Feature building, ref CExcel exls)
@@ -2452,10 +2687,10 @@ namespace MSR_LCC
                     (bool)building.properties[change_insulation_material_2] ||
                     (bool)building.properties[change_facade_system] ||
                     (bool)building.properties[change_windows] ||
-                    (bool)building.properties[change_doors])// ||
-                    //(bool)building.properties[change_ventilation_ducts] ||
-                    //(bool)building.properties[change_airflow_assembly] ||
-                    //(bool)building.properties[change_air_distribution_housings_and_silencers] ||
+                    (bool)building.properties[change_doors] ||
+                    (bool)building.properties[change_ventilation_ducts] ||
+                    (bool)building.properties[change_airflow_assembly] ||
+                    (bool)building.properties[change_air_distribution_housings_and_silencers])// ||
                     //(bool)building.properties[change_radiators] ||
                     //(bool)building.properties[change_piping_copper] ||
                     //(bool)building.properties[change_piping_pex] ||
