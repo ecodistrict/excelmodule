@@ -746,7 +746,7 @@ namespace MSR_LCC
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
             ///commonProp.Add(lcc_calculation_period, new Number(label: "Period of time for which total life cycle impact is summarized", min: 1, unit: "years", order: ++order));
-            commonProp.Add(discount_rate, new Number(label: discount_rate_lbl, value: 0, unit: "%", order: ++order));
+            commonProp.Add(discount_rate, new Number(label: discount_rate_lbl, value: 6, unit: "%", order: ++order));
             commonProp.Add(electric_cost, new Number(label: electric_cost_lbl, value: 0.208, unit: "EUR/kWh", order: ++order));
             commonProp.Add(heat_cost, new Number(label: heat_cost_lbl, value: 0.06, unit: "EUR/kWh", order: ++order));
             commonProp.Add(water_cost, new Number(label: water_cost_lbl, value: 1.91, unit: "EUR/1000 liters", order: ++order));
@@ -769,9 +769,9 @@ namespace MSR_LCC
             string intstr = "";
             intstr = "Fill in the building specific data below. ";
             intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
-            intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
-            intstr += "If this is the as-is step leave all checkboxes unchecked and fill in only the building properties. ";
-            intstr += "If multiple buildings have common properties you may select all of them and assign them values simultaneously. ";
+            //intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
+            //intstr += "If this is the as-is step leave all checkboxes unchecked. ";
+            intstr += "If multiple buildings have common properties you may select those buildings and assign them values simultaneously. ";
             InputGroup instructions = new InputGroup(label: intstr, order: ++order);
             buildning_specific_data.Add(key: "instructions", item: instructions);
 
