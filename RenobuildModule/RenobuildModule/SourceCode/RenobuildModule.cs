@@ -981,78 +981,82 @@ namespace RenobuildModule
             if (!exls.SetCellValue("Indata", cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
-            
-            #region Heat Source After
-            Key = heat_source_after;
-            cell = "C94";
-            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
 
-            #region Annual Heat Demand After Renovation
-            Key = ahd_after_renovation;
-            cell = "C95";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            if ((bool)value)
+            {
 
-            #region Heating System: Life of Product
-            Key = heating_system_life_of_product;
-            cell = "C100";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+                #region Heat Source After
+                Key = heat_source_after;
+                cell = "C94";
+                value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            #region Design Capacity
-            Key = design_capacity;
-            cell = "C103";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+                #region Annual Heat Demand After Renovation
+                Key = ahd_after_renovation;
+                cell = "C95";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            #region Weight of boiler/heat pump/district heating substation
-            Key = weight_of_bhd;
-            cell = "C104";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+                #region Heating System: Life of Product
+                Key = heating_system_life_of_product;
+                cell = "C100";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            #region For geothermal heat pump: Depth of bore hole
-            Key = depth_of_borehole;
-            cell = "C109";
-            value = Convert.ToDouble(building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+                #region Design Capacity
+                Key = design_capacity;
+                cell = "C103";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            //#region Transport to building by truck
-            //Key = heating_system_transport_to_building_truck;
-            //cell = "C106";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                #region Weight of boiler/heat pump/district heating substation
+                Key = weight_of_bhd;
+                cell = "C104";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            //#region Transport to building by train
-            //Key = heating_system_transport_to_building_train;
-            //cell = "C107";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                #region For geothermal heat pump: Depth of bore hole
+                Key = depth_of_borehole;
+                cell = "C109";
+                value = Convert.ToDouble(building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            //#region Transport to building by ferry
-            //Key = heating_system_transport_to_building_ferry;
-            //cell = "C108";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Transport to building by truck
+                //Key = heating_system_transport_to_building_truck;
+                //cell = "C106";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
+
+                //#region Transport to building by train
+                //Key = heating_system_transport_to_building_train;
+                //cell = "C107";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
+
+                //#region Transport to building by ferry
+                //Key = heating_system_transport_to_building_ferry;
+                //cell = "C108";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
+            }
 
             // Change Circulation Pump
             #region Change Circulation Pump
@@ -1063,69 +1067,72 @@ namespace RenobuildModule
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
 
-            #region Circulation Pump: Life of Product
-            Key = circulationpump_life_of_product;
-            cell = "C114";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+            if ((bool)value)
+            {
+                #region Circulation Pump: Life of Product
+                Key = circulationpump_life_of_product;
+                cell = "C114";
+                value = (building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            //#region Design pressure head
-            //Key = design_pressure_head;
-            //cell = "C115";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Design pressure head
+                //Key = design_pressure_head;
+                //cell = "C115";
+                //value = (building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
 
-            //#region Design flow rate
-            //Key = design_flow_rate;
-            //cell = "C116";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Design flow rate
+                //Key = design_flow_rate;
+                //cell = "C116";
+                //value = (building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
 
-            //#region Type of flow control in heating system
-            //Key = type_of_control_in_heating_system;
-            //cell = "C117";
-            //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Type of flow control in heating system
+                //Key = type_of_control_in_heating_system;
+                //cell = "C117";
+                //value = type_of_flow_control_in_heating_system_opts.GetIndex((string)building.properties[Key]) + 1;
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
 
-            #region Weight
-            Key = weight;
-            cell = "C118";
-            value = (building.properties[Key]);
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            #endregion
+                #region Weight
+                Key = weight;
+                cell = "C118";
+                value = (building.properties[Key]);
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
 
-            //#region Transport to building by truck
-            //Key = circulationpump_transport_to_building_truck;
-            //cell = "C120";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Transport to building by truck
+                //Key = circulationpump_transport_to_building_truck;
+                //cell = "C120";
+                //value = (building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
 
-            //#region Transport to building by train
-            //Key = circulationpump_transport_to_building_train;
-            //cell = "C121";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Transport to building by train
+                //Key = circulationpump_transport_to_building_train;
+                //cell = "C121";
+                //value = (building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
 
-            //#region Transport to building by ferry
-            //Key = circulationpump_transport_to_building_ferry;
-            //cell = "C122";
-            //value = (building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
+                //#region Transport to building by ferry
+                //Key = circulationpump_transport_to_building_ferry;
+                //cell = "C122";
+                //value = (building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
+            }
 
         }
 
