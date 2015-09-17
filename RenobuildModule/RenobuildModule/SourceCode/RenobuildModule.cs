@@ -48,7 +48,7 @@ namespace RenobuildModule
             }
             catch (Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineHeatSources()
@@ -65,7 +65,7 @@ namespace RenobuildModule
             }
             catch (Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfFlowControl()
@@ -78,7 +78,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -94,7 +94,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfFascadeSystem()
@@ -121,7 +121,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfWindows()
@@ -136,7 +136,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfDoors()
@@ -151,7 +151,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -165,7 +165,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfAirflowAssembly()
@@ -178,7 +178,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -192,7 +192,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -210,7 +210,7 @@ namespace RenobuildModule
             }
             catch (System.Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -577,10 +577,10 @@ namespace RenobuildModule
             this.KpiList = new List<string> { kpi_gwp, kpi_mean_gwp_per_heated_area, kpi_peu, kpi_mean_peu_per_heated_area };
 
             //Error handler
-            this.ErrorRaised += RenobuildModule_ErrorRaised;
+            this.ErrorRaised += CExcelModule_ErrorRaised;
 
             //Notification
-            this.StatusMessage += RenobuildModule_StatusMessage;
+            this.StatusMessage += CExcelModule_StatusMessage;
 
             //Define parameter options
             DefineElectricityMix();
@@ -599,25 +599,6 @@ namespace RenobuildModule
 
             //Define the input specification for the different kpis
             DefineInputSpecifications();
-        }
-
-        void RenobuildModule_StatusMessage(object sender, StatusEventArg e)
-        {
-            Console.WriteLine(String.Format("# {0} #\tStatus message:\t{1}", DateTime.Now.ToString(), e.StatusMessage));
-        }
-
-        void RenobuildModule_ErrorRaised(object sender, ErrorMessageEventArg e)
-        {
-            Console.WriteLine(String.Format("# {0} #\tError message:\t{1}", DateTime.Now.ToString(), e.Message));
-            if (e.SourceFunction != null & e.SourceFunction != "")
-                Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
-        }
-
-        void RenobuildModule_ErrorRaised(object sender, Exception ex)
-        {
-            ErrorMessageEventArg em = new ErrorMessageEventArg();
-            em.Message = ex.Message;
-            RenobuildModule_ErrorRaised(sender, em);
         }
 
         InputSpecification GetInputSpecificationGeoJson()
@@ -2068,7 +2049,7 @@ namespace RenobuildModule
             }
             catch (Exception ex)
             {
-                RenobuildModule_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
                 return false;
             }
         }
