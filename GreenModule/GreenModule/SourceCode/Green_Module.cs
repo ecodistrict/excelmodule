@@ -173,9 +173,9 @@ namespace GreenModule
             return inputSpecifications[kpiId];
         }
 
-        protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
         {
-            Outputs outputs = new Outputs();
+            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
             
             #region Area Info
             if (indata[area_info] is InputGroup)
@@ -302,7 +302,7 @@ namespace GreenModule
             switch (kpiId)
             {
                 case kpi_berlin_baf:
-                    outputs.Add(new Kpi(Math.Round(kpi, 2), kpi_berlin_baf, ""));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), kpi_berlin_baf, ""));
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
