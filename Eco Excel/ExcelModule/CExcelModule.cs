@@ -217,6 +217,26 @@ namespace Ecodistrict.Excel
             }
         }
 
+
+        protected virtual void CExcelModule_StatusMessage(object sender, StatusEventArg e)
+        {
+            Console.WriteLine(String.Format("# {0} #\tStatus message:\t{1}", DateTime.Now.ToString(), e.StatusMessage));
+        }
+
+        protected virtual void CExcelModule_ErrorRaised(object sender, ErrorMessageEventArg e)
+        {
+            Console.WriteLine(String.Format("# {0} #\tError message:\t{1}", DateTime.Now.ToString(), e.Message));
+            if (e.SourceFunction != null & e.SourceFunction != "")
+                Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
+        }
+
+        protected virtual void CExcelModule_ErrorRaised(object sender, Exception ex)
+        {
+            ErrorMessageEventArg em = new ErrorMessageEventArg();
+            em.Message = ex.Message;
+            CExcelModule_ErrorRaised(sender, em);
+        }
+
         /// <summary>
         /// This function is to be inherited. It receives a Kpi name as string and should return the Inputspecification for that Kpi
         /// </summary>
