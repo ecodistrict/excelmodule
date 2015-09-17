@@ -1936,9 +1936,9 @@ namespace RenobuildModule
             return false;
         }
 
-        protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
         {
-            Outputs outputs = new Outputs();
+            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
 
             InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
             Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
@@ -2037,22 +2037,23 @@ namespace RenobuildModule
             switch (kpiId)
             {
                 case kpi_gwp:
-                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of global warming potential", "tonnes CO2 eq"));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), "Change of global warming potential", "tonnes CO2 eq"));
                     break;
                 case kpi_mean_gwp_per_heated_area:
-                    outputs.Add(new Kpi(Math.Round(kpi, 3), "Mean change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Mean change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
                     break;
                 case kpi_peu:
-                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Change of primary energy use", "MWh"));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), "Change of primary energy use", "MWh"));
                     break;
                 case kpi_mean_peu_per_heated_area:
-                    outputs.Add(new Kpi(Math.Round(kpi, 3), "Mean change of primary energy use per heated area", "MWh / m\u00b2"));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Mean change of primary energy use per heated area", "MWh / m\u00b2"));
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
             }
-
-            outputs.Add(buildingProperties);
+            //Ecodistrict.Messaging.Output.GeoJson buildingprop = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
+            //string str = Serialize.ToJsonString(buildingprop);
+            outputs.Add(new Ecodistrict.Messaging.Output.GeoJson(buildingProperties));
 
             return outputs;
         }

@@ -254,7 +254,7 @@ namespace Ecodistrict.Excel
         /// <param name="kpiId">The name of the Kpi that is to be calculated</param>
         /// <param name="exls">Excel object</param>
         /// <returns>A output object that can be serialized and sent to th dashboard</returns>
-        protected virtual Outputs CalculateKpi(Dictionary<string,Input> indata,string kpiId, CExcel exls)
+        protected virtual Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string,Input> indata,string kpiId, CExcel exls)
         {
             throw new NotImplementedException();
             
@@ -346,7 +346,7 @@ namespace Ecodistrict.Excel
                 return false;
             }
 
-            Outputs outputs = null;
+            Ecodistrict.Messaging.Output.Outputs outputs = null;
 
 
             try
