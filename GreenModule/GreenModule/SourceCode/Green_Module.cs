@@ -30,7 +30,7 @@ namespace GreenModule
             }
             catch (System.Exception ex)
             {
-                Green_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -46,35 +46,15 @@ namespace GreenModule
             this.KpiList = new List<string> { kpi_berlin_baf };
 
             //Error handler
-            this.ErrorRaised += Green_Module_ErrorRaised;
+            this.ErrorRaised += CExcelModule_ErrorRaised;
 
             //Notification
-            this.StatusMessage += Green_Module_StatusMessage;
+            this.StatusMessage += CExcelModule_StatusMessage;
             
             //Define the input specification for the different kpis
             DefineInputSpecifications();
         }
-
-        void Green_Module_StatusMessage(object sender, StatusEventArg e)
-        {
-            Console.WriteLine(String.Format("Status message:\n\t{0}", e.StatusMessage));
-        }
-
-        void Green_Module_ErrorRaised(object sender, ErrorMessageEventArg e)
-        {
-            Console.WriteLine(String.Format("Error message: {0}", e.Message));
-            if (e.SourceFunction != null & e.SourceFunction != "")
-                Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
-        }
-
-        void Green_Module_ErrorRaised(object sender, Exception ex)
-        {
-            ErrorMessageEventArg em = new ErrorMessageEventArg();
-            em.Message = ex.Message;
-            Green_Module_ErrorRaised(sender, em);
-        }
-
-        
+                
         private void Set(string sheet, string cell, object value, ref CExcel exls)
         {
             if (!exls.SetCellValue(sheet, cell, value))
@@ -322,7 +302,7 @@ namespace GreenModule
             }
             catch (Exception ex)
             {
-                Green_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
                 return false;
             }
         }
