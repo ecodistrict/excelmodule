@@ -1,0 +1,4 @@
+---
+# Information needed in order to connect to the IMB-hub
+subScribedEventName: modules
+publishedEventName: dashboard

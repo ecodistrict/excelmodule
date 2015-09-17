@@ -699,7 +699,7 @@ namespace IMB
 
     public abstract class TConnection
     {
-        public const string imbDefaultRemoteHost = "vps17642.public.cloudvps.com"; // "localhost"; 
+        public const string imbDefaultRemoteHost = "192.168.239.133";//"vps17642.public.cloudvps.com"; // "localhost"; 
         public const int imbDefaultSocketRemotePort = 4004;
         public const int imbDefaultTLSRemotePort = 4443;
 
