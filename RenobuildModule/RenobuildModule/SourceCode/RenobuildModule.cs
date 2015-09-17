@@ -287,7 +287,7 @@ namespace RenobuildModule
         string circulationpump_transport_to_building_ferry = "PUMP__TRANSPORT_TO_BUILDING_BY_FERRY";
         string circulationpump_transport_to_building_ferry_lbl = "Transport to building by ferry (Distance from production site to building)";
         #endregion
-        
+
         #region Building Shell
         //Building Shell
         // Insulation material 1
@@ -437,7 +437,7 @@ namespace RenobuildModule
         string ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl = "Change in annual electricity demand due ventilation systems renovation (an energy saving is given as a negative value)";
 
         #endregion
-        
+
         string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AHD_DUE_TO_RENOVATIONS";
         string change_in_ahd_due_to_renovations_of_bshell_ventilation_pump_lbl = "Change in annual heat demand";
         string change_in_aed_due_to_renovations_of_bshell_ventilation_pump = "CHANGE_IN_AED_DUE_TO_RENOVATIONS";
@@ -574,7 +574,7 @@ namespace RenobuildModule
             this.UserName = "Renobuild";
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_gwp, kpi_mean_gwp_per_heated_area , kpi_peu, kpi_mean_peu_per_heated_area };
+            this.KpiList = new List<string> { kpi_gwp, kpi_mean_gwp_per_heated_area, kpi_peu, kpi_mean_peu_per_heated_area };
 
             //Error handler
             this.ErrorRaised += RenobuildModule_ErrorRaised;
@@ -603,12 +603,12 @@ namespace RenobuildModule
 
         void RenobuildModule_StatusMessage(object sender, StatusEventArg e)
         {
-            Console.WriteLine(String.Format("Status message:\n\t{0}", e.StatusMessage));
+            Console.WriteLine(String.Format("# {0} #\tStatus message:\t{1}", DateTime.Now.ToString(), e.StatusMessage));
         }
 
         void RenobuildModule_ErrorRaised(object sender, ErrorMessageEventArg e)
         {
-            Console.WriteLine(String.Format("Error message: {0}", e.Message));
+            Console.WriteLine(String.Format("# {0} #\tError message:\t{1}", DateTime.Now.ToString(), e.Message));
             if (e.SourceFunction != null & e.SourceFunction != "")
                 Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
         }
@@ -707,7 +707,7 @@ namespace RenobuildModule
             input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, value: heat_sources.Last(), order: ++order));
             input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order, value: 99));
             //input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
-                        
+
         }
 
         void HeatingSystem(ref GeoJson input, ref int order)
@@ -747,7 +747,7 @@ namespace RenobuildModule
         void BuildingShell(ref GeoJson input, ref int order)
         {
             //Header
-            input.Add("building_shell", new InputGroup("Renovate Building Shell", ++order));                      
+            input.Add("building_shell", new InputGroup("Renovate Building Shell", ++order));
 
             // Insulation material 1
             input.Add(key: change_insulation_material_1, item: new Checkbox(label: change_insulation_material_1_lbl, order: ++order));
@@ -805,7 +805,7 @@ namespace RenobuildModule
         {
             //Header
             input.Add("ventilation_system", new InputGroup("Renovate Ventilation System", ++order));
-            
+
             //Ventilation renovation
             //input.Add(key: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
             //input.Add(key: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation, item: new Number(label: ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation_lbl, min: 0, unit: "kWh/year", order: ++order));
@@ -829,13 +829,13 @@ namespace RenobuildModule
             //input.Add(key: airflow_assembly_transport_to_building_by_ferry, item: new Number(label: airflow_assembly_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
 
             // Air distribution housings and silencers
-            input.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));            
+            input.Add(key: change_air_distribution_housings_and_silencers, item: new Checkbox(label: change_air_distribution_housings_and_silencers_lbl, order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_number_of_distribution_housings, item: new Number(label: air_distribution_housings_and_silencers_number_of_distribution_housings_lbl, min: 0, order: ++order));
             input.Add(key: air_distribution_housings_and_silencers_life_of_product, item: new Number(label: air_distribution_housings_and_silencers_life_of_product_lbl, min: 0, unit: "years", order: ++order));
             //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_truck, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_truck_lbl, min: 0, unit: "km", order: ++order));
             //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_train, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_train_lbl, min: 0, unit: "km", order: ++order));
             //input.Add(key: air_distribution_housings_and_silencers_transport_to_building_by_ferry, item: new Number(label: air_distribution_housings_and_silencers_transport_to_building_by_ferry_lbl, min: 0, unit: "km", order: ++order));
-            
+
         }
 
         void RadiatorsPipesElectricity(ref GeoJson input, ref int order)
@@ -963,7 +963,7 @@ namespace RenobuildModule
             if (!exls.SetCellValue("Indata", cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
             #endregion
-            
+
         }
 
         void SetHeatingSystem(Feature building, ref CExcel exls)
@@ -1539,7 +1539,7 @@ namespace RenobuildModule
                 #region Air Distribution Housings & Silencers: Number of Housings
                 Key = air_distribution_housings_and_silencers_number_of_distribution_housings;
                 value = Convert.ToDouble(building.properties[Key]);
-                Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);  
+                Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);
                 #endregion
 
                 #region Air Distribution Housings & Silencers: Life of Product
@@ -1621,7 +1621,7 @@ namespace RenobuildModule
                 //#endregion
             }
             #endregion
-            
+
             // Piping System Copper
             #region Change Piping System Copper
             #region Change Piping System Copper?
@@ -1744,7 +1744,7 @@ namespace RenobuildModule
                 //#endregion
             }
             #endregion
-            
+
             // Piping System Cast Iron
             #region Change Piping System Cast Iron
             #region Change Piping System Cast Iron?
@@ -1925,6 +1925,17 @@ namespace RenobuildModule
             return inputSpecifications[kpiId];
         }
 
+        bool GetSetBool(ref Dictionary<string, object> properties, string property)
+        {
+            if (!properties.ContainsKey(property))
+                properties.Add(property, false);
+
+            if (properties[property] is bool)
+                return (bool)properties[property];
+
+            return false;
+        }
+
         protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
         {
             Outputs outputs = new Outputs();
@@ -1984,37 +1995,43 @@ namespace RenobuildModule
             #endregion
             #endregion
 
+            #region Calculate LCA per building
             foreach (Feature building in buildingProperties.value.features)
             {
-                if ((bool)building.properties[change_heating_system] ||
-                    (bool)building.properties[change_circulationpump_in_heating_system] ||
-                    (bool)building.properties[change_insulation_material_1] ||
-                    (bool)building.properties[change_insulation_material_2] ||
-                    (bool)building.properties[change_facade_system] ||
-                    (bool)building.properties[change_windows] ||
-                    (bool)building.properties[change_doors] ||
-                    (bool)building.properties[change_ventilation_ducts] ||
-                    (bool)building.properties[change_airflow_assembly] ||
-                    (bool)building.properties[change_air_distribution_housings_and_silencers] ||
-                    (bool)building.properties[change_radiators] ||
-                    (bool)building.properties[change_piping_copper] ||
-                    (bool)building.properties[change_piping_pex] ||
-                    (bool)building.properties[change_piping_pp] ||
-                    (bool)building.properties[change_piping_cast_iron] ||
-                    (bool)building.properties[change_piping_galvanized_steel] ||
-                    (bool)building.properties[change_piping_relining] ||
-                    (bool)building.properties[change_electrical_wiring]) 
+                if (GetSetBool(ref building.properties, change_heating_system) ||
+                    GetSetBool(ref building.properties, change_circulationpump_in_heating_system) ||
+                    GetSetBool(ref building.properties, change_insulation_material_1) ||
+                    GetSetBool(ref building.properties, change_insulation_material_2) ||
+                    GetSetBool(ref building.properties, change_facade_system) ||
+                    GetSetBool(ref building.properties, change_windows) ||
+                    GetSetBool(ref building.properties, change_doors) ||
+                    GetSetBool(ref building.properties, change_ventilation_ducts) ||
+                    GetSetBool(ref building.properties, change_airflow_assembly) ||
+                    GetSetBool(ref building.properties, change_air_distribution_housings_and_silencers) ||
+                    GetSetBool(ref building.properties, change_radiators) ||
+                    GetSetBool(ref building.properties, change_piping_copper) ||
+                    GetSetBool(ref building.properties, change_piping_pex) ||
+                    GetSetBool(ref building.properties, change_piping_pp) ||
+                    GetSetBool(ref building.properties, change_piping_cast_iron) ||
+                    GetSetBool(ref building.properties, change_piping_galvanized_steel) ||
+                    GetSetBool(ref building.properties, change_piping_relining) ||
+                    GetSetBool(ref building.properties, change_electrical_wiring))
                 {
                     SetInputDataOneBuilding(building, ref exls);
 
-                    var resi = exls.GetCellValue("Indata", resultCell);
-                    kpi += Convert.ToDouble(resi);
+                    double resi = Convert.ToDouble(exls.GetCellValue("Indata", resultCell));
+                    kpi += resi;
 
+                    building.properties.Add("kpiValue", resi);
                 }
+                else
+                    building.properties.Add("kpiValue", 0);
 
             }
+            #endregion
 
-            if(buildingProperties.value.features.Count>0 & (kpiId == kpi_mean_gwp_per_heated_area | kpiId == kpi_mean_peu_per_heated_area))
+            //Calculate the mean kpi value
+            if (buildingProperties.value.features.Count > 0 & (kpiId == kpi_mean_gwp_per_heated_area | kpiId == kpi_mean_peu_per_heated_area))
                 kpi = kpi / (double)buildingProperties.value.features.Count;
 
             switch (kpiId)
@@ -2034,6 +2051,8 @@ namespace RenobuildModule
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
             }
+
+            outputs.Add(buildingProperties);
 
             return outputs;
         }
