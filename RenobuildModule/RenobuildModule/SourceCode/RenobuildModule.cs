@@ -642,7 +642,7 @@ namespace RenobuildModule
 
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
-            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", min: 1, unit: "years", order: ++order));
+            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period",value: 25, min: 1, unit: "years", order: ++order));
             commonProp.Add(electricity_mix, new Select(label: "Electricity mix", options: electricity_mix_opts, value: electricity_mix_opts.First(), order: ++order));
             // If district heating is used (before/after renovation)
             commonProp.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, value: 83, unit: "g CO2 eq/kWh", order: ++order));
