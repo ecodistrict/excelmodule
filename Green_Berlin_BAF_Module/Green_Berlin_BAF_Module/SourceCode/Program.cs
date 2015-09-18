@@ -22,7 +22,7 @@ namespace Green_BerlinBAF_Module
                     Console.WriteLine("Could not read module settings");
                     startupStatus = false;
                 }
-
+                
                 if (!module.ConnectToServer())
                 {
                     Console.WriteLine("Could not connect to the IMB-hub");

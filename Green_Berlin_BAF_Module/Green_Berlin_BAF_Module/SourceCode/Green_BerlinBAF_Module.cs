@@ -13,7 +13,8 @@ namespace Green_BerlinBAF_Module
     {
         #region Defines
         // - Kpis
-        const string kpi_berlin_baf = "biotope-area-factor";
+        const string kpi_baf = "biotope-area-factor";
+        const string kpi_berlin_baf = "berlin-biotope-area-factor";
         const string result_cell = "E30";
 
         Dictionary<string, InputSpecification> inputSpecifications;
@@ -25,6 +26,7 @@ namespace Green_BerlinBAF_Module
                 inputSpecifications = new Dictionary<string, InputSpecification>();
 
                 //GeoJson
+                inputSpecifications.Add(kpi_baf, GetInputSpecificationGreen());
                 inputSpecifications.Add(kpi_berlin_baf, GetInputSpecificationGreen());
             }
             catch (System.Exception ex)
@@ -43,7 +45,7 @@ namespace Green_BerlinBAF_Module
             this.ModuleName = "SP_Green_BerlinBAF_Module";
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_berlin_baf };
+            this.KpiList = new List<string> { kpi_baf, kpi_berlin_baf };
 
             //Error handler
             this.ErrorRaised += CExcelModule_ErrorRaised;
@@ -54,7 +56,7 @@ namespace Green_BerlinBAF_Module
             //Define the input specification for the different kpis
             DefineInputSpecifications();
         }
-                
+                        
         private void Set(string sheet, string cell, object value, ref CExcel exls)
         {
             if (!exls.SetCellValue(sheet, cell, value))
