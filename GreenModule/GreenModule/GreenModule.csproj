@@ -39,15 +39,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="YamlSerializer">
-      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceCode\Green_Module.cs" />
-    <Compile Include="SourceCode\IMB_Settings.cs" />
-    <Compile Include="SourceCode\Module_Settings.cs" />
     <Compile Include="SourceCode\Program.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,7 +54,6 @@
     <None Include="Config\Module_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="root-ca-imb.crt" />
   </ItemGroup>
   <ItemGroup>
