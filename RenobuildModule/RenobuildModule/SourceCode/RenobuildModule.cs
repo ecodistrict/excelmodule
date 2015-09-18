@@ -15,9 +15,9 @@ namespace RenobuildModule
         #region Defines
         // - Kpis
         const string kpi_gwp = "change-of-global-warming-potential";
-        const string kpi_mean_gwp_per_heated_area = "mean-change-of-global-warming-potential-per-heated-area";
+        const string kpi_gwp_per_heated_area = "change-of-global-warming-potential-per-heated-area";
         const string kpi_peu = "change-of-primary-energy-use";
-        const string kpi_mean_peu_per_heated_area = "mean-change-of-primary-energy-use-per-heated-area";
+        const string kpi_peu_per_heated_area = "change-of-primary-energy-use-per-heated-area";
 
         Dictionary<string, InputSpecification> inputSpecifications;
 
@@ -204,9 +204,9 @@ namespace RenobuildModule
 
                 //GeoJson
                 inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
-                inputSpecifications.Add(kpi_mean_gwp_per_heated_area, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_gwp_per_heated_area, GetInputSpecificationGeoJson());
                 inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
-                inputSpecifications.Add(kpi_mean_peu_per_heated_area, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_peu_per_heated_area, GetInputSpecificationGeoJson());
             }
             catch (System.Exception ex)
             {
@@ -574,7 +574,7 @@ namespace RenobuildModule
             this.UserName = "Renobuild";
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_gwp, kpi_mean_gwp_per_heated_area, kpi_peu, kpi_mean_peu_per_heated_area };
+            this.KpiList = new List<string> { kpi_gwp, kpi_gwp_per_heated_area, kpi_peu, kpi_peu_per_heated_area };
 
             //Error handler
             this.ErrorRaised += CExcelModule_ErrorRaised;
@@ -1933,13 +1933,13 @@ namespace RenobuildModule
                 case kpi_gwp:
                     resultCell = "C31"; //Change of global warming potential
                     break;
-                case kpi_mean_gwp_per_heated_area:
+                case kpi_gwp_per_heated_area:
                     resultCell = "E31"; //Mean change of global warming potential per m^2
                     break;
                 case kpi_peu:
                     resultCell = "C32"; //Change of primary energy use  
                     break;
-                case kpi_mean_peu_per_heated_area:
+                case kpi_peu_per_heated_area:
                     resultCell = "E32"; //Mean change of primary energy use per m^2
                     break;
                 default:
@@ -2012,7 +2012,9 @@ namespace RenobuildModule
             #endregion
 
             //Calculate the mean kpi value
-            if (buildingProperties.value.features.Count > 0 & (kpiId == kpi_mean_gwp_per_heated_area | kpiId == kpi_mean_peu_per_heated_area))
+            if (buildingProperties.value.features.Count > 0 & 
+                (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
+                kpiId == kpi_gwp | kpiId == kpi_peu))
                 kpi = kpi / (double)buildingProperties.value.features.Count;
 
             switch (kpiId)
@@ -2020,21 +2022,27 @@ namespace RenobuildModule
                 case kpi_gwp:
                     outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), "Change of global warming potential", "tonnes CO2 eq"));
                     break;
-                case kpi_mean_gwp_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Mean change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
+                case kpi_gwp_per_heated_area:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
                     break;
                 case kpi_peu:
                     outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), "Change of primary energy use", "MWh"));
                     break;
-                case kpi_mean_peu_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Mean change of primary energy use per heated area", "MWh / m\u00b2"));
+                case kpi_peu_per_heated_area:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of primary energy use per heated area", "MWh / m\u00b2"));
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
             }
-            //Ecodistrict.Messaging.Output.GeoJson buildingprop = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
-            //string str = Serialize.ToJsonString(buildingprop);
-            outputs.Add(new Ecodistrict.Messaging.Output.GeoJson(buildingProperties));
+            Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
+            outputs.Add(buildingsProps);
+
+            ////TMP - SStore data locally
+            //string str = Serialize.ToJsonString(buildingsProps);
+            //string path = Path.GetDirectoryName(this.workBookPath);
+            //System.IO.File.WriteAllText(String.Format(@"{0}/{1} {2}.geojson", path, "RenoBuild", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
+            ////
+
 
             return outputs;
         }
@@ -2081,6 +2089,8 @@ namespace RenobuildModule
                 this.Description = ((Module_Settings)module_settings).description;
                 this.ModuleId = ((Module_Settings)module_settings).moduleId;
                 this.workBookPath = ((Module_Settings)module_settings).path;
+
+                this.workBookPath = Path.GetFullPath(this.workBookPath);
             }
             catch (Exception ex)
             {
