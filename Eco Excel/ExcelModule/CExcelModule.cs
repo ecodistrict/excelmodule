@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Yaml.Serialization;
 using IMB;
 using Ecodistrict.Messaging;
 
@@ -74,10 +75,21 @@ namespace Ecodistrict.Excel
         /// </summary>
         protected string UserName { get; set; }
 
+        private string _workBookPath;
         /// <summary>
         /// The complete path to the Excedocument document file that the module is going to use (*.xls, *.xlsx)
         /// </summary>
-        protected string workBookPath { get; set; }
+        protected string WorkBookPath 
+        { 
+            get
+            {
+                return _workBookPath;
+            }
+            set
+            {
+                _workBookPath = Path.GetFullPath(value);
+            }
+        }
         /// <summary>
         /// A list of strings with Kpis that the ExcelFile can calculate.
         /// </summary>
@@ -111,13 +123,12 @@ namespace Ecodistrict.Excel
             Close();
         }
 
-
+        //IMB hub info
         string aCertFile = "client-eco-district.pfx";
         string aCertFilePassword = "&8dh48klosaxu90OKH";
         string aRootCertFile = "root-ca-imb.crt";
-
         string aPrefix = "ecodistrict";
-        string aRemoteHost = "192.168.239.138";//"vps17642.public.cloudvps.com";//"192.168.239.138"
+        protected string RemoteHost { get; set; }
 
         /// <summary>
         /// Close any opened Excel dokument and Excel.Application as a preparation for closing down.
@@ -150,7 +161,7 @@ namespace Ecodistrict.Excel
             
             try
             {
-                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, UserName, UserId, aPrefix, aRemoteHost);
+                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, ModuleName, UserId, aPrefix, RemoteHost);
 
                 if (Connection.connected)
                 {
@@ -225,7 +236,6 @@ namespace Ecodistrict.Excel
             }
         }
 
-
         protected virtual void CExcelModule_StatusMessage(object sender, StatusEventArg e)
         {
             Console.WriteLine(String.Format("# {0} #\tStatus message:\t{1}", DateTime.Now.ToString(), e.StatusMessage));
@@ -245,6 +255,41 @@ namespace Ecodistrict.Excel
             CExcelModule_ErrorRaised(sender, em);
         }
 
+        protected virtual void Init_IMB(string IMB_config_path)
+        {
+            try
+            {
+                var serializer = new YamlSerializer();
+                var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
+
+                this.RemoteHost = ((IMB_Settings)imb_settings).remoteHost;
+                this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
+                this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "Init_IMB", exception: ex);
+            }
+        }
+
+        protected virtual void Init_Module(string Module_config_path)
+        {
+            try
+            {
+                var serializer = new YamlSerializer();
+                var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
+
+                this.ModuleName = ((Module_Settings)module_settings).name;
+                this.Description = ((Module_Settings)module_settings).description;
+                this.ModuleId = ((Module_Settings)module_settings).moduleId;
+                this.WorkBookPath = ((Module_Settings)module_settings).path;
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "Init_Module", exception: ex);
+            }
+        }
+
         /// <summary>
         /// This function is to be inherited. It receives a Kpi name as string and should return the Inputspecification for that Kpi
         /// </summary>
@@ -256,7 +301,7 @@ namespace Ecodistrict.Excel
 
             try
             {
-                ExcelApplikation.OpenWorkBook(workBookPath);
+                ExcelApplikation.OpenWorkBook(WorkBookPath);
 
             }
             catch (Exception ex)
@@ -267,7 +312,6 @@ namespace Ecodistrict.Excel
             return res;
 
         }
-
 
         protected virtual InputSpecification GetInputSpecification(string kpiId)
         {
@@ -379,9 +423,9 @@ namespace Ecodistrict.Excel
 
             try
             {
-                if (File.Exists(workBookPath))
+                if (File.Exists(WorkBookPath))
                 {
-                    if (ExcelApplikation.OpenWorkBook(workBookPath))
+                    if (ExcelApplikation.OpenWorkBook(WorkBookPath))
                     {
                         outputs = CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
                     }
@@ -391,7 +435,7 @@ namespace Ecodistrict.Excel
                     var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                     var str = Serialize.ToJsonString(smr);
                     PublishedEvent.signalString(str);
-                    SendErrorMessage(string.Format("Excelfile <{0}> not found", workBookPath), sourceFunction: "SendModuleResult-FileNotFound");
+                    SendErrorMessage(string.Format("Excelfile <{0}> not found", WorkBookPath), sourceFunction: "SendModuleResult-FileNotFound");
                     return false;
                 }
 

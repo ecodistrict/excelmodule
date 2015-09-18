@@ -44,12 +44,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\RenobuildModule\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CExcel.cs" />
     <Compile Include="CExcelModule.cs" />
     <Compile Include="ErrorMessage.cs" />
     <Compile Include="imb\imb4.cs" />
+    <Compile Include="IMB_Settings.cs" />
+    <Compile Include="Module_Settings.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusEventArg.cs" />
@@ -64,6 +70,7 @@
     <None Include="client-eco-district.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="root-ca-imb.crt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
