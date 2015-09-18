@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GreenModule")]
+[assembly: AssemblyTitle("Green_BerlinBAF_Module")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SP")]
-[assembly: AssemblyProduct("GreenModule")]
+[assembly: AssemblyProduct("Green_BerlinBAF_Module")]
 [assembly: AssemblyCopyright("Copyright © SP 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -7,8 +7,8 @@
     <ProjectGuid>{38BF9574-9ADA-45EE-982D-D49A0B29B13C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GreenModule</RootNamespace>
-    <AssemblyName>GreenModule</AssemblyName>
+    <RootNamespace>Green_BerlinBAF_Module</RootNamespace>
+    <AssemblyName>Green_BerlinBAF_Module</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SourceCode\Green_Module.cs" />
+    <Compile Include="SourceCode\Green_BerlinBAF_Module.cs" />
     <Compile Include="SourceCode\Program.cs" />
   </ItemGroup>
   <ItemGroup>

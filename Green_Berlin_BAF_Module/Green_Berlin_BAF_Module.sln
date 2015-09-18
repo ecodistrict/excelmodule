@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenModule", "GreenModule\GreenModule.csproj", "{38BF9574-9ADA-45EE-982D-D49A0B29B13C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Green_BerlinBAF_Module", "Green_Berlin_BAF_Module\Green_BerlinBAF_Module.csproj", "{38BF9574-9ADA-45EE-982D-D49A0B29B13C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcodistrictMessaging", "..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj", "{3D653C56-9397-49F6-BD9A-7D48D2C76BA2}"
 EndProject

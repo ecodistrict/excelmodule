@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GreenModule
+namespace Green_BerlinBAF_Module
 {
     class Program
     {
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-            Green_Module module = new Green_Module();
+            Green_BerlinBAF_Module module = new Green_BerlinBAF_Module();
 
             try
             {

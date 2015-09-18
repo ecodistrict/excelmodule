@@ -7,13 +7,13 @@ using System.IO;
 using Ecodistrict.Messaging;
 using Ecodistrict.Excel;
 
-namespace GreenModule
+namespace Green_BerlinBAF_Module
 {
-    class Green_Module : CExcelModule
+    class Green_BerlinBAF_Module : CExcelModule
     {
         #region Defines
         // - Kpis
-        const string kpi_berlin_baf = "berlin-baf";
+        const string kpi_berlin_baf = "biotope-area-factor";
         const string result_cell = "E30";
 
         Dictionary<string, InputSpecification> inputSpecifications;
@@ -35,11 +35,12 @@ namespace GreenModule
 
         #endregion
 
-        public Green_Module()
+        public Green_BerlinBAF_Module()
         {
             //IMB-hub info (not used)
             this.UserId = 0;
-            this.UserName = "Green";
+            this.UserName = "";
+            this.ModuleName = "SP_Green_BerlinBAF_Module";
 
             //List of kpis the module can calculate
             this.KpiList = new List<string> { kpi_berlin_baf };
