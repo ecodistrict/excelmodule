@@ -42,13 +42,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="YamlSerializer">
-      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SourceCode\IMB_Settings.cs" />
-    <Compile Include="SourceCode\Module_Settings.cs" />
     <Compile Include="SourceCode\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceCode\RenobuildModule.cs" />
@@ -60,7 +55,6 @@
     </None>
     <None Include="Config\IMB_config.yaml" />
     <None Include="Config\Module_config.yaml" />
-    <None Include="packages.config" />
     <None Include="root-ca-imb.crt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

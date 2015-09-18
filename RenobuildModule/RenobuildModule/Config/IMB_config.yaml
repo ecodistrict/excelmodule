@@ -1,4 +1,5 @@
 ---
 # Information needed in order to connect to the IMB-hub
+remoteHost:  192.168.239.138 #vps17642.public.cloudvps.com 192.168.239.138 
 subScribedEventName: modules
 publishedEventName: dashboard

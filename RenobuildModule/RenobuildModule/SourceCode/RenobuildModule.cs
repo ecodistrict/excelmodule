@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Yaml.Serialization;
 using Ecodistrict.Messaging;
 using Ecodistrict.Excel;
 
@@ -571,7 +570,7 @@ namespace RenobuildModule
         {
             //IMB-hub info (not used)
             this.UserId = 0;
-            this.UserName = "Renobuild";
+            this.ModuleName = "Renobuild";
 
             //List of kpis the module can calculate
             this.KpiList = new List<string> { kpi_gwp, kpi_gwp_per_heated_area, kpi_peu, kpi_peu_per_heated_area };
@@ -2062,40 +2061,39 @@ namespace RenobuildModule
             }
         }
 
-        private void Init_IMB(string IMB_config_path)
-        {
-            try
-            {
-                var serializer = new YamlSerializer();
-                var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
+        //private void Init_IMB(string IMB_config_path)
+        //{
+        //    try
+        //    {
+        //        var serializer = new YamlSerializer();
+        //        var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
 
-                this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
-                this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error reading the IMB configuration file", ex);
-            }
-        }
+        //        this.RemoteHost = ((IMB_Settings)imb_settings).remoteHost;
+        //        this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
+        //        this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error reading the IMB configuration file", ex);
+        //    }
+        //}
 
-        private void Init_Module(string Module_config_path)
-        {
-            try
-            {
-                var serializer = new YamlSerializer();
-                var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
+        //private void Init_Module(string Module_config_path)
+        //{
+        //    try
+        //    {
+        //        var serializer = new YamlSerializer();
+        //        var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
 
-                this.ModuleName = ((Module_Settings)module_settings).name;
-                this.Description = ((Module_Settings)module_settings).description;
-                this.ModuleId = ((Module_Settings)module_settings).moduleId;
-                this.workBookPath = ((Module_Settings)module_settings).path;
-
-                this.workBookPath = Path.GetFullPath(this.workBookPath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error reading the module configuration file", ex);
-            }
-        }
+        //        this.ModuleName = ((Module_Settings)module_settings).name;
+        //        this.Description = ((Module_Settings)module_settings).description;
+        //        this.ModuleId = ((Module_Settings)module_settings).moduleId;
+        //        this.WorkBookPath = ((Module_Settings)module_settings).path;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error reading the module configuration file", ex);
+        //    }
+        //}
     }
 }
