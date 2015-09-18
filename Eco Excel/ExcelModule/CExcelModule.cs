@@ -111,6 +111,14 @@ namespace Ecodistrict.Excel
             Close();
         }
 
+
+        string aCertFile = "client-eco-district.pfx";
+        string aCertFilePassword = "&8dh48klosaxu90OKH";
+        string aRootCertFile = "root-ca-imb.crt";
+
+        string aPrefix = "ecodistrict";
+        string aRemoteHost = "192.168.239.138";//"vps17642.public.cloudvps.com";//"192.168.239.138"
+
         /// <summary>
         /// Close any opened Excel dokument and Excel.Application as a preparation for closing down.
         /// If anything more has to be done it can be overrided.
@@ -142,7 +150,7 @@ namespace Ecodistrict.Excel
             
             try
             {
-                Connection = new TTLSConnection("client-eco-district.pfx", "&8dh48klosaxu90OKH", "root-ca-imb.crt", UserName, UserId);
+                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, UserName, UserId, aPrefix, aRemoteHost);
 
                 if (Connection.connected)
                 {
@@ -409,6 +417,12 @@ namespace Ecodistrict.Excel
             {
                 ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
                 var str = Serialize.ToJsonString(result);
+
+                ////TMP - Store data locally
+                //string path = Path.GetDirectoryName(this.workBookPath);
+                //System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, " - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
+                ////
+
                 PublishedEvent.signalString(str);
                 SendStatusMessage("ModuleResult sent"); 
             }

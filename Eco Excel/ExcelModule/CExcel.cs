@@ -46,18 +46,11 @@ namespace Ecodistrict.Excel
         /// </summary>
         public CExcel()
         {
-            try
-            {
-                _excelApp = new MsExcel.Application();
-            }
-            catch (Exception)
-            {
-                
-            }
+            _excelApp = new MsExcel.Application();
         }
 
         /// <summary>
-        /// The finalize method tries to close the Exceldocumnt and the Excel application object if this has not been done already
+        /// The finalize method tries to close the Excel document and the Excel application object if this has not been done already
         /// </summary>
         ~CExcel()
         {
