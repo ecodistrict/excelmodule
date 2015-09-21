@@ -191,43 +191,42 @@ namespace Ecodistrict.Excel
         {
             try
             {
+                //Deserialize only header to prevent unnecessary deserialization if the message was not meant for this module 
+                Request header = Deserialize<Request>.JsonString(msg); 
 
-                IMessage iMessage = Deserialize.JsonString(msg);
-
-                if (iMessage != null)
+                if (header != null)
                 {
-                    if (iMessage is GetModulesRequest)
+
+                    if (header is GetModulesRequest)
                     {
                         SendStatusMessage("GetModulesRequest received");
                         if (!SendGetModulesResponse())
                             SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
                     }
-                    else if (iMessage is SelectModuleRequest)
+                    else if (ModuleId == header.moduleId)
                     {
-                        if (!ShowOnlyOwnStatus)
-                            SendStatusMessage("SelectModuleRequest received");
+                        IMessage iMessage = Deserialize<IMessage>.JsonString(msg);
 
-                        var smr = iMessage as SelectModuleRequest;
-                        if (ModuleId == smr.moduleId)
-                        {
-                            SendStatusMessage("Handles SelectModuleRequest");
-                            if (!SendSelectModuleResponse(smr))
-                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                        }
+                        if (iMessage is SelectModuleRequest)
+	                    {
+	                        if (!ShowOnlyOwnStatus)
+	                            SendStatusMessage("SelectModuleRequest received");
+	                        
+	                            SendStatusMessage("Handles SelectModuleRequest");
+                                if (!SendSelectModuleResponse(iMessage as SelectModuleRequest))
+	                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+	                    }
+                        else if (iMessage is StartModuleRequest)
+	                    {
+	                        if (!ShowOnlyOwnStatus)
+	                            SendStatusMessage("StartModuleRequest received");
+	                        
+	                            SendStatusMessage("Handles StartModuleRequest");
+                                if (!SendModuleResult(iMessage as StartModuleRequest))
+	                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+	                    }
                     }
-                    else if (iMessage is StartModuleRequest)
-                    {
-                        if (!ShowOnlyOwnStatus)
-                            SendStatusMessage("StartModuleRequest received");
 
-                        var smr = iMessage as StartModuleRequest;
-                        if (ModuleId == smr.moduleId)
-                        {
-                            SendStatusMessage("Handles StartModuleRequest");
-                            if (!SendModuleResult(smr))
-                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                        }
-                    }
                 }
             }
             catch (Exception ex)
