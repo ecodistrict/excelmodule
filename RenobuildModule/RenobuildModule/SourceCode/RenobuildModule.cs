@@ -1976,6 +1976,7 @@ namespace RenobuildModule
             #endregion
 
             #region Calculate LCA per building
+            int nrRenovatedBuildings = 0;
             foreach (Feature building in buildingProperties.value.features)
             {
                 if (GetSetBool(ref building.properties, change_heating_system) ||
@@ -2003,18 +2004,26 @@ namespace RenobuildModule
                     kpi += resi;
 
                     building.properties.Add("kpiValue", resi);
+
+                    ++nrRenovatedBuildings;
                 }
-                else
-                    building.properties.Add("kpiValue", 0);
+                //else
+                //    building.properties.Add("kpiValue", 0);
 
             }
             #endregion
 
+            ////Calculate the mean kpi value
+            //if (buildingProperties.value.features.Count > 0 & 
+            //    (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
+            //    kpiId == kpi_gwp | kpiId == kpi_peu))
+            //    kpi = kpi / (double)buildingProperties.value.features.Count;
+
             //Calculate the mean kpi value
-            if (buildingProperties.value.features.Count > 0 & 
+            if (nrRenovatedBuildings > 0 &
                 (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
                 kpiId == kpi_gwp | kpiId == kpi_peu))
-                kpi = kpi / (double)buildingProperties.value.features.Count;
+                kpi = kpi / (double)nrRenovatedBuildings;
 
             switch (kpiId)
             {
@@ -2061,39 +2070,5 @@ namespace RenobuildModule
             }
         }
 
-        //private void Init_IMB(string IMB_config_path)
-        //{
-        //    try
-        //    {
-        //        var serializer = new YamlSerializer();
-        //        var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
-
-        //        this.RemoteHost = ((IMB_Settings)imb_settings).remoteHost;
-        //        this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
-        //        this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error reading the IMB configuration file", ex);
-        //    }
-        //}
-
-        //private void Init_Module(string Module_config_path)
-        //{
-        //    try
-        //    {
-        //        var serializer = new YamlSerializer();
-        //        var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
-
-        //        this.ModuleName = ((Module_Settings)module_settings).name;
-        //        this.Description = ((Module_Settings)module_settings).description;
-        //        this.ModuleId = ((Module_Settings)module_settings).moduleId;
-        //        this.WorkBookPath = ((Module_Settings)module_settings).path;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error reading the module configuration file", ex);
-        //    }
-        //}
     }
 }
