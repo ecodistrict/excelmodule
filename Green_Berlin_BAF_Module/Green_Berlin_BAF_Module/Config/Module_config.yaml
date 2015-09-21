@@ -1,6 +1,6 @@
 ---
 # Module information
-name: SP Berlin BAF
-description: Calculates the Berlin biotope area factor, the module is developed by SP. Information about recomended target values can befound at http://www.stadtentwicklung.berlin.de/umwelt/landschaftsplanung/bff/en/anwendungsbereiche.shtml
+name: Berlin BAF
+description: Calculates the Berlin biotope area factor, the module interface is developed by SP. Information about recommended target values can be found at http://www.stadtentwicklung.berlin.de/umwelt/landschaftsplanung/bff/en/anwendungsbereiche.shtml
 moduleId: SP_Berlin_BAF
 path: C:\Users\johannesma\Documents\!Ecodistr-ICT\Green\Biotope area factor.xlsx
