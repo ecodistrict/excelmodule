@@ -86,7 +86,7 @@ namespace Green_BerlinBAF_Module
             int ipgOrder = 0;
             InputGroup areaInfo = new InputGroup("Area information", ++ipgOrder);
             areaInfo.Add(total_area, new Number("Total area", 1, 0, "m\u00b2", 0));
-            areaInfo.Add(developed_area, new Number("Developed area", 2, 0, "m\u00b2", 0));
+            //areaInfo.Add(developed_area, new Number("Developed area", 2, 0, "m\u00b2", 0));
             iSpec.Add(area_info, areaInfo);
 
             //Sealed Surfaces
@@ -166,8 +166,8 @@ namespace Green_BerlinBAF_Module
                 if (ipg[total_area] is Number)
                     Set("Blad1", "B4", (ipg[total_area] as Number).GetValue(), ref exls);
 
-                if (ipg[developed_area] is Number)
-                    Set("Blad1", "C4", (ipg[developed_area] as Number).GetValue(), ref exls);
+                //if (ipg[developed_area] is Number)
+                //    Set("Blad1", "C4", (ipg[developed_area] as Number).GetValue(), ref exls);
             }
             #endregion
 
