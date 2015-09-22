@@ -203,9 +203,9 @@ namespace RenobuildModule
 
                 //GeoJson
                 inputSpecifications.Add(kpi_gwp, GetInputSpecificationGeoJson());
-                inputSpecifications.Add(kpi_gwp_per_heated_area, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_gwp_per_heated_area, GetInputSpecificationGeoJson(true));
                 inputSpecifications.Add(kpi_peu, GetInputSpecificationGeoJson());
-                inputSpecifications.Add(kpi_peu_per_heated_area, GetInputSpecificationGeoJson());
+                inputSpecifications.Add(kpi_peu_per_heated_area, GetInputSpecificationGeoJson(true));
             }
             catch (System.Exception ex)
             {
@@ -600,7 +600,7 @@ namespace RenobuildModule
             DefineInputSpecifications();
         }
 
-        InputSpecification GetInputSpecificationGeoJson()
+        InputSpecification GetInputSpecificationGeoJson(bool perSqrm = false)
         {
             InputSpecification iSpec = new InputSpecification();
 
@@ -611,7 +611,7 @@ namespace RenobuildModule
             string description = "Building specific properties (Use the geojson-upload functionality below the map in order change renovation options for your buildings. You can select one or more buildings at the time by clicking on them, when you are finished with the selected building(s) press OK for the input sheet and continue selecting other buildings. When you have supplied all data scroll all the way down and press OK.)";
 
             iSpec.Add("buildingProperties", new InputGroup(label: description, order: 2));
-            iSpec.Add(buildings, BuildingSpecificSpecGeoJson());
+            iSpec.Add(buildings, BuildingSpecificSpecGeoJson(perSqrm));
 
             return iSpec;
         }
@@ -631,7 +631,7 @@ namespace RenobuildModule
             return commonProp;
         }
 
-        GeoJson BuildingSpecificSpecGeoJson()
+        GeoJson BuildingSpecificSpecGeoJson(bool perSqrm)
         {
             // - ## Building Specific
             GeoJson buildning_specific_data = new GeoJson(label: "Geographic data of buildings");
@@ -650,7 +650,7 @@ namespace RenobuildModule
 
             // Building Common
             ++order;
-            BuildingProperties(ref buildning_specific_data, ref order);
+            BuildingProperties(ref buildning_specific_data, perSqrm , ref order);
 
             // Heating System
             ++order;
@@ -678,16 +678,16 @@ namespace RenobuildModule
             return buildning_specific_data;
         }
 
-        void BuildingProperties(ref GeoJson input, ref int order)
+        void BuildingProperties(ref GeoJson input, bool perSqrm, ref int order)
         {
             //Header
             input.Add("building_properties", new InputGroup("Building Properties", order: ++order));
 
             // Inputs required in all cases
-            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, value: heat_sources.Last(), order: ++order));
-            input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order, value: 99));
+            input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
+            if(perSqrm)
+                input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order));
             //input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
-
         }
 
         void HeatingSystem(ref GeoJson input, ref int order)
@@ -890,9 +890,9 @@ namespace RenobuildModule
 
         }
 
-        void SetInputDataOneBuilding(Feature building, ref CExcel exls)
+        void SetInputDataOneBuilding(Feature building, ref CExcel exls, bool perSqrm)
         {
-            SetBuildingProperties(building, ref exls);
+            SetBuildingProperties(building, ref exls, perSqrm);
             SetHeatingSystem(building, ref exls);
             SetBuildingShell(building, ref exls);
             SetVentilationSystem(building, ref exls);
@@ -913,7 +913,7 @@ namespace RenobuildModule
             SetRadiatorsPipesElectricity(building, ref exls);
         }
 
-        void SetBuildingProperties(Feature building, ref CExcel exls)
+        void SetBuildingProperties(Feature building, ref CExcel exls, bool perSqrm)
         {
             String Key;
             object value;
@@ -921,11 +921,14 @@ namespace RenobuildModule
 
             // Inputs required in all cases
             #region Heated Area
-            Key = heated_area;
-            value = Convert.ToDouble(building.properties[Key]);
-            cell = "C25";
-            if (!exls.SetCellValue("Indata", cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            if (perSqrm)
+            {
+	            Key = heated_area;
+	            value = Convert.ToDouble(building.properties[Key]);
+	            cell = "C25";
+	            if (!exls.SetCellValue("Indata", cell, value))
+	                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+            }
             #endregion
 
             //#region Number of Apartments
@@ -1926,6 +1929,7 @@ namespace RenobuildModule
 
             double kpi = 0;
             string resultCell;
+            bool perSqrm = false;
 
             switch (kpiId)
             {
@@ -1934,12 +1938,14 @@ namespace RenobuildModule
                     break;
                 case kpi_gwp_per_heated_area:
                     resultCell = "E31"; //Mean change of global warming potential per m^2
+                    perSqrm = true;
                     break;
                 case kpi_peu:
                     resultCell = "C32"; //Change of primary energy use  
                     break;
                 case kpi_peu_per_heated_area:
                     resultCell = "E32"; //Mean change of primary energy use per m^2
+                    perSqrm = true;
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
@@ -1998,12 +2004,15 @@ namespace RenobuildModule
                     GetSetBool(ref building.properties, change_piping_relining) ||
                     GetSetBool(ref building.properties, change_electrical_wiring))
                 {
-                    SetInputDataOneBuilding(building, ref exls);
+                    SetInputDataOneBuilding(building, ref exls, perSqrm);
 
                     double resi = Convert.ToDouble(exls.GetCellValue("Indata", resultCell));
                     kpi += resi;
 
-                    building.properties.Add("kpiValue", resi);
+                    if (!building.properties.ContainsKey("kpiValue"))
+                        building.properties.Add("kpiValue", resi);
+                    else
+                        building.properties["kpiValue"] = Math.Round(resi, 3);
 
                     ++nrRenovatedBuildings;
                 }
@@ -2045,11 +2054,11 @@ namespace RenobuildModule
             Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
             outputs.Add(buildingsProps);
 
-            ////TMP - SStore data locally
-            //string str = Serialize.ToJsonString(buildingsProps);
-            //string path = Path.GetDirectoryName(this.workBookPath);
-            //System.IO.File.WriteAllText(String.Format(@"{0}/{1} {2}.geojson", path, "RenoBuild", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
-            ////
+            //TMP - SStore data locally
+            string str = Serialize.ToJsonString(buildingsProps);
+            string path = Path.GetDirectoryName(this.WorkBookPath);
+            System.IO.File.WriteAllText(String.Format(@"{0}/{1} {2}.geojson", path, "RenoBuild", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
+            //
 
 
             return outputs;
