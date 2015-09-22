@@ -212,18 +212,20 @@ namespace Ecodistrict.Excel
 	                        if (!ShowOnlyOwnStatus)
 	                            SendStatusMessage("SelectModuleRequest received");
 	                        
-	                            SendStatusMessage("Handles SelectModuleRequest");
-                                if (!SendSelectModuleResponse(iMessage as SelectModuleRequest))
-	                                SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+	                        SendStatusMessage("Handles SelectModuleRequest");
+                            SendSelectModuleResponse(iMessage as SelectModuleRequest);
+                                //if (!SendSelectModuleResponse(iMessage as SelectModuleRequest))
+                                //    SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
 	                    }
                         else if (iMessage is StartModuleRequest)
 	                    {
 	                        if (!ShowOnlyOwnStatus)
 	                            SendStatusMessage("StartModuleRequest received");
 	                        
-	                            SendStatusMessage("Handles StartModuleRequest");
-                                if (!SendModuleResult(iMessage as StartModuleRequest))
-	                                SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+	                        SendStatusMessage("Handles StartModuleRequest");
+                            SendModuleResult(iMessage as StartModuleRequest);
+                                //if (!SendModuleResult(iMessage as StartModuleRequest))
+                                //    SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
 	                    }
                     }
 
@@ -234,7 +236,7 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
             }
         }
-
+        
         protected virtual void CExcelModule_StatusMessage(object sender, StatusEventArg e)
         {
             Console.WriteLine(String.Format("# {0} #\tStatus message:\t{1}", DateTime.Now.ToString(), e.StatusMessage));
