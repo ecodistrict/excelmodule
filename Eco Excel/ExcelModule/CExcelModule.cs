@@ -108,6 +108,8 @@ namespace Ecodistrict.Excel
             {
                 ShowOnlyOwnStatus = true;
                 ExcelApplikation = new CExcel();
+
+
             }
             catch (Exception ex)
             {
@@ -144,7 +146,12 @@ namespace Ecodistrict.Excel
                 ExcelApplikation = null;
 
                 if (Connection.connected)
+                {
+                    // reset disconnect event handler
+                    Connection.onDisconnect -= Connection_onDisconnect;
+                    //Close connection
                     Connection.close();
+                }
             }
             catch (Exception ex)
             {
@@ -170,6 +177,9 @@ namespace Ecodistrict.Excel
 
                     // set event handler for change object on subscribedEvent
                     SubscribedEvent.onString += SubscribedEvent_onString;
+
+                    // set event handler for disconnect
+                    Connection.onDisconnect += Connection_onDisconnect;
                 }
                 else
                 {
@@ -185,6 +195,16 @@ namespace Ecodistrict.Excel
             }
             return res;
 
+        }
+
+        void Connection_onDisconnect(TConnection aConnection)
+        {
+            SendStatusMessage("IMB-hub connection lost, trying to reconnect..");
+            //Try reconnect
+            if(ConnectToServer())
+                SendStatusMessage("IMB-hub reconnection succeeded");
+            else
+                SendStatusMessage("IMB-hub reconnection failed");
         }
 
         void SubscribedEvent_onString(TEventEntry aEventEntry, string msg)
@@ -234,6 +254,10 @@ namespace Ecodistrict.Excel
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
+                //TMP - Store data locally
+                string path = Path.GetDirectoryName(this.WorkBookPath);
+                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Error - Message", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), msg);
+                //
             }
         }
         
@@ -449,7 +473,13 @@ namespace Ecodistrict.Excel
                 var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                 var str = Serialize.ToJsonString(stmResp2);
                 PublishedEvent.signalString(str);
-                SendStatusMessage("StartModuleResponse Failed sent"); 
+                SendStatusMessage("StartModuleResponse Failed sent");
+
+                //TMP - Store data locally
+                string dataStr = Serialize.ToJsonString(request);
+                string path = Path.GetDirectoryName(this.WorkBookPath);
+                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Error - StartModuleRequest ", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), dataStr);
+                //
                
                 return false;
             }
@@ -462,11 +492,6 @@ namespace Ecodistrict.Excel
             {
                 ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
                 var str = Serialize.ToJsonString(result);
-
-                ////TMP - Store data locally
-                //string path = Path.GetDirectoryName(this.workBookPath);
-                //System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, " - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
-                ////
 
                 PublishedEvent.signalString(str);
                 SendStatusMessage("ModuleResult sent"); 
