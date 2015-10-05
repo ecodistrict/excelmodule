@@ -8,6 +8,8 @@ namespace RenobuildModule
 {
     class Program
     {
+
+
         static void Main(string[] args)
         {
             RenobuildModule module = new RenobuildModule();
@@ -21,31 +23,29 @@ namespace RenobuildModule
                     Console.WriteLine("Could not read module settings");
                     startupStatus = false;
                 }
-
-                //if (!module.OpenWorkbook())
-                //{
-                //    Console.WriteLine("Could not open the Excel-file");
-                //    startupStatus = false;
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Excel-file open..");
-                //}
                 
-                if (!module.ConnectToServer())
-                {
-                    Console.WriteLine("Could not connect to the IMB-hub");
-                    startupStatus = false;
-                }
-                else
-                {
-                    Console.WriteLine("Connected to IMB-hub..");
-                }
+                startupStatus = module.ConnectToServer();
 
                 if (startupStatus)
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
+
+                    //bool quit = false;
+                    //bool testOk = false;
+                    //do
+                    //{
+                    //    try
+                    //    {
+                    //        Ecodistrict.Excel.Reader.ReadLine(5*6000);
+                    //        return;
+                    //    }
+                    //    catch 
+                    //    {
+                    //        testOk = !module.TestConnection2();
+                    //    }
+                    //}
+                    //while (module.Connected & !quit);
                 }
                 else
                 {
@@ -58,7 +58,9 @@ namespace RenobuildModule
             finally
             {
                 module.Close();
+                module = null;
             }
         }
+
     }
 }
