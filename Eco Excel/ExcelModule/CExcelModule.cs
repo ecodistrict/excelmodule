@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Yaml.Serialization;
 using IMB;
 using Ecodistrict.Messaging;
@@ -35,9 +36,9 @@ namespace Ecodistrict.Excel
         /// </summary>
         protected string PublishedEventName { get; set; }
 
-        private  TConnection Connection { get; set; } 
-        private  TEventEntry SubscribedEvent { get; set; }
-        private  TEventEntry PublishedEvent { get; set; }
+        public  TConnection Connection { get; set; }
+        public TEventEntry SubscribedEvent { get; set; }
+        public TEventEntry PublishedEvent { get; set; }
         /// <summary>
         /// The error event that could be subscribed to
         /// </summary>
@@ -110,18 +111,52 @@ namespace Ecodistrict.Excel
                 ExcelApplikation = new CExcel();
 
 
+                // Create a Timer object that knows to call our TimerCallback
+                // method once every n milliseconds.
+                timer = new Timer(TestConnection, null, 6000, 3*60000);
+
+
             }
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "CExcel Constructor", exception: ex);
             }
         }
+        Timer timer;
+        private void TestConnection(Object o)
+        {
+            try
+            {
+                if (SendGetModulesResponse())
+                    return;
+
+                if (!ReConnect(20))
+                    SignalConnectionLost();
+            }
+            catch (System.Exception ex)
+            {
+                SendErrorMessage("Connection lost", "", ex);
+                return;
+            }
+        }
+        public event EventHandler ConnectionLost;
+        public void SignalConnectionLost()
+        {
+            EventHandler handler = this.ConnectionLost;
+
+            if (handler != null)
+            {
+                handler(this, new EventArgs());
+            }
+        }
+        
         /// <summary>
         /// If there is an instance of CExcel object it closes down both any opened Excel documents
         ///  (without saving any data) and closes down Excel.Application before closing down the CExcelModule object.
         /// </summary>
         ~CExcelModule()
         {
+            timer = null;
             Close();
         }
 
@@ -145,46 +180,64 @@ namespace Ecodistrict.Excel
 
                 ExcelApplikation = null;
 
-                if (Connection.connected)
+                if (Connected)
                 {
-                    // reset disconnect event handler
-                    Connection.onDisconnect -= Connection_onDisconnect;
                     //Close connection
                     Connection.close();
+                    Connection = null;
+                    // reset event handler for change object on subscribedEvent
+                    SubscribedEvent.onString -= SubscribedEvent_onString;
+                    SubscribedEvent = null;
+                    PublishedEvent = null;
                 }
             }
             catch (Exception ex)
             {
+                Connection = null;
+                // reset event handler for change object on subscribedEvent
+                SubscribedEvent.onString -= SubscribedEvent_onString;
+                SubscribedEvent = null;
+                PublishedEvent = null;
                 SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
             }
         }
+
         /// <summary>
         /// Connects to hub/Server, prepares the publish event and starts subscription to dashboard events
         /// </summary>
         /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         public virtual bool ConnectToServer()
         {
-            bool res = true;
+            bool res = false;
             
             try
             {
-                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, ModuleName, UserId, aPrefix, RemoteHost);
-
-                if (Connection.connected)
+                if (!Connected)
                 {
-                    SubscribedEvent = Connection.subscribe(SubScribedEventName);
-                    PublishedEvent = Connection.publish(PublishedEventName);
+                    SendStatusMessage("Connecting to IMB-hub..");
+	                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, ModuleName, UserId, aPrefix, RemoteHost);
+	
+	                if (Connection.connected)
+	                {
+	                    SubscribedEvent = Connection.subscribe(SubScribedEventName);
+	                    PublishedEvent = Connection.publish(PublishedEventName);
+	
+	                    // set event handler for change object on subscribedEvent
+	                    SubscribedEvent.onString += SubscribedEvent_onString;
 
-                    // set event handler for change object on subscribedEvent
-                    SubscribedEvent.onString += SubscribedEvent_onString;
-
-                    // set event handler for disconnect
-                    Connection.onDisconnect += Connection_onDisconnect;
+                        SendStatusMessage("Connected to IMB-hub..");
+                        res = true;
+	                }
+	                else
+                    {
+                        SendStatusMessage("Could not connect to the IMB-hub..");
+                        res = false;
+	                }
                 }
                 else
                 {
-                    //Console.WriteLine("## NOT connected");
-                    res = false;
+	                SendStatusMessage("Already connected to the IMB-hub");
+                    res = true;
                 }
 
             }
@@ -193,20 +246,59 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "ConnectToServer", exception: ex);
                 res = false;
             }
+
             return res;
-
         }
+        
+        ///// <summary>
+        ///// Check if connection is still open, if not it tries to reconnect.
+        ///// </summary>
+        ///// <returns></returns>
+        //public bool TestConnection()
+        //{
+        //    try
+        //    {
+        //        if (SendGetModulesResponse())
+        //            return true;
 
-        void Connection_onDisconnect(TConnection aConnection)
+        //        Close();
+
+        //        return ReConnect(10);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        SendErrorMessage("Connection lost", "", ex);
+        //        return false;
+        //    }
+        //}
+        
+
+        /// <summary>
+        /// Try to reconnect to IMB-hub
+        /// </summary>
+        /// <param name="nrTries">Number of attempts</param>
+        /// <param name="msec">Time between tries</param>
+        /// <returns></returns>
+        bool ReConnect(uint nrTries, int msec = 25000)
         {
-            SendStatusMessage("IMB-hub connection lost, trying to reconnect..");
-            //Try reconnect
-            if(ConnectToServer())
-                SendStatusMessage("IMB-hub reconnection succeeded");
-            else
-                SendStatusMessage("IMB-hub reconnection failed");
-        }
+            for (uint i = 0; i < nrTries; ++i)
+            {
+                if (ConnectToServer())
+                    return true;
 
+                if (i == nrTries - 1)
+                    SendStatusMessage("Could not reconnect to server...");
+                else
+                {
+                    SendStatusMessage(String.Format("Reconnect in {0} seconds", Math.Round(msec / 1000.0, 0)));
+                    System.Threading.Thread.Sleep(msec);
+                }
+            }
+
+            return false;
+        }
+               
+        #region Events
         void SubscribedEvent_onString(TEventEntry aEventEntry, string msg)
         {
             try
@@ -279,6 +371,7 @@ namespace Ecodistrict.Excel
             em.Message = ex.Message;
             CExcelModule_ErrorRaised(sender, em);
         }
+        #endregion
 
         protected virtual void Init_IMB(string IMB_config_path)
         {
@@ -312,6 +405,21 @@ namespace Ecodistrict.Excel
             catch (Exception ex)
             {
                 SendErrorMessage(message: ex.Message, sourceFunction: "Init_Module", exception: ex);
+            }
+        }
+
+        public bool Init(string IMB_config_path, string Module_config_path)
+        {
+            try
+            {
+                Init_IMB(IMB_config_path);
+                Init_Module(Module_config_path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CExcelModule_ErrorRaised(this, ex);
+                return false;
             }
         }
 
@@ -358,7 +466,7 @@ namespace Ecodistrict.Excel
         }
 
         /// <summary>
-        /// Returnes a GetModuleResponse to the dashboard
+        /// Returns a GetModuleResponse to the dashboard
         /// </summary>
         /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private bool SendGetModulesResponse()
@@ -369,7 +477,8 @@ namespace Ecodistrict.Excel
                 GetModulesResponse gmRes = new GetModulesResponse(ModuleName, ModuleId, Description, KpiList);
 
                 var str = Serialize.ToJsonString(gmRes);
-                PublishedEvent.signalString(str);
+                Publish(str);
+                //PublishedEvent.signalString(str);
                 SendStatusMessage("GetModulesResponse sent");    
                 return true;
             }
@@ -395,7 +504,7 @@ namespace Ecodistrict.Excel
                 var smResponse = new SelectModuleResponse(ModuleId, variantId, kpiId, GetInputSpecification(kpiId));
 
                 var str = Serialize.ToJsonString(smResponse);
-                PublishedEvent.signalString(str);
+                Publish(str);
                 SendStatusMessage("SelectModuleResponse sent"); 
             }
             catch (Exception ex)
@@ -424,7 +533,7 @@ namespace Ecodistrict.Excel
             {
                 var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Processing);
                 var str = Serialize.ToJsonString(smr);
-                PublishedEvent.signalString(str);
+                Publish(str);
                 SendStatusMessage("StartModuleResponse processing sent"); 
             }
             catch (Exception ex)
@@ -433,7 +542,7 @@ namespace Ecodistrict.Excel
                 {
                     var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                     var str = Serialize.ToJsonString(smr);
-                    PublishedEvent.signalString(str);
+                    Publish(str);
                     SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
                 }
                 catch 
@@ -453,13 +562,18 @@ namespace Ecodistrict.Excel
                     if (ExcelApplikation.OpenWorkBook(WorkBookPath))
                     {
                         outputs = CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
+                        //TMP - Store data locally
+                        string dataStr = Serialize.ToJsonString(request);
+                        string path = Path.GetDirectoryName(this.WorkBookPath);
+                        System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - StartModuleRequest ", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), dataStr);
+                        //
                     }
                 }
                 else
                 {
                     var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                     var str = Serialize.ToJsonString(smr);
-                    PublishedEvent.signalString(str);
+                    Publish(str);
                     SendErrorMessage(string.Format("Excelfile <{0}> not found", WorkBookPath), sourceFunction: "SendModuleResult-FileNotFound");
                     return false;
                 }
@@ -472,7 +586,7 @@ namespace Ecodistrict.Excel
 
                 var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
                 var str = Serialize.ToJsonString(stmResp2);
-                PublishedEvent.signalString(str);
+                Publish(str);
                 SendStatusMessage("StartModuleResponse Failed sent");
 
                 //TMP - Store data locally
@@ -493,8 +607,14 @@ namespace Ecodistrict.Excel
                 ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
                 var str = Serialize.ToJsonString(result);
 
-                PublishedEvent.signalString(str);
-                SendStatusMessage("ModuleResult sent"); 
+                Publish(str);
+                SendStatusMessage("ModuleResult sent");
+
+                //TMP - Store data locally
+                string dataStr = Serialize.ToJsonString(request);
+                string path = Path.GetDirectoryName(this.WorkBookPath);
+                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
+                //
             }
             catch (Exception ex)
             {
@@ -523,5 +643,28 @@ namespace Ecodistrict.Excel
                 ErrorRaised(this, e);
             }        
         }
+
+        public bool Connected
+        {
+            get
+            {
+                if (Connection == null)
+                    return false;
+
+                return Connection.connected;
+            }
+        }
+
+        private void Publish(String str)
+        {
+            if (PublishedEvent != null)
+            {
+                lock (PublishedEvent)
+                {
+                	PublishedEvent.signalString(str);
+                }
+            }
+        }
+
     }
 }
