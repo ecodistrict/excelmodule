@@ -10,33 +10,40 @@ namespace Green_BerlinBAF_Module
     {
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             Green_BerlinBAF_Module module = new Green_BerlinBAF_Module();
 
             try
             {
                 bool startupStatus = true;
 
-                if (!module.Init("Config/IMB_config.yaml", "Config/Module_config.yaml"))
+                if (!module.Init("IMB_config.yaml", "Module_config.yaml"))
                 {
                     Console.WriteLine("Could not read module settings");
                     startupStatus = false;
                 }
-                
-                if (!module.ConnectToServer())
-                {
-                    Console.WriteLine("Could not connect to the IMB-hub");
-                    startupStatus = false;
-                }
-                else
-                {
-                    Console.WriteLine("Connected to IMB-hub..");
-                }
+
+                startupStatus = module.ConnectToServer();
 
                 if (startupStatus)
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
+
+                    //bool quit = false;
+                    //bool testOk = false;
+                    //do
+                    //{
+                    //    try
+                    //    {
+                    //        Ecodistrict.Excel.Reader.ReadLine(5*6000);
+                    //        return;
+                    //    }
+                    //    catch 
+                    //    {
+                    //        testOk = !module.TestConnection2();
+                    //    }
+                    //}
+                    //while (module.Connected & !quit);
                 }
                 else
                 {
@@ -49,13 +56,8 @@ namespace Green_BerlinBAF_Module
             finally
             {
                 module.Close();
+                module = null;
             }
-        }
-
-        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Console.WriteLine(args.ToString());
-            return null;
         }
     }
 }

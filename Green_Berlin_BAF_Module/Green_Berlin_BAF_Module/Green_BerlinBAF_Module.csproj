@@ -48,12 +48,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="client-eco-district.pfx" />
-    <None Include="Config\IMB_config.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Config\Module_config.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Config\IMB_config.yaml" />
+    <None Include="Config\Module_config.yaml" />
     <None Include="root-ca-imb.crt" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +64,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "..\..\Config\IMB_config.yaml"
+xcopy /y "..\..\Config\Module_config.yaml"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

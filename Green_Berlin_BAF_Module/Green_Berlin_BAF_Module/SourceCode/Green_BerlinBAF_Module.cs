@@ -157,126 +157,208 @@ namespace Green_BerlinBAF_Module
 
         protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
         {
+            if (indata == null)
+                throw new Exception("No data received!");
+
             Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
             
             #region Area Info
-            if (indata[area_info] is InputGroup)
             {
-                Dictionary<string,Input> ipg = (indata[area_info] as InputGroup).GetInputs();
-                if (ipg[total_area] is Number)
-                    Set("Blad1", "B4", (ipg[total_area] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = area_info;
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[area_info] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[total_area] is Number)
+                            value = (ipg[total_area] as Number).GetValue();
+                    }
 
-                //if (ipg[developed_area] is Number)
-                //    Set("Blad1", "C4", (ipg[developed_area] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", "B4", value, ref exls);
             }
             #endregion
 
             #region Area types data
             #region Sealed Surfaces
-            if (indata[sealed_surfaces] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[sealed_surfaces] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B12", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = sealed_surfaces;
+                string cell = "C12";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C12", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
 
             #region Partially Sealed Surfaces
-            if (indata[partially_sealed_surfaces] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[partially_sealed_surfaces] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B13", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = partially_sealed_surfaces;
+                string cell = "C13";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C13", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
             
             #region semiOpenSurfacesStr
-            if (indata[semiOpenSurfacesStr] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[semiOpenSurfacesStr] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B14", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = semiOpenSurfacesStr;
+                string cell = "C14";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C14", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
             
             #region swvutsBelow80Str
-            if (indata[swvutsBelow80Str] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[swvutsBelow80Str] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B15", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = swvutsBelow80Str;
+                string cell = "C15";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C15", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
             
             #region swvutsAbove80Str
-            if (indata[swvutsAbove80Str] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[swvutsAbove80Str] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B19", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = swvutsAbove80Str;
+                string cell = "C19";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C19", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
             
             #region swvConnectedToSoilBelowStr
-            if (indata[swvConnectedToSoilBelowStr] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[swvConnectedToSoilBelowStr] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B23", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = swvConnectedToSoilBelowStr;
+                string cell = "C23";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C23", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
 
             #region rainwaterInfiltrationpSqrmRunoffAreaStr
-            if (indata[rainwaterInfiltrationpSqrmRunoffAreaStr] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[rainwaterInfiltrationpSqrmRunoffAreaStr] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B25", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = rainwaterInfiltrationpSqrmRunoffAreaStr;
+                string cell = "C25";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C25", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
 
             #region vgtm10mHeightStr
-            if (indata[vgtm10mHeightStr] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[vgtm10mHeightStr] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B27", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = vgtm10mHeightStr;
+                string cell = "C27";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C27", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
 
             #region greeneryOnRooftopStr
-            if (indata[greeneryOnRooftopStr] is InputGroup)
             {
-                Dictionary<string, Input> ipg = (indata[greeneryOnRooftopStr] as InputGroup).GetInputs();
-                //if (ipg[weighting_factor_per_m2] is Number)
-                //    Set("Blad1", "B29", (ipg[weighting_factor_per_m2] as Number).GetValue(), ref exls);
+                object value = 0;
+                string key = greeneryOnRooftopStr;
+                string cell = "C29";
+                if (indata.ContainsKey(key))
+                {
+                    if (indata[key] is InputGroup)
+                    {
+                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
+                        if (ipg[amount] is Number)
+                            value = (ipg[amount] as Number).GetValue();
+                    }
 
-                if (ipg[amount] is Number)
-                    Set("Blad1", "C29", (ipg[amount] as Number).GetValue(), ref exls);
+                }
+
+                Set("Blad1", cell, value, ref exls);
             }
             #endregion
             #endregion
@@ -296,22 +378,7 @@ namespace Green_BerlinBAF_Module
 
             return outputs;
         }
-
-        public bool Init(string IMB_config_path, string Module_config_path)
-        {
-            try
-            {
-                Init_IMB(IMB_config_path);
-                Init_Module(Module_config_path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-                return false;
-            }
-        }
-
+        
     }
 }
 
