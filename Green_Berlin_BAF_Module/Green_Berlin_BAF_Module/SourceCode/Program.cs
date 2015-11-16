@@ -14,36 +14,16 @@ namespace Green_BerlinBAF_Module
 
             try
             {
-                bool startupStatus = true;
-
                 if (!module.Init("IMB_config.yaml", "Module_config.yaml"))
                 {
                     Console.WriteLine("Could not read module settings");
-                    startupStatus = false;
+                    return;
                 }
-
-                startupStatus = module.ConnectToServer();
-
-                if (startupStatus)
+                
+                if (module.ConnectToServer())
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
-
-                    //bool quit = false;
-                    //bool testOk = false;
-                    //do
-                    //{
-                    //    try
-                    //    {
-                    //        Ecodistrict.Excel.Reader.ReadLine(5*6000);
-                    //        return;
-                    //    }
-                    //    catch 
-                    //    {
-                    //        testOk = !module.TestConnection2();
-                    //    }
-                    //}
-                    //while (module.Connected & !quit);
                 }
                 else
                 {

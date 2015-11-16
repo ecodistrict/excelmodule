@@ -10,28 +10,19 @@ namespace MSR_LCC
     {
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             LCC_Module module = new LCC_Module();
 
             try
             {
                 bool startupStatus = true;
 
-                if (!module.Init("Config/IMB_config.yaml", "Config/Module_config.yaml"))
+                if (!module.Init("IMB_config.yaml", "Module_config.yaml"))
                 {
                     Console.WriteLine("Could not read module settings");
                     startupStatus = false;
                 }
 
-                if (!module.ConnectToServer())
-                {
-                    Console.WriteLine("Could not connect to the IMB-hub");
-                    startupStatus = false;
-                }
-                else
-                {
-                    Console.WriteLine("Connected to IMB-hub..");
-                }
+                startupStatus = module.ConnectToServer();
 
                 if (startupStatus)
                 {
@@ -43,19 +34,18 @@ namespace MSR_LCC
                     Console.WriteLine("**** Errors detected! ****");
                     Console.WriteLine(">> Press return to close");
                     Console.ReadLine();
-                    module.Close();
+                    if (module != null)
+                        module.Close();
                 }
             }
             finally
             {
-                module.Close();
+                if (module!=null)
+                    module.Close();
+                module = null;
             }
-        }
 
-        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Console.WriteLine(args.ToString());
-            return null;
+            return;
         }
     }
 }

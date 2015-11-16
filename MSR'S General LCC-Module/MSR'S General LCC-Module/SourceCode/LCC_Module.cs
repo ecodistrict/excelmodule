@@ -46,7 +46,7 @@ namespace MSR_LCC
             }
             catch (Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineHeatSources()
@@ -63,7 +63,7 @@ namespace MSR_LCC
             }
             catch (Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfFlowControl()
@@ -76,7 +76,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -92,7 +92,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfFascadeSystem()
@@ -119,7 +119,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfWindows()
@@ -134,7 +134,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfDoors()
@@ -149,7 +149,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -163,7 +163,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
         void DefineTypeOfAirflowAssembly()
@@ -176,7 +176,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -190,7 +190,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -205,7 +205,7 @@ namespace MSR_LCC
             }
             catch (System.Exception ex)
             {
-                LCC_Module_ErrorRaised(this, ex);
+                CExcelModule_ErrorRaised(this, ex);
             }
         }
 
@@ -680,10 +680,10 @@ namespace MSR_LCC
             this.KpiList = new List<string> { kpi_lcc };
 
             //Error handler
-            this.ErrorRaised += LCC_Module_ErrorRaised;
+            this.ErrorRaised += CExcelModule_ErrorRaised;
 
             //Notification
-            this.StatusMessage += LCC_Module_StatusMessage;
+            this.StatusMessage += CExcelModule_StatusMessage;
 
             //Define parameter options
             DefineElectricityMix();
@@ -704,24 +704,24 @@ namespace MSR_LCC
             DefineInputSpecifications();
         }
 
-        void LCC_Module_StatusMessage(object sender, StatusEventArg e)
-        {
-            Console.WriteLine(String.Format("Status message:\n\t{0}", e.StatusMessage));
-        }
+        //void LCC_Module_StatusMessage(object sender, StatusEventArg e)
+        //{
+        //    Console.WriteLine(String.Format("Status message:\n\t{0}", e.StatusMessage));
+        //}
 
-        void LCC_Module_ErrorRaised(object sender, ErrorMessageEventArg e)
-        {
-            Console.WriteLine(String.Format("Error message: {0}", e.Message));
-            if (e.SourceFunction != null & e.SourceFunction != "")
-                Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
-        }
+        //void LCC_Module_ErrorRaised(object sender, ErrorMessageEventArg e)
+        //{
+        //    Console.WriteLine(String.Format("Error message: {0}", e.Message));
+        //    if (e.SourceFunction != null & e.SourceFunction != "")
+        //        Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
+        //}
 
-        void LCC_Module_ErrorRaised(object sender, Exception ex)
-        {
-            ErrorMessageEventArg em = new ErrorMessageEventArg();
-            em.Message = ex.Message;
-            LCC_Module_ErrorRaised(sender, em);
-        }
+        //void LCC_Module_ErrorRaised(object sender, Exception ex)
+        //{
+        //    ErrorMessageEventArg em = new ErrorMessageEventArg();
+        //    em.Message = ex.Message;
+        //    LCC_Module_ErrorRaised(sender, em);
+        //}
 
         InputSpecification GetInputSpecificationGeoJson()
         {
@@ -3296,9 +3296,20 @@ namespace MSR_LCC
             return inputSpecifications[kpiId];
         }
 
-        protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        bool GetSetBool(ref Dictionary<string, object> properties, string property)
         {
-            Outputs outputs = new Outputs();
+            if (!properties.ContainsKey(property))
+                properties.Add(property, false);
+
+            if (properties[property] is bool)
+                return (bool)properties[property];
+
+            return false;
+        }
+
+        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        {
+            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
 
             InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
             Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
@@ -3353,24 +3364,24 @@ namespace MSR_LCC
 
             foreach (Feature building in buildingProperties.value.features)
             {
-                if ((bool)building.properties[change_heating_system] ||
-                    (bool)building.properties[change_circulationpump_in_heating_system] ||
-                    (bool)building.properties[change_insulation_material_1] ||
-                    (bool)building.properties[change_insulation_material_2] ||
-                    (bool)building.properties[change_facade_system] ||
-                    (bool)building.properties[change_windows] ||
-                    (bool)building.properties[change_doors] ||
-                    (bool)building.properties[change_ventilation_ducts] ||
-                    (bool)building.properties[change_airflow_assembly] ||
-                    (bool)building.properties[change_air_distribution_housings_and_silencers] ||
-                    (bool)building.properties[change_radiators] ||
-                    (bool)building.properties[change_piping_copper] ||
-                    (bool)building.properties[change_piping_pex] ||
-                    (bool)building.properties[change_piping_pp] ||
-                    (bool)building.properties[change_piping_cast_iron] ||
-                    (bool)building.properties[change_piping_galvanized_steel] ||
-                    (bool)building.properties[change_piping_relining] ||
-                    (bool)building.properties[change_electrical_wiring])
+                if (GetSetBool(ref building.properties, change_heating_system) ||
+                    GetSetBool(ref building.properties, change_circulationpump_in_heating_system) ||
+                    GetSetBool(ref building.properties, change_insulation_material_1) ||
+                    GetSetBool(ref building.properties, change_insulation_material_2) ||
+                    GetSetBool(ref building.properties, change_facade_system) ||
+                    GetSetBool(ref building.properties, change_windows) ||
+                    GetSetBool(ref building.properties, change_doors) ||
+                    GetSetBool(ref building.properties, change_ventilation_ducts) ||
+                    GetSetBool(ref building.properties, change_airflow_assembly) ||
+                    GetSetBool(ref building.properties, change_air_distribution_housings_and_silencers) ||
+                    GetSetBool(ref building.properties, change_radiators) ||
+                    GetSetBool(ref building.properties, change_piping_copper) ||
+                    GetSetBool(ref building.properties, change_piping_pex) ||
+                    GetSetBool(ref building.properties, change_piping_pp) ||
+                    GetSetBool(ref building.properties, change_piping_cast_iron) ||
+                    GetSetBool(ref building.properties, change_piping_galvanized_steel) ||
+                    GetSetBool(ref building.properties, change_piping_relining) ||
+                    GetSetBool(ref building.properties, change_electrical_wiring))
                 {
                     kpi += SetInputDataOneBuilding(building, ref exls);
                 }
@@ -3380,7 +3391,7 @@ namespace MSR_LCC
             switch (kpiId)
             {
                 case kpi_lcc:
-                    outputs.Add(new Kpi(Math.Round(kpi, 2), "Life cycle cost", "EUR"));
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), "Life cycle cost", "EUR"));
                     break;
                 default:
                     throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
@@ -3390,56 +3401,6 @@ namespace MSR_LCC
             return outputs;
         }
 
-        public bool Init(string IMB_config_path, string Module_config_path)
-        {
-            try
-            {
-                Init_IMB(IMB_config_path);
-                Init_Module(Module_config_path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                LCC_Module_ErrorRaised(this, ex);
-                return false;
-            }
-        }
-
-        private void Init_IMB(string IMB_config_path)
-        {
-            try
-            {
-                var serializer = new YamlSerializer();
-                var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
-
-                this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
-                this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error reading the IMB configuration file", ex);
-            }
-        }
-
-        private void Init_Module(string Module_config_path)
-        {
-            try
-            {
-
-
-                var serializer = new YamlSerializer();
-                var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
-
-                this.ModuleName = ((Module_Settings)module_settings).name;
-                this.Description = ((Module_Settings)module_settings).description;
-                this.ModuleId = ((Module_Settings)module_settings).moduleId;
-                this.workBookPath = ((Module_Settings)module_settings).path;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error reading the module configuration file", ex);
-            }
-        }
     }
 }
 

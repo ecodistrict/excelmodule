@@ -30,36 +30,23 @@ namespace RenobuildModule
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
-
-                    //bool quit = false;
-                    //bool testOk = false;
-                    //do
-                    //{
-                    //    try
-                    //    {
-                    //        Ecodistrict.Excel.Reader.ReadLine(5*6000);
-                    //        return;
-                    //    }
-                    //    catch 
-                    //    {
-                    //        testOk = !module.TestConnection2();
-                    //    }
-                    //}
-                    //while (module.Connected & !quit);
                 }
                 else
                 {
                     Console.WriteLine("**** Errors detected! ****");
                     Console.WriteLine(">> Press return to close");
                     Console.ReadLine();
-                    module.Close();
+                    if (module != null)
+                        module.Close();
                 }
             }
             finally
             {
-                module.Close();
-                module = null;
+                if (module != null)
+                    module.Close();
             }
+
+            return;
         }
 
     }
