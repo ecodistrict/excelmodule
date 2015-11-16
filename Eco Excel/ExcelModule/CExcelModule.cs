@@ -9,7 +9,7 @@ using Ecodistrict.Messaging;
 namespace Ecodistrict.Excel
 {
     /// <summary>
-    /// Eventhandler used for Error reporting
+    /// Event handler used for Error reporting
     /// </summary>
     /// <param name="sender">reference to the object that raised the event</param>
     /// <param name="e">ErrorMessageEventArg that is inherited from EventArgs</param>
@@ -113,8 +113,7 @@ namespace Ecodistrict.Excel
 
                 // Create a Timer object that knows to call our TimerCallback
                 // method once every n milliseconds.
-                timer = new Timer(TestConnection, null, 6000, 3*60000);
-
+                timer = new Timer(TestConnection);
 
             }
             catch (Exception ex)
@@ -130,6 +129,14 @@ namespace Ecodistrict.Excel
                 if (SendGetModulesResponse())
                     return;
 
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+
+                SendStatusMessage("IMB connection lost");
+                if (Connection != null)
+                    Connection.Dispose();
+                Connection = null;
+
+                SendStatusMessage("Try to reconnect to IMB..");
                 if (!ReConnect(20))
                     SignalConnectionLost();
             }
@@ -141,7 +148,7 @@ namespace Ecodistrict.Excel
         }
         public event EventHandler ConnectionLost;
         public void SignalConnectionLost()
-        {
+        {            
             EventHandler handler = this.ConnectionLost;
 
             if (handler != null)
@@ -156,7 +163,6 @@ namespace Ecodistrict.Excel
         /// </summary>
         ~CExcelModule()
         {
-            timer = null;
             Close();
         }
 
@@ -175,6 +181,8 @@ namespace Ecodistrict.Excel
         {
             try
             {
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+
                 if (ExcelApplikation != null)
                     ExcelApplikation.CloseExcel();
 
@@ -184,22 +192,25 @@ namespace Ecodistrict.Excel
                 {
                     //Close connection
                     Connection.close();
-                    Connection = null;
                     // reset event handler for change object on subscribedEvent
-                    SubscribedEvent.onString -= SubscribedEvent_onString;
-                    SubscribedEvent = null;
-                    PublishedEvent = null;
+                    if (SubscribedEvent!=null)
+                        SubscribedEvent.onString -= SubscribedEvent_onString;
                 }
             }
             catch (Exception ex)
             {
-                Connection = null;
                 // reset event handler for change object on subscribedEvent
-                SubscribedEvent.onString -= SubscribedEvent_onString;
-                SubscribedEvent = null;
-                PublishedEvent = null;
+                if (SubscribedEvent != null)
+                    SubscribedEvent.onString -= SubscribedEvent_onString;
                 SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
             }
+
+            if (Connection != null)
+                Connection.Dispose();
+            Connection = null;
+            SubscribedEvent = null;
+            PublishedEvent = null;
+
         }
 
         /// <summary>
@@ -227,6 +238,8 @@ namespace Ecodistrict.Excel
 
                         SendStatusMessage("Connected to IMB-hub..");
                         res = true;
+                        
+                        timer.Change(6000, 3 * 60000);
 	                }
 	                else
                     {
@@ -250,29 +263,6 @@ namespace Ecodistrict.Excel
             return res;
         }
         
-        ///// <summary>
-        ///// Check if connection is still open, if not it tries to reconnect.
-        ///// </summary>
-        ///// <returns></returns>
-        //public bool TestConnection()
-        //{
-        //    try
-        //    {
-        //        if (SendGetModulesResponse())
-        //            return true;
-
-        //        Close();
-
-        //        return ReConnect(10);
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        SendErrorMessage("Connection lost", "", ex);
-        //        return false;
-        //    }
-        //}
-        
-
         /// <summary>
         /// Try to reconnect to IMB-hub
         /// </summary>

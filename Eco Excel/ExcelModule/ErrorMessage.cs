@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Ecodistrict.Excel
 {
     /// <summary>
-    /// Errormessage eventargument that includes name of the function 
-    /// that caused the error, the errormessage and optionally the exception object itself</summary>
+    /// Error message event argument that includes name of the function 
+    /// that caused the error, the error message and optionally the exception object itself</summary>
     public class ErrorMessageEventArg:EventArgs
     {
         /// <summary>

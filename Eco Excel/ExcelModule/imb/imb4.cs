@@ -1019,6 +1019,13 @@ namespace IMB
                 ));
         }
 
+
+        // Public implementation of Dispose pattern callable by consumers.
+        public virtual  void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
     class TSocketConnection : TConnection
@@ -1237,5 +1244,40 @@ namespace IMB
         {
             fTLSStream.Write(aPacket, 0, aPacket.Length);
         }
+
+
+        // Flag: Has Dispose already been called?
+        bool disposed = false;
+        // Instantiate a SafeHandle instance.
+        System.Runtime.InteropServices.SafeHandle handle = new Microsoft.Win32.SafeHandles.SafeFileHandle(IntPtr.Zero, true);
+        // Public implementation of Dispose pattern callable by consumers.
+        public override void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                handle.Dispose();
+                // Free any other managed objects here.
+                if(fReaderThread!=null)
+                {
+                    if (fReaderThread.IsAlive)
+                        fReaderThread.Abort();
+                }
+                //
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
+
     }
 }
