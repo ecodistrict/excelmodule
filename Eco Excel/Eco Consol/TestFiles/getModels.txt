@@ -1,4 +1,0 @@
-{
-  "method": "getModules",
-  "type": "request"
-}
