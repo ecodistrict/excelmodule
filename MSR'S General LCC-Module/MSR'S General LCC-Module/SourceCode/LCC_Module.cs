@@ -252,10 +252,8 @@ namespace MSR_LCC
         // Change Heating System
         string change_heating_system = "HEATING_SYSTEM__CHANGE_HEATING_SYSTEM";
         string change_heating_system_lbl = "Replace building heating system";
-        //string ahd_after_renovation = "HEATING_SYSTEM__AHD_AFTER_RENOVATION"; //TODO use instead of heat consuption and use?
-        //string ahd_after_renovation_lbl = "Annual heat demand after renovation";
         string heating_system_life_of_product = "HEATING_SYSTEM__LIFE_OF_PRODUCT";
-        string heating_system_life_of_product_lbl = "Life of product (Practical time of life of the products and materials used)";
+        string heating_system_life_of_product_lbl = "Number of years of usage (the number of year in which the product will be used)";
         string heating_system_initial_investment = "heating_system_initial_investment";
         string heating_system_initial_investment_lbl = "Initial investment";
         string heating_system_installation_cost = "heating_system_installation_cost";
@@ -263,7 +261,7 @@ namespace MSR_LCC
         string heating_system_heat_consumption = "heating_system_heat_consumption";
         string heating_system_heat_consumption_lbl = "Heat consumption";
         string heating_system_heat_annual_use = "heating_system_heat_annual_use";
-        string heating_system_heat_annual_use_lbl = "Annual use";  //Same for all components? (e.g. electric,water and natural gas)
+        string heating_system_heat_annual_use_lbl = "Annual use (the number of hours for which the product is in operation each year)";  //Same for all components? (e.g. electric,water and natural gas)
         string heating_system_natural_gas_consumption = "heating_system_natural_gas_consumption";
         string heating_system_natural_gas_consumption_lbl = "Natural gas consumption";
         string heating_system_natural_gas_annual_use = "heating_system_natural_gas_annual_use";
@@ -279,11 +277,11 @@ namespace MSR_LCC
         string heating_system_maintenance_cost = "heating_system_maintenance_cost";
         string heating_system_maintenance_cost_lbl = "Total maintenance costs per year";
         string heating_system_taxes_fees_cost = "heating_system_taxes_fees_cost";
-        string heating_system_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string heating_system_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string heating_system_liquidation_cost = "heating_system_liquidation_cost";
-        string heating_system_liquidation_cost_lbl = "Cost of liquidation";
+        string heating_system_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string heating_system_remnant_value = "heating_system_remnant_value";
-        string heating_system_remnant_value_lbl = "Remnant value";
+        string heating_system_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Change Circulation Pump
         string change_circulationpump_in_heating_system = "PUMP__CHANGE_PUMP";
@@ -301,11 +299,11 @@ namespace MSR_LCC
         string circulationpump_maintenance_cost = "circulationpump_maintenance_cost";
         string circulationpump_maintenance_cost_lbl = "Total maintenance costs per year";
         string circulationpump_taxes_fees_cost = "circulationpump_taxes_fees_cost";
-        string circulationpump_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string circulationpump_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string circulationpump_liquidation_cost = "circulationpump_liquidation_cost";
-        string circulationpump_liquidation_cost_lbl = "Cost of liquidation";
+        string circulationpump_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string circulationpump_remnant_value = "circulationpump_remnant_value";
-        string circulationpump_remnant_value_lbl = "Remnant value";
+        string circulationpump_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
         #endregion
 
         #region Building Shell
@@ -315,10 +313,6 @@ namespace MSR_LCC
         string change_insulation_material_1_lbl = "Use insulation material 1";
         string insulation_material_1_life_of_product = "INSULATION_MATERIAL_ONE__LIFE_OF_PRODUCT";
         string insulation_material_1_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string insulation_material_1_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
-        //string insulation_material_1_type_of_insulation_lbl = "Type of insulation";
-        //string insulation_material_1_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
-        //string insulation_material_1_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
         string insulation_material_1_initial_investment = "insulation_material_1_initial_investment";
         string insulation_material_1_initial_investment_lbl = "Initial investment";
         string insulation_material_1_installation_cost = "insulation_material_1_installation_cost";
@@ -326,21 +320,17 @@ namespace MSR_LCC
         string insulation_material_1_maintenance_cost = "insulation_material_1_maintenance_cost";
         string insulation_material_1_maintenance_cost_lbl = "Total maintenance costs per year";
         string insulation_material_1_taxes_fees_cost = "insulation_material_1_taxes_fees_cost";
-        string insulation_material_1_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string insulation_material_1_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string insulation_material_1_liquidation_cost = "insulation_material_1_liquidation_cost";
-        string insulation_material_1_liquidation_cost_lbl = "Cost of liquidation";
+        string insulation_material_1_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string insulation_material_1_remnant_value = "insulation_material_1_remnant_value";
-        string insulation_material_1_remnant_value_lbl = "Remnant value";
+        string insulation_material_1_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Insulation material 2
         string change_insulation_material_2 = "INSULATION_MATERIAL_TWO__CHANGE";
         string change_insulation_material_2_lbl = "Use insulation material 2";
         string insulation_material_2_life_of_product = "INSULATION_MATERIAL_TWO__LIFE_OF_PRODUCT";
         string insulation_material_2_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string insulation_material_2_type_of_insulation = "INSULATION_MATERIAL_ONE__TYPE_OF_INSULATION";
-        //string insulation_material_2_type_of_insulation_lbl = "Type of insulation";
-        //string insulation_material_2_amount_of_new_insulation_material = "INSULATION_MATERIAL_ONE__AMOUNT_OF_NEW_INSULATION_MATERIAL";
-        //string insulation_material_2_amount_of_new_insulation_material_lbl = "Amount of new insulation material (required if renovation includes new insulation material)";
         string insulation_material_2_initial_investment = "insulation_material_2_initial_investment";
         string insulation_material_2_initial_investment_lbl = "Initial investment";
         string insulation_material_2_installation_cost = "insulation_material_2_installation_cost";
@@ -348,21 +338,17 @@ namespace MSR_LCC
         string insulation_material_2_maintenance_cost = "insulation_material_2_maintenance_cost";
         string insulation_material_2_maintenance_cost_lbl = "Total maintenance costs per year";
         string insulation_material_2_taxes_fees_cost = "insulation_material_2_taxes_fees_cost";
-        string insulation_material_2_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string insulation_material_2_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string insulation_material_2_liquidation_cost = "insulation_material_2_liquidation_cost";
-        string insulation_material_2_liquidation_cost_lbl = "Cost of liquidation";
+        string insulation_material_2_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string insulation_material_2_remnant_value = "insulation_material_2_remnant_value";
-        string insulation_material_2_remnant_value_lbl = "Remnant value";
+        string insulation_material_2_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // facade system
         string change_facade_system = "FACADE__CHANGE";
         string change_facade_system_lbl = "Change facade";
         string facade_system_life_of_product = "FACADE__LIFE_OF_PRODUCT";
         string facade_system_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string facade_system_type_facade_system = "FACADE__TYPE_OF_FACADE_SYSTEM";
-        //string facade_system_type_of_facade_system_lbl = "Type of facade system";
-        //string facade_system_change_in_annual_heat_demand_due_to_facade_system = "FACADE__CHANGE_IN_AHD_DUE_TO_FACADE_SYSTEM";
-        //string facade_system_change_in_annual_heat_demand_due_to_facade_system_lbl = "Change in annual heat demand due to facade system (an energy saving is given as a negative value)";
         string facade_system_initial_investment = "facade_system_initial_investment";
         string facade_system_initial_investment_lbl = "Initial investment";
         string facade_system_installation_cost = "facade_system_installation_cost";
@@ -370,22 +356,17 @@ namespace MSR_LCC
         string facade_system_maintenance_cost = "facade_system_maintenance_cost";
         string facade_system_maintenance_cost_lbl = "Total maintenance costs per year";
         string facade_system_taxes_fees_cost = "facade_system_taxes_fees_cost";
-        string facade_system_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string facade_system_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string facade_system_liquidation_cost = "facade_system_liquidation_cost";
-        string facade_system_liquidation_cost_lbl = "Cost of liquidation";
+        string facade_system_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string facade_system_remnant_value = "facade_system_remnant_value";
-        string facade_system_remnant_value_lbl = "Remnant value";
-
-
+        string facade_system_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
+        
         // Windows
         string change_windows = "WINDOWS__CHANGE";
         string change_windows_lbl = "Change windows";
         string windows_life_of_product = "WINDOWS__LIFE_OF_PRODUCT";
         string windows_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string windows_type_windows = "WINDOWS__TYPE_OF_WINDOWS";
-        //string windows_type_of_windows_lbl = "Material in frame";
-        //string windows_change_in_annual_heat_demand_due_to_windows = "WINDOWS__CHANGE_IN_AHD_DUE_TO_WINDOWS";
-        //string windows_change_in_annual_heat_demand_due_to_windows_lbl = "Change in annual heat demand due to windows (an energy saving is given as a negative value)";
         string windows_initial_investment = "windows_initial_investment";
         string windows_initial_investment_lbl = "Initial investment";
         string windows_installation_cost = "windows_installation_cost";
@@ -393,23 +374,17 @@ namespace MSR_LCC
         string windows_maintenance_cost = "windows_maintenance_cost";
         string windows_maintenance_cost_lbl = "Total maintenance costs per year";
         string windows_taxes_fees_cost = "windows_taxes_fees_cost";
-        string windows_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string windows_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string windows_liquidation_cost = "windows_liquidation_cost";
-        string windows_liquidation_cost_lbl = "Cost of liquidation";
+        string windows_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string windows_remnant_value = "windows_remnant_value";
-        string windows_remnant_value_lbl = "Remnant value";
+        string windows_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Doors
         string change_doors = "DOORS__CHANGE";
         string change_doors_lbl = "Change doors";
         string doors_life_of_product = "DOORS__LIFE_OF_PRODUCT";
         string doors_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string doors_type_doors = "DOORS__TYPE_OF_DOORS";
-        //string doors_type_of_doors_lbl = "Type of doors";
-        //string doors_change_in_annual_heat_demand_due_to_doors = "DOORS__CHANGE_IN_AHD_DUE_TO_DOORS";
-        //string doors_change_in_annual_heat_demand_due_to_doors_lbl = "Change in annual heat demand due to doors (an energy saving is given as a negative value)";
-        //string doors_number_of_new_front_doors = "DOORS__NUMBER_OF_NEW_FRONT_DOORS";
-        //string doors_number_of_new_front_doors_lbl = "Number of new front doors (required if renovation includes new doors)";
         string doors_initial_investment = "doors_initial_investment";
         string doors_initial_investment_lbl = "Initial investment";
         string doors_installation_cost = "doors_installation_cost";
@@ -417,11 +392,11 @@ namespace MSR_LCC
         string doors_maintenance_cost = "doors_maintenance_cost";
         string doors_maintenance_cost_lbl = "Total maintenance costs per year";
         string doors_taxes_fees_cost = "doors_taxes_fees_cost";
-        string doors_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string doors_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string doors_liquidation_cost = "doors_liquidation_cost";
-        string doors_liquidation_cost_lbl = "Cost of liquidation";
+        string doors_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string doors_remnant_value = "doors_remnant_value";
-        string doors_remnant_value_lbl = "Remnant value";
+        string doors_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
         #endregion
 
         #region Ventilation
@@ -431,10 +406,6 @@ namespace MSR_LCC
         string change_ventilation_ducts_lbl = "Change ventilation ducts";
         string ventilation_ducts_life_of_product = "VENTILATION_DUCTS__LIFE_OF_PRODUCT";
         string ventilation_ducts_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string ventilation_ducts_type_of_material = "VENTILATION_DUCTS__MATERIAL_OF_VENTILATION_DUCTS";
-        //string ventilation_ducts_type_of_material_lbl = "Material in ventilation ducts";
-        //string ventilation_ducts_weight_of_ventilation_ducts = "VENTILATION_DUCTS__WEIGHT_OF_VENTILATION_DUCTS";
-        //string ventilation_ducts_weight_of_ventilation_ducts_lbl = "Weight of ventilation ducts (Required if renovation includes new ventilation ducts)";
         string ventilation_ducts_initial_investment = "ventilation_ducts_initial_investment";
         string ventilation_ducts_initial_investment_lbl = "Initial investment";
         string ventilation_ducts_installation_cost = "ventilation_ducts_installation_cost";
@@ -442,19 +413,17 @@ namespace MSR_LCC
         string ventilation_ducts_maintenance_cost = "ventilation_ducts_maintenance_cost";
         string ventilation_ducts_maintenance_cost_lbl = "Total maintenance costs per year";
         string ventilation_ducts_taxes_fees_cost = "ventilation_ducts_taxes_fees_cost";
-        string ventilation_ducts_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string ventilation_ducts_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string ventilation_ducts_liquidation_cost = "ventilation_ducts_liquidation_cost";
-        string ventilation_ducts_liquidation_cost_lbl = "Cost of liquidation";
+        string ventilation_ducts_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string ventilation_ducts_remnant_value = "ventilation_ducts_remnant_value";
-        string ventilation_ducts_remnant_value_lbl = "Remnant value";
+        string ventilation_ducts_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Airflow assembly
         string change_airflow_assembly = "AIR_FLOW_ASSEMBLY__CHANGE";
         string change_airflow_assembly_lbl = "Change airflow assembly";
         string airflow_assembly_life_of_product = "AIR_FLOW_ASSEMBLY__LIFE_OF_PRODUCT";
         string airflow_assembly_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string airflow_assembly_type_of_airflow_assembly = "AIR_FLOW_ASSEMBLY__TYPE_OF_AIR_FLOW_ASSEMBLY";
-        //string airflow_assembly_type_of_airflow_assembly_lbl = "Type of airflow assembly";
         string airflow_assembly_initial_investment = "airflow_assembly_initial_investment";
         string airflow_assembly_initial_investment_lbl = "Initial investment";
         string airflow_assembly_installation_cost = "airflow_assembly_installation_cost";
@@ -462,7 +431,7 @@ namespace MSR_LCC
         string airflow_assembly_heat_consumption = "airflow_assembly_heat_consumption";
         string airflow_assembly_heat_consumption_lbl = "Heat consumption";
         string airflow_assembly_heat_annual_use = "airflow_assembly_heat_annual_use";
-        string airflow_assembly_heat_annual_use_lbl = "Annual use";  //Same for all components? (e.g. electric,water and natural gas)
+        string airflow_assembly_heat_annual_use_lbl = "Annual use (the number of hours for which the product is in operation each year)";  //Same for all components? (e.g. electric,water and natural gas)
         string airflow_assembly_electric_consumption = "airflow_assembly_electric_consumption";
         string airflow_assembly_electric_consumption_lbl = "Electric consumption";
         string airflow_assembly_electric_annual_use = "airflow_assembly_electric_annual_use";
@@ -470,17 +439,15 @@ namespace MSR_LCC
         string airflow_assembly_maintenance_cost = "airflow_assembly_maintenance_cost";
         string airflow_assembly_maintenance_cost_lbl = "Total maintenance costs per year";
         string airflow_assembly_taxes_fees_cost = "airflow_assembly_taxes_fees_cost";
-        string airflow_assembly_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string airflow_assembly_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string airflow_assembly_liquidation_cost = "airflow_assembly_liquidation_cost";
-        string airflow_assembly_liquidation_cost_lbl = "Cost of liquidation";
+        string airflow_assembly_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string airflow_assembly_remnant_value = "airflow_assembly_remnant_value";
-        string airflow_assembly_remnant_value_lbl = "Remnant value";
+        string airflow_assembly_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Air distribution housings and silencer
         string change_air_distribution_housings_and_silencers = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__CHANGE";
         string change_air_distribution_housings_and_silencers_lbl = "Change air distribution housings and silencers";
-        //string air_distribution_housings_and_silencers_number_of_distribution_housings = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__NUMBER_OF_NEW_HOUSINGS";
-        //string air_distribution_housings_and_silencers_number_of_distribution_housings_lbl = "Number of air distribution housings";
         string air_distribution_housings_and_silencers_life_of_product = "AIR_DISTRIBUTION_HOUSINGS_AND_SILENCERS__LIFE_OF_PRODUCT";
         string air_distribution_housings_and_silencers_life_of_product_lbl = "Life of air distribution housings and silencers (practical time of life of the products and materials used)";
         string air_distribution_housings_and_silencers_initial_investment = "air_distribution_housings_and_silencers_initial_investment";
@@ -490,11 +457,11 @@ namespace MSR_LCC
         string air_distribution_housings_and_silencers_maintenance_cost = "air_distribution_housings_and_silencers_maintenance_cost";
         string air_distribution_housings_and_silencers_maintenance_cost_lbl = "Total maintenance costs per year";
         string air_distribution_housings_and_silencers_taxes_fees_cost = "air_distribution_housings_and_silencers_taxes_fees_cost";
-        string air_distribution_housings_and_silencers_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string air_distribution_housings_and_silencers_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string air_distribution_housings_and_silencers_liquidation_cost = "air_distribution_housings_and_silencers_liquidation_cost";
-        string air_distribution_housings_and_silencers_liquidation_cost_lbl = "Cost of liquidation";
+        string air_distribution_housings_and_silencers_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string air_distribution_housings_and_silencers_remnant_value = "air_distribution_housings_and_silencers_remnant_value";
-        string air_distribution_housings_and_silencers_remnant_value_lbl = "Remnant value";
+        string air_distribution_housings_and_silencers_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         #endregion
         
@@ -505,10 +472,6 @@ namespace MSR_LCC
         string change_radiators_lbl = "Change radiators";
         string radiators_life_of_product = "RADIATORS__LIFE_OF_PRODUCT";
         string radiators_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string radiators_type_of_radiators = "RADIATORS__TYPE_OF_RADIATORS";
-        //string radiators_type_of_radiators_lbl = "Type of radiators";
-        //string radiators_weight_of_radiators = "RADIATORS__WEIGHT_OF_NEW_RADIATORS";
-        //string radiators_weight_of_radiators_lbl = "Weight of new radiators";
         string radiators_initial_investment = "radiators_initial_investment";
         string radiators_initial_investment_lbl = "Initial investment";
         string radiators_installation_cost = "radiators_installation_cost";
@@ -516,19 +479,17 @@ namespace MSR_LCC
         string radiators_maintenance_cost = "radiators_maintenance_cost";
         string radiators_maintenance_cost_lbl = "Total maintenance costs per year";
         string radiators_taxes_fees_cost = "radiators_taxes_fees_cost";
-        string radiators_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string radiators_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string radiators_liquidation_cost = "radiators_liquidation_cost";
-        string radiators_liquidation_cost_lbl = "Cost of liquidation";
+        string radiators_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string radiators_remnant_value = "radiators_remnant_value";
-        string radiators_remnant_value_lbl = "Remnant value";
+        string radiators_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - Copper
         string change_piping_copper = "PIPING_SYSTEM_COPPER__CHANGE";
         string change_piping_copper_lbl = "Change copper pipes";
         string piping_copper_life_of_product = "PIPING_SYSTEM_COPPER__LIFE_OF_PRODUCT";
         string piping_copper_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_copper_weight_of_copper_pipes = "PIPING_SYSTEM_COPPER__WEIGHT_OF_NEW_PIPES";
-        //string piping_copper_weight_of_copper_pipes_lbl = "Weight of new pipes";
         string piping_copper_initial_investment = "piping_copper_initial_investment";
         string piping_copper_initial_investment_lbl = "Initial investment";
         string piping_copper_installation_cost = "piping_copper_installation_cost";
@@ -536,19 +497,17 @@ namespace MSR_LCC
         string piping_copper_maintenance_cost = "piping_copper_maintenance_cost";
         string piping_copper_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_copper_taxes_fees_cost = "piping_copper_taxes_fees_cost";
-        string piping_copper_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_copper_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_copper_liquidation_cost = "piping_copper_liquidation_cost";
-        string piping_copper_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_copper_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_copper_remnant_value = "piping_copper_remnant_value";
-        string piping_copper_remnant_value_lbl = "Remnant value";
+        string piping_copper_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - PEX
         string change_piping_pex = "PIPING_SYSTEM_PEX__CHANGE";
         string change_piping_pex_lbl = "Change PEX pipes";
         string piping_pex_life_of_product = "PIPING_SYSTEM_PEX__LIFE_OF_PRODUCT";
         string piping_pex_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_pex_weight_of_pex_pipes = "PIPING_SYSTEM_PEX__WEIGHT_OF_NEW_PIPES";
-        //string piping_pex_weight_of_pex_pipes_lbl = "Weight of new pipes";
         string piping_pex_initial_investment = "piping_pex_initial_investment";
         string piping_pex_initial_investment_lbl = "Initial investment";
         string piping_pex_installation_cost = "piping_pex_installation_cost";
@@ -556,19 +515,17 @@ namespace MSR_LCC
         string piping_pex_maintenance_cost = "piping_pex_maintenance_cost";
         string piping_pex_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_pex_taxes_fees_cost = "piping_pex_taxes_fees_cost";
-        string piping_pex_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_pex_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_pex_liquidation_cost = "piping_pex_liquidation_cost";
-        string piping_pex_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_pex_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_pex_remnant_value = "piping_pex_remnant_value";
-        string piping_pex_remnant_value_lbl = "Remnant value";
+        string piping_pex_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - PP
         string change_piping_pp = "PIPING_SYSTEM_PP__CHANGE";
         string change_piping_pp_lbl = "Change PP pipes";
         string piping_pp_life_of_product = "PIPING_SYSTEM_PP__LIFE_OF_PRODUCT";
         string piping_pp_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_pp_weight_of_pp_pipes = "PIPING_SYSTEM_PP__WEIGHT_OF_NEW_PIPES";
-        //string piping_pp_weight_of_pp_pipes_lbl = "Weight of new pipes";
         string piping_pp_initial_investment = "piping_pp_initial_investment";
         string piping_pp_initial_investment_lbl = "Initial investment";
         string piping_pp_installation_cost = "piping_pp_installation_cost";
@@ -576,19 +533,17 @@ namespace MSR_LCC
         string piping_pp_maintenance_cost = "piping_pp_maintenance_cost";
         string piping_pp_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_pp_taxes_fees_cost = "piping_pp_taxes_fees_cost";
-        string piping_pp_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_pp_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_pp_liquidation_cost = "piping_pp_liquidation_cost";
-        string piping_pp_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_pp_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_pp_remnant_value = "piping_pp_remnant_value";
-        string piping_pp_remnant_value_lbl = "Remnant value";
+        string piping_pp_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - Cast Iron
         string change_piping_cast_iron = "PIPING_SYSTEM_CAST_IRON__CHANGE";
         string change_piping_cast_iron_lbl = "Change cast iron pipes";
         string piping_cast_iron_life_of_product = "PIPING_SYSTEM_CAST_IRON__LIFE_OF_PRODUCT";
         string piping_cast_iron_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_cast_iron_weight_of_cast_iron_pipes = "PIPING_SYSTEM_CAST_IRON__WEIGHT_OF_NEW_PIPES";
-        //string piping_cast_iron_weight_of_cast_iron_pipes_lbl = "Weight of new pipes";
         string piping_cast_iron_initial_investment = "piping_cast_iron_initial_investment";
         string piping_cast_iron_initial_investment_lbl = "Initial investment";
         string piping_cast_iron_installation_cost = "piping_cast_iron_installation_cost";
@@ -596,19 +551,17 @@ namespace MSR_LCC
         string piping_cast_iron_maintenance_cost = "piping_cast_iron_maintenance_cost";
         string piping_cast_iron_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_cast_iron_taxes_fees_cost = "piping_cast_iron_taxes_fees_cost";
-        string piping_cast_iron_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_cast_iron_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_cast_iron_liquidation_cost = "piping_cast_iron_liquidation_cost";
-        string piping_cast_iron_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_cast_iron_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_cast_iron_remnant_value = "piping_cast_iron_remnant_value";
-        string piping_cast_iron_remnant_value_lbl = "Remnant value";
+        string piping_cast_iron_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - Galvanized Steel
         string change_piping_galvanized_steel = "PIPING_SYSTEM_GALVANISED_STEEL__CHANGE";
         string change_piping_galvanized_steel_lbl = "Change galvanized steel pipes";
         string piping_galvanized_steel_life_of_product = "PIPING_SYSTEM_GALVANISED_STEEL__LIFE_OF_PRODUCT";
         string piping_galvanized_steel_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_galvanized_steel_weight_of_galvanized_steel_pipes = "PIPING_SYSTEM_GALVANISED_STEEL__WEIGHT_OF_NEW_PIPES";
-        //string piping_galvanized_steel_weight_of_galvanized_steel_pipes_lbl = "Weight of new pipes";
         string piping_galvanized_steel_initial_investment = "piping_galvanized_steel_initial_investment";
         string piping_galvanized_steel_initial_investment_lbl = "Initial investment";
         string piping_galvanized_steel_installation_cost = "piping_galvanized_steel_installation_cost";
@@ -616,19 +569,17 @@ namespace MSR_LCC
         string piping_galvanized_steel_maintenance_cost = "piping_galvanized_steel_maintenance_cost";
         string piping_galvanized_steel_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_galvanized_steel_taxes_fees_cost = "piping_galvanized_steel_taxes_fees_cost";
-        string piping_galvanized_steel_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_galvanized_steel_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_galvanized_steel_liquidation_cost = "piping_galvanized_steel_liquidation_cost";
-        string piping_galvanized_steel_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_galvanized_steel_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_galvanized_steel_remnant_value = "piping_galvanized_steel_remnant_value";
-        string piping_galvanized_steel_remnant_value_lbl = "Remnant value";
+        string piping_galvanized_steel_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Piping System - Relining
         string change_piping_relining = "PIPING_SYSTEM_RELINING__CHANGE";
         string change_piping_relining_lbl = "Relining of pipes";
         string piping_relining_life_of_product = "PIPING_SYSTEM_RELINING__LIFE_OF_PRODUCT";
         string piping_relining_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string piping_relining_weight_of_relining_pipes = "PIPING_SYSTEM_RELINING__WEIGHT_OF_NEW_PIPES";
-        //string piping_relining_weight_of_relining_pipes_lbl = "Weight of new pipes";
         string piping_relining_initial_investment = "piping_relining_initial_investment";
         string piping_relining_initial_investment_lbl = "Initial investment";
         string piping_relining_installation_cost = "piping_relining_installation_cost";
@@ -636,19 +587,17 @@ namespace MSR_LCC
         string piping_relining_maintenance_cost = "piping_relining_maintenance_cost";
         string piping_relining_maintenance_cost_lbl = "Total maintenance costs per year";
         string piping_relining_taxes_fees_cost = "piping_relining_taxes_fees_cost";
-        string piping_relining_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string piping_relining_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string piping_relining_liquidation_cost = "piping_relining_liquidation_cost";
-        string piping_relining_liquidation_cost_lbl = "Cost of liquidation";
+        string piping_relining_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string piping_relining_remnant_value = "piping_relining_remnant_value";
-        string piping_relining_remnant_value_lbl = "Remnant value";
+        string piping_relining_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         // Electrical wiring
         string change_electrical_wiring = "ELECTRICAL_WIRING__CHANGE";
         string change_electrical_wiring_lbl = "Replace electrical wiring";
         string electrical_wiring_life_of_product = "ELECTRICAL_WIRING__LIFE_OF_PRODUCT";
         string electrical_wiring_life_of_product_lbl = "Life of product (practical time of life of the products and materials used)";
-        //string electrical_wiring_weight_of_electrical_wiring = "ELECTRICAL_WIRING__WEIGHT_OF_NEW_WIRES";
-        //string electrical_wiring_weight_of_electrical_wiring_lbl = "Weight of new wires";
         string electrical_wiring_initial_investment = "electrical_wiring_initial_investment";
         string electrical_wiring_initial_investment_lbl = "Initial investment";
         string electrical_wiring_installation_cost = "electrical_wiring_installation_cost";
@@ -656,11 +605,11 @@ namespace MSR_LCC
         string electrical_wiring_maintenance_cost = "electrical_wiring_maintenance_cost";
         string electrical_wiring_maintenance_cost_lbl = "Total maintenance costs per year";
         string electrical_wiring_taxes_fees_cost = "electrical_wiring_taxes_fees_cost";
-        string electrical_wiring_taxes_fees_cost_lbl = "Taxes / Fees per year";
+        string electrical_wiring_taxes_fees_cost_lbl = "Taxes / Fees per year (Possible taxes for which the owner is charged after the purchase and which are not included in the price. e.g. vehicle tax. , TV tax etc)";
         string electrical_wiring_liquidation_cost = "electrical_wiring_liquidation_cost";
-        string electrical_wiring_liquidation_cost_lbl = "Cost of liquidation";
+        string electrical_wiring_liquidation_cost_lbl = "Decommissioning cost (e.g. costs for recycling and landfilling)";
         string electrical_wiring_remnant_value = "electrical_wiring_remnant_value";
-        string electrical_wiring_remnant_value_lbl = "Remnant value";
+        string electrical_wiring_remnant_value_lbl = "Remnant value (value at the end of the usage period)";
 
         #endregion
 
@@ -768,17 +717,12 @@ namespace MSR_LCC
             // Instructions
             string intstr = "";
             intstr = "Fill in the building specific data below. ";
-            intstr += "Use the checkboxes to indicate what types of renovation procedures you want to perform for this alternative. ";
-            //intstr += "You need to fill in the  building properties as well as the parameters under checked checkboxes. ";
-            //intstr += "If this is the as-is step leave all checkboxes unchecked. ";
+            intstr += "Use the checkboxes to indicate what types of renovation procedures you want to calculate the lcc for in this alternative. ";
+            intstr += "When you have checked a renovation procedure you need to fill in all the fields for it.";
             intstr += "If multiple buildings have common properties you may select those buildings and assign them values simultaneously. ";
             InputGroup instructions = new InputGroup(label: intstr, order: ++order);
             buildning_specific_data.Add(key: "instructions", item: instructions);
-
-            // Building Common
-            //++order;
-            //BuildingProperties(ref buildning_specific_data, ref order);
-
+            
             // Heating System
             ++order;
             HeatingSystem(ref buildning_specific_data, ref order);
@@ -1082,40 +1026,7 @@ namespace MSR_LCC
             return res;
 
         }
-
-        void SetBuildingProperties(Feature building, ref CExcel exls)
-        {
-            String Key;
-            object value;
-            String cell;
-
-            // Inputs required in all cases
-            //#region Heated Area
-            //Key = heated_area;
-            //value = Convert.ToDouble(building.properties[Key]);
-            //cell = "C25";
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Number of Apartments
-            //Key = nr_apartments;
-            //cell = "C26";
-            //value = Convert.ToDouble(building.properties[Key]);
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-            //#region Heat Source Before
-            //Key = heat_source_before;
-            //cell = "C93";
-            //value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
-            //if (!exls.SetCellValue("Indata", cell, value))
-            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-            //#endregion
-
-        }
-
+        
         double SetHeatingSystem(Feature building, ref CExcel exls)
         {
             String Key;
