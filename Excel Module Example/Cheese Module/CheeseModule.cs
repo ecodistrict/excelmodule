@@ -27,10 +27,10 @@ namespace Cheese_Module
             this.KpiList = new List<string> {kpi_CheeseTaste, kpi_CheesePrice};
 
             //Error handling
-            this.ErrorRaised += CheeseModule_ErrorRaised;
+            this.ErrorRaised += CExcelModule_ErrorRaised;
 
             //Notifications
-            this.StatusMessage += CheeseModule_StatusMessage;
+            this.StatusMessage += CExcelModule_StatusMessage;
 
             //Define the input specification for the different kpis
             DefineInputSpecifications();
@@ -42,9 +42,7 @@ namespace Cheese_Module
         internal void Init()
         {
             //In this sample we use hardcoded variables
-            this.ServerAdress = "vps17642.public.cloudvps.com";
-            this.Port = 4000;
-            this.Federation = "ecodistrict";
+            this.RemoteHost = "vps17642.public.cloudvps.com";
             this.SubScribedEventName = "modules";
             this.PublishedEventName = "dashboard";
 
@@ -52,44 +50,8 @@ namespace Cheese_Module
             this.Description = "A module to access cheese quality";
             this.ModuleId = "foo-bar_cheese-module-v1-1";
             //moduleSettings.path = @"C:\ECODistr-ICT\Exceldocuments\EcoCheeseSample.xlsx";
-            this.workBookPath = "EcoCheeseSample.xlsx";
+            this.WorkBookPath = "EcoCheeseSample.xlsx";
         }
-
-        /// <summary>
-        /// Status event. The event is defined in CExcelModule.
-        /// </summary>
-        /// <param name="sender">Source of event</param>
-        /// <param name="e">Includes a statusmessage, that can be presented for the user</param>
-        private void CheeseModule_StatusMessage(object sender, StatusEventArg e)
-        {
-            Console.WriteLine(String.Format("Status message:\n\t{0}", e.StatusMessage));
-        }
-
-        /// <summary>
-        /// Error event. The event is defined in CExcelModule.
-        /// </summary>
-        /// <param name="sender">Source of the error</param>
-        /// <param name="e">Includes errormessage, sourcefunction and optionally the error</param>
-        private void CheeseModule_ErrorRaised(object sender, ErrorMessageEventArg e)
-        {
-            Console.WriteLine(String.Format("Error message: {0}", e.Message));
-            if (e.SourceFunction != null & e.SourceFunction != "")
-                Console.WriteLine(String.Format("\tIn source function: {0}", e.SourceFunction));
-        }
-
-        /// <summary>
-        /// Converts an error to use the ErrorMessageEventArg instead of the original error 
-        /// </summary>
-        /// <param name="sender">Source of the error</param>
-        /// <param name="ex">The original exception</param>
-        private void CheeseModule_ErrorRaised(object sender, Exception ex)
-        {
-            ErrorMessageEventArg em = new ErrorMessageEventArg();
-            em.Message = ex.Message;
-            em.Exception = ex;
-            CheeseModule_ErrorRaised(sender, em);
-        }
-
 
         private void DefineInputSpecifications()
         {
@@ -107,7 +69,7 @@ namespace Cheese_Module
                     Message = ex.Message,
                     SourceFunction = "DefineInputSpecification"
                 };
-                CheeseModule_ErrorRaised(this, exNew);
+                CExcelModule_ErrorRaised(this, exNew);
             }
         }
 
@@ -138,7 +100,7 @@ namespace Cheese_Module
                     SourceFunction = "GetInputSpecification_CheesePrice",
                     Message = "Could not create input specification for cheese price!"
                 };
-                CheeseModule_ErrorRaised(this, exNew);
+                CExcelModule_ErrorRaised(this, exNew);
                 return new InputSpecification();
             }
         }
@@ -171,7 +133,7 @@ namespace Cheese_Module
                     SourceFunction = "GetInputSpecification_CheeseTaste",
                     Message = "Could not create input specification for cheese taste!"
                 };
-                CheeseModule_ErrorRaised(this, exNew);
+                CExcelModule_ErrorRaised(this, exNew);
                 return new InputSpecification();
             }
         }
@@ -199,9 +161,9 @@ namespace Cheese_Module
         /// <param name="kpiId">Kpi id. Decides which Kpi should be calculated</param>
         /// <param name="exls">Excel object in which the calculations should take place</param>
         /// <returns></returns>
-        protected override Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
         {
-            Outputs outputs;
+            Ecodistrict.Messaging.Output.Outputs outputs;
             switch (kpiId)
             {
                 case kpi_CheeseTaste:
@@ -217,9 +179,9 @@ namespace Cheese_Module
             return outputs;
         }
 
-        private Outputs CalcCheesePriceKpi(Dictionary<string, Input> indata, CExcel exls)
+        private Ecodistrict.Messaging.Output.Outputs CalcCheesePriceKpi(Dictionary<string, Input> indata, CExcel exls)
         {
-            Outputs outputs = new Outputs();
+            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
 
             try
             {
@@ -255,7 +217,7 @@ namespace Cheese_Module
                 var kpiValue = exls.GetCellValue("Sheet1", "C17");
 
                 //Put it in the calc result
-                outputs.Add(new Kpi(kpiValue, "Min Cheese price Kpi", "SEK"));
+                outputs.Add(new Ecodistrict.Messaging.Output.Kpi(kpiValue, "Min Cheese price Kpi", "SEK"));
 
                 return outputs;
 
@@ -267,9 +229,9 @@ namespace Cheese_Module
             }
         }
 
-        private Outputs CalcCheeseTasteKpi(Dictionary<string, Input> indata, CExcel exls)
+        private Ecodistrict.Messaging.Output.Outputs CalcCheeseTasteKpi(Dictionary<string, Input> indata, CExcel exls)
         {
-            Outputs outputs = new Outputs();
+            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
 
             try
             {
@@ -305,7 +267,7 @@ namespace Cheese_Module
                 var kpiValue = exls.GetCellValue("Sheet1", "B17");
 
                 //Put it in the calc result
-                outputs.Add(new Kpi(kpiValue, "Max Cheese taste Kpi", "Unit"));
+                outputs.Add(new Ecodistrict.Messaging.Output.Kpi(kpiValue, "Max Cheese taste Kpi", "Unit"));
                 return outputs;
 
             }
