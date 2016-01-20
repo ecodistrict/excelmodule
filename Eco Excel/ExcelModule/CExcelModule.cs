@@ -5,6 +5,9 @@ using System.Threading;
 using System.Yaml.Serialization;
 using IMB;
 using Ecodistrict.Messaging;
+using Ecodistrict.Messaging.Requests;
+using Ecodistrict.Messaging.Responses;
+using Ecodistrict.Messaging.Results;
 
 namespace Ecodistrict.Excel
 {
