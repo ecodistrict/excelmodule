@@ -31,79 +31,6 @@ namespace Ecodistrict.Excel
     public abstract class CExcelModule
     {
         /// <summary>
-        /// The name of the IMB subscription the application uses. Read from the configuration file
-        /// </summary>
-        protected  string SubScribedEventName { get; set; }
-        /// <summary>
-        /// The name the application uses when sending back information to the dashboard
-        /// </summary>
-        protected string PublishedEventName { get; set; }
-
-        public  TConnection Connection { get; set; }
-        public TEventEntry SubscribedEvent { get; set; }
-        public TEventEntry PublishedEvent { get; set; }
-        /// <summary>
-        /// The error event that could be subscribed to
-        /// </summary>
-        public event ErrorEventHandler ErrorRaised;
-        /// <summary>
-        /// The status message event that could be subscribed to
-        /// </summary>
-        public event StatusEventHandler StatusMessage;
-
-        /// <summary>
-        /// When set (default) statusmessages is only sent when the mudule sends something to the dashboard
-        /// not when it receives something from the dashboard.
-        /// </summary>
-        protected bool ShowOnlyOwnStatus { get; set; }
-            
-        private CExcel ExcelApplikation { get; set; }
-        
-        /// <summary>
-        /// UserId used for identification against the server. 
-        /// </summary>
-        protected int UserId { get; set; }
-
-        /// <summary>
-        /// Name of this module.
-        /// </summary>
-        protected string ModuleName { get; set; }
-
-        /// <summary>
-        /// Used to uniquely identify this module 
-        /// </summary>
-        protected string ModuleId { get; set; }
-
-        /// <summary>
-        /// Name of the module owner/responsable
-        /// </summary>
-        protected string UserName { get; set; }
-
-        private string _workBookPath;
-        /// <summary>
-        /// The complete path to the Excedocument document file that the module is going to use (*.xls, *.xlsx)
-        /// </summary>
-        protected string WorkBookPath 
-        { 
-            get
-            {
-                return _workBookPath;
-            }
-            set
-            {
-                _workBookPath = Path.GetFullPath(value);
-            }
-        }
-        /// <summary>
-        /// A list of strings with Kpis that the ExcelFile can calculate.
-        /// </summary>
-        protected List<string> KpiList { get; set; }
-        /// <summary>
-        /// Description of the module.
-        /// </summary>
-        protected string Description { get; set; }
-
-        /// <summary>
         /// Creates a new CExcel instance that in turn creates a new instance of Excel.Application
         /// </summary>
         protected CExcelModule()
@@ -124,6 +51,100 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "CExcel Constructor", exception: ex);
             }
         }
+        /// <summary>
+        /// If there is an instance of CExcel object it closes down both any opened Excel documents
+        ///  (without saving any data) and closes down Excel.Application before closing down the CExcelModule object.
+        /// </summary>
+        ~CExcelModule()
+        {
+            Close();
+        }
+
+        #region Module Properties
+        /// <summary>
+        /// UserId used for identification against the server. 
+        /// </summary>
+        protected int UserId { get; set; }
+
+        /// <summary>
+        /// Name of this module.
+        /// </summary>
+        protected string ModuleName { get; set; }
+
+        /// <summary>
+        /// Used to uniquely identify this module 
+        /// </summary>
+        protected string ModuleId { get; set; }
+
+        /// <summary>
+        /// Name of the module owner/responsable
+        /// </summary>
+        protected string UserName { get; set; }
+
+        /// <summary>
+        /// A list of strings with Kpis that the ExcelFile can calculate.
+        /// </summary>
+        protected List<string> KpiList { get; set; }
+        /// <summary>
+        /// Description of the module.
+        /// </summary>
+        protected string Description { get; set; }
+        #endregion
+
+        #region Module Init
+        protected virtual void Init_IMB(string IMB_config_path)
+        {
+            try
+            {
+                var serializer = new YamlSerializer();
+                var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
+
+                this.RemoteHost = ((IMB_Settings)imb_settings).remoteHost;
+                this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
+                this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "Init_IMB", exception: ex);
+            }
+        }
+
+        protected virtual void Init_Module(string Module_config_path)
+        {
+            try
+            {
+                var serializer = new YamlSerializer();
+                var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
+
+                this.ModuleName = ((Module_Settings)module_settings).name;
+                this.Description = ((Module_Settings)module_settings).description;
+                this.ModuleId = ((Module_Settings)module_settings).moduleId;
+                this.WorkBookPath = ((Module_Settings)module_settings).path;
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "Init_Module", exception: ex);
+            }
+        }
+
+        public bool Init(string IMB_config_path, string Module_config_path)
+        {
+            try
+            {
+                Init_IMB(IMB_config_path);
+                Init_Module(Module_config_path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CExcelModule_ErrorRaised(this, ex);
+                return false;
+            }
+        }
+        #endregion
+                
+        #region IMB Hub
+        #region Test and report connection lost
         Timer timer;
         private void TestConnection(Object o)
         {
@@ -151,7 +172,7 @@ namespace Ecodistrict.Excel
         }
         public event EventHandler ConnectionLost;
         public void SignalConnectionLost()
-        {            
+        {
             EventHandler handler = this.ConnectionLost;
 
             if (handler != null)
@@ -159,17 +180,18 @@ namespace Ecodistrict.Excel
                 handler(this, new EventArgs());
             }
         }
-        
+        #endregion
+        public TConnection Connection { get; set; }
+        public TEventEntry SubscribedEvent { get; set; }
+        public TEventEntry PublishedEvent { get; set; }
         /// <summary>
-        /// If there is an instance of CExcel object it closes down both any opened Excel documents
-        ///  (without saving any data) and closes down Excel.Application before closing down the CExcelModule object.
+        /// The name of the IMB subscription the application uses. Read from the configuration file
         /// </summary>
-        ~CExcelModule()
-        {
-            Close();
-        }
-
-        //IMB hub info
+        protected string SubScribedEventName { get; set; }
+        /// <summary>
+        /// The name the application uses when sending back information to the dashboard
+        /// </summary>
+        protected string PublishedEventName { get; set; }
         string aCertFile = "client-eco-district.pfx";
         string aCertFilePassword = "&8dh48klosaxu90OKH";
         string aRootCertFile = "root-ca-imb.crt";
@@ -290,60 +312,34 @@ namespace Ecodistrict.Excel
 
             return false;
         }
-               
+
+        public bool Connected
+        {
+            get
+            {
+                if (Connection == null)
+                    return false;
+
+                return Connection.connected;
+            }
+        }
+
+        private void Publish(String str)
+        {
+            if (PublishedEvent != null)
+            {
+                lock (PublishedEvent)
+                {
+                    PublishedEvent.signalString(str);
+                }
+            }
+        }
+        #endregion
+
         #region Events
         void SubscribedEvent_onString(TEventEntry aEventEntry, string msg)
         {
-            try
-            {
-                //Deserialize only header to prevent unnecessary deserialization if the message was not meant for this module 
-                Request header = Deserialize<Request>.JsonString(msg); 
-
-                if (header != null)
-                {
-
-                    if (header is GetModulesRequest)
-                    {
-                        SendStatusMessage("GetModulesRequest received");
-                        if (!SendGetModulesResponse())
-                            SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-                    }
-                    else if (ModuleId == header.moduleId)
-                    {
-                        IMessage iMessage = Deserialize<IMessage>.JsonString(msg);
-
-                        if (iMessage is SelectModuleRequest)
-	                    {
-	                        if (!ShowOnlyOwnStatus)
-	                            SendStatusMessage("SelectModuleRequest received");
-	                        
-	                        SendStatusMessage("Handles SelectModuleRequest");
-                            SendSelectModuleResponse(iMessage as SelectModuleRequest);
-                                //if (!SendSelectModuleResponse(iMessage as SelectModuleRequest))
-                                //    SendErrorMessage(message: "could not send SelectModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-	                    }
-                        else if (iMessage is StartModuleRequest)
-	                    {
-	                        if (!ShowOnlyOwnStatus)
-	                            SendStatusMessage("StartModuleRequest received");
-	                        
-	                        SendStatusMessage("Handles StartModuleRequest");
-                            SendModuleResult(iMessage as StartModuleRequest);
-                                //if (!SendModuleResult(iMessage as StartModuleRequest))
-                                //    SendErrorMessage(message: "could not send StartModulesesponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
-	                    }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
-                //TMP - Store data locally
-                string path = Path.GetDirectoryName(this.WorkBookPath);
-                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Error - Message", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), msg);
-                //
-            }
+            HandleRequest(msg);
         }
         
         protected virtual void CExcelModule_StatusMessage(object sender, StatusEventArg e)
@@ -366,56 +362,22 @@ namespace Ecodistrict.Excel
         }
         #endregion
 
-        protected virtual void Init_IMB(string IMB_config_path)
+        #region Excel
+        private string _workBookPath;
+        /// <summary>
+        /// The complete path to the Excedocument document file that the module is going to use (*.xls, *.xlsx)
+        /// </summary>
+        protected string WorkBookPath
         {
-            try
+            get
             {
-                var serializer = new YamlSerializer();
-                var imb_settings = serializer.DeserializeFromFile(IMB_config_path, typeof(IMB_Settings))[0];
-
-                this.RemoteHost = ((IMB_Settings)imb_settings).remoteHost;
-                this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
-                this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
+                return _workBookPath;
             }
-            catch (Exception ex)
+            set
             {
-                SendErrorMessage(message: ex.Message, sourceFunction: "Init_IMB", exception: ex);
+                _workBookPath = Path.GetFullPath(value);
             }
         }
-
-        protected virtual void Init_Module(string Module_config_path)
-        {
-            try
-            {
-                var serializer = new YamlSerializer();
-                var module_settings = serializer.DeserializeFromFile(Module_config_path, typeof(Module_Settings))[0];
-
-                this.ModuleName = ((Module_Settings)module_settings).name;
-                this.Description = ((Module_Settings)module_settings).description;
-                this.ModuleId = ((Module_Settings)module_settings).moduleId;
-                this.WorkBookPath = ((Module_Settings)module_settings).path;
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "Init_Module", exception: ex);
-            }
-        }
-
-        public bool Init(string IMB_config_path, string Module_config_path)
-        {
-            try
-            {
-                Init_IMB(IMB_config_path);
-                Init_Module(Module_config_path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-                return false;
-            }
-        }
-
         /// <summary>
         /// This function is to be inherited. It receives a Kpi name as string and should return the Inputspecification for that Kpi
         /// </summary>
@@ -438,11 +400,10 @@ namespace Ecodistrict.Excel
             return res;
 
         }
-
-        protected virtual InputSpecification GetInputSpecification(string kpiId)
-        {
-            throw new NotImplementedException();
-        }
+        private CExcel ExcelApplikation { get; set; }
+        #endregion
+        
+        protected abstract InputSpecification GetInputSpecification(string kpiId);
 
         /// <summary>
         /// This function is to be inherited. It receives all indata parameters from the dashboard as a dictionary, the name of 
@@ -452,10 +413,76 @@ namespace Ecodistrict.Excel
         /// <param name="kpiId">The name of the Kpi that is to be calculated</param>
         /// <param name="exls">Excel object</param>
         /// <returns>A output object that can be serialized and sent to th dashboard</returns>
-        protected virtual Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string,Input> indata,string kpiId, CExcel exls)
+        protected abstract bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs);
+        
+        private void HandleRequest(string msg)
         {
-            throw new NotImplementedException();
-            
+            try
+            {
+                Request request = Deserialize<Request>.JsonString(msg);
+
+                if (request != null)
+                {
+
+                    if (request is GetModulesRequest)
+                        HandleGetModulesRequest(request as GetModulesRequest);
+                    else if (ModuleId == request.moduleId)
+                    {
+                        IMessage iMessage = Deserialize<IMessage>.JsonString(msg);
+
+                        if (iMessage is SelectModuleRequest)
+                            HandleSelectModuleRequest(iMessage as SelectModuleRequest);
+                        else if (iMessage is StartModuleRequest)
+                            HandleStartModuleRequest(iMessage as StartModuleRequest);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: ex.Message, sourceFunction: "SubscribedEvent_OnNormalEvent", exception: ex);
+                //TMP - Store data locally
+                string path = Path.GetDirectoryName(this.WorkBookPath);
+                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Error - Message", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), msg);
+                //
+            }
+        }
+
+        private void HandleGetModulesRequest(GetModulesRequest request)
+        {
+            if (request != null)
+            {
+                SendStatusMessage("GetModulesRequest received");
+                if (!SendGetModulesResponse())
+                    SendErrorMessage(message: "could not send getModulesResponse", sourceFunction: "SubscribedEvent_OnNormalEvent");
+            }
+        }
+
+        private void HandleSelectModuleRequest(SelectModuleRequest request)
+        {
+            if (request != null)
+            {
+                if (!ShowOnlyOwnStatus)
+                    SendStatusMessage("SelectModuleRequest received");
+
+                SendStatusMessage("Handles SelectModuleRequest");
+                SendSelectModuleResponse(request);
+            }
+        }
+
+        private void HandleStartModuleRequest(StartModuleRequest request)
+        {
+            if(request != null)
+            {
+                if (!ShowOnlyOwnStatus)
+                    SendStatusMessage("StartModuleRequest received");
+
+                if (SendStartModuleResponse(request, ModuleStatus.Processing))
+                {
+                    SendStatusMessage("Handles StartModuleRequest");
+                    SendModuleResult(request);
+                }
+            }
         }
 
         /// <summary>
@@ -510,6 +537,42 @@ namespace Ecodistrict.Excel
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="status"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private bool SendStartModuleResponse(StartModuleRequest request, ModuleStatus status = ModuleStatus.Failed, string info = "Unknown error")
+        {
+            try
+            {
+                var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, status, info);
+                var str = Serialize.ToJsonString(smr);
+                Publish(str);
+                SendStatusMessage("StartModuleResponse processing sent");
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    string errInfo = "Internal module error: contact developer";
+                    var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed, errInfo);
+                    var str = Serialize.ToJsonString(smr);
+                    Publish(str);
+                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
+                }
+                catch
+                {
+                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Handles the StartModuleRequest from the dashboard.<br/> 
         /// Starts with sending a StartModuleResponse processing message to the dashboard. After that
         /// the Excel document file is opened and the function calculateKpi <see cref="CalculateKpi"/> function is called.
@@ -522,31 +585,7 @@ namespace Ecodistrict.Excel
         /// <returns><see cref="Boolean">true</see> if success, <see cref="Boolean">false</see> if not</returns>
         private bool SendModuleResult(StartModuleRequest request)
         {
-            try
-            {
-                var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Processing);
-                var str = Serialize.ToJsonString(smr);
-                Publish(str);
-                SendStatusMessage("StartModuleResponse processing sent"); 
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
-                    var str = Serialize.ToJsonString(smr);
-                    Publish(str);
-                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
-                }
-                catch 
-                {
-                    SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-StartmoduleResponse", exception: ex);
-                }
-                return false;
-            }
-
             Ecodistrict.Messaging.Output.Outputs outputs = null;
-
 
             try
             {
@@ -554,19 +593,25 @@ namespace Ecodistrict.Excel
                 {
                     if (ExcelApplikation.OpenWorkBook(WorkBookPath))
                     {
-                        outputs = CalculateKpi(request.inputs, request.kpiId, ExcelApplikation);
-                        //TMP - Store data locally
-                        string dataStr = Serialize.ToJsonString(request);
-                        string path = Path.GetDirectoryName(this.WorkBookPath);
-                        System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - StartModuleRequest ", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), dataStr);
-                        //
+                        //Calculate KPI
+                        if (CalculateKpi(request.inputs, request.kpiId, ExcelApplikation, out outputs))
+                        {
+                            //Send Result
+                            ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
+                            var str = Serialize.ToJsonString(result);
+                            Publish(str);
+                            SendStatusMessage("ModuleResult sent");
+
+                            #region TMP - Store data locally
+                            string path = Path.GetDirectoryName(this.WorkBookPath);
+                            System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
+                            #endregion
+                        }
                     }
                 }
                 else
                 {
-                    var smr = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
-                    var str = Serialize.ToJsonString(smr);
-                    Publish(str);
+                    SendStartModuleResponse(request, ModuleStatus.Failed, "Dependent calculation module not found, contact developer");
                     SendErrorMessage(string.Format("Excelfile <{0}> not found", WorkBookPath), sourceFunction: "SendModuleResult-FileNotFound");
                     return false;
                 }
@@ -574,13 +619,8 @@ namespace Ecodistrict.Excel
             }
             catch (Exception ex)
             {
-
                 SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi", exception: ex);
-
-                var stmResp2 = new StartModuleResponse(ModuleId, request.variantId, request.userId, request.kpiId, ModuleStatus.Failed);
-                var str = Serialize.ToJsonString(stmResp2);
-                Publish(str);
-                SendStatusMessage("StartModuleResponse Failed sent");
+                SendStartModuleResponse(request, ModuleStatus.Failed, "Internal module error: contact developer");
 
                 //TMP - Store data locally
                 string dataStr = Serialize.ToJsonString(request);
@@ -594,70 +634,45 @@ namespace Ecodistrict.Excel
             {
                ExcelApplikation.CloseWorkBook();
             }
-
-            try
-            {
-                ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
-                var str = Serialize.ToJsonString(result);
-
-                Publish(str);
-                SendStatusMessage("ModuleResult sent");
-
-                //TMP - Store data locally
-                string dataStr = Serialize.ToJsonString(request);
-                string path = Path.GetDirectoryName(this.WorkBookPath);
-                System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
-                //
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-SendModuleResult", exception: ex);
-                return false;
-            }
-            
+                       
             return true;
 
         }
+        
+        #region Report to superior system
+        /// <summary>
+        /// The error event that could be subscribed to
+        /// </summary>
+        public event ErrorEventHandler ErrorRaised;
+        /// <summary>
+        /// The status message event that could be subscribed to
+        /// </summary>
+        public event StatusEventHandler StatusMessage;
 
         private void SendStatusMessage(string message)
         {
             if (StatusMessage != null)
             {
-                var e = new StatusEventArg {StatusMessage = message};
+                var e = new StatusEventArg { StatusMessage = message };
                 StatusMessage(this, e);
             }
         }
 
-        private void SendErrorMessage(string message, string sourceFunction, Exception exception=null)
+        private void SendErrorMessage(string message, string sourceFunction, Exception exception = null)
         {
             if (ErrorRaised != null)
             {
-                var e = new ErrorMessageEventArg {Message = message,SourceFunction =sourceFunction, Exception = exception};
+                var e = new ErrorMessageEventArg { Message = message, SourceFunction = sourceFunction, Exception = exception };
                 ErrorRaised(this, e);
-            }        
-        }
-
-        public bool Connected
-        {
-            get
-            {
-                if (Connection == null)
-                    return false;
-
-                return Connection.connected;
             }
         }
 
-        private void Publish(String str)
-        {
-            if (PublishedEvent != null)
-            {
-                lock (PublishedEvent)
-                {
-                	PublishedEvent.signalString(str);
-                }
-            }
-        }
+        /// <summary>
+        /// When set (default) status messages is only sent when the module sends something to the dashboard
+        /// not when it receives something from the dashboard.
+        /// </summary>
+        protected bool ShowOnlyOwnStatus { get; set; }
+        #endregion
 
     }
 }
