@@ -1986,9 +1986,9 @@ namespace RenobuildModule
             return false;
         }
 
-        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+        protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
         {
-            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
+            outputs = new Ecodistrict.Messaging.Output.Outputs();
 
             InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
             Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
@@ -2135,30 +2135,9 @@ namespace RenobuildModule
             Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
             outputs.Add(buildingsProps);
 
-            //TMP - SStore data locally
-            string str = Serialize.ToJsonString(buildingsProps);
-            string path = Path.GetDirectoryName(this.WorkBookPath);
-            System.IO.File.WriteAllText(String.Format(@"{0}/{1} {2}.geojson", path, "RenoBuild", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
-            //
-
-
-            return outputs;
+            return true;
         }
 
-        public bool Init(string IMB_config_path, string Module_config_path)
-        {
-            try
-            {
-                Init_IMB(IMB_config_path);
-                Init_Module(Module_config_path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-                return false;
-            }
-        }
 
     }
 }
