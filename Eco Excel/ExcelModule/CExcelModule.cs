@@ -8,6 +8,11 @@ using Ecodistrict.Messaging;
 using Ecodistrict.Messaging.Requests;
 using Ecodistrict.Messaging.Responses;
 using Ecodistrict.Messaging.Results;
+using Npgsql;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
+using System.Data.Odbc;
+using System.Data;
 
 namespace Ecodistrict.Excel
 {
@@ -30,6 +35,9 @@ namespace Ecodistrict.Excel
     /// </summary>
     public abstract class CExcelModule
     {
+
+
+        #region Initialization
         /// <summary>
         /// Creates a new CExcel instance that in turn creates a new instance of Excel.Application
         /// </summary>
@@ -39,12 +47,7 @@ namespace Ecodistrict.Excel
             {
                 ShowOnlyOwnStatus = true;
                 ExcelApplikation = new CExcel();
-
-
-                // Create a Timer object that knows to call our TimerCallback
-                // method once every n milliseconds.
-                timer = new Timer(TestConnection);
-
+                
             }
             catch (Exception ex)
             {
@@ -59,6 +62,7 @@ namespace Ecodistrict.Excel
         {
             Close();
         }
+        #endregion
 
         #region Module Properties
         /// <summary>
@@ -77,7 +81,7 @@ namespace Ecodistrict.Excel
         protected string ModuleId { get; set; }
 
         /// <summary>
-        /// Name of the module owner/responsable
+        /// Name of the module owner/responsible
         /// </summary>
         protected string UserName { get; set; }
 
@@ -144,43 +148,6 @@ namespace Ecodistrict.Excel
         #endregion
                 
         #region IMB Hub
-        #region Test and report connection lost
-        Timer timer;
-        private void TestConnection(Object o)
-        {
-            try
-            {
-                if (SendGetModulesResponse())
-                    return;
-
-                timer.Change(Timeout.Infinite, Timeout.Infinite);
-
-                SendStatusMessage("IMB connection lost");
-                if (Connection != null)
-                    Connection.Dispose();
-                Connection = null;
-
-                SendStatusMessage("Try to reconnect to IMB..");
-                if (!ReConnect(20))
-                    SignalConnectionLost();
-            }
-            catch (System.Exception ex)
-            {
-                SendErrorMessage("Connection lost", "", ex);
-                return;
-            }
-        }
-        public event EventHandler ConnectionLost;
-        public void SignalConnectionLost()
-        {
-            EventHandler handler = this.ConnectionLost;
-
-            if (handler != null)
-            {
-                handler(this, new EventArgs());
-            }
-        }
-        #endregion
         public TConnection Connection { get; set; }
         public TEventEntry SubscribedEvent { get; set; }
         public TEventEntry PublishedEvent { get; set; }
@@ -206,8 +173,6 @@ namespace Ecodistrict.Excel
         {
             try
             {
-                timer.Change(Timeout.Infinite, Timeout.Infinite);
-
                 if (ExcelApplikation != null)
                     ExcelApplikation.CloseExcel();
 
@@ -215,6 +180,9 @@ namespace Ecodistrict.Excel
 
                 if (Connected)
                 {
+                    Connection.onDisconnect -= Connection_onDisconnect;
+                    Connection.setHeartBeat(-1);
+                    
                     //Close connection
                     Connection.close();
                     // reset event handler for change object on subscribedEvent
@@ -230,8 +198,6 @@ namespace Ecodistrict.Excel
                 SendErrorMessage(message: ex.Message, sourceFunction: "Close", exception: ex);
             }
 
-            if (Connection != null)
-                Connection.Dispose();
             Connection = null;
             SubscribedEvent = null;
             PublishedEvent = null;
@@ -251,20 +217,25 @@ namespace Ecodistrict.Excel
                 if (!Connected)
                 {
                     SendStatusMessage("Connecting to IMB-hub..");
-	                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, ModuleName, UserId, aPrefix, RemoteHost);
+	                Connection = new TTLSConnection(aCertFile, aCertFilePassword, aRootCertFile, 
+                        false, 
+                        ModuleName, UserId,
+                        aPrefix,
+                        RemoteHost);
 	
 	                if (Connection.connected)
 	                {
 	                    SubscribedEvent = Connection.subscribe(SubScribedEventName);
 	                    PublishedEvent = Connection.publish(PublishedEventName);
-	
+                        Connection.onDisconnect += Connection_onDisconnect;
+                        Connection.setHeartBeat(60000);
+                        
+
 	                    // set event handler for change object on subscribedEvent
 	                    SubscribedEvent.onString += SubscribedEvent_onString;
 
                         SendStatusMessage("Connected to IMB-hub..");
-                        res = true;
-                        
-                        timer.Change(6000, 3 * 60000);
+                        res = true;                        
 	                }
 	                else
                     {
@@ -286,6 +257,13 @@ namespace Ecodistrict.Excel
             }
 
             return res;
+        }
+
+        void Connection_onDisconnect(TConnection aConnection)
+        {
+            SendStatusMessage("IMB connection lost");
+            SendStatusMessage("Try to reconnect to IMB..");
+            ReConnect(Int32.MaxValue);
         }
         
         /// <summary>
@@ -402,7 +380,77 @@ namespace Ecodistrict.Excel
         }
         private CExcel ExcelApplikation { get; set; }
         #endregion
-        
+
+        #region Test
+        string pgDBconnstring =
+                    String.Format("Server={0};Port={1};" +
+                    "User Id={2};Password={3};Database={4};" +
+                    "SSL Mode=Require;Trust Server Certificate=true;",
+                    "vps17642.public.cloudvps.com", "443", "ecodistrict",
+                    "L6mtFrkTwvIIOYeXgTfO", "ecodistrict");
+        NpgsqlConnection _pgDB_Connection;
+        NpgsqlConnection PgDB_Connection
+        {
+            get
+            {
+                if (_pgDB_Connection == null)
+                    _pgDB_Connection = new NpgsqlConnection(pgDBconnstring);
+
+                return _pgDB_Connection;
+            }
+            set
+            {
+                _pgDB_Connection = value;
+            }
+        }
+        public GeoValue ReadBuildingData()
+        {
+            try
+            {
+                PgDB_Connection.Open();
+
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = PgDB_Connection;
+
+                    // Get buildings
+                    cmd.CommandText = "SELECT row_to_json(fc) " + 
+                        "FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features " +
+                        "FROM (SELECT 'Feature' As type " +
+                        ", ST_AsGeoJSON(lg.bldg_lod1multisurface_value)::json As geometry " +
+                        ", row_to_json((SELECT l FROM (SELECT attr_gml_id) As l " +
+                        ")) As properties " +
+                        "FROM bldg_building As lg   ) As f )  As fc;";
+
+                    string data = "";
+
+                    // Retrieve all rows
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            data += reader.GetString(0);
+                        }
+                    }
+
+                    return DeserializeData<GeoValue>.JsonString(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage("", "", ex);
+            }
+            finally
+            {
+                PgDB_Connection.Close();
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Handle Requests
         protected abstract InputSpecification GetInputSpecification(string kpiId);
 
         /// <summary>
@@ -414,7 +462,9 @@ namespace Ecodistrict.Excel
         /// <param name="exls">Excel object</param>
         /// <returns>A output object that can be serialized and sent to th dashboard</returns>
         protected abstract bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs);
-        
+
+        protected abstract bool CalculateKpi(object indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs);
+
         private void HandleRequest(string msg)
         {
             try
@@ -572,6 +622,23 @@ namespace Ecodistrict.Excel
             return true;
         }
 
+        protected string CalcMessage = "";
+        protected bool CheckAndReportBuildingProp(Feature building, string key)
+        {
+            if (!building.properties.ContainsKey(key))
+            {
+                string buildingIdKey = "attr_gml_id";
+                if (building.properties.ContainsKey(buildingIdKey))
+                    CalcMessage = String.Format("Property {0} missing in building {1}", key, building.properties[buildingIdKey]);
+                else
+                    CalcMessage = String.Format("Property {0} missing, building id not set", key);
+
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Handles the StartModuleRequest from the dashboard.<br/> 
         /// Starts with sending a StartModuleResponse processing message to the dashboard. After that
@@ -594,7 +661,7 @@ namespace Ecodistrict.Excel
                     if (ExcelApplikation.OpenWorkBook(WorkBookPath))
                     {
                         //Calculate KPI
-                        if (CalculateKpi(request.inputs, request.kpiId, ExcelApplikation, out outputs))
+                        if (CalculateKpi(ReadBuildingData(), request.kpiId, ExcelApplikation, out outputs))
                         {
                             //Send Result
                             ModuleResult result = new ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, outputs);
@@ -606,6 +673,11 @@ namespace Ecodistrict.Excel
                             string path = Path.GetDirectoryName(this.WorkBookPath);
                             System.IO.File.WriteAllText(String.Format(@"{0}/{1}{2} {3}.json", path, this.UserName, "Message - ModuleResult", DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss")), str);
                             #endregion
+                        }
+                        else
+                        {
+                            SendStartModuleResponse(request, ModuleStatus.Failed, CalcMessage);
+                            SendErrorMessage("Could not calculate kpi: " + CalcMessage, "CalculateKpi");
                         }
                     }
                 }
@@ -638,7 +710,8 @@ namespace Ecodistrict.Excel
             return true;
 
         }
-        
+        #endregion
+
         #region Report to superior system
         /// <summary>
         /// The error event that could be subscribed to
