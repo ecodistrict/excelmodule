@@ -257,13 +257,12 @@ namespace Ecodistrict.Excel
 
                 _excelApp.Calculate();
 
-                //celltype = ws.Range[row, col].Value.GetType();
-                return _worksheet.Range[row, col].Value;
+                return _worksheet.Cells[row, col].Value;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception(string.Format("Could not read worksheet:{0} row:{1} col:{2}", sheet, row, col));
+                throw new Exception(string.Format("Could not read worksheet:{0} row:{1} col:{2}", sheet, row, col),ex);
             }
         }
 
