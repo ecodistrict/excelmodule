@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Green_StockholmBAF_Module
+namespace Green_StockholmGAF_Module
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Green_StockholmBAF_Module module = new Green_StockholmBAF_Module();
+            Green_StockholmGAF_Module module = new Green_StockholmGAF_Module();
 
             try
             {
