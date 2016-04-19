@@ -29,15 +29,13 @@ namespace RenobuildModule
                 if (startupStatus)
                 {
                     Console.WriteLine(">> Press return to close connection");
-                    Console.ReadLine();
+                    Console.ReadLine(); 
                 }
                 else
                 {
                     Console.WriteLine("**** Errors detected! ****");
                     Console.WriteLine(">> Press return to close");
                     Console.ReadLine();
-                    if (module != null)
-                        module.Close();
                 }
             }
             finally

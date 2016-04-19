@@ -1,5 +1,0 @@
----
-# Information needed in order to connect to the IMB-hub
-remoteHost:  vps17642.public.cloudvps.com #vps17642.public.cloudvps.com localhost
-subScribedEventName: modules
-publishedEventName: dashboard

@@ -11,191 +11,638 @@ namespace RenobuildModule
 {
     class RenobuildModule : CExcelModule
     {
-        #region Defines
         // - Kpis
         const string kpi_gwp = "change-of-global-warming-potential";
         const string kpi_gwp_per_heated_area = "change-of-global-warming-potential-per-heated-area";
         const string kpi_peu = "change-of-primary-energy-use";
         const string kpi_peu_per_heated_area = "change-of-primary-energy-use-per-heated-area";
+        const string sheet = "Indata";
+        const string buidingIdKey = "gml_id";
 
         Dictionary<string, InputSpecification> inputSpecifications;
 
-        Options electricity_mix_opts;
-        Options heat_sources;
-        Options type_of_flow_control_in_heating_system_opts;
+        #region Define Building Components
+        Options electricity_mix_opts = new Options
+        {
+            new Option(value: "em_sweden", label: "Sweden"),
+            new Option(value: "em_netherlands", label: "Netherlands"),
+            new Option(value: "em_spain", label: "Spain"),
+            new Option(value: "em_poland", label: "Poland"),
+            new Option(value: "em_belgium", label: "Belgium")
+        };
+        Options heat_sources = new Options
+        {
+            new Option(value: "geothermal_heat_pump", label: "Geothermal heat pump"),
+            new Option(value: "district_heating", label: "District heating"),
+            new Option(value: "pellet_boiler", label: "Pellet boiler"),
+            new Option(value: "oil_boiler", label: "Oil boiler"),
+            new Option(value: "electric_boiler", label: "Electric boiler"),
+            new Option(value: "direct_electricity", label: "Direct electricity"),
+            new Option(value: "gas_boiler", label: "Gas boiler"),
+            new Option(value: "air_water_heatpump", label: "Air/water heat pump")
+        };
+        Options type_of_flow_control_in_heating_system_opts = new Options
+        {
+            new Option("constant", "Constant"),
+            new Option("variable", "Variable")
+        };
+        Options type_of_insulation = new Options
+        {
+            new Option(value: "cellulose_fiber", label: "Cellulose fiber"),
+            new Option(value: "glass_wool", label: "Glass wool"),
+            new Option(value: "rock_wool", label: "Rock wool"),
+            new Option(value: "polystyrene_foam", label: "Polystyrene foam")
+        };
+        Options type_of_facade_system = new Options
+        {
+            new Option(value: @"A\8-15mm\Non ventilated\EPS\200mm", label: @"A\8-15mm\Non ventilated\EPS\200mm"),
+            new Option(value: @"B\4-8mm\Ventilated\Rock wool\50mm", label: @"B\4-8mm\Ventilated\Rock wool\50mm"),
+            new Option(value: @"B\4-8mm\Ventilated\Rock wool\80mm", label: @"B\4-8mm\Ventilated\Rock wool\80mm"),
+            new Option(value: @"B\4-8mm\Ventilated\Rock wool\100mm", label: @"B\4-8mm\Ventilated\Rock wool\100mm"),
+            new Option(value: @"C\8-12mm\Non ventilated\EPS\50mm", label: @"C\8-12mm\Non ventilated\EPS\50mm"),
+            new Option(value: @"C\8-12mm\Non ventilated\EPS\80mm", label: @"C\8-12mm\Non ventilated\EPS\80mm"),
+            new Option(value: @"C\8-12mm\Non ventilated\EPS\100mm", label: @"C\8-12mm\Non ventilated\EPS\100mm"),
+            new Option(value: @"D\20-mm\Non ventilated\Rock wool\50mm", label: @"D\20-mm\Non ventilated\Rock wool\50mm"),
+            new Option(value: @"D\20-mm\Non ventilated\Rock wool\80mm", label: @"D\20-mm\Non ventilated\Rock wool\80mm"),
+            new Option(value: @"D\20-mm\Non ventilated\Rock wool\100mm", label: @"D\20-mm\Non ventilated\Rock wool\100mm"),
+            new Option(value: @"E\10-15mm\Non ventilated\Rock wool\50mm", label: @"E\10-15mm\Non ventilated\Rock wool\50mm"),
+            new Option(value: @"E\10-15mmNon ventilated\Rock wool\80mm", label: @"E\10-15mmNon ventilated\Rock wool\80mm"),
+            new Option(value: @"E\10-15mm\Non ventilated\Rock wool\100mm", label: @"E\10-15mm\Non ventilated\Rock wool\100mm"),
+            new Option(value: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm", label: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm"),
+            new Option(value: @"F\4-8mm\Ventilated\Rock wool\80mm", label: @"F\4-8mm\Ventilated\Rock wool\80mm"),
+            new Option(value: @"F\4-8mm\Ventilated\Rock wool\100mm", label: @"F\4-8mm\Ventilated\Rock wool\100mm")
+        };
+        Options type_of_windows = new Options
+        {
+            new Option(value: "aluminium", label: "Aluminum"),
+            new Option(value: "plastic", label: "Plastic"),
+            new Option(value: "wood_metal", label: "Wood-metal"),
+            new Option(value: "wood", label: "Wood")
+        };
+        Options type_of_doors = new Options
+        {
+            new Option(value: "front_door_wood_aluminium", label: "Front door wood-aluminum"),
+            new Option(value: "front_door_wood_glass", label: "Front door wood-glass"),
+            new Option(value: "balcony_glass_wood", label: "Balcony glass-wood"),
+            new Option(value: "balcony_glass_wood_aluminium", label: "Balcony glass-wood-aluminum")
+        };
 
-        Options type_of_insulation;
-        Options type_of_facade_system;
-        Options type_of_windows;
-        Options type_of_doors;
+        Options type_of_ventilation_ducts_material = new Options
+        {
+            new Option(value: "steel", label: "Steel"),
+            new Option(value: "polyethylene", label: "Polyethylene")
+        };
+        Options type_of_airflow_assembly = new Options
+        {
+            new Option(value: "exhaust_air_unit", label: "Exhaust air unit"),
+            new Option(value: "ventilation_unit_with_heat_recovery", label: "Ventilation unit with heat recovery")
+        };
 
-        Options type_of_ventilation_ducts_material;
-        Options type_of_airflow_assembly;
+        Options type_of_radiators = new Options
+        {
+            new Option(value: "waterborne", label: "Waterborne"),
+            new Option(value: "direct_electricity", label: "Direct electricity")
+        };
+        #endregion        
+        
+        #region Cell Mapping
+        Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>() //TMP
+        {
+            {kpi_gwp,                   "C31"},
+            {kpi_gwp_per_heated_area,   "C31"},
+            {kpi_peu,                   "C32"},
+            {kpi_peu_per_heated_area,   "C32"}
+        };
+        //Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
+        //{
+        //    {kpi_gwp,                   "C31"},
+        //    {kpi_gwp_per_heated_area,   "E31"},
+        //    {kpi_peu,                   "C32"},
+        //    {kpi_peu_per_heated_area,   "E32"}
+        //};
 
-        Options type_of_radiators;
+        Dictionary<string, string> propertyCellMapping_AsIS = new Dictionary<string, string>()
+        {
+            {"heat_source_before",  "C93"}
+        };
 
-        void DefineElectricityMix()
+        Dictionary<string, string> propertyCellMapping_District = new Dictionary<string, string>()
         {
-            try
-            {
-                electricity_mix_opts = new Options();
-                electricity_mix_opts.Add(new Option(value: "em_sweden", label: "Sweden"));
-                electricity_mix_opts.Add(new Option(value: "em_netherlands", label: "Netherlands"));
-                electricity_mix_opts.Add(new Option(value: "em_spain", label: "Spain"));
-                electricity_mix_opts.Add(new Option(value: "em_poland", label: "Poland"));
-                electricity_mix_opts.Add(new Option(value: "em_belgium", label: "Belgium"));
-            }
-            catch (Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
+            {"calculation_period",  "C16"},
+            {"electricity_mix",     "C17"},
+            {"gwp_district",        "C20"},
+            {"peu_district",        "C21"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_Building= new Dictionary<string, string>()
+        {
+            {"heated_area",                                 "C25"},
+            {"heat_source",                                 "C94"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_BuildingDiff = new Dictionary<string, string>()
+        {
+            {"change_in_ahd_due_to_renovations_of_bshell_ventilation_pump",                     "C298"},
+            {"change_in_aed_due_to_renovations_of_bshell_ventilation_pump",              "C299"},
+            {"change_in_aed_fc_due_to_renovations_of_bshell_ventilation_pump",  "C300"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_HeatingSystem = new Dictionary<string, string>()
+        {
+            {"changed",                                                     "C99"}, 
+            {"life_of_product",                                             "C100"},
+            {"annual_heat_demand",                                          "C95"},
+            {"annual_elsectricity_demand",                                  "C96"},
+            {"design_capacity",                                             "C103"},
+            {"weight_of_boiler_heat_pump_or_district_heating_substation",   "C104"},            
+            {"depth_of_borehole",                                           "C109"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_CirculationPump = new Dictionary<string, string>()
+        {
+            {"changed",         "C113"}, //?
+            {"life_of_product", "C114"},
+            {"weight",          "C118"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_InsulationMaterial1 = new Dictionary<string, string>()
+        {
+            {"change_insulation_material_1",                             "C126"}, 
+            {"insulation_material_1_life_of_product",                     "C127"},
+            {"insulation_material_1_type_of_insulation",                  "C128"},
+            {"insulation_material_1_amount_of_new_insulation_material",   "C130"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_InsulationMaterial2 = new Dictionary<string, string>()
+        {
+            {"changed",                             "F67"}, //?
+            {"life_of_product",                     "C138"},
+            {"type_of_insulation",                  "C139"},
+            {"amount_of_new_insulation_material",   "C141"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_FacadeSystem = new Dictionary<string, string>()
+        {
+            {"change_facade_system",                     "C148"}, //?
+            {"facade_system_life_of_product",             "C149"},
+            {"facade_system_type_facade_system",       "C150"},
+            {"facade_system_area_of_new_facade_system",   "C125"}  //?
+        };
+
+        Dictionary<string, string> propertyCellMapping_Windows = new Dictionary<string, string>()
+        {
+            {"change_windows",                 "C159"}, //?
+            {"windows_life_of_product",         "C160"},
+            {"windows_type_windows",         "C161"},
+            {"windows_area_of_new_windows",     "C163"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_Doors = new Dictionary<string, string>()
+        {
+            {"changed",                     "F67"}, //?
+            {"life_of_product",             "C171"},
+            {"type_of_door",                "C172"},
+            {"number_of_new_front_doors",   "C174"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_VentilationDucts = new Dictionary<string, string>()
+        {
+            {"change_ventilation_ducts",                         "C182"}, //?
+            {"ventilation_ducts_life_of_product",                 "C183"},
+            {"ventilation_ducts_type_of_material",   "C184"},
+            {"ventilation_ducts_weight_of_ventilation_ducts",     "C185"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_AirflowAssembly = new Dictionary<string, string>()
+        {
+            {"change_airflow_assembly",                     "C192"}, //?
+            {"airflow_assembly_life_of_product",             "C193"},
+            {"airflow_assembly_type_of_airflow_assembly",    "C194"},
+            {"airflow_assembly_design_airflow_exhaust_air",  "C195"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_AirDistributionHousings = new Dictionary<string, string>()
+        {
+            {"changed",                                 "F67"}, //?
+            {"life_of_product",                         "C208"},
+            {"number_of_air_distribution_housings",     "C203"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_Radiators = new Dictionary<string, string>()
+        {
+            {"changed",                     "F67"}, //?
+            {"life_of_product",             "C216"},
+            {"type_of_radiators",           "C217"},
+            {"weight_of_new_radiators",     "C218"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_WaterTaps = new Dictionary<string, string>()
+        {
+            {"change_water_taps",             "C225"}, 
+            {"water_taps_life_of_product",     "C226"},
+            {"number_of_taps",      "C228"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_Copper = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C236"},
+            {"weight_of_new_pipes",     "C237"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_PEX = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C245"},
+            {"weight_of_new_pipes",     "C246"}
+        };
+
+        Dictionary<string, string> propertyCellMapping_PP = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C254"},
+            {"weight_of_new_pipes",     "C255"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_CastIron = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C263"},
+            {"weight_of_new_pipes",     "C264"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_GalvanisedSteel = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C272"},
+            {"weight_of_new_pipes",     "C273"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_Relining = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C281"},
+            {"weight_of_new_pipes",     "C282"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_ElectricalWiring = new Dictionary<string, string>()
+        {
+            {"changed",                 "F67"}, //?
+            {"life_of_product",         "C290"},
+            {"weight_of_new_wires",     "C291"}
+        };
+        
+        Dictionary<string, string> propertyCellMapping_EnergyProduction = new Dictionary<string, string>()
+        {
+            {"changed",                             "F67"}, //?
+            {"life_of_product",                     "304"},
+            {"type_of_energy_production_facility",  "305"},
+            {"size_of_facility",                    "306"},
+            {"annual_electricity_generation",       "307"}
+        };
+
+        #endregion
+        
+        public RenobuildModule()
+        {
+            useDummyDB = false;
+            useBothVariantAndAsIS = true;
+            newDashboardSystem = true;
+
+            //IMB-hub info (not used)
+            this.UserId = 0;
+            this.ModuleName = "Renobuild";
+
+            //List of kpis the module can calculate
+            this.KpiList = kpiCellMapping.Keys.ToList();
+
+            //Error handler
+            this.ErrorRaised += CExcelModule_ErrorRaised;
+
+            //Notification
+            this.StatusMessage += CExcelModule_StatusMessage;
+
+            //Define parameter options
+
+            //Define the input specification for the different kpis
+            DefineInputSpecifications();
         }
-        void DefineHeatSources()
+
+        private void Set(string sheet, string cell, object value, ref CExcel exls)
         {
-            try
-            {
-                heat_sources = new Options();
-                heat_sources.Add(new Option(value: "geothermal_heat_pump", label: "Geothermal heat pump"));
-                heat_sources.Add(new Option(value: "district_heating", label: "District heating"));
-                heat_sources.Add(new Option(value: "pellet_boiler", label: "Pellet boiler"));
-                heat_sources.Add(new Option(value: "oil_boiler", label: "Oil boiler"));
-                heat_sources.Add(new Option(value: "electric_boiler", label: "Electric boiler"));
-                heat_sources.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
-                heat_sources.Add(new Option(value: "gas_boiler", label: "Gas boiler"));
-                heat_sources.Add(new Option(value: "air_water_heatpump", label: "Air/water heat pump"));
-            }
-            catch (Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
+            if (!exls.SetCellValue(sheet, cell, value))
+                throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
-        void DefineTypeOfFlowControl()
+
+        protected override InputSpecification GetInputSpecification(string kpiId)
+        {
+            if (!inputSpecifications.ContainsKey(kpiId))
+                throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
+
+            return inputSpecifications[kpiId];
+        }
+
+        bool GetSetBool(ref Dictionary<string, object> properties, string property)
+        {
+            if (!properties.ContainsKey(property))
+                properties.Add(property, false);
+
+            if (properties[property] is bool)
+                return (bool)properties[property];
+
+            return false;
+        }
+
+        bool CheckAndPrepareData(ModuleProcess process, out Dictionary<string, object> district_data,
+            out GeoValue buildingsAsIS, out GeoValue buildingsVariant, out bool perHeatedArea)
+        {
+            district_data = null;
+            buildingsAsIS = null;
+            buildingsVariant = null;
+            perHeatedArea = false;
+
+            if (!KpiList.Contains(process.KpiId))
+            {
+                CalcMessage = String.Format("kpi not available for this module, requested kpi: {0}", process.KpiId);
+                return false;
+            }
+
+            switch (process.KpiId)
+            {
+                case kpi_gwp:
+                case kpi_peu:
+                    break;
+                case kpi_gwp_per_heated_area:
+                case kpi_peu_per_heated_area:
+                    perHeatedArea = true;
+                    break;
+            }
+
+            if (process.As_IS_Data == null)
+            {
+                CalcMessage = "Data missing for AsIs";
+                return false;
+            }
+
+            if (process.Variant_Data == null)
+            {
+                CalcMessage = "Data missing for Variant";
+                return false;
+            }
+
+            //District data
+            district_data = process.Variant_Data;
+
+            //Check AsIs Data 
+            if (!CheckBuildingData(process.As_IS_Data, "AsIS", out buildingsAsIS))
+                return false;
+
+            //Check Variant Data
+            if (!CheckBuildingData(process.Variant_Data, "Variant", out buildingsVariant))
+                return false;
+
+            return true;
+        }
+
+        protected override bool CalculateKpi(ModuleProcess process, CExcel exls, out Ecodistrict.Messaging.Data.Output output, out Ecodistrict.Messaging.Data.OutputDetailed outputDetailed)
         {
             try
             {
-                type_of_flow_control_in_heating_system_opts = new Options();
-                type_of_flow_control_in_heating_system_opts.Add(new Option("constant", "Constant"));
-                type_of_flow_control_in_heating_system_opts.Add(new Option("variable", "Variable"));
+                output = null;
+                outputDetailed = null;
+                
+                //Check and prepare data
+                Dictionary<string, object> district_data;
+                GeoValue buildingsAsIS;
+                GeoValue buildingsVariant;
+                bool perHeatedArea;
+                if (!CheckAndPrepareData(process, out district_data, out buildingsAsIS, out buildingsVariant, out perHeatedArea))
+                    return false;
+
+                //Set common properties
+                SetProperties(process.Variant_Data, exls, propertyCellMapping_District);
+
+
+                SetProperties(process.Variant_Data, exls, propertyCellMapping_AsIS);
+
+                //Calculate kpi
+                outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
+                double kpiValue = 0;
+                int noRenovatedBuildings = 0;
+                foreach (Feature buildingVariant in buildingsVariant.features)
+                {
+                    Feature buildingAsIS = buildingsAsIS.features.Find(x => x.properties[buidingIdKey] == buildingVariant.properties[buidingIdKey]);
+
+                    if (buildingAsIS == null)
+                    {
+                        CalcMessage = String.Format("Data for AsIs building missing, id: {0}", buildingVariant.properties[buidingIdKey]);
+                        return false;
+                    }
+
+                    double kpiValuei;
+                    bool changesMade;
+                    if (!SetInputDataOneBuilding(buildingAsIS, buildingVariant, exls, perHeatedArea, out changesMade))
+                        return false;
+
+                    kpiValuei = Convert.ToDouble(exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]));
+
+                    if (changesMade)
+                        ++noRenovatedBuildings;
+
+                    if (perHeatedArea)
+                        kpiValuei *= 1000; //From tonnes CO2 eq / m2 to kg CO2 eq/ m2 and MWh / m2 to kWh/ m2 resp.
+
+                    kpiValue += kpiValuei;
+                    outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingVariant.properties[buidingIdKey] as string, process.KpiId, kpiValuei));
+                }                               
+
+                if (noRenovatedBuildings > 0 & (process.KpiId == kpi_gwp | process.KpiId == kpi_peu))
+                    kpiValue /= 30.0 * Convert.ToDouble(noRenovatedBuildings);
+                else if(process.KpiId == kpi_gwp_per_heated_area | process.KpiId == kpi_peu_per_heated_area)
+                    kpiValue /= 30.0 * Convert.ToDouble(250000); //TMP
+                
+                output = new Ecodistrict.Messaging.Data.Output(process.KpiId, Math.Round(kpiValue,1));
+                
+                return true;
             }
             catch (System.Exception ex)
             {
-                CExcelModule_ErrorRaised(this, ex);
+                SendErrorMessage(message: ex.Message, sourceFunction: "CalculateKpi", exception: ex);
+                throw ex;
             }
         }
 
-        void DefineTypeOfIsulation()
+        protected bool CheckBuildingData(Dictionary<string,object> data, string variant, out GeoValue buildings)
         {
-            try
+            buildings = null;
+
+            if (!CheckAndReportDistrictProp(data, "buildings"))
+                return false;
+
+            buildings = data["buildings"] as GeoValue;
+
+            if (buildings.features == null)
             {
-                type_of_insulation = new Options();
-                type_of_insulation.Add(new Option(value: "cellulose_fiber", label: "Cellulose fiber"));
-                type_of_insulation.Add(new Option(value: "glass_wool", label: "Glass wool"));
-                type_of_insulation.Add(new Option(value: "rock_wool", label: "Rock wool"));
-                type_of_insulation.Add(new Option(value: "polystyrene_foam", label: "Polystyrene foam"));
+                CalcMessage = String.Format("Data missing for {0}" , variant);
+                return false;
             }
-            catch (System.Exception ex)
+            else if (buildings.features.Count == 0)
             {
-                CExcelModule_ErrorRaised(this, ex);
+                CalcMessage = String.Format("Data missing for {0}", variant);
+                return false;
             }
+
+            foreach (Feature building in buildings.features)
+            {
+                if (building.properties == null)
+                {
+                    CalcMessage = String.Format("No properties for one building in {0}", variant);
+                    return false;
+                }
+                else if (building.properties.Count == 0)
+                {
+                    CalcMessage = String.Format("No properties for one building in {0}", variant);
+                    return false;
+                }
+
+                if (!building.properties.ContainsKey(buidingIdKey))
+                {
+                    CalcMessage = String.Format("Building id missing for one building in {0}", variant);
+                    return false;
+                }
+            }
+
+            return true;
         }
-        void DefineTypeOfFascadeSystem()
+
+        bool SetInputDataOneBuilding(Feature buildingAsIS, Feature buildingVariant, CExcel exls, bool perSqrm, out bool changesMade)
         {
+            changesMade = true;
+
             try
             {
-                type_of_facade_system = new Options();
-                type_of_facade_system.Add(new Option(value: @"A\8-15mm\Non ventilated\EPS\200mm", label: @"A\8-15mm\Non ventilated\EPS\200mm"));
-                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\50mm", label: @"B\4-8mm\Ventilated\Rock wool\50mm"));
-                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\80mm", label: @"B\4-8mm\Ventilated\Rock wool\80mm"));
-                type_of_facade_system.Add(new Option(value: @"B\4-8mm\Ventilated\Rock wool\100mm", label: @"B\4-8mm\Ventilated\Rock wool\100mm"));
-                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\50mm", label: @"C\8-12mm\Non ventilated\EPS\50mm"));
-                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\80mm", label: @"C\8-12mm\Non ventilated\EPS\80mm"));
-                type_of_facade_system.Add(new Option(value: @"C\8-12mm\Non ventilated\EPS\100mm", label: @"C\8-12mm\Non ventilated\EPS\100mm"));
-                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\50mm", label: @"D\20-mm\Non ventilated\Rock wool\50mm"));
-                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\80mm", label: @"D\20-mm\Non ventilated\Rock wool\80mm"));
-                type_of_facade_system.Add(new Option(value: @"D\20-mm\Non ventilated\Rock wool\100mm", label: @"D\20-mm\Non ventilated\Rock wool\100mm"));
-                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\50mm", label: @"E\10-15mm\Non ventilated\Rock wool\50mm"));
-                type_of_facade_system.Add(new Option(value: @"E\10-15mmNon ventilated\Rock wool\80mm", label: @"E\10-15mmNon ventilated\Rock wool\80mm"));
-                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool\100mm", label: @"E\10-15mm\Non ventilated\Rock wool\100mm"));
-                type_of_facade_system.Add(new Option(value: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm", label: @"E\10-15mm\Non ventilated\Rock wool, PIR\50+150mm"));
-                type_of_facade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\80mm", label: @"F\4-8mm\Ventilated\Rock wool\80mm"));
-                type_of_facade_system.Add(new Option(value: @"F\4-8mm\Ventilated\Rock wool\100mm", label: @"F\4-8mm\Ventilated\Rock wool\100mm"));
+	            #region Set Data
+	            //Change
+	            SetProperties(buildingVariant, exls, propertyCellMapping_BuildingDiff);
+
+                if (buildingVariant.properties.ContainsKey("change_insulation_material_1"))
+                {
+                    //Insulation 1      
+                    SetProperties(buildingVariant, exls, propertyCellMapping_InsulationMaterial1);
+                }
+
+                if (buildingVariant.properties.ContainsKey("change_windows"))
+                {
+                    //Windows
+                    SetProperties(buildingVariant, exls, propertyCellMapping_Windows);
+                }
+	
+	            if (buildingVariant.properties.ContainsKey("change_ventilation_ducts"))
+	            {
+	                //Ventilation System - Ventilation Ducts
+	                SetProperties(buildingVariant, exls, propertyCellMapping_VentilationDucts);
+	                //Ventilation System - Airflow assembly
+	                SetProperties(buildingVariant, exls, propertyCellMapping_AirflowAssembly);
+	            }
+
+                if (buildingVariant.properties.ContainsKey("change_water_taps"))
+                {
+                    //Water taps
+                    SetProperties(buildingVariant, exls, propertyCellMapping_WaterTaps);
+                }
+	            #endregion
+	
+	
+	
+	            //SetBuildingProperties(building, ref exls, perSqrm);
+	            //SetHeatingSystem(building, ref exls);
+	            //SetBuildingShell(building, ref exls);
+	            //SetVentilationSystem(building, ref exls);
+	            //SetRadiatorsPipesElectricity(building, ref exls);
+	
+	            return true;
             }
             catch (System.Exception ex)
             {
-                CExcelModule_ErrorRaised(this, ex);
-            }
-        }
-        void DefineTypeOfWindows()
-        {
-            try
-            {
-                type_of_windows = new Options();
-                type_of_windows.Add(new Option(value: "aluminium", label: "Aluminium"));
-                type_of_windows.Add(new Option(value: "plastic", label: "Plastic"));
-                type_of_windows.Add(new Option(value: "wood_metal", label: "Wood-metal"));
-                type_of_windows.Add(new Option(value: "wood", label: "Wood"));
-            }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
-        }
-        void DefineTypeOfDoors()
-        {
-            try
-            {
-                type_of_doors = new Options();
-                type_of_doors.Add(new Option(value: "front_door_wood_aluminium", label: "Front door wood-aluminium"));
-                type_of_doors.Add(new Option(value: "front_door_wood_glass", label: "Front door wood-glass"));
-                type_of_doors.Add(new Option(value: "balcony_glass_wood", label: "Balcony glass-wood"));
-                type_of_doors.Add(new Option(value: "balcony_glass_wood_aluminium", label: "Balcony glass-wood-aluminium"));
-            }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
+                return false;
             }
         }
 
-        void DefineTypeOfVentilationDuctsMaterial()
+        private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
-            try
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
-                type_of_ventilation_ducts_material = new Options();
-                type_of_ventilation_ducts_material.Add(new Option(value: "steel", label: "Steel"));
-                type_of_ventilation_ducts_material.Add(new Option(value: "polyethylene", label: "Polyethylene"));
+                Dictionary<string, object> CurrentData = process.CurrentData;
+                try
+                {
+                    {
+                        if (!CheckAndReportDistrictProp(CurrentData, property.Key))
+                            return false;
+
+                        object value = CurrentData[property.Key];
+
+                        double val = Convert.ToDouble(value);
+                        if (val < 0)
+                        {
+                            CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                            return false;
+                        }
+
+                        Set(sheet, property.Value, value, ref exls);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}, isCurrentDataMissing = {1}", property.Key, CurrentData == null), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
             }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
-        }
-        void DefineTypeOfAirflowAssembly()
-        {
-            try
-            {
-                type_of_airflow_assembly = new Options();
-                type_of_airflow_assembly.Add(new Option(value: "exhaust_air_unit", label: "Exhaust air unit"));
-                type_of_airflow_assembly.Add(new Option(value: "ventilation_unit_with_heat_recovery", label: "Ventilation unit with heat recovery"));
-            }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
+
+            return true;
         }
 
-        void DefineTypeOfRadiators()
+        private bool SetProperties(Feature building, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
-            try
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
-                type_of_radiators = new Options();
-                type_of_radiators.Add(new Option(value: "waterborne", label: "Waterborne"));
-                type_of_radiators.Add(new Option(value: "direct_electricity", label: "Direct electricity"));
+                try
+                {
+                    object value = building.properties[property.Key];
+                    Set(sheet, property.Value, value, ref exls);
+
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
             }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
+
+            return true;
         }
+
+        private bool SetProperties(Dictionary<string,object> data, CExcel exls, Dictionary<string, string> propertyCellMapping)
+        {
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                try
+                {
+                    object value = data[property.Key];
+                    Set(sheet, property.Value, value, ref exls);
+
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
+
+            return true;
+        }
+
+        //Old system
+        #region Old Dashboard System
 
         void DefineInputSpecifications()
         {
@@ -570,42 +1017,158 @@ namespace RenobuildModule
 
         #endregion
 
-        #endregion
-
-        public RenobuildModule()
+        protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
         {
-            //IMB-hub info (not used)
-            this.UserId = 0;
-            this.ModuleName = "Renobuild";
+            outputs = new Ecodistrict.Messaging.Output.Outputs();
 
-            //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_gwp, kpi_gwp_per_heated_area, kpi_peu, kpi_peu_per_heated_area };
+            InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
+            Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
+            GeoJson buildingProperties = indata["buildings"] as GeoJson;
 
-            //Error handler
-            this.ErrorRaised += CExcelModule_ErrorRaised;
+            double kpi = 0;
+            string resultCell;
+            bool perSqrm = false;
 
-            //Notification
-            this.StatusMessage += CExcelModule_StatusMessage;
+            switch (kpiId)
+            {
+                case kpi_gwp:
+                    resultCell = "C31"; //Change of global warming potential
+                    break;
+                case kpi_gwp_per_heated_area:
+                    resultCell = "E31"; //Mean change of global warming potential per m^2
+                    perSqrm = true;
+                    break;
+                case kpi_peu:
+                    resultCell = "C32"; //Change of primary energy use  
+                    break;
+                case kpi_peu_per_heated_area:
+                    resultCell = "E32"; //Mean change of primary energy use per m^2
+                    perSqrm = true;
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
 
-            //Define parameter options
-            DefineElectricityMix();
-            DefineHeatSources();
-            DefineTypeOfFlowControl();
+            #region Set Common Properties
+            String Key;
+            object value = 0;
 
-            DefineTypeOfIsulation();
-            DefineTypeOfFascadeSystem();
-            DefineTypeOfWindows();
-            DefineTypeOfDoors();
+            #region LCA Calculation Period
+            Key = lca_calculation_period;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C16", value: value, exls: ref exls);
+            #endregion
 
-            DefineTypeOfVentilationDuctsMaterial();
-            DefineTypeOfAirflowAssembly();
+            #region Electricity Mix
+            Key = electricity_mix;
+            value = ((Select)commonProperties[Key]).SelectedIndex() + 1;
+            Set(sheet: "Indata", cell: "C17", value: value, exls: ref exls);
+            #endregion
 
-            DefineTypeOfRadiators();
+            // If district heating is used (before/after renovation)
+            #region Global warming potential of district heating
+            Key = gwp_district;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C20", value: value, exls: ref exls);
+            #endregion
 
-            //Define the input specification for the different kpis
-            DefineInputSpecifications();
+            #region "Primary energy use of district heating
+            Key = peu_district;
+            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
+            Set(sheet: "Indata", cell: "C21", value: value, exls: ref exls);
+            #endregion
+            #endregion
+
+            #region Calculate LCA per building
+            int nrRenovatedBuildings = 0;
+            foreach (Feature building in buildingProperties.value.features)
+            {
+                if (GetSetBool(ref building.properties, change_heating_system) ||
+                    GetSetBool(ref building.properties, change_circulationpump_in_heating_system) ||
+                    GetSetBool(ref building.properties, change_insulation_material_1) ||
+                    GetSetBool(ref building.properties, change_insulation_material_2) ||
+                    GetSetBool(ref building.properties, change_facade_system) ||
+                    GetSetBool(ref building.properties, change_windows) ||
+                    GetSetBool(ref building.properties, change_doors) ||
+                    GetSetBool(ref building.properties, change_ventilation_ducts) ||
+                    GetSetBool(ref building.properties, change_airflow_assembly) ||
+                    GetSetBool(ref building.properties, change_air_distribution_housings_and_silencers) ||
+                    GetSetBool(ref building.properties, change_radiators) ||
+                    GetSetBool(ref building.properties, change_piping_copper) ||
+                    GetSetBool(ref building.properties, change_piping_pex) ||
+                    GetSetBool(ref building.properties, change_piping_pp) ||
+                    GetSetBool(ref building.properties, change_piping_cast_iron) ||
+                    GetSetBool(ref building.properties, change_piping_galvanized_steel) ||
+                    GetSetBool(ref building.properties, change_piping_relining) ||
+                    GetSetBool(ref building.properties, change_electrical_wiring))
+                {
+                    SetInputDataOneBuilding(building, ref exls, perSqrm);
+
+                    double resi = Convert.ToDouble(exls.GetCellValue("Indata", resultCell));
+                    kpi += resi;
+
+                    switch (kpiId)
+                    {
+                        case kpi_gwp:
+                        case kpi_peu:
+                            resi = Math.Round(resi, 1);
+                            break;
+                        case kpi_gwp_per_heated_area:
+                        case kpi_peu_per_heated_area:
+                            resi = Math.Round(resi, 3);
+                            break;
+                        default:
+                            throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+                    }
+
+                    if (!building.properties.ContainsKey("kpiValue"))
+                        building.properties.Add("kpiValue", resi);
+                    else
+                        building.properties["kpiValue"] = Math.Round(resi, 3);
+
+                    ++nrRenovatedBuildings;
+                }
+                //else
+                //    building.properties.Add("kpiValue", 0);
+
+            }
+            #endregion
+
+            ////Calculate the mean kpi value
+            //if (buildingProperties.value.features.Count > 0 & 
+            //    (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
+            //    kpiId == kpi_gwp | kpiId == kpi_peu))
+            //    kpi = kpi / (double)buildingProperties.value.features.Count;
+
+            //Calculate the mean kpi value
+            if (nrRenovatedBuildings > 0 &
+                (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
+                kpiId == kpi_gwp | kpiId == kpi_peu))
+                kpi = kpi / (double)nrRenovatedBuildings;
+
+            switch (kpiId)
+            {
+                case kpi_gwp:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of global warming potential", "tonnes CO2 eq"));
+                    break;
+                case kpi_gwp_per_heated_area:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
+                    break;
+                case kpi_peu:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of primary energy use", "MWh"));
+                    break;
+                case kpi_peu_per_heated_area:
+                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of primary energy use per heated area", "MWh / m\u00b2"));
+                    break;
+                default:
+                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
+            }
+            Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
+            outputs.Add(buildingsProps);
+
+            return true;
         }
-
+        
         InputSpecification GetInputSpecificationGeoJson(bool perSqrm = false)
         {
             InputSpecification iSpec = new InputSpecification();
@@ -628,7 +1191,7 @@ namespace RenobuildModule
 
             // - ## Common Properties
             InputGroup commonProp = new InputGroup(label: "Common properties", order: 1);
-            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period",value: 25, min: 1, unit: "years", order: ++order));
+            commonProp.Add(lca_calculation_period, new Number(label: "LCA calculation period", value: 25, min: 1, unit: "years", order: ++order));
             commonProp.Add(electricity_mix, new Select(label: "Electricity mix", options: electricity_mix_opts, value: electricity_mix_opts.First(), order: ++order));
             // If district heating is used (before/after renovation)
             commonProp.Add(key: gwp_district, item: new Number(label: gwp_district_lbl, min: 0, value: 83, unit: "g CO2 eq/kWh", order: ++order));
@@ -656,7 +1219,7 @@ namespace RenobuildModule
 
             // Building Common
             ++order;
-            BuildingProperties(ref buildning_specific_data, perSqrm , ref order);
+            BuildingProperties(ref buildning_specific_data, perSqrm, ref order);
 
             // Heating System
             ++order;
@@ -692,7 +1255,7 @@ namespace RenobuildModule
 
             // Inputs required in all cases
             input.Add(key: heat_source_before, item: new Select(label: heat_source_before_lbl, options: heat_sources, order: ++order));
-            if(perSqrm)
+            if (perSqrm)
                 input.Add(key: heated_area, item: new Number(label: heated_area_lbl, min: 1, unit: "m\u00b2", order: ++order));
             //input.Add(key: nr_apartments, item: new Number(label: nr_apartments_lbl, min: 1, order: ++order, value: 98));
         }
@@ -911,17 +1474,17 @@ namespace RenobuildModule
 
             try
             {
-	            Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
-	            value = Convert.ToDouble(building.properties[Key]);
-	            Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
-	
-	            Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
-	            value = Convert.ToDouble(building.properties[Key]);
-	            Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
-	
-	            Key = change_in_aed_fc_due_to_renovations_of_bshell_ventilation_pump;
-	            value = Convert.ToDouble(building.properties[Key]);
-	            Set(sheet: "Indata", cell: "C290", value: value, exls: ref exls);
+                Key = change_in_ahd_due_to_renovations_of_bshell_ventilation_pump;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C288", value: value, exls: ref exls);
+
+                Key = change_in_aed_due_to_renovations_of_bshell_ventilation_pump;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C289", value: value, exls: ref exls);
+
+                Key = change_in_aed_fc_due_to_renovations_of_bshell_ventilation_pump;
+                value = Convert.ToDouble(building.properties[Key]);
+                Set(sheet: "Indata", cell: "C290", value: value, exls: ref exls);
             }
             catch (System.Exception ex)
             {
@@ -940,33 +1503,33 @@ namespace RenobuildModule
 
             try
             {
-	            // Inputs required in all cases
-	            #region Heated Area
-	            if (perSqrm)
-	            {
-		            Key = heated_area;
-		            value = Convert.ToDouble(building.properties[Key]);
-		            cell = "C25";
-		            if (!exls.SetCellValue("Indata", cell, value))
-		                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-	            }
-	            #endregion
-	
-	            //#region Number of Apartments
-	            //Key = nr_apartments;
-	            //cell = "C26";
-	            //value = Convert.ToDouble(building.properties[Key]);
-	            //if (!exls.SetCellValue("Indata", cell, value))
-	            //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-	            //#endregion
-	
-	            #region Heat Source Before
-	            Key = heat_source_before;
-	            cell = "C93";
-	            value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
-	            if (!exls.SetCellValue("Indata", cell, value))
-	                throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
-	            #endregion
+                // Inputs required in all cases
+                #region Heated Area
+                if (perSqrm)
+                {
+                    Key = heated_area;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    cell = "C25";
+                    if (!exls.SetCellValue("Indata", cell, value))
+                        throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                }
+                #endregion
+
+                //#region Number of Apartments
+                //Key = nr_apartments;
+                //cell = "C26";
+                //value = Convert.ToDouble(building.properties[Key]);
+                //if (!exls.SetCellValue("Indata", cell, value))
+                //    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                //#endregion
+
+                #region Heat Source Before
+                Key = heat_source_before;
+                cell = "C93";
+                value = heat_sources.GetIndex((string)building.properties[Key]) + 1;
+                if (!exls.SetCellValue("Indata", cell, value))
+                    throw new Exception(String.Format("Could not set cell {} to value {1}", cell, value));
+                #endregion
             }
             catch (System.Exception ex)
             {
@@ -1174,270 +1737,270 @@ namespace RenobuildModule
 
             try
             {
-	            // Insulation material 1
-	            #region Change Insulation Material 1
-	            #region Change Insulation Material 1?
-	            Key = change_insulation_material_1;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C126", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Change Insulation Material 1: Life of Product
-	                Key = insulation_material_1_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Change Insulation Material 1: Type of Material
-	                Key = insulation_material_1_type_of_insulation;
-	                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Change Insulation Material 1: Change AHD due to New Insulation
-	                //Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
-	                //#endregion
-	
-	                #region Change Insulation Material 1: Amount of Insulation Material
-	                Key = insulation_material_1_amount_of_new_insulation_material;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Change Insulation Material 1: Transport by Truck [km]
-	                //Key = insulation_material_1_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Change Insulation Material 1: Transport by Truck [km]
-	                //Key = insulation_material_1_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Change Insulation Material 1: Transport by Truck [km]
-	                //Key = insulation_material_1_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Insulation material 2
-	            #region Change Insulation Material 2
-	            #region Change Insulation Material 2?
-	            Key = change_insulation_material_2;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C137", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Insulation Material 2: Life of Product
-	                Key = insulation_material_2_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Insulation Material 2: Type of Material
-	                Key = insulation_material_2_type_of_insulation;
-	                value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Insulation Material 2: Change AHD due to New Insulation
-	                //Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
-	                //#endregion
-	
-	                #region Insulation Material 2: Amount of Insulation Material
-	                Key = insulation_material_2_amount_of_new_insulation_material;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Insulation Material 2: Transport by Truck [km]
-	                //Key = insulation_material_2_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Insulation Material 2: Transport by Truck [km]
-	                //Key = insulation_material_2_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Insulation Material 2: Transport by Truck [km]
-	                //Key = insulation_material_2_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Facade System
-	            #region Change Fascade System
-	            #region Change Fascade System?
-	            Key = change_facade_system;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Fascade System: Life of Product
-	                Key = facade_system_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Fascade System: Type of Fascade System
-	                Key = facade_system_type_facade_system;
-	                value = type_of_facade_system.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Fascade System: Change AHD due to New Fascade System
-	                //Key = facade_system_change_in_annual_heat_demand_due_to_facade_system;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
-	                //#endregion
-	
-	                #region Fascade System: Area of New Fascade System
-	                Key = facade_system_area_of_new_facade_system;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Fascade System: Transport by Truck [km]
-	                //Key = facade_system_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Fascade System: Transport by Truck [km]
-	                //Key = facade_system_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Fascade System: Transport by Truck [km]
-	                //Key = facade_system_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Windows
-	            #region Change Windows
-	            #region Change Windows?
-	            Key = change_windows;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C159", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Windows: Life of Product
-	                Key = windows_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Windows: Type of Windows
-	                Key = windows_type_windows;
-	                value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Windows: Change AHD due to New Windows
-	                //Key = windows_change_in_annual_heat_demand_due_to_windows;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
-	                //#endregion
-	
-	                #region Windows: Area of New Windows
-	                Key = windows_area_of_new_windows;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Windows: Transport by Truck [km]
-	                //Key = windows_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Windows: Transport by Truck [km]
-	                //Key = windows_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Windows: Transport by Truck [km]
-	                //Key = windows_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Doors
-	            #region Change Doors
-	            #region Change Doors?
-	            Key = change_doors;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C170", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Doors: Life of Product
-	                Key = doors_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Doors: Type of Doors
-	                Key = doors_type_doors;
-	                value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Doors: Change AHD due to New Doors
-	                //Key = doors_change_in_annual_heat_demand_due_to_doors;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
-	                //#endregion
-	
-	                #region Doors: Number of new Fron Doors
-	                Key = doors_number_of_new_front_doors;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Doors: Transport by Truck [km]
-	                //Key = doors_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Doors: Transport by Truck [km]
-	                //Key = doors_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Doors: Transport by Truck [km]
-	                //Key = doors_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
+                // Insulation material 1
+                #region Change Insulation Material 1
+                #region Change Insulation Material 1?
+                Key = change_insulation_material_1;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C126", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Change Insulation Material 1: Life of Product
+                    Key = insulation_material_1_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C127", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Change Insulation Material 1: Type of Material
+                    Key = insulation_material_1_type_of_insulation;
+                    value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C128", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Change Insulation Material 1: Change AHD due to New Insulation
+                    //Key = insulation_material_1_change_in_annual_heat_demand_due_to_insulation;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C129", value: value, exls: ref exls);
+                    //#endregion
+
+                    #region Change Insulation Material 1: Amount of Insulation Material
+                    Key = insulation_material_1_amount_of_new_insulation_material;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C130", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Change Insulation Material 1: Transport by Truck [km]
+                    //Key = insulation_material_1_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C132", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Change Insulation Material 1: Transport by Truck [km]
+                    //Key = insulation_material_1_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C133", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Change Insulation Material 1: Transport by Truck [km]
+                    //Key = insulation_material_1_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C134", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Insulation material 2
+                #region Change Insulation Material 2
+                #region Change Insulation Material 2?
+                Key = change_insulation_material_2;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C137", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Insulation Material 2: Life of Product
+                    Key = insulation_material_2_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C138", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Insulation Material 2: Type of Material
+                    Key = insulation_material_2_type_of_insulation;
+                    value = type_of_insulation.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C139", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Insulation Material 2: Change AHD due to New Insulation
+                    //Key = insulation_material_2_change_in_annual_heat_demand_due_to_insulation;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C140", value: value, exls: ref exls);
+                    //#endregion
+
+                    #region Insulation Material 2: Amount of Insulation Material
+                    Key = insulation_material_2_amount_of_new_insulation_material;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C141", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Insulation Material 2: Transport by Truck [km]
+                    //Key = insulation_material_2_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C143", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Insulation Material 2: Transport by Truck [km]
+                    //Key = insulation_material_2_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C144", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Insulation Material 2: Transport by Truck [km]
+                    //Key = insulation_material_2_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C145", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Facade System
+                #region Change Fascade System
+                #region Change Fascade System?
+                Key = change_facade_system;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C148", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Fascade System: Life of Product
+                    Key = facade_system_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C149", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Fascade System: Type of Fascade System
+                    Key = facade_system_type_facade_system;
+                    value = type_of_facade_system.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C150", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Fascade System: Change AHD due to New Fascade System
+                    //Key = facade_system_change_in_annual_heat_demand_due_to_facade_system;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C151", value: value, exls: ref exls);
+                    //#endregion
+
+                    #region Fascade System: Area of New Fascade System
+                    Key = facade_system_area_of_new_facade_system;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C152", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Fascade System: Transport by Truck [km]
+                    //Key = facade_system_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C154", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Fascade System: Transport by Truck [km]
+                    //Key = facade_system_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C155", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Fascade System: Transport by Truck [km]
+                    //Key = facade_system_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C156", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Windows
+                #region Change Windows
+                #region Change Windows?
+                Key = change_windows;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C159", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Windows: Life of Product
+                    Key = windows_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C160", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Windows: Type of Windows
+                    Key = windows_type_windows;
+                    value = type_of_windows.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C161", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Windows: Change AHD due to New Windows
+                    //Key = windows_change_in_annual_heat_demand_due_to_windows;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C162", value: value, exls: ref exls);
+                    //#endregion
+
+                    #region Windows: Area of New Windows
+                    Key = windows_area_of_new_windows;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C163", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Windows: Transport by Truck [km]
+                    //Key = windows_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C165", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Windows: Transport by Truck [km]
+                    //Key = windows_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C166", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Windows: Transport by Truck [km]
+                    //Key = windows_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C167", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Doors
+                #region Change Doors
+                #region Change Doors?
+                Key = change_doors;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C170", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Doors: Life of Product
+                    Key = doors_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C171", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Doors: Type of Doors
+                    Key = doors_type_doors;
+                    value = type_of_doors.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C172", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Doors: Change AHD due to New Doors
+                    //Key = doors_change_in_annual_heat_demand_due_to_doors;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C173", value: value, exls: ref exls);
+                    //#endregion
+
+                    #region Doors: Number of new Fron Doors
+                    Key = doors_number_of_new_front_doors;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C174", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Doors: Transport by Truck [km]
+                    //Key = doors_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C176", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Doors: Transport by Truck [km]
+                    //Key = doors_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C177", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Doors: Transport by Truck [km]
+                    //Key = doors_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C178", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
             }
             catch (System.Exception ex)
             {
@@ -1454,157 +2017,157 @@ namespace RenobuildModule
 
             try
             {
-	            // - Ventilation System
-	            #region Ventilation System
-	
-	            //#region Ventilation System: Change in AHD due to ventilation system renovation
-	            //Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
-	            //value = Convert.ToDouble(building.properties[Key]);
-	            //Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
-	            //#endregion
-	
-	            //#region Ventilation System: Change in AED due to ventilation system renovation
-	            //Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
-	            //value = Convert.ToDouble(building.properties[Key]);
-	            //Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
-	            //#endregion
-	
-	            #endregion
-	
-	            // Ventilation Ducts
-	            #region Ventilation Ducts
-	            #region Ventilation Ducts?
-	            Key = change_ventilation_ducts;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C182", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Ventilation Ducts: Life of Product
-	                Key = ventilation_ducts_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C183", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Ventilation Ducts: Type of Material
-	                Key = ventilation_ducts_type_of_material;
-	                value = type_of_ventilation_ducts_material.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C184", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Ventilation Ducts: Weight of Ventilation Ducts
-	                Key = ventilation_ducts_weight_of_ventilation_ducts;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C185", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Ventilation Ducts: Transport by Truck [km]
-	                //Key = ventilation_ducts_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Ventilation Ducts: Transport by Truck [km]
-	                //Key = ventilation_ducts_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Ventilation Ducts: Transport by Truck [km]
-	                //Key = ventilation_ducts_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Airflow Assembly
-	            #region Change Airflow Assembly
-	            #region Change Airflow Assembly?
-	            Key = change_airflow_assembly;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C192", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Airflow Assembly: Life of Product
-	                Key = airflow_assembly_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C193", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Airflow Assembly: Type of Airflow Assembly
-	                Key = airflow_assembly_type_of_airflow_assembly;
-	                value = type_of_airflow_assembly.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C194", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Airflow Assembly: Area of New Airflow Assembly
-	                Key = airflow_assembly_design_airflow_exhaust_air;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C195", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Airflow Assembly: Transport by Truck [km]
-	                //Key = airflow_assembly_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Airflow Assembly: Transport by Truck [km]
-	                //Key = airflow_assembly_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Airflow Assembly: Transport by Truck [km]
-	                //Key = airflow_assembly_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Air Distribution Housings & Silencers
-	            #region Change Air Distribution Housings & Silencers
-	            #region Change Air Distribution Housings & Silencers?
-	            Key = change_air_distribution_housings_and_silencers;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C202", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Air Distribution Housings & Silencers: Number of Housings
-	                Key = air_distribution_housings_and_silencers_number_of_distribution_housings;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Air Distribution Housings & Silencers: Life of Product
-	                Key = air_distribution_housings_and_silencers_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C203", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-	                //Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-	                //Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Air Distribution Housings & Silencers: Transport by Truck [km]
-	                //Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
+                // - Ventilation System
+                #region Ventilation System
+
+                //#region Ventilation System: Change in AHD due to ventilation system renovation
+                //Key = ventilation_change_in_annual_heat_demand_due_ventilation_systems_renovation;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C210", value: value, exls: ref exls);
+                //#endregion
+
+                //#region Ventilation System: Change in AED due to ventilation system renovation
+                //Key = ventilation_change_in_annual_electricity_demand_due_ventilation_systems_renovation;
+                //value = Convert.ToDouble(building.properties[Key]);
+                //Set(sheet: "Indata", cell: "C211", value: value, exls: ref exls);
+                //#endregion
+
+                #endregion
+
+                // Ventilation Ducts
+                #region Ventilation Ducts
+                #region Ventilation Ducts?
+                Key = change_ventilation_ducts;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C182", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Ventilation Ducts: Life of Product
+                    Key = ventilation_ducts_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C183", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Ventilation Ducts: Type of Material
+                    Key = ventilation_ducts_type_of_material;
+                    value = type_of_ventilation_ducts_material.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C184", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Ventilation Ducts: Weight of Ventilation Ducts
+                    Key = ventilation_ducts_weight_of_ventilation_ducts;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C185", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Ventilation Ducts: Transport by Truck [km]
+                    //Key = ventilation_ducts_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C187", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Ventilation Ducts: Transport by Truck [km]
+                    //Key = ventilation_ducts_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C188", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Ventilation Ducts: Transport by Truck [km]
+                    //Key = ventilation_ducts_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C189", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Airflow Assembly
+                #region Change Airflow Assembly
+                #region Change Airflow Assembly?
+                Key = change_airflow_assembly;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C192", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Airflow Assembly: Life of Product
+                    Key = airflow_assembly_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C193", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Airflow Assembly: Type of Airflow Assembly
+                    Key = airflow_assembly_type_of_airflow_assembly;
+                    value = type_of_airflow_assembly.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C194", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Airflow Assembly: Area of New Airflow Assembly
+                    Key = airflow_assembly_design_airflow_exhaust_air;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C195", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Airflow Assembly: Transport by Truck [km]
+                    //Key = airflow_assembly_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C197", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Airflow Assembly: Transport by Truck [km]
+                    //Key = airflow_assembly_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C198", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Airflow Assembly: Transport by Truck [km]
+                    //Key = airflow_assembly_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C199", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Air Distribution Housings & Silencers
+                #region Change Air Distribution Housings & Silencers
+                #region Change Air Distribution Housings & Silencers?
+                Key = change_air_distribution_housings_and_silencers;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C202", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Air Distribution Housings & Silencers: Number of Housings
+                    Key = air_distribution_housings_and_silencers_number_of_distribution_housings;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C208", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Air Distribution Housings & Silencers: Life of Product
+                    Key = air_distribution_housings_and_silencers_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C203", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                    //Key = air_distribution_housings_and_silencers_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C205", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                    //Key = air_distribution_housings_and_silencers_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C206", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Air Distribution Housings & Silencers: Transport by Truck [km]
+                    //Key = air_distribution_housings_and_silencers_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C207", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
             }
             catch (System.Exception ex)
             {
@@ -1620,339 +2183,339 @@ namespace RenobuildModule
 
             try
             {
-	            // Radiators
-	            #region Radiators
-	            #region Radiators?
-	            Key = change_radiators;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C215", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Radiators: Life of Product
-	                Key = radiators_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C216", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Radiators: Type of Material
-	                Key = radiators_type_of_radiators;
-	                value = type_of_radiators.GetIndex((string)building.properties[Key]) + 1;
-	                Set(sheet: "Indata", cell: "C217", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Radiators: Weight of Radiators
-	                Key = radiators_weight_of_radiators;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C218", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Radiators: Transport by Truck [km]
-	                //Key = radiators_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Radiators: Transport by Truck [km]
-	                //Key = radiators_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Radiators: Transport by Truck [km]
-	                //Key = radiators_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System Copper
-	            #region Change Piping System Copper
-	            #region Change Piping System Copper?
-	            Key = change_piping_copper;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C225", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System Copper: Life of Product
-	                Key = piping_copper_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C226", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System Copper: Area of New Piping System Copper
-	                Key = piping_copper_weight_of_copper_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C227", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System Copper: Transport by Truck [km]
-	                //Key = piping_copper_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Copper: Transport by Truck [km]
-	                //Key = piping_copper_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Copper: Transport by Truck [km]
-	                //Key = piping_copper_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System PEX
-	            #region Change Piping System PEX
-	            #region Change Piping System PEX?
-	            Key = change_piping_pex;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C234", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System PEX: Life of Product
-	                Key = piping_pex_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C235", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System PEX: Area of New Piping System PEX
-	                Key = piping_pex_weight_of_pex_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C236", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System PEX: Transport by Truck [km]
-	                //Key = piping_pex_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System PEX: Transport by Truck [km]
-	                //Key = piping_pex_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System PEX: Transport by Truck [km]
-	                //Key = piping_pex_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System PP
-	            #region Change Piping System PP
-	            #region Change Piping System PP?
-	            Key = change_piping_pp;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C243", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System PP: Life of Product
-	                Key = piping_pp_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C244", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System PP: Area of New Piping System PP
-	                Key = piping_pp_weight_of_pp_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C245", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System PP: Transport by Truck [km]
-	                //Key = piping_pp_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System PP: Transport by Truck [km]
-	                //Key = piping_pp_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System PP: Transport by Truck [km]
-	                //Key = piping_pp_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System Cast Iron
-	            #region Change Piping System Cast Iron
-	            #region Change Piping System Cast Iron?
-	            Key = change_piping_cast_iron;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C252", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System Cast Iron: Life of Product
-	                Key = piping_cast_iron_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C253", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System Cast Iron: Area of New Piping System Cast Iron
-	                Key = piping_cast_iron_weight_of_cast_iron_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C254", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System Cast Iron: Transport by Truck [km]
-	                //Key = piping_cast_iron_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Cast Iron: Transport by Truck [km]
-	                //Key = piping_cast_iron_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Cast Iron: Transport by Truck [km]
-	                //Key = piping_cast_iron_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System Galvanized Steel
-	            #region Change Piping System Galvanized Steel
-	            #region Change Piping System Galvanized Steel?
-	            Key = change_piping_galvanized_steel;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C261", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System Galvanized Steel: Life of Product
-	                Key = piping_galvanized_steel_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C262", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System Galvanized Steel: Area of New Piping System Galvanized Steel
-	                Key = piping_galvanized_steel_weight_of_galvanized_steel_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C263", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System Galvanized Steel: Transport by Truck [km]
-	                //Key = piping_galvanized_steel_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Galvanized Steel: Transport by Truck [km]
-	                //Key = piping_galvanized_steel_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Galvanized Steel: Transport by Truck [km]
-	                //Key = piping_galvanized_steel_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Piping System Relining
-	            #region Change Piping System Relining
-	            #region Change Piping System Relining?
-	            Key = change_piping_relining;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C270", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Piping System Relining: Life of Product
-	                Key = piping_relining_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C271", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Piping System Relining: Area of New Piping System Relining
-	                Key = piping_relining_weight_of_relining_pipes;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C272", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Piping System Relining: Transport by Truck [km]
-	                //Key = piping_relining_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Relining: Transport by Truck [km]
-	                //Key = piping_relining_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Piping System Relining: Transport by Truck [km]
-	                //Key = piping_relining_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
-	
-	            // Electrical Wiring
-	            #region Change Electrical Wiring
-	            #region Change Electrical Wiring?
-	            Key = change_electrical_wiring;
-	            value = (bool)building.properties[Key];
-	            Set(sheet: "Indata", cell: "C279", value: value, exls: ref exls);
-	            #endregion
-	            if ((bool)value)
-	            {
-	                #region Electrical Wiring: Life of Product
-	                Key = electrical_wiring_life_of_product;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C280", value: value, exls: ref exls);
-	                #endregion
-	
-	                #region Electrical Wiring: Area of New Electrical Wiring
-	                Key = electrical_wiring_weight_of_electrical_wiring;
-	                value = Convert.ToDouble(building.properties[Key]);
-	                Set(sheet: "Indata", cell: "C281", value: value, exls: ref exls);
-	                #endregion
-	
-	                //#region Electrical Wiring: Transport by Truck [km]
-	                //Key = electrical_wiring_transport_to_building_by_truck;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Electrical Wiring: Transport by Truck [km]
-	                //Key = electrical_wiring_transport_to_building_by_train;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
-	                //#endregion
-	
-	                //#region Electrical Wiring: Transport by Truck [km]
-	                //Key = electrical_wiring_transport_to_building_by_ferry;
-	                //value = Convert.ToDouble(building.properties[Key]);
-	                //Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
-	                //#endregion
-	            }
-	            #endregion
+                // Radiators
+                #region Radiators
+                #region Radiators?
+                Key = change_radiators;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C215", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Radiators: Life of Product
+                    Key = radiators_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C216", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Radiators: Type of Material
+                    Key = radiators_type_of_radiators;
+                    value = type_of_radiators.GetIndex((string)building.properties[Key]) + 1;
+                    Set(sheet: "Indata", cell: "C217", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Radiators: Weight of Radiators
+                    Key = radiators_weight_of_radiators;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C218", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Radiators: Transport by Truck [km]
+                    //Key = radiators_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C220", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Radiators: Transport by Truck [km]
+                    //Key = radiators_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C221", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Radiators: Transport by Truck [km]
+                    //Key = radiators_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C222", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System Copper
+                #region Change Piping System Copper
+                #region Change Piping System Copper?
+                Key = change_piping_copper;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C225", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System Copper: Life of Product
+                    Key = piping_copper_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C226", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System Copper: Area of New Piping System Copper
+                    Key = piping_copper_weight_of_copper_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C227", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System Copper: Transport by Truck [km]
+                    //Key = piping_copper_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C229", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Copper: Transport by Truck [km]
+                    //Key = piping_copper_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C230", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Copper: Transport by Truck [km]
+                    //Key = piping_copper_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C231", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System PEX
+                #region Change Piping System PEX
+                #region Change Piping System PEX?
+                Key = change_piping_pex;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C234", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System PEX: Life of Product
+                    Key = piping_pex_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C235", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System PEX: Area of New Piping System PEX
+                    Key = piping_pex_weight_of_pex_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C236", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System PEX: Transport by Truck [km]
+                    //Key = piping_pex_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C238", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System PEX: Transport by Truck [km]
+                    //Key = piping_pex_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C239", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System PEX: Transport by Truck [km]
+                    //Key = piping_pex_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C240", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System PP
+                #region Change Piping System PP
+                #region Change Piping System PP?
+                Key = change_piping_pp;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C243", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System PP: Life of Product
+                    Key = piping_pp_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C244", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System PP: Area of New Piping System PP
+                    Key = piping_pp_weight_of_pp_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C245", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System PP: Transport by Truck [km]
+                    //Key = piping_pp_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C247", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System PP: Transport by Truck [km]
+                    //Key = piping_pp_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C248", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System PP: Transport by Truck [km]
+                    //Key = piping_pp_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C249", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System Cast Iron
+                #region Change Piping System Cast Iron
+                #region Change Piping System Cast Iron?
+                Key = change_piping_cast_iron;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C252", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System Cast Iron: Life of Product
+                    Key = piping_cast_iron_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C253", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System Cast Iron: Area of New Piping System Cast Iron
+                    Key = piping_cast_iron_weight_of_cast_iron_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C254", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System Cast Iron: Transport by Truck [km]
+                    //Key = piping_cast_iron_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C256", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Cast Iron: Transport by Truck [km]
+                    //Key = piping_cast_iron_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C257", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Cast Iron: Transport by Truck [km]
+                    //Key = piping_cast_iron_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C258", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System Galvanized Steel
+                #region Change Piping System Galvanized Steel
+                #region Change Piping System Galvanized Steel?
+                Key = change_piping_galvanized_steel;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C261", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System Galvanized Steel: Life of Product
+                    Key = piping_galvanized_steel_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C262", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System Galvanized Steel: Area of New Piping System Galvanized Steel
+                    Key = piping_galvanized_steel_weight_of_galvanized_steel_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C263", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System Galvanized Steel: Transport by Truck [km]
+                    //Key = piping_galvanized_steel_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C265", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Galvanized Steel: Transport by Truck [km]
+                    //Key = piping_galvanized_steel_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C266", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Galvanized Steel: Transport by Truck [km]
+                    //Key = piping_galvanized_steel_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C267", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Piping System Relining
+                #region Change Piping System Relining
+                #region Change Piping System Relining?
+                Key = change_piping_relining;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C270", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Piping System Relining: Life of Product
+                    Key = piping_relining_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C271", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Piping System Relining: Area of New Piping System Relining
+                    Key = piping_relining_weight_of_relining_pipes;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C272", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Piping System Relining: Transport by Truck [km]
+                    //Key = piping_relining_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C274", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Relining: Transport by Truck [km]
+                    //Key = piping_relining_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C275", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Piping System Relining: Transport by Truck [km]
+                    //Key = piping_relining_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C276", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
+
+                // Electrical Wiring
+                #region Change Electrical Wiring
+                #region Change Electrical Wiring?
+                Key = change_electrical_wiring;
+                value = (bool)building.properties[Key];
+                Set(sheet: "Indata", cell: "C279", value: value, exls: ref exls);
+                #endregion
+                if ((bool)value)
+                {
+                    #region Electrical Wiring: Life of Product
+                    Key = electrical_wiring_life_of_product;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C280", value: value, exls: ref exls);
+                    #endregion
+
+                    #region Electrical Wiring: Area of New Electrical Wiring
+                    Key = electrical_wiring_weight_of_electrical_wiring;
+                    value = Convert.ToDouble(building.properties[Key]);
+                    Set(sheet: "Indata", cell: "C281", value: value, exls: ref exls);
+                    #endregion
+
+                    //#region Electrical Wiring: Transport by Truck [km]
+                    //Key = electrical_wiring_transport_to_building_by_truck;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C283", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Electrical Wiring: Transport by Truck [km]
+                    //Key = electrical_wiring_transport_to_building_by_train;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C284", value: value, exls: ref exls);
+                    //#endregion
+
+                    //#region Electrical Wiring: Transport by Truck [km]
+                    //Key = electrical_wiring_transport_to_building_by_ferry;
+                    //value = Convert.ToDouble(building.properties[Key]);
+                    //Set(sheet: "Indata", cell: "C285", value: value, exls: ref exls);
+                    //#endregion
+                }
+                #endregion
             }
             catch (System.Exception ex)
             {
@@ -1960,183 +2523,7 @@ namespace RenobuildModule
             }
 
         }
-
-        private void Set(string sheet, string cell, object value, ref CExcel exls)
-        {
-            if (!exls.SetCellValue(sheet, cell, value))
-                throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
-        }
-
-        protected override InputSpecification GetInputSpecification(string kpiId)
-        {
-            if (!inputSpecifications.ContainsKey(kpiId))
-                throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
-
-            return inputSpecifications[kpiId];
-        }
-
-        bool GetSetBool(ref Dictionary<string, object> properties, string property)
-        {
-            if (!properties.ContainsKey(property))
-                properties.Add(property, false);
-
-            if (properties[property] is bool)
-                return (bool)properties[property];
-
-            return false;
-        }
-
-        protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
-        {
-            outputs = new Ecodistrict.Messaging.Output.Outputs();
-
-            InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
-            Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
-            GeoJson buildingProperties = indata["buildings"] as GeoJson;
-
-            double kpi = 0;
-            string resultCell;
-            bool perSqrm = false;
-
-            switch (kpiId)
-            {
-                case kpi_gwp:
-                    resultCell = "C31"; //Change of global warming potential
-                    break;
-                case kpi_gwp_per_heated_area:
-                    resultCell = "E31"; //Mean change of global warming potential per m^2
-                    perSqrm = true;
-                    break;
-                case kpi_peu:
-                    resultCell = "C32"; //Change of primary energy use  
-                    break;
-                case kpi_peu_per_heated_area:
-                    resultCell = "E32"; //Mean change of primary energy use per m^2
-                    perSqrm = true;
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            }
-
-            #region Set Common Properties
-            String Key;
-            object value = 0;
-
-            #region LCA Calculation Period
-            Key = lca_calculation_period;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C16", value: value, exls: ref exls);
-            #endregion
-
-            #region Electricity Mix
-            Key = electricity_mix;
-            value = ((Select)commonProperties[Key]).SelectedIndex() + 1;
-            Set(sheet: "Indata", cell: "C17", value: value, exls: ref exls);
-            #endregion
-
-            // If district heating is used (before/after renovation)
-            #region Global warming potential of district heating
-            Key = gwp_district;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C20", value: value, exls: ref exls);
-            #endregion
-
-            #region "Primary energy use of district heating
-            Key = peu_district;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C21", value: value, exls: ref exls);
-            #endregion
-            #endregion
-
-            #region Calculate LCA per building
-            int nrRenovatedBuildings = 0;
-            foreach (Feature building in buildingProperties.value.features)
-            {
-                if (GetSetBool(ref building.properties, change_heating_system) ||
-                    GetSetBool(ref building.properties, change_circulationpump_in_heating_system) ||
-                    GetSetBool(ref building.properties, change_insulation_material_1) ||
-                    GetSetBool(ref building.properties, change_insulation_material_2) ||
-                    GetSetBool(ref building.properties, change_facade_system) ||
-                    GetSetBool(ref building.properties, change_windows) ||
-                    GetSetBool(ref building.properties, change_doors) ||
-                    GetSetBool(ref building.properties, change_ventilation_ducts) ||
-                    GetSetBool(ref building.properties, change_airflow_assembly) ||
-                    GetSetBool(ref building.properties, change_air_distribution_housings_and_silencers) ||
-                    GetSetBool(ref building.properties, change_radiators) ||
-                    GetSetBool(ref building.properties, change_piping_copper) ||
-                    GetSetBool(ref building.properties, change_piping_pex) ||
-                    GetSetBool(ref building.properties, change_piping_pp) ||
-                    GetSetBool(ref building.properties, change_piping_cast_iron) ||
-                    GetSetBool(ref building.properties, change_piping_galvanized_steel) ||
-                    GetSetBool(ref building.properties, change_piping_relining) ||
-                    GetSetBool(ref building.properties, change_electrical_wiring))
-                {
-                    SetInputDataOneBuilding(building, ref exls, perSqrm);
-
-                    double resi = Convert.ToDouble(exls.GetCellValue("Indata", resultCell));
-                    kpi += resi;
-
-                    switch (kpiId)
-                    {
-                        case kpi_gwp:
-                        case kpi_peu:
-                            resi = Math.Round(resi, 1);
-                            break;
-                        case kpi_gwp_per_heated_area:
-                        case kpi_peu_per_heated_area:
-                            resi = Math.Round(resi, 3);
-                            break;
-                        default:
-                            throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-                    }
-
-                    if (!building.properties.ContainsKey("kpiValue"))
-                        building.properties.Add("kpiValue", resi);
-                    else
-                        building.properties["kpiValue"] = Math.Round(resi, 3);
-
-                    ++nrRenovatedBuildings;
-                }
-                //else
-                //    building.properties.Add("kpiValue", 0);
-
-            }
-            #endregion
-
-            ////Calculate the mean kpi value
-            //if (buildingProperties.value.features.Count > 0 & 
-            //    (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
-            //    kpiId == kpi_gwp | kpiId == kpi_peu))
-            //    kpi = kpi / (double)buildingProperties.value.features.Count;
-
-            //Calculate the mean kpi value
-            if (nrRenovatedBuildings > 0 &
-                (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
-                kpiId == kpi_gwp | kpiId == kpi_peu))
-                kpi = kpi / (double)nrRenovatedBuildings;
-
-            switch (kpiId)
-            {
-                case kpi_gwp:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of global warming potential", "tonnes CO2 eq"));
-                    break;
-                case kpi_gwp_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
-                    break;
-                case kpi_peu:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of primary energy use", "MWh"));
-                    break;
-                case kpi_peu_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of primary energy use per heated area", "MWh / m\u00b2"));
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            }
-            Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
-            outputs.Add(buildingsProps);
-
-            return true;
-        }
+        #endregion
 
 
     }
