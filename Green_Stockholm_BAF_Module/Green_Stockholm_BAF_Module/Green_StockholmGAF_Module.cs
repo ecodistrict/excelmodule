@@ -204,8 +204,7 @@ namespace Green_StockholmGAF_Module
 
         public Green_StockholmGAF_Module()
         {
-            newDashboardSystem = true;
-            useDummyDB = true;
+            useDummyDB = false;
             useXLSData = false;
 
             //IMB-hub info (not used)
@@ -291,34 +290,16 @@ namespace Green_StockholmGAF_Module
 
                 if (!KpiList.Contains(process.KpiId))
                 {
-                    CalcMessage = "kpi not avaiable for this module";
+                    process.CalcMessage = "kpi not avaiable for this module";
                     return false;
                 }
-
-                //if (false)
-                //{
-                //if (process.Request.variantId == null)
-                //{
-                //    process.CurrentData["Fruit trees"] = 60;
-                //    process.CurrentData["Fruit trees and blooming trees"] = 0;
-                //    process.CurrentData["Biologically accessible water"] = 0;
-                //}
-                //else
-                //{
-                //    process.CurrentData["Fruit trees"] = 100;
-                //    process.CurrentData["Fruit trees and blooming trees"] = 100;
-                //    process.CurrentData["Biologically accessible water"] = 50;
-                //}
-
+                
                 if (process.CurrentData == null)
                 {
-                    CalcMessage = "Data missing";
+                    process.CalcMessage = "Data missing";
                     return false;
                 }
-
-                //process.CurrentData["Total land area"] = 485801;
-
-
+                
                 if (process.KpiId == kpi_green)
                     if (!SetProperties(process, exls, propertyCellMapping_Green))
                         return false;
@@ -352,23 +333,25 @@ namespace Green_StockholmGAF_Module
                         return false;
                 //}
 
-                string outSheet = "EXISTING";
+                //string outSheet = "EXISTING";
                 //if (process.Request.variantId != null)
                 //{
                 //    outSheet = "PLANNED";
                 //}
+                //double? val = exls.GetCellValue(outSheet, kpiCellMapping[process.KpiId]) as double?;
 
-                double? val = exls.GetCellValue(outSheet, kpiCellMapping[process.KpiId]) as double?;
-
+                double? val = exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]) as double?;
+                
                 if (val == null)
                     return false;
 
-                double value;
+                double value = Math.Round((double)val, 2);
 
-                if (process.KpiId == kpi_green)
-                    value = Math.Round((double)val, 2);
-                else
-                    value = Math.Round((double)val * 100.0, 0);
+                //double value;
+                //if (process.KpiId == kpi_green)
+                //    value = Math.Round((double)val, 2);
+                //else
+                //    value = Math.Round((double)val * 100.0, 0);
 
                 output = new Ecodistrict.Messaging.Data.Output(process.KpiId, value);
 
@@ -383,39 +366,14 @@ namespace Green_StockholmGAF_Module
 
         private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
+            Dictionary<string, object> CurrentData = process.CurrentData;  
+
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
-                Dictionary<string, object> CurrentData = process.CurrentData;
                 try
                 {
-                    //if (useDummyDB)
-                    //{
-                    //    object value = 0;
-
-                    //    if (CurrentData != null)
-                    //    {
-                    //        if (!CurrentData.ContainsKey(property.Key))
-                    //        {
-                    //            CalcMessage = String.Format("Data is missing, property - {0} - is missing in district data", property.Key);
-                    //            return false;
-                    //        }
-
-                    //        if (CurrentData[property.Key] != null)
-                    //            value = CurrentData[property.Key];
-                    //    }
-                    //    else
-                    //    {
-                    //        CalcMessage = String.Format("All data is missing, e.g. property - {0} - is missing in district data", property.Key);
-                    //        return false;
-                    //    }
-
-                    //    Set(sheet, property.Value, value, ref exls);
-
-                    //    continue;
-                    //}
-                    //else
                     {
-                        if (!CheckAndReportDistrictProp(CurrentData, property.Key))
+                        if (!CheckAndReportDistrictProp(process,CurrentData, property.Key))
                             return false;
 
                         object value = CurrentData[property.Key];
@@ -423,7 +381,7 @@ namespace Green_StockholmGAF_Module
                         double val = Convert.ToDouble(value);
                         if (val < 0)
                         {
-                            CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                            process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
                             return false;
                         }
 
@@ -439,80 +397,8 @@ namespace Green_StockholmGAF_Module
 
             return true;
         }
-
-        //Old system
-        protected override bool CalculateKpi(Dictionary<string, Input> data, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
-        {
-            outputs = new Ecodistrict.Messaging.Output.Outputs();
-
-            if (!KpiList.Contains(kpiId))
-                return false;
-
-            if (kpiId == kpi_green)
-                if (!SetProperties(data, exls, propertyCellMapping_Green_Old))
-                    return false;
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_biodiversity) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_BSK_Old))
-                    return false;
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_SK_Old))
-                    return false;
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_biodiversity))
-                if (!SetProperties(data, exls, propertyCellMapping_B_Old))
-                    return false;
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_social_value))
-                if (!SetProperties(data, exls, propertyCellMapping_S_Old))
-                    return false;
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_K_Old))
-                    return false;
-
-            //output = new Ecodistrict.Messaging.Data.Output(process.KpiId);
-            //output.KpiValue = exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]) as double?;
-
-            double? val = exls.GetCellValue(sheet, kpiCellMapping[kpiId]) as double?;
-
-            if (val == null)
-                return false;
-
-            double value = Math.Round((double)val, 2);
-
-            outputs.Add(new Ecodistrict.Messaging.Output.Kpi(value, "", ""));
-
-            return true;
-        }
         
-        private bool SetProperties(Dictionary<string, Input> data, CExcel exls, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!data.ContainsKey(property.Key))
-                    return false;
-
-                Number CurrentData = data[property.Key] as Number;
-
-                if (CurrentData == null)
-                    return false;
-
-                Set(sheet, property.Value, CurrentData.GetValue(), ref exls);
-            }
-
-            return true;
-        }
-
     }
+
 }
 

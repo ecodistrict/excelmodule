@@ -13,200 +13,206 @@ namespace MobilityModule
     {
         #region Defines
         // - Kpis
-        const string kpi_modalsplit = "modalsplit";
-        const string kpi_biodiversity = "biodiversity";
-        const string kpi_social_value = "social-value";
-        const string kpi_climate_adaptation = "climate-adaptation";
-        const string sheet = "EXISTING";
+        const string kpi_modalsplit_origin_private_transport        = "modal-split-origin-private-transport";
+        const string kpi_modalsplit_origin_public_transport         = "modal-split-origin-public-transport";
+        const string kpi_modalsplit_origin_slow_modes               = "modal-split-origin-slow-modes";
+        const string kpi_modalsplit_destination_private_transport   = "modal-split-destination-private-transport";
+        const string kpi_modalsplit_destination_public_transport    = "modal-split-destination-public-transport";
+        const string kpi_modalsplit_destination_slow_modes = "modal-split-destination-slow-modes";
+        const string sheetInput = "Calculations";
+        const string sheetOutput = "Measures";
+        const string sheetSettings = "Measures";
+        const string kpiDB_modalsplit_origin_private_transport      = "Modal split - origin - Private transport";
+        const string kpiDB_modalsplit_origin_public_transport       = "Modal split - origin - Public transport";
+        const string kpiDB_modalsplit_origin_slow_modes             = "Modal split - origin - Slow modes";
+        const string kpiDB_modalsplit_destination_private_transport = "Modal split - destination - Private transport";
+        const string kpiDB_modalsplit_destination_public_transport  = "Modal split - destination - Public transport";
+        const string kpiDB_modalsplit_destination_slow_modes        = "Modal split - destination - Slow modes";
 
         #region Cell Mapping
         Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
         {
-            {kpi_modalsplit,                 "G68"},
-            {kpi_biodiversity,          "F70"},
-            {kpi_social_value,          "F71"},
-            {kpi_climate_adaptation,    "F72"}
+            {kpi_modalsplit_origin_private_transport,       "K24"},
+            {kpi_modalsplit_origin_public_transport,        "L24"},
+            {kpi_modalsplit_origin_slow_modes,              "M24"},
+            {kpi_modalsplit_destination_private_transport,  "K25"},
+            {kpi_modalsplit_destination_public_transport,   "L25"},
+            {kpi_modalsplit_destination_slow_modes,         "M25"}
         };
 
-        Dictionary<string, string> propertyCellMapping_Green = new Dictionary<string, string>()
+        Dictionary<string, string> kpi_kpi_mapping= new Dictionary<string, string>()
         {
-            {"Total land area",  "F67"}
+            {kpi_modalsplit_origin_private_transport,       kpiDB_modalsplit_origin_private_transport},
+            {kpi_modalsplit_origin_public_transport,        kpiDB_modalsplit_origin_public_transport},
+            {kpi_modalsplit_origin_slow_modes,              kpiDB_modalsplit_origin_slow_modes},
+            {kpi_modalsplit_destination_private_transport,  kpiDB_modalsplit_destination_private_transport},
+            {kpi_modalsplit_destination_public_transport,   kpiDB_modalsplit_destination_public_transport},
+            {kpi_modalsplit_destination_slow_modes,         kpiDB_modalsplit_destination_slow_modes}
         };
-
-
-        Dictionary<string, string> propertyCellMapping_BSK = new Dictionary<string, string>()
+        
+        //Needed AsIs properties
+        //Dictionary<string, string> propertyCellMapping_AsIs = new Dictionary<string, string>()
+        //{
+        //    {kpiDB_modalsplit_origin_private_transport,         "H8"},
+        //    {kpiDB_modalsplit_origin_public_transport,          "I8"},
+        //    {kpiDB_modalsplit_origin_slow_modes,                "J15"},
+        //    {kpiDB_modalsplit_destination_private_transport,    "H9"},
+        //    {kpiDB_modalsplit_destination_public_transport,     "I9"},
+        //    {kpiDB_modalsplit_destination_slow_modes,           "J16"}
+        //};
+        Dictionary<string, string> propertyCellMapping_AsIs = new Dictionary<string, string>()
         {
-            {"Unsupported ground greenery",     "F5"},                              //Sub-factors greenery
-            {"Plant bed (>800 mm)",             "F6"},
-            {"Plant bed (600 - 800 mm)",        "F7"},
-            {"Plant bed (200 - 600 mm)",        "F8"},
-            {"Green roof (>300 mm)",            "F9"},
-            {"Green roof (50 - 300 mm)",        "F10"},
-            {"Greenery on walls",               "F11"},
-            {"Balcony boxes",                   "F12"},
-
-            {"Water surface permanent",                             "F47"},         //Sub-factors water
-            {"Open hard surfaces that allow water to get through",  "F48"},
-            {"Gravel and sand",                                     "F49"}
+            {kpiDB_modalsplit_origin_private_transport,         "H11"},
+            {kpiDB_modalsplit_origin_public_transport,          "I11"},
+            {kpiDB_modalsplit_origin_slow_modes,                "J15"},
+            {kpiDB_modalsplit_destination_private_transport,    "H12"},
+            {kpiDB_modalsplit_destination_public_transport,     "I12"},
+            {kpiDB_modalsplit_destination_slow_modes,           "J16"}
         };
 
-        Dictionary<string, string> propertyCellMapping_SK = new Dictionary<string, string>()
+        //General data
+        Dictionary<string, string> propertyCellMapping_General = new Dictionary<string, string>()
+        {
+            {"Total Floor area - Housing",        "F20"},
+            {"Total Floor area - Offices",        "F21"},
+            {"Total Floor area - Retail",         "F22"},
+            {"Total Floor area - Industrial",     "F23"},
+            {"Total Floor area - Other",          "F24"},
+            {"Total Floor area - Parking area",   "F25"},
+            {"Occupancy - Housing",               "H20"},
+            {"Occupancy - Offices",               "H21"},
+            {"Occupancy - Retail",                "H22"},
+            {"Occupancy - Industrial",            "H23"},
+            {"Occupancy - Other",                 "H24"},
+            {"Occupancy - Parking area",          "H25"}
+        };
+
+        //1	Public transport	Combine tram and bus infrastructure
+        KeyValuePair<string, string> propertyCellMapping_Use01 =
+            new KeyValuePair<string, string>("Combine tram and bus infrastructure", "E8");
+        Dictionary<string, string> propertyCellMapping_01= new Dictionary<string, string>()
         {                                
-            {"Concrete slabs with joints",  "F50"}                                  //Sub-factors water
+            {"Combine tram and bus infrastructure - Impact without measure",       "F36"},
+            {"Combine tram and bus infrastructure - Impact on private transport",  "H36"},
+            {"Combine tram and bus infrastructure - Impact on public transport",   "I36"},
+            {"Combine tram and bus infrastructure - Impact on slow modes",         "J36"}
         };
 
-        Dictionary<string, string> propertyCellMapping_B = new Dictionary<string, string>()
-        {
-            {"Diversity in the field layer",                    "F14"},             //Supplementary factors greenery/biodiversity
-            {"Natural species selection",                       "F15"},
-            {"Diversity on thin sedum roofs",                   "F16"},
-            {"Integrated balcony boxes with climbing plants",   "F17"},
-            {"Butterfly restaurants",                           "F18"},
-            {"General bushes",                                  "F19"},
-            {"Berry bushes",                                    "F20"},
-            {"Large trees",                                     "E21"},
-            {"Medium large trees",                              "E22"},
-            {"Small trees",                                     "E23"},
-            {"Oaks",                                            "E24"},
-            {"Fruit trees",                                     "E25"},
-            {"Fauna depots",                                    "E26"},
-            {"Beetle feeders",                                  "E27"},
-            {"Bird feeders",                                    "E28"},
-
-            {"Biologically accessible permanent water",                     "F53"},             //Supplementary factors water/biodiversity
-            {"Dry areas with plants that temporarily fill with rain water", "F54"},
-            {"Delay of rainwater in ponds",                                 "F55"},
-            {"Delay of rainwater in underground percolation systems",       "F56"},
-            {"Runoff from impermeable surfaces to surfaces with plants",    "F57"}
+        //2	Public transport	Larger tram and bus vehicles up to max. 20% increase
+        KeyValuePair<string, string> propertyCellMapping_Use02 =
+            new KeyValuePair<string, string>("Larger tram and bus vehicles", "E9");
+        Dictionary<string, string> propertyCellMapping_02 = new Dictionary<string, string>()
+        {                               
+            {"Larger tram and bus vehicles - Impact without measure",       "F42"},
+            {"Larger tram and bus vehicles - Impact on private transport",  "H42"},
+            {"Larger tram and bus vehicles - Impact on public transport",   "I42"},
+            {"Larger tram and bus vehicles - Impact on slow modes",         "J42"}
         };
 
-        Dictionary<string, string> propertyCellMapping_S = new Dictionary<string, string>()
-        {
-            {"Grass area games",                                        "F30"},     //Supplementary factors greenery/recreation and social value
-            {"Gardening areas in yards",                                "F31"},
-            {"Balconies and terraces prepared for growing",             "F32"},
-            {"Shared roof terraces",                                    "F33"},
-            {"Visible green roofs",                                     "F34"},
-            {"Floral arrangements",                                     "F35"},
-            {"Experiential values of bushes",                           "F36"},
-            {"Berry bushes with edible fruits",                         "F37"},
-            {"Trees experiential value",                                "E38"},
-            {"Fruit trees and blooming trees",                          "E39"},
-            {"Green surrounded",                                        "F40"},
-            {"Bird feeders experiential value",                         "E41"},
-
-            {"Water surfaces",                  "F59"},         //Supplementary factors water/recreational and social values
-            {"Biologically accessible water",   "F60"},
-            {"Fountains circulations systems",  "E61"}
+        //3	Public transport	Higher frequency tram and bus services up to max. 20% increase of tram and bus stop service.
+        KeyValuePair<string, string> propertyCellMapping_Use03 =
+            new KeyValuePair<string, string>("Higher frequency tram and bus services", "E10");
+        Dictionary<string, string> propertyCellMapping_03 = new Dictionary<string, string>()
+        {                                                          
+            {"Higher frequency tram and bus services - Impact without measure",       "F49"},
+            {"Higher frequency tram and bus services - Impact on private transport",  "H49"},
+            {"Higher frequency tram and bus services - Impact on public transport",   "I49"},
+            {"Higher frequency tram and bus services - Impact on slow modes",         "J49"}
         };
 
-        Dictionary<string, string> propertyCellMapping_K = new Dictionary<string, string>()
-        {
-            {"Trees leafy shading",     "E43"}, //Supplementary factors greenery/climate - heat islands
-            {"Shade from leaf cover",   "F44"},
-            {"Evening out of temp",     "F45"},
-            
-            {"Water collection during dry periods", "F63"}, //Supplementary factors water/climate - heat islands
-            {"Collected rainwater for watering",    "F64"},
-            {"Fountains cooling effect",            "E65"}
+        //4	Public transport	Optimization of bus route
+        KeyValuePair<string, string> propertyCellMapping_Use04 =
+            new KeyValuePair<string, string>("Optimisation of bus route", "E11");
+        Dictionary<string, string> propertyCellMapping_04 = new Dictionary<string, string>()
+        {                                                           
+            {"Optimisation of bus route - Impact without measure",       "F57"},
+            {"Optimisation of bus route - Impact on private transport",  "H57"},
+            {"Optimisation of bus route - Impact on public transport",   "I57"},
+            {"Optimisation of bus route - Impact on slow modes",         "J57"}
         };
 
-        #region Old Style
-
-        Dictionary<string, string> propertyCellMapping_Green_Old = new Dictionary<string, string>()
-        {
-            {"total_area",  "F67"}
+        //5	Public transport	Modification of tram and bus routes to connect to P&R
+        KeyValuePair<string, string> propertyCellMapping_Use05 =
+            new KeyValuePair<string, string>("Modification of tram and bus routes to connect to P and R", "E12");
+        Dictionary<string, string> propertyCellMapping_05 = new Dictionary<string, string>()
+        {                                                         
+            {"Modification of tram and bus routes to connect to P and R - Impact without measure",       "F64"},
+            {"Modification of tram and bus routes to connect to P and R - Impact on private transport",  "H64"},
+            {"Modification of tram and bus routes to connect to P and R - Impact on public transport",   "I64"},
+            {"Modification of tram and bus routes to connect to P and R - Impact on slow modes",         "J64"}
         };
 
-
-        Dictionary<string, string> propertyCellMapping_BSK_Old = new Dictionary<string, string>()
-        {
-            {"unsopported_ground_greenery",     "F5"},                              //Sub-factors greenery
-            {"plant_bed_above_800mm",           "F6"},
-            {"plant_bed_between_600and800mm",   "F7"},
-            {"plant_bed_between_200and600mm",   "F8"},
-            {"green_roof_above_300mm",          "F9"},
-            {"green_roof_between_50and300mm",   "F10"},
-            {"greenery_on_walls",               "F11"},
-            {"balcony_boxes",                   "F12"},
-
-            {"water_surface_permanent",                             "F47"},         //Sub-factors water
-            {"open_hard_surfaces_that_allow_water_to_get_through",  "F48"},
-            {"gravel_and_sand",                                     "F49"}
+        //6	Private transport	Parking zone policy 
+        KeyValuePair<string, string> propertyCellMapping_Use06 =
+            new KeyValuePair<string, string>("Parking zone policy", "E13");
+        Dictionary<string, string> propertyCellMapping_06 = new Dictionary<string, string>()
+        {                                         
+            {"Parking zone policy - Percentage of cars parked outsite parking areas",         "H75"},
+            {"Parking zone policy - car occupancy ",                                           "H76"},      
+            {"Parking zone policy - Percentage of people who will shift from car to public transport with strict parking policy", "H78"},                                                                  
+            {"Parking zone policy - Impact without measure",       "F83"},
+            {"Parking zone policy - Impact on slow modes",         "J83"} 
         };
 
-        Dictionary<string, string> propertyCellMapping_SK_Old = new Dictionary<string, string>()
-        {                                
-            {"concrete_slabs_with_joints",  "F50"}                                  //Sub-factors water
+        //7	Private transport	P&R
+        KeyValuePair<string, string> propertyCellMapping_Use07 =
+            new KeyValuePair<string, string>("P and R", "E14");
+        Dictionary<string, string> propertyCellMapping_07_1 = new Dictionary<string, string>() //If 6 is used (Y)
+        {                                                           
+            {"P and R - Impact without measure when using parking zone policy",       "F93"}, 
+            {"P and R - Impact on private transport when using parking zone policy",  "H93"},
+            {"P and R - Impact on public transport when using parking zone policy",   "I93"},
+            {"P and R - Impact on slow modes when using parking zone policy",         "J93"}
+        };
+        Dictionary<string, string> propertyCellMapping_07_2 = new Dictionary<string, string>() //If 6 is not used (N)
+        {                                                           
+            {"P and R - Impact without measure",       "F100"}, 
+            {"P and R - Impact on private transport",  "H100"},
+            {"P and R - Impact on public transport",   "I100"},
+            {"P and R - Impact on slow modes",         "J100"}
         };
 
-        Dictionary<string, string> propertyCellMapping_B_Old = new Dictionary<string, string>()
-        {
-            {"diversity_in_field_layer",                        "F14"},             //Supplementary factors greenery/biodiversity
-            {"natural_species_selection",                       "F15"},
-            {"diversity_on_thin_sedum_roofs",                   "F16"},
-            {"integrated_balcony_boxes_with_climbing_plants",   "F17"},
-            {"butterfly_restaurants",                           "F18"},
-            {"bushes_general",                                  "F19"},
-            {"berry_bushes",                                    "F20"},
-            {"large_trees_trunkabove_30cm",                     "E21"},
-            {"medium_large_trees_trunk_between_20and30cm",      "E22"},
-            {"small_trees_trunk_between_16and20cm",             "E23"},
-            {"oak_quercus_robur",                               "E24"},
-            {"fruit_trees",                                     "E25"},
-            {"fauna_depots",                                    "E26"},
-            {"beetle_feeders",                                  "E27"},
-            {"bird_feeders",                                    "E28"},
-
-            {"biologically_accessible_permanent_water",                     "F53"},             //Supplementary factors water/biodiversity
-            {"dry_areas_with_plants_that_temporarily_fill_with_rainwater",  "F54"},
-            {"delay_of_rainwater_in_ponds",                            "F55"},
-            {"delay_of_rainwater_in_underground_percolation_systems",       "F56"},
-            {"runoff_from_impermeable_surfaces_to_surfaces_with_plants",    "F57"}
+        //8	Traffic management	Flex working
+        KeyValuePair<string, string> propertyCellMapping_Use08 =
+            new KeyValuePair<string, string>("Flex working", "E15");
+        Dictionary<string, string> propertyCellMapping_08 = new Dictionary<string, string>()
+        {                   
+            {"Flex working - Days per week that employees work from home",                             "H114"},               
+            {"Flex working - Percentage of floor area office buildings participating in flexworking",  "H115"},                                                        
+            {"Flex working - Impact without measure",                                                                 "F120"},
+            {"Flex working - Impact on slow modes",                                                    "J120"} 
         };
 
-        Dictionary<string, string> propertyCellMapping_S_Old = new Dictionary<string, string>()
-        {
-            {"grass_area_usable_for_ball_games_and_playing",            "F30"},     //Supplementary factors greenery/recreation and social value
-            {"gardening_areas_in_yards",                                "F31"},
-            {"balconies_and_terraces_prepared_for_growing",             "F32"},
-            {"shared_roof_terraces",                                    "F33"},
-            {"visible_green_roofs",                                     "F34"},
-            {"Floral arrangements",                                     "F35"},
-            {"experiential_value_of_bushes",                            "F36"},
-            {"berry_bushes_with_edible_fruit_etc)",                     "F37"},
-            {"trees_experiential_value",                                "E38"},
-            {"fruit_trees_and_blooming_trees",                          "E39"},
-            {"pergolas_paths_surrounded_by_leaves_and_other_greenery",  "F40"},
-            {"bird_feeders_experiential_value",                         "E41"},
-
-            {"water_surfaces",                                      "F59"},         //Supplementary factors water/recreational and social values
-            {"biologically_accessible_water_experiential_value",    "F60"},
-            {"fountains_circulations_systems_etc",                  "E61"}
+        //9	Traffic management	Promotion of public transport (employers paying for public transport)
+        KeyValuePair<string, string> propertyCellMapping_Use09 =
+            new KeyValuePair<string, string>("Promotion of public transport", "E16");
+        Dictionary<string, string> propertyCellMapping_09 = new Dictionary<string, string>()
+        {                                                           
+            {"Promotion of public transport - Impact without measure",       "F128"},
+            {"Promotion of public transport - Impact on private transport",  "H128"},
+            {"Promotion of public transport - Impact on public transport",   "I128"},
+            {"Promotion of public transport - Impact on slow modes",         "J128"}
         };
 
-        Dictionary<string, string> propertyCellMapping_K_Old = new Dictionary<string, string>()
-        {
-            {"trees_with_leafy_shade_over_play_areas_etc",                  "E43"}, //Supplementary factors greenery/climate - heat islands
-            {"pergolas_green_corridors_etc_equals_shade_from_leaf_cover",   "F44"},
-            {"green_roofs_ground_greenery_evening_out_of_temp",            "F45"},
-            
-            {"water_collection_during_dry_periods",                 "F63"}, //Supplementary factors water/climate - heat islands
-            {"collected_rainwater_for_watering_climate_impact",     "F64"},
-            {"fountains_etc_cooling_effect",                        "E65"}
+        //10	Traffic management	Mixed use planning
+        KeyValuePair<string, string> propertyCellMapping_Use10 =
+            new KeyValuePair<string, string>("Mixed use planning", "E17");
+        Dictionary<string, string> propertyCellMapping_10 = new Dictionary<string, string>()
+        {                                                            
+            {"Mixed use planning - Impact without measure",       "F138"},
+            {"Mixed use planning - Impact on private transport",  "H138"},
+            {"Mixed use planning - Impact on public transport",   "I138"},
+            {"Mixed use planning - Impact on slow modes",         "J138"}
         };
-
-        #endregion
-
         #endregion
 
         #endregion
 
         public MobilityModule()
         {
-            newDashboardSystem = true;
-            useDummyDB = true;
+            useDummyDB = false;
             useXLSData = false;
+            useBothVariantAndAsISForVariant = true;
 
             //IMB-hub info (not used)
             this.UserId = 0;
@@ -234,40 +240,7 @@ namespace MobilityModule
             var iSpec = new InputSpecification();
 
             if (!KpiList.Contains(kpiId))
-                return null;
-
-            //SetIspec(ref iSpec, propertyCellMapping_Green);
-            //SetIspec(ref iSpec, propertyCellMapping_BSK);
-            //SetIspec(ref iSpec, propertyCellMapping_SK);
-            //SetIspec(ref iSpec, propertyCellMapping_B);
-            //SetIspec(ref iSpec, propertyCellMapping_S);
-            //SetIspec(ref iSpec, propertyCellMapping_K);
-
-            if (kpiId == kpi_modalsplit)
-                SetIspec(ref iSpec, propertyCellMapping_Green_Old);
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_biodiversity) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_BSK_Old);
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_SK_Old);
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_biodiversity))
-                SetIspec(ref iSpec, propertyCellMapping_B_Old);
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_social_value))
-                SetIspec(ref iSpec, propertyCellMapping_S_Old);
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_K_Old);
+                return null;          
 
             return iSpec;
 
@@ -282,6 +255,7 @@ namespace MobilityModule
             }
         }
         
+        
         protected override bool CalculateKpi(ModuleProcess process, CExcel exls, out Ecodistrict.Messaging.Data.Output output, out Ecodistrict.Messaging.Data.OutputDetailed outputDetailed)
         {
             try
@@ -291,86 +265,150 @@ namespace MobilityModule
 
                 if (!KpiList.Contains(process.KpiId))
                 {
-                    CalcMessage = "kpi not avaiable for this module";
+                    process.CalcMessage = "Kpi not available for this module";
                     return false;
                 }
+                string dbKpiId = kpi_kpi_mapping[process.KpiId];
+                
+                double kpiValue = 0;
 
-                //if (false)
-                //{
-                //if (process.Request.variantId == null)
-                //{
-                //    process.CurrentData["Fruit trees"] = 60;
-                //    process.CurrentData["Fruit trees and blooming trees"] = 0;
-                //    process.CurrentData["Biologically accessible water"] = 0;
-                //}
-                //else
-                //{
-                //    process.CurrentData["Fruit trees"] = 100;
-                //    process.CurrentData["Fruit trees and blooming trees"] = 100;
-                //    process.CurrentData["Biologically accessible water"] = 50;
-                //}
-
-                if (process.CurrentData == null)
+                //Prepare AsIs data
+                if (process.As_IS_Data == null)
                 {
-                    CalcMessage = "Data missing";
+                    process.CalcMessage = "No as is data";
                     return false;
                 }
 
-                //process.CurrentData["Total land area"] = 485801;
-
-
-                if (process.KpiId == kpi_modalsplit)
-                    if (!SetProperties(process, exls, propertyCellMapping_Green))
-                        return false;
-
-                if ((process.KpiId == kpi_modalsplit) |
-                    (process.KpiId == kpi_biodiversity) |
-                    (process.KpiId == kpi_social_value) |
-                    (process.KpiId == kpi_climate_adaptation))
-                    if (!SetProperties(process, exls, propertyCellMapping_BSK))
-                        return false;
-
-                if ((process.KpiId == kpi_modalsplit) |
-                    (process.KpiId == kpi_social_value) |
-                    (process.KpiId == kpi_climate_adaptation))
-                    if (!SetProperties(process, exls, propertyCellMapping_SK))
-                        return false;
-
-                if ((process.KpiId == kpi_modalsplit) |
-                    (process.KpiId == kpi_biodiversity))
-                    if (!SetProperties(process, exls, propertyCellMapping_B))
-                        return false;
-
-                if ((process.KpiId == kpi_modalsplit) |
-                    (process.KpiId == kpi_social_value))
-                    if (!SetProperties(process, exls, propertyCellMapping_S))
-                        return false;
-
-                if ((process.KpiId == kpi_modalsplit) |
-                    (process.KpiId == kpi_climate_adaptation))
-                    if (!SetProperties(process, exls, propertyCellMapping_K))
-                        return false;
-                //}
-
-                string outSheet = "EXISTING";
-                //if (process.Request.variantId != null)
-                //{
-                //    outSheet = "PLANNED";
-                //}
-
-                double? val = exls.GetCellValue(outSheet, kpiCellMapping[process.KpiId]) as double?;
-
-                if (val == null)
+                if (!process.As_IS_Data.ContainsKey("District"))
+                {
+                    process.CalcMessage = "As is district information missing";
                     return false;
+                }
 
-                double value;
-
-                if (process.KpiId == kpi_modalsplit)
-                    value = Math.Round((double)val, 2);
+                Dictionary<string, object> dataAsIS ;
+                if(process.As_IS_Data["District"] is Dictionary<string, object>)
+                    dataAsIS = process.As_IS_Data["District"] as Dictionary<string, object>;
                 else
-                    value = Math.Round((double)val * 100.0, 0);
+                {
+                    process.CalcMessage = "As is data received from data module is wrongly formated";
+                    return false;
+                }
 
-                output = new Ecodistrict.Messaging.Data.Output(process.KpiId, value);
+
+                //AsIS
+                if (process.IsAsIS)
+                {                   
+                    if (!dataAsIS.ContainsKey(dbKpiId))
+                    {
+                        process.CalcMessage = "As is information missing";
+                        return false;
+                    }
+
+                    kpiValue = Convert.ToDouble(dataAsIS[dbKpiId]);
+                }
+                //Variant
+                else
+                {
+                    //Prepare Variant data
+                    if (process.Variant_Data == null)
+                    {
+                        process.CalcMessage = "No variant data";
+                        return false;
+                    }
+
+                    if (!process.Variant_Data.ContainsKey("District"))
+                    {
+                        process.CalcMessage = "Variant district information missing";
+                        return false;
+                    }
+
+
+                    Dictionary<string, object> dataVariant;
+                    if (process.Variant_Data["District"] is Dictionary<string, object>)
+                        dataVariant = process.Variant_Data["District"] as Dictionary<string, object>;
+                    else
+                    {
+                        process.CalcMessage = "Variant data received from data module is wrongly formated";
+                        return false;
+                    }
+                    
+
+                    //Set Data
+                    if (!SetProperties(process, dataAsIS, exls, propertyCellMapping_AsIs))
+                        return false;
+
+                    if (!SetProperties(process, dataVariant, exls, propertyCellMapping_General))
+                        return false;
+
+                    //01
+                    bool used01;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use01, propertyCellMapping_01, exls, out used01))
+                        return false;
+
+                    //02
+                    bool used02;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use02, propertyCellMapping_02, exls, out used02))
+                        return false;
+
+                    //03
+                    bool used03;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use03, propertyCellMapping_03, exls, out used03))
+                        return false;
+
+                    //04
+                    bool used04;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use04, propertyCellMapping_04, exls, out used04))
+                        return false;
+
+                    //05
+                    bool used05;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use05, propertyCellMapping_05, exls, out used05))
+                        return false;
+
+                    //06
+                    bool used06;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use06, propertyCellMapping_06, exls, out used06))
+                        return false;
+
+                    //07
+                    bool used07;
+                    if (used06)
+                    {
+                        if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use07, propertyCellMapping_07_1, exls, out used07))
+                            return false;
+                    }
+                    else
+                    {
+                        if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use07, propertyCellMapping_07_2, exls, out used07))
+                            return false;
+                    }                        
+
+                    //08
+                    bool used08;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use08, propertyCellMapping_08, exls, out used08))
+                        return false;
+
+                    //09
+                    bool used09;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use09, propertyCellMapping_09, exls, out used09))
+                        return false;
+
+                    //10
+                    bool used10;
+                    if (!SetInput(process, dataAsIS, dataVariant, propertyCellMapping_Use10, propertyCellMapping_10, exls, out used10))
+                        return false;
+
+                    double? val = exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]) as double?;
+
+                    if (val == null)
+                        return false;
+
+                    kpiValue = Math.Round((double)val,1);
+                }
+                
+
+
+                output = new Ecodistrict.Messaging.Data.Output(process.KpiId, kpiValue);
 
                 return true;
             }
@@ -381,138 +419,71 @@ namespace MobilityModule
             }
         }
 
-        private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
+        bool SetInput(ModuleProcess process, Dictionary<string, object> dataAsIS, Dictionary<string, object> dataVariant, KeyValuePair<string, string> settingCellMapping, Dictionary<string, string> propertyCellMapping, CExcel exls, out bool Used)
+        {
+            //Used = true;
+            //Set(sheetSettings, settingCellMapping.Value, "Y", ref exls);
+            //if (!SetProperties(process, dataAsIS, exls, propertyCellMapping))
+            //    return false;
+            //return true;
+
+
+            Used = false;
+
+            if (dataVariant.ContainsKey(settingCellMapping.Key))
+            {
+                if (dataVariant[settingCellMapping.Key] as string == null)
+                {
+                    process.CalcMessage = "Module setting not properly set in database";
+                    return false;
+                }
+
+                if (dataVariant[settingCellMapping.Key] as string == "Yes")
+                {
+                    Used = true;
+
+                    Set(sheetSettings, settingCellMapping.Value, "Y", ref exls);
+
+                    if (!SetProperties(process, dataAsIS, exls, propertyCellMapping))
+                        return false;
+
+                }
+                else
+                    exls.SetCellValue(sheetSettings, settingCellMapping.Value, "N");
+
+            }
+            else
+                exls.SetCellValue(sheetSettings, settingCellMapping.Value, "N");
+
+            return true;
+
+        }
+
+        private bool SetProperties(ModuleProcess process, Dictionary<string, object> data, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
-                Dictionary<string, object> CurrentData = process.CurrentData;
                 try
                 {
-                    //if (useDummyDB)
-                    //{
-                    //    object value = 0;
+                    if (!CheckAndReportDistrictProp(process, data, property.Key))
+                        return false;
 
-                    //    if (CurrentData != null)
-                    //    {
-                    //        if (!CurrentData.ContainsKey(property.Key))
-                    //        {
-                    //            CalcMessage = String.Format("Data is missing, property - {0} - is missing in district data", property.Key);
-                    //            return false;
-                    //        }
+                    object value = data[property.Key];
 
-                    //        if (CurrentData[property.Key] != null)
-                    //            value = CurrentData[property.Key];
-                    //    }
-                    //    else
-                    //    {
-                    //        CalcMessage = String.Format("All data is missing, e.g. property - {0} - is missing in district data", property.Key);
-                    //        return false;
-                    //    }
+                    double val = Convert.ToDouble(value);
 
-                    //    Set(sheet, property.Value, value, ref exls);
-
-                    //    continue;
-                    //}
-                    //else
-                    {
-                        if (!CheckAndReportDistrictProp(CurrentData, property.Key))
-                            return false;
-
-                        object value = CurrentData[property.Key];
-
-                        double val = Convert.ToDouble(value);
-                        if (val < 0)
-                        {
-                            CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
-                            return false;
-                        }
-
-                        Set(sheet, property.Value, value, ref exls);
-                    }
+                    Set(sheetInput, property.Value, value, ref exls);
                 }
                 catch (System.Exception ex)
                 {
-                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}, isCurrentDataMissing = {1}", property.Key, CurrentData == null), sourceFunction: "SetProperties", exception: ex);
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}, isDataMissing = {1}", property.Key, data == null), sourceFunction: "SetProperties", exception: ex);
                     throw ex;
                 }
             }
 
             return true;
         }
-
-        //Old system
-        protected override bool CalculateKpi(Dictionary<string, Input> data, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
-        {
-            outputs = new Ecodistrict.Messaging.Output.Outputs();
-
-            if (!KpiList.Contains(kpiId))
-                return false;
-
-            if (kpiId == kpi_modalsplit)
-                if (!SetProperties(data, exls, propertyCellMapping_Green_Old))
-                    return false;
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_biodiversity) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_BSK_Old))
-                    return false;
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_SK_Old))
-                    return false;
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_biodiversity))
-                if (!SetProperties(data, exls, propertyCellMapping_B_Old))
-                    return false;
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_social_value))
-                if (!SetProperties(data, exls, propertyCellMapping_S_Old))
-                    return false;
-
-            if ((kpiId == kpi_modalsplit) |
-                (kpiId == kpi_climate_adaptation))
-                if (!SetProperties(data, exls, propertyCellMapping_K_Old))
-                    return false;
-
-            //output = new Ecodistrict.Messaging.Data.Output(process.KpiId);
-            //output.KpiValue = exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]) as double?;
-
-            double? val = exls.GetCellValue(sheet, kpiCellMapping[kpiId]) as double?;
-
-            if (val == null)
-                return false;
-
-            double value = Math.Round((double)val, 2);
-
-            outputs.Add(new Ecodistrict.Messaging.Output.Kpi(value, "", ""));
-
-            return true;
-        }
         
-        private bool SetProperties(Dictionary<string, Input> data, CExcel exls, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!data.ContainsKey(property.Key))
-                    return false;
-
-                Number CurrentData = data[property.Key] as Number;
-
-                if (CurrentData == null)
-                    return false;
-
-                Set(sheet, property.Value, CurrentData.GetValue(), ref exls);
-            }
-
-            return true;
-        }
-
     }
 }
 

@@ -230,8 +230,8 @@ namespace LCC
         
         public LCC_Module()
         {
-            this.useBothVariantAndAsIS = false;
-            this.newDashboardSystem = true;
+            this.useDummyDB = false;
+            this.useBothVariantAndAsISForVariant = false;
             
             //List of kpis the module can calculate
             this.KpiList = new List<string> { kpi_lcc };
@@ -251,8 +251,6 @@ namespace LCC
                 try
                 {
                     {
-                        //if (!CheckAndReportDistrictProp(CurrentData, property.Key))
-                        //    return false;
 
                         if (CurrentData.ContainsKey(property.Key))
                         {
@@ -261,11 +259,16 @@ namespace LCC
 	                        double val = Convert.ToDouble(value);
 	                        if (val < 0)
 	                        {
-	                            CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                                process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
 	                            return false;
 	                        }
 	
 	                        Set(sheet, property.Value, value, ref exls);
+                        }
+                        else
+                        {
+                            process.CalcMessage = "";
+                            return false;
                         }
                     }
                 }
@@ -319,7 +322,7 @@ namespace LCC
                 //Check and prepare data
                 //Dictionary<string, object> district_data;
                 //GeoValue buildingsAsIS;
-                if (!CheckAndReportDistrictProp(process.CurrentData, "Buildings"))
+                if (!CheckAndReportDistrictProp(process,process.CurrentData, "Buildings"))
                     return false;
 
                 string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);
@@ -332,7 +335,8 @@ namespace LCC
                 //    return false;
 
                 //Set common properties
-                SetProperties(process, exls, generalCellMapping);
+                if (!SetProperties(process, exls, generalCellMapping))
+                    return false;
                 
                 //Calculate kpi
                 outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
@@ -493,14 +497,7 @@ namespace LCC
 
             return false;
         }
-
-        protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
-        {
-            outputs = null;
-            
-            return false;
-        }
-
+        
     }
 }
 

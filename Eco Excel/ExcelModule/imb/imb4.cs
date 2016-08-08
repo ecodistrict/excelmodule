@@ -1329,12 +1329,20 @@ namespace IMB
         {
             lock (fTLSStream)
             {
-                fTLSStream.Write(aPacket, 0, aPacket.Length);
-                if (imbMinimumPacketSize > aPacket.Length)
+                try
                 {
-                    // send filler bytes
-                    var fillerBytes = new byte[imbMinimumPacketSize - aPacket.Length];
-                    fTLSStream.Write(fillerBytes, 0, fillerBytes.Length);
+	                fTLSStream.Write(aPacket, 0, aPacket.Length);
+	                if (imbMinimumPacketSize > aPacket.Length)
+	                {
+	                    // send filler bytes
+	                    var fillerBytes = new byte[imbMinimumPacketSize - aPacket.Length];
+	                    fTLSStream.Write(fillerBytes, 0, fillerBytes.Length);
+	                }
+                }
+                catch (System.IO.IOException ex)
+                {
+                	//TODO handle
+                    close(false);
                 }
             }
         }

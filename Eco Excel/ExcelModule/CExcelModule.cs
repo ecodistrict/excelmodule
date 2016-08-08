@@ -15,11 +15,7 @@ using System.Data.Odbc;
 using System.Data;
 using System.Security.Cryptography;
 using System.Security;
-using System;
-using System.Security.Cryptography;
 using System.Security.Permissions;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Ecodistrict.Excel
 {
@@ -57,10 +53,9 @@ namespace Ecodistrict.Excel
                 _processes = value;
             }
         }
-        protected bool useBothVariantAndAsIS = false;
+        protected bool useBothVariantAndAsISForVariant = false;
         double timeLimitProcess = 20000;
         System.Timers.Timer checkProcessesTimer = new System.Timers.Timer(20000);
-        protected bool newDashboardSystem = true;
         protected bool useDummyDB = true;
 
         private void OnCheckProcessesEvent(Object source, System.Timers.ElapsedEventArgs e)
@@ -316,7 +311,7 @@ namespace Ecodistrict.Excel
 
                         // set event handler for change object on subscribedEvent
                         SubscribedEvent.onString += SubscribedEvent_onString;
-                        SubscribedDataEvent.onString += SubscribedEvent_onString;                        
+                        SubscribedDataEvent.onString += SubscribedEvent_onString;
 
                         SendStatusMessage("Connected to IMB-hub..");
                         res = true;
@@ -560,8 +555,11 @@ namespace Ecodistrict.Excel
                 //HandleStartModuleRequest2(message as StartModuleRequest);
                 //if (useXLSData)
                 //    HandleStartModuleRequest2(message as StartModuleRequest);
-                //else
-                HandleStartModuleRequest(message as StartModuleRequest);
+                //else                //Override only use hard coded
+                if (useDummyDB)
+                    HandleStartModuleRequestDummy(message as StartModuleRequest);
+                else
+                    HandleStartModuleRequest(message as StartModuleRequest);
             }
             else if (message is GetDataResponse)
                 HandleGetDataResponse(message as GetDataResponse);
@@ -595,103 +593,124 @@ namespace Ecodistrict.Excel
             }
         }
 
+        private void HandleStartModuleRequestDummy(StartModuleRequest request)
+        {
+            if (request != null & request.moduleId == ModuleId)
+            {
+
+                var realReq = request;
+
+                //Case: Hovsjo id mapping
+                if (request.caseId == "56cd5745317e88872c28ec12")
+                {
+                    switch (request.variantId)
+                    {
+                        case null: //AsIS
+                            //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "asis", userId: "cstb", kpiId: request.kpiId);
+                            request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
+                            break;
+                        case "56cd61a1317e88872c28ec16": // Alternative 1A
+                        case "56d469d64a93972f1f61ad4a": // Alternative 2
+                        case "56d469e64a93972f1f61ad4b": // Alternative 3
+                        case "56d46a0c4a93972f1f61ad4c": // Alternative 4A
+                        case "56d46a354a93972f1f61ad4d": // Alternative 4B
+                            request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
+                            break;
+                        case "56d6faae4a93972f1f61ae7c": // Alternative Green
+                            request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt2", userId: "cstb", kpiId: "green-area-factor");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    //request = new StartModuleRequest(this.ModuleId, "test", "truite", "cstb", "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "asis", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt2", userId: "cstb", kpiId: "green-area-factor");
+
+                    // LCA/LCC
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt1a", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt1b", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt2", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt3", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt4a", userId: "cstb", kpiId: "green-area-factor");
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt4b", userId: "cstb", kpiId: "green-area-factor");  
+
+                    //Green - Warsaw
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "green_factor", variantId: "asis", userId: "cstb", kpiId: realReq.kpiId);
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "green_factor", variantId: "variant1", userId: "cstb", kpiId: realReq.kpiId);
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "green_factor", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
+
+                    //Mobility - Warsaw
+                    request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "warsaw_mobility", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
+
+                }
+
+                if (!ShowOnlyOwnStatus)
+                    SendStatusMessage("StartModuleRequest received");
+
+                SendStatusMessage("Handles StartModuleRequest");
+
+                if (SendStartModuleResponse(realReq, ModuleStatus.Processing, "Accessing data"))
+                {
+                    var process = new ModuleProcess(realReq, timeLimitProcess);
+
+                    if (useBothVariantAndAsISForVariant & realReq.variantId != null)
+                    {
+                        //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
+                        //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt2", dataEventId, "cstb");
+
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, dataEventId, "cstb");
+                        //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt1", dataEventId, "cstb");
+                        //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt2", dataEventId, "cstb");
+                        process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt3", dataEventId, "cstb");
+
+
+                        //process.As_IS_Request =
+                        //    new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, request.variantId, dataEventId);
+                        //process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                    }
+                    //else 
+                    //    process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
+                    else if (realReq.variantId != null)
+                        //else if (request.variantId != "greenfactoralt2")
+                        process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
+                    else
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, dataEventId, "cstb");
+                        //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
+                    //process.As_IS_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
+
+
+                    lock (Processes)
+                    {
+                        Processes.Add(process);
+                    }
+
+                    if (process.As_IS_Request != null)
+                    {
+                        SendStatusMessage("GetDataRequest sent for AS-IS");
+                        SendDataModuleMessage(process.As_IS_Request);
+                    }
+
+                    if (process.Variant_Request != null)
+                    {
+                        SendStatusMessage("GetDataRequest sent for Variant");
+                        SendDataModuleMessage(process.Variant_Request);
+                    }
+                }
+
+                return;
+
+            }
+
+        }
+
         private void HandleStartModuleRequest(StartModuleRequest request)
         {
             if (request != null & request.moduleId == ModuleId)
             {
-                //Override only use hard coded
-                if (useDummyDB)
-                {
-                    var realReq = request;
-
-                    //Case: Hovsjo id mapping
-                    if (request.caseId == "56cd5745317e88872c28ec12")
-                    {
-                        switch (request.variantId)
-                        {
-                            case null: //AsIS
-                                //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "asis", userId: "cstb", kpiId: request.kpiId);
-                                request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
-                                break;
-                            case "56cd61a1317e88872c28ec16": // Alternative 1A
-                            case "56d469d64a93972f1f61ad4a": // Alternative 2
-                            case "56d469e64a93972f1f61ad4b": // Alternative 3
-                            case "56d46a0c4a93972f1f61ad4c": // Alternative 4A
-                            case "56d46a354a93972f1f61ad4d": // Alternative 4B
-                                request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
-                                break;
-                            case "56d6faae4a93972f1f61ae7c": // Alternative Green
-                                request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt2", userId: "cstb", kpiId: "green-area-factor");
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        //request = new StartModuleRequest(this.ModuleId, "test", "truite", "cstb", "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "asis", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt1", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "greenfactoralt2", userId: "cstb", kpiId: "green-area-factor");
-
-                        // LCA/LCC
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt1a", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt1b", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt2", userId: "cstb", kpiId: "green-area-factor");
-                        request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt3", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt4a", userId: "cstb", kpiId: "green-area-factor");
-                        //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "hovsjo", variantId: "lcalccalt4b", userId: "cstb", kpiId: "green-area-factor");                        
-                       
-                    }
-
-                    if (!ShowOnlyOwnStatus)
-                        SendStatusMessage("StartModuleRequest received");
-
-                    SendStatusMessage("Handles StartModuleRequest");
-
-                    if (SendStartModuleResponse(realReq, ModuleStatus.Processing, "Accessing data"))
-                    {
-                        if (newDashboardSystem)
-                        {
-                            var process = new ModuleProcess(realReq, timeLimitProcess);
-
-                            if (useBothVariantAndAsIS & request.variantId != null)
-                            {
-                                process.As_IS_Request =
-                                    new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, request.variantId, dataEventId);
-                                process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
-                            }
-                            else if (request.variantId != "greenfactoralt2")
-                                process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
-                                //process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString());
-                            else
-                                process.As_IS_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
-                                //process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString());
-
-
-                            lock (Processes)
-                            {
-                                Processes.Add(process);
-                            }
-
-                            if (process.As_IS_Request != null)
-                            {
-                                SendStatusMessage("GetDataRequest sent for AS-IS");
-                                SendDataModuleMessage(process.As_IS_Request);
-                            }
-
-                            if (process.Variant_Request != null)
-                            {
-                                SendStatusMessage("GetDataRequest sent for Variant");
-                                SendDataModuleMessage(process.Variant_Request);
-                            }
-                        }
-                        else
-                            CalculateResult(request);
-                    }
-
-                    return;
-                }
 
                 if (!ShowOnlyOwnStatus)
                     SendStatusMessage("StartModuleRequest received");
@@ -700,42 +719,38 @@ namespace Ecodistrict.Excel
 
                 if (SendStartModuleResponse(request, ModuleStatus.Processing, "Accessing data"))
                 {
-                    if (newDashboardSystem)
+                    var process = new ModuleProcess(request, timeLimitProcess);
+
+                    if (useBothVariantAndAsISForVariant & request.variantId != null)
                     {
-                        var process = new ModuleProcess(request, timeLimitProcess);
-
-                        if (useBothVariantAndAsIS & request.variantId != null)
-                        {
-                            process.As_IS_Request =
-                                new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, request.variantId, dataEventId);
-                            process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
-                        }
-                        else if (request.variantId != null)
-                            process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
-                        else
-                            process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
-
-
-                        lock (Processes)
-                        {
-                            Processes.Add(process);
-                        }
-
-                        if (process.As_IS_Request != null)
-                        {
-                            SendStatusMessage("GetDataRequest sent for AS-IS");
-                            SendDataModuleMessage(process.As_IS_Request);
-                        }
-
-                        if (process.Variant_Request != null)
-                        {
-                            SendStatusMessage("GetDataRequest sent for Variant");
-                            SendDataModuleMessage(process.Variant_Request);
-                        }
+                        process.As_IS_Request =
+                            new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, null, dataEventId, request.userId);
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
                     }
+                    else if (request.variantId != null)
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
                     else
-                        CalculateResult(request);
+                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+
+
+                    lock (Processes)
+                    {
+                        Processes.Add(process);
+                    }
+
+                    if (process.As_IS_Request != null)
+                    {
+                        SendStatusMessage("GetDataRequest sent for AS-IS");
+                        SendDataModuleMessage(process.As_IS_Request);
+                    }
+
+                    if (process.Variant_Request != null)
+                    {
+                        SendStatusMessage("GetDataRequest sent for Variant");
+                        SendDataModuleMessage(process.Variant_Request);
+                    }
                 }
+
             }
         }
 
@@ -1011,39 +1026,35 @@ namespace Ecodistrict.Excel
                 {
                     bool calculate = false;
                     bool matchFound = false;
-                    //bool hasAsIs = process.As_IS_Request != null;
-                    //bool hasVariant = process.Variant_Request != null;
-                    //bool isAsIs = process.Variant_Request == null;
-                    //bool IsVariant = process.Variant_Request != null;
 
-
-                    if (process.As_IS_Request != null)
+                    if (response.variantId == null)
                     {
                         if (process.As_IS_Request.calculationId == response.calculationId)
                         {
                             matchFound = true;
                             process.As_IS_Data = response.data;
                             if ((process.Request.variantId == null) |
-                                (useBothVariantAndAsIS & process.Variant_Data != null))
+                                (useBothVariantAndAsISForVariant & process.Variant_Data != null))
                                 calculate = true;
                         }
                     }
-                    else if (process.Variant_Request != null)
+
+                    if (response.variantId != null)
                     {
 
                         if (process.Variant_Request.calculationId == response.calculationId)  //TODO CalculationId not returned
                         {
                             matchFound = true;
                             process.Variant_Data = response.data;
-                            if ((useBothVariantAndAsIS & process.As_IS_Data != null) |
-                                !useBothVariantAndAsIS)
+                            if ((useBothVariantAndAsISForVariant & process.As_IS_Data != null) |
+                                !useBothVariantAndAsISForVariant)
                                 calculate = true;
                         }
                     }
 
                     if (calculate)
                     {
-                        SendStartModuleResponse(process.Request, ModuleStatus.Processing, "Data received");
+                        SendStartModuleResponse(process.Request, ModuleStatus.Processing, "Received message from data module");
                         CalculateResult(process);
 
                         Processes.Remove(process);
@@ -1156,37 +1167,36 @@ namespace Ecodistrict.Excel
         #endregion
 
         #region Internal message
-        protected string CalcMessage = "";
-        protected bool CheckAndReportBuildingProp(Feature building, string key)
+        protected bool CheckAndReportBuildingProp(ModuleProcess process, Feature building, string key)
         {
             if (!building.properties.ContainsKey(key))
             {
                 string buildingIdKey = "attr_gml_id";
                 if (building.properties.ContainsKey(buildingIdKey))
-                    CalcMessage = String.Format("Property {0} missing in building {1}", key, building.properties[buildingIdKey]);
+                    process.CalcMessage = String.Format("Property {0} missing in building {1}", key, building.properties[buildingIdKey]);
                 else
-                    CalcMessage = String.Format("Property {0} missing, building id not set", key);
+                    process.CalcMessage = String.Format("Property {0} missing, building id not set", key);
 
                 return false;
             }
 
             return true;
         }
-        protected bool CheckAndReportDistrictProp(Dictionary<string, object> distrProps, string key)
+        protected bool CheckAndReportDistrictProp(ModuleProcess process, Dictionary<string, object> distrProps, string key)
         {
             if (distrProps == null)
             {
-                CalcMessage = String.Format("Property {0} is missing in district data", key);
+                process.CalcMessage = String.Format("Property {0} is missing in district data", key);
                 return false;
             }
             else if (!distrProps.ContainsKey(key))
             {
-                CalcMessage = String.Format("Property {0} is missing in district data", key);
+                process.CalcMessage = String.Format("Property {0} is missing in district data", key);
                 return false;
             }
             else if (distrProps[key] == null)
             {
-                CalcMessage = String.Format("Property {0} is missing in district data", key);
+                process.CalcMessage = String.Format("Property {0} is missing in district data", key);
                 return false;
             }
 
@@ -1262,8 +1272,8 @@ namespace Ecodistrict.Excel
                         }
                         else
                         {
-                            SendStartModuleResponse(process.Request, ModuleStatus.Failed, CalcMessage);
-                            SendErrorMessage("Could not calculate kpi: " + CalcMessage, "CalculateKpi");
+                            SendStartModuleResponse(process.Request, ModuleStatus.Failed, process.CalcMessage);
+                            SendErrorMessage("Could not calculate kpi: " + process.CalcMessage, "CalculateKpi");
                             return false;
                         }
                     }
@@ -1292,56 +1302,6 @@ namespace Ecodistrict.Excel
 
         }
 
-        //old system
-        protected abstract bool CalculateKpi(Dictionary<string, Input> data, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs);
-        private bool CalculateResult(StartModuleRequest request)
-        {
-            Ecodistrict.Messaging.Output.Outputs output = null;
-            try
-            {
-                if (File.Exists(WorkBookPath))
-                {
-                    if (ExcelApplikation.OpenWorkBook(WorkBookPath))
-                    {
-                        //Calculate KPI
-                        if (CalculateKpi(request.inputs, request.kpiId, ExcelApplikation, out output))
-                        {
-                            //Send Result
-                            var setRes = new Ecodistrict.Messaging.Results.ModuleResult(ModuleId, request.variantId, request.userId, request.kpiId, output);
-                            SendMessage(setRes);
-                            SendStatusMessage("ModuleResult sent");
-
-                        }
-                        else
-                        {
-                            SendStartModuleResponse(request, ModuleStatus.Failed, CalcMessage);
-                            SendErrorMessage("Could not calculate kpi: " + CalcMessage, "CalculateKpi");
-                        }
-                    }
-                }
-                else
-                {
-                    SendStartModuleResponse(request, ModuleStatus.Failed, "Dependent calculation module not found, contact developer");
-                    SendErrorMessage(string.Format("Excelfile <{0}> not found", WorkBookPath), sourceFunction: "SendModuleResult-FileNotFound");
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage(message: ex.Message, sourceFunction: "SendModuleResult-KalkKpi", exception: ex);
-                SendStartModuleResponse(request, ModuleStatus.Failed, "Internal module error: contact developer");
-
-                return false;
-            }
-            finally
-            {
-                ExcelApplikation.CloseWorkBook();
-            }
-
-            return true;
-
-        }
         #endregion
 
     }
@@ -1391,12 +1351,22 @@ namespace Ecodistrict.Excel
         {
             get
             {
-                if (Variant_Data != null) //Its a variant
+                if (!IsAsIS) //Its a variant
                     return Variant_Data;
                 else
                     return As_IS_Data;
             }
         }
+
+        public bool IsAsIS
+        {
+            get
+            {
+                return Variant_Data == null;
+            }
+        }
+
+        public string CalcMessage { get; set; }
 
     }
 }
