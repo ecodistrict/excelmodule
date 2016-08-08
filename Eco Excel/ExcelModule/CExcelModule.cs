@@ -8,7 +8,6 @@ using Ecodistrict.Messaging;
 using Ecodistrict.Messaging.Requests;
 using Ecodistrict.Messaging.Responses;
 using Ecodistrict.Messaging.Results;
-using Npgsql;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.Data.Odbc;
@@ -469,75 +468,6 @@ namespace Ecodistrict.Excel
 
         }
         private CExcel ExcelApplikation { get; set; }
-        #endregion
-
-        #region Test
-        string pgDBconnstring =
-                    String.Format("Server={0};Port={1};" +
-                    "User Id={2};Password={3};Database={4};" +
-                    "SSL Mode=Require;Trust Server Certificate=true;",
-                    "vps17642.public.cloudvps.com", "443", "ecodistrict",
-                    "L6mtFrkTwvIIOYeXgTfO", "ecodistrict");
-        NpgsqlConnection _pgDB_Connection;
-        NpgsqlConnection PgDB_Connection
-        {
-            get
-            {
-                if (_pgDB_Connection == null)
-                    _pgDB_Connection = new NpgsqlConnection(pgDBconnstring);
-
-                return _pgDB_Connection;
-            }
-            set
-            {
-                _pgDB_Connection = value;
-            }
-        }
-        public GeoValue ReadBuildingData()
-        {
-            try
-            {
-                PgDB_Connection.Open();
-
-                using (var cmd = new NpgsqlCommand())
-                {
-                    cmd.Connection = PgDB_Connection;
-
-                    // Get buildings
-                    cmd.CommandText = "SELECT row_to_json(fc) " +
-                        "FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features " +
-                        "FROM (SELECT 'Feature' As type " +
-                        ", ST_AsGeoJSON(lg.bldg_lod1multisurface_value)::json As geometry " +
-                        ", row_to_json((SELECT l FROM (SELECT attr_gml_id) As l " +
-                        ")) As properties " +
-                        "FROM bldg_building As lg   ) As f )  As fc;";
-
-                    string data = "";
-
-                    // Retrieve all rows
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            data += reader.GetString(0);
-                        }
-                    }
-
-                    return DeserializeData<GeoValue>.JsonString(data);
-                }
-            }
-            catch (Exception ex)
-            {
-                SendErrorMessage("", "", ex);
-            }
-            finally
-            {
-                PgDB_Connection.Close();
-            }
-
-            return null;
-        }
-
         #endregion
 
         #region Handle Hub Messages
