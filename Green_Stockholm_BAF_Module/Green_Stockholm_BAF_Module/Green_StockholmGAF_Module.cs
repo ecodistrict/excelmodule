@@ -227,59 +227,6 @@ namespace Green_StockholmGAF_Module
             if (!exls.SetCellValue(sheet, cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
-
-        protected override InputSpecification GetInputSpecification(string kpiId)
-        {
-            var iSpec = new InputSpecification();
-
-            if (!KpiList.Contains(kpiId))
-                return null;
-
-            //SetIspec(ref iSpec, propertyCellMapping_Green);
-            //SetIspec(ref iSpec, propertyCellMapping_BSK);
-            //SetIspec(ref iSpec, propertyCellMapping_SK);
-            //SetIspec(ref iSpec, propertyCellMapping_B);
-            //SetIspec(ref iSpec, propertyCellMapping_S);
-            //SetIspec(ref iSpec, propertyCellMapping_K);
-
-            if (kpiId == kpi_green)
-                SetIspec(ref iSpec, propertyCellMapping_Green_Old);
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_biodiversity) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_BSK_Old);
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_social_value) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_SK_Old);
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_biodiversity))
-                SetIspec(ref iSpec, propertyCellMapping_B_Old);
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_social_value))
-                SetIspec(ref iSpec, propertyCellMapping_S_Old);
-
-            if ((kpiId == kpi_green) |
-                (kpiId == kpi_climate_adaptation))
-                SetIspec(ref iSpec, propertyCellMapping_K_Old);
-
-            return iSpec;
-
-        }
-
-        void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!iSpec.ContainsKey(property.Key))
-                    iSpec.Add(property.Key, new Number(property.Key));
-            }
-        }
         
         protected override bool CalculateKpi(ModuleProcess process, CExcel exls, out Ecodistrict.Messaging.Data.Output output, out Ecodistrict.Messaging.Data.OutputDetailed outputDetailed)
         {

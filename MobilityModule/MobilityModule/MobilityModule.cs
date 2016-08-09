@@ -9,7 +9,7 @@ using Ecodistrict.Excel;
 
 namespace MobilityModule
 {
-    class MobilityModule : CExcelModule //TODO update with the fields for the mobility module
+    class MobilityModule : CExcelModule
     {
         #region Defines
         // - Kpis
@@ -18,7 +18,7 @@ namespace MobilityModule
         const string kpi_modalsplit_origin_slow_modes               = "modal-split-origin-slow-modes";
         const string kpi_modalsplit_destination_private_transport   = "modal-split-destination-private-transport";
         const string kpi_modalsplit_destination_public_transport    = "modal-split-destination-public-transport";
-        const string kpi_modalsplit_destination_slow_modes = "modal-split-destination-slow-modes";
+        const string kpi_modalsplit_destination_slow_modes          = "modal-split-destination-slow-modes";
         const string sheetInput = "Calculations";
         const string sheetOutput = "Measures";
         const string sheetSettings = "Measures";
@@ -51,15 +51,6 @@ namespace MobilityModule
         };
         
         //Needed AsIs properties
-        //Dictionary<string, string> propertyCellMapping_AsIs = new Dictionary<string, string>()
-        //{
-        //    {kpiDB_modalsplit_origin_private_transport,         "H8"},
-        //    {kpiDB_modalsplit_origin_public_transport,          "I8"},
-        //    {kpiDB_modalsplit_origin_slow_modes,                "J15"},
-        //    {kpiDB_modalsplit_destination_private_transport,    "H9"},
-        //    {kpiDB_modalsplit_destination_public_transport,     "I9"},
-        //    {kpiDB_modalsplit_destination_slow_modes,           "J16"}
-        //};
         Dictionary<string, string> propertyCellMapping_AsIs = new Dictionary<string, string>()
         {
             {kpiDB_modalsplit_origin_private_transport,         "H11"},
@@ -179,7 +170,7 @@ namespace MobilityModule
         {                   
             {"Flex working - Days per week that employees work from home",                             "H114"},               
             {"Flex working - Percentage of floor area office buildings participating in flexworking",  "H115"},                                                        
-            {"Flex working - Impact without measure",                                                                 "F120"},
+            {"Flex working - Impact without measure",                                                  "F120"},
             {"Flex working - Impact on slow modes",                                                    "J120"} 
         };
 
@@ -234,27 +225,6 @@ namespace MobilityModule
             if (!exls.SetCellValue(sheet, cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
-
-        protected override InputSpecification GetInputSpecification(string kpiId)
-        {
-            var iSpec = new InputSpecification();
-
-            if (!KpiList.Contains(kpiId))
-                return null;          
-
-            return iSpec;
-
-        }
-
-        void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!iSpec.ContainsKey(property.Key))
-                    iSpec.Add(property.Key, new Number(property.Key));
-            }
-        }
-        
         
         protected override bool CalculateKpi(ModuleProcess process, CExcel exls, out Ecodistrict.Messaging.Data.Output output, out Ecodistrict.Messaging.Data.OutputDetailed outputDetailed)
         {

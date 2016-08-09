@@ -4,6 +4,7 @@ remoteHost:  vps17642.public.cloudvps.com
 remotePort:  443 #443 #4443
 subScribedEventName: modules
 publishedEventName: dashboard
-aCertFile : L:\EcoDistr\Kod\Certificates\client-eco-district.pfx
+publishedDataModuleEventName: data
+aCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\client-eco-district.pfx #L:\EcoDistr\Kod\Certificates\client-eco-district.pfx
 aCertFilePassword : "&8dh48klosaxu90OKH"
-aRootCertFile : L:\EcoDistr\Kod\Certificates\client-eco-district.crt
+aRootCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\client-eco-district.crt #L:\EcoDistr\Kod\Certificates\client-eco-district.crt

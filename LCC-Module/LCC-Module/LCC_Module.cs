@@ -442,45 +442,6 @@ namespace LCC
             }
         }
 
-        //Old system
-        void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!iSpec.ContainsKey(property.Key))
-                    iSpec.Add(property.Key, new Number(property.Key));
-            }
-        }
-        
-        void SetInp(ref NonAtomic input, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!input.ContainsKey(property.Key))
-                    input.Add(property.Key, new Number(property.Key));
-            }
-        }
-
-        protected override InputSpecification GetInputSpecification(string kpiId)
-        {
-            var iSpec = new InputSpecification();
-
-            if (!KpiList.Contains(kpiId))
-                return null;
-
-            if (kpiId == kpi_lcc)
-            {
-                SetIspec(ref iSpec, generalCellMapping);
-                NonAtomic geoJson = new GeoJson("buildings");
-                SetInp(ref geoJson, buildingCellMapping);
-                geoJson.Add("heating_system", new InputGroup("heating_system"));
-                SetInp(ref geoJson, heatingSystemCellMapping);
-                iSpec.Add("buildings", geoJson);
-            }
-
-            return iSpec;
-        }
-   
         private void Set(string sheet, string cell, object value, ref CExcel exls)
         {
             if (!exls.SetCellValue(sheet, cell, value))

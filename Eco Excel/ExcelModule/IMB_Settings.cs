@@ -12,6 +12,7 @@ namespace Ecodistrict.Excel
         public int remotePort;
         public string subScribedEventName;
         public string publishedEventName;
+        public string publishedDataModuleEventName;
         public string aCertFile;
         public string aCertFilePassword;
         public string aRootCertFile;

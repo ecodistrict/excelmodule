@@ -155,6 +155,7 @@ namespace Ecodistrict.Excel
                 this.RemotePort = ((IMB_Settings)imb_settings).remotePort;
                 this.SubScribedEventName = ((IMB_Settings)imb_settings).subScribedEventName;
                 this.PublishedEventName = ((IMB_Settings)imb_settings).publishedEventName;
+                this.PublishedDataModuleEventName = ((IMB_Settings)imb_settings).publishedDataModuleEventName;
                 this.aCertFile = ((IMB_Settings)imb_settings).aCertFile;
                 this.aCertFilePassword = ((IMB_Settings)imb_settings).aCertFilePassword;
                 this.aRootCertFile = ((IMB_Settings)imb_settings).aRootCertFile;
@@ -218,11 +219,14 @@ namespace Ecodistrict.Excel
         /// The name the application uses when sending back information to the dashboard
         /// </summary>
         protected string PublishedEventName { get; set; }
+        /// <summary>
+        /// The name the application uses when sending back information to the datamodule
+        /// </summary>
+        protected string PublishedDataModuleEventName { get; set; }
         string aCertFile;
         string aCertFilePassword;
         string aRootCertFile;
         string aPrefix = "ecodistrict";
-        string dataEventId = Guid.NewGuid().ToString();
         protected string RemoteHost { get; set; }
         protected int RemotePort { get; set; }
 
@@ -296,9 +300,9 @@ namespace Ecodistrict.Excel
                     if (Connection.connected)
                     {
                         SubscribedEvent = Connection.subscribe(SubScribedEventName);
-                        SubscribedDataEvent = Connection.subscribe(dataEventId);
+                        SubscribedDataEvent = Connection.subscribe(Connection.privateEventName, false);
                         PublishedEvent = Connection.publish(PublishedEventName);
-                        PublishedDataEvent = Connection.publish("data");
+                        PublishedDataEvent = Connection.publish(PublishedDataModuleEventName);
                         Connection.onDisconnect += Connection_onDisconnect;
                         Connection.setHeartBeat(60000);
 
@@ -478,8 +482,8 @@ namespace Ecodistrict.Excel
 
             if (message is GetModulesRequest)
                 HandleGetModulesRequest(message as GetModulesRequest);
-            else if (message is SelectModuleRequest)
-                HandleSelectModuleRequest(message as SelectModuleRequest);
+            else if (message is SelectModuleRequest) //Currently not used. The dashboard doesn't send these anymore, since the input specifikation was removed.
+                HandleSelectModuleRequest(message as SelectModuleRequest); 
             else if (message is StartModuleRequest)
             {
                 //HandleStartModuleRequest2(message as StartModuleRequest);
@@ -592,10 +596,10 @@ namespace Ecodistrict.Excel
                         //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt2", dataEventId, "cstb");
 
-                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, dataEventId, "cstb");
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, Connection.privateEventName, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt1", dataEventId, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt2", dataEventId, "cstb");
-                        process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt3", dataEventId, "cstb");
+                        process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt3", Connection.privateEventName, "cstb");
 
 
                         //process.As_IS_Request =
@@ -606,9 +610,9 @@ namespace Ecodistrict.Excel
                     //    process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
                     else if (realReq.variantId != null)
                         //else if (request.variantId != "greenfactoralt2")
-                        process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
+                        process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), Connection.privateEventName);
                     else
-                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, dataEventId, "cstb");
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, Connection.privateEventName, "cstb");
                         //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
                     //process.As_IS_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
 
@@ -654,13 +658,13 @@ namespace Ecodistrict.Excel
                     if (useBothVariantAndAsISForVariant & request.variantId != null)
                     {
                         process.As_IS_Request =
-                            new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, null, dataEventId, request.userId);
-                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                            new GetDataRequest(ModuleId, Guid.NewGuid().ToString(), request.caseId, null, Connection.privateEventName, request.userId);
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
                     }
                     else if (request.variantId != null)
-                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
                     else
-                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
 
 
                     lock (Processes)
@@ -752,13 +756,13 @@ namespace Ecodistrict.Excel
                     var process = new ModuleProcess(request);
                     if (request.variantId == null)
                     {
-                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
                         process.As_IS_Data = new Dictionary<string, object>();
                         CalculateResult(process);
                     }
                     else
                     {
-                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
                         process.Variant_Data = new Dictionary<string, object>();
                         CalculateResult(process);
                     }
@@ -777,8 +781,8 @@ namespace Ecodistrict.Excel
                         var process = new ModuleProcess(request);
                         process.As_IS_Data = Data;
                         process.Variant_Data = Data;
-                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
-                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), dataEventId);
+                        process.Variant_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
+                        process.As_IS_Request = new GetDataRequest(request, Guid.NewGuid().ToString(), Connection.privateEventName);
                         CalculateResult(process);
                     }
                 }
@@ -1046,8 +1050,7 @@ namespace Ecodistrict.Excel
                 var variantId = request.variantId;
                 var caseId = request.caseId;
                 var kpiId = request.kpiId;
-                //var smResponse = new SelectModuleResponse(ModuleId, variantId, caseId, kpiId, null);
-                var smResponse = new SelectModuleResponse(ModuleId, variantId, caseId, kpiId, GetInputSpecification(kpiId));
+                var smResponse = new SelectModuleResponse(ModuleId, variantId, caseId, kpiId);
                 SendMessage(smResponse);
                 SendStatusMessage("SelectModuleResponse sent");
             }
@@ -1170,8 +1173,6 @@ namespace Ecodistrict.Excel
         #endregion
 
         #region Kpi Calculation
-        protected abstract InputSpecification GetInputSpecification(string kpiId);
-
         protected abstract bool CalculateKpi(ModuleProcess process, CExcel exls, out Ecodistrict.Messaging.Data.Output output, out Ecodistrict.Messaging.Data.OutputDetailed outputDetailed);
 
         private bool CalculateResult(ModuleProcess process)

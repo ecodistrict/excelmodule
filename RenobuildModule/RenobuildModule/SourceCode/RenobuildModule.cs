@@ -306,8 +306,7 @@ namespace RenobuildModule
         public RenobuildModule()
         {
             useDummyDB = false;
-            useBothVariantAndAsIS = true;
-            newDashboardSystem = true;
+            this.useBothVariantAndAsISForVariant = true;
 
             //IMB-hub info (not used)
             this.UserId = 0;
@@ -333,15 +332,7 @@ namespace RenobuildModule
             if (!exls.SetCellValue(sheet, cell, value))
                 throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
-
-        protected override InputSpecification GetInputSpecification(string kpiId)
-        {
-            if (!inputSpecifications.ContainsKey(kpiId))
-                throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
-
-            return inputSpecifications[kpiId];
-        }
-
+        
         bool GetSetBool(ref Dictionary<string, object> properties, string property)
         {
             if (!properties.ContainsKey(property))
@@ -363,7 +354,7 @@ namespace RenobuildModule
 
             if (!KpiList.Contains(process.KpiId))
             {
-                CalcMessage = String.Format("kpi not available for this module, requested kpi: {0}", process.KpiId);
+                process.CalcMessage = String.Format("kpi not available for this module, requested kpi: {0}", process.KpiId);
                 return false;
             }
 
@@ -380,13 +371,13 @@ namespace RenobuildModule
 
             if (process.As_IS_Data == null)
             {
-                CalcMessage = "Data missing for AsIs";
+                process.CalcMessage = "Data missing for AsIs";
                 return false;
             }
 
             if (process.Variant_Data == null)
             {
-                CalcMessage = "Data missing for Variant";
+                process.CalcMessage = "Data missing for Variant";
                 return false;
             }
 
@@ -394,11 +385,11 @@ namespace RenobuildModule
             district_data = process.Variant_Data;
 
             //Check AsIs Data 
-            if (!CheckBuildingData(process.As_IS_Data, "AsIS", out buildingsAsIS))
+            if (!CheckBuildingData(process, process.As_IS_Data, "AsIS", out buildingsAsIS))
                 return false;
 
             //Check Variant Data
-            if (!CheckBuildingData(process.Variant_Data, "Variant", out buildingsVariant))
+            if (!CheckBuildingData(process, process.Variant_Data, "Variant", out buildingsVariant))
                 return false;
 
             return true;
@@ -435,7 +426,7 @@ namespace RenobuildModule
 
                     if (buildingAsIS == null)
                     {
-                        CalcMessage = String.Format("Data for AsIs building missing, id: {0}", buildingVariant.properties[buidingIdKey]);
+                        process.CalcMessage = String.Format("Data for AsIs building missing, id: {0}", buildingVariant.properties[buidingIdKey]);
                         return false;
                     }
 
@@ -472,23 +463,23 @@ namespace RenobuildModule
             }
         }
 
-        protected bool CheckBuildingData(Dictionary<string,object> data, string variant, out GeoValue buildings)
+        protected bool CheckBuildingData(ModuleProcess process, Dictionary<string, object> data, string variant, out GeoValue buildings)
         {
             buildings = null;
 
-            if (!CheckAndReportDistrictProp(data, "buildings"))
+            if (!CheckAndReportDistrictProp(process, data, "buildings"))
                 return false;
 
             buildings = data["buildings"] as GeoValue;
 
             if (buildings.features == null)
             {
-                CalcMessage = String.Format("Data missing for {0}" , variant);
+                process.CalcMessage = String.Format("Data missing for {0}", variant);
                 return false;
             }
             else if (buildings.features.Count == 0)
             {
-                CalcMessage = String.Format("Data missing for {0}", variant);
+                process.CalcMessage = String.Format("Data missing for {0}", variant);
                 return false;
             }
 
@@ -496,18 +487,18 @@ namespace RenobuildModule
             {
                 if (building.properties == null)
                 {
-                    CalcMessage = String.Format("No properties for one building in {0}", variant);
+                    process.CalcMessage = String.Format("No properties for one building in {0}", variant);
                     return false;
                 }
                 else if (building.properties.Count == 0)
                 {
-                    CalcMessage = String.Format("No properties for one building in {0}", variant);
+                    process.CalcMessage = String.Format("No properties for one building in {0}", variant);
                     return false;
                 }
 
                 if (!building.properties.ContainsKey(buidingIdKey))
                 {
-                    CalcMessage = String.Format("Building id missing for one building in {0}", variant);
+                    process.CalcMessage = String.Format("Building id missing for one building in {0}", variant);
                     return false;
                 }
             }
@@ -576,7 +567,7 @@ namespace RenobuildModule
                 try
                 {
                     {
-                        if (!CheckAndReportDistrictProp(CurrentData, property.Key))
+                        if (!CheckAndReportDistrictProp(process, CurrentData, property.Key))
                             return false;
 
                         object value = CurrentData[property.Key];
@@ -584,7 +575,7 @@ namespace RenobuildModule
                         double val = Convert.ToDouble(value);
                         if (val < 0)
                         {
-                            CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                            process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
                             return false;
                         }
 
@@ -1016,159 +1007,7 @@ namespace RenobuildModule
         #endregion
 
         #endregion
-
-        protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
-        {
-            outputs = new Ecodistrict.Messaging.Output.Outputs();
-
-            InputGroup commonPropertiesIpg = indata[common_properties] as InputGroup;
-            Dictionary<String, Input> commonProperties = commonPropertiesIpg.GetInputs();
-            GeoJson buildingProperties = indata["buildings"] as GeoJson;
-
-            double kpi = 0;
-            string resultCell;
-            bool perSqrm = false;
-
-            switch (kpiId)
-            {
-                case kpi_gwp:
-                    resultCell = "C31"; //Change of global warming potential
-                    break;
-                case kpi_gwp_per_heated_area:
-                    resultCell = "E31"; //Mean change of global warming potential per m^2
-                    perSqrm = true;
-                    break;
-                case kpi_peu:
-                    resultCell = "C32"; //Change of primary energy use  
-                    break;
-                case kpi_peu_per_heated_area:
-                    resultCell = "E32"; //Mean change of primary energy use per m^2
-                    perSqrm = true;
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            }
-
-            #region Set Common Properties
-            String Key;
-            object value = 0;
-
-            #region LCA Calculation Period
-            Key = lca_calculation_period;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C16", value: value, exls: ref exls);
-            #endregion
-
-            #region Electricity Mix
-            Key = electricity_mix;
-            value = ((Select)commonProperties[Key]).SelectedIndex() + 1;
-            Set(sheet: "Indata", cell: "C17", value: value, exls: ref exls);
-            #endregion
-
-            // If district heating is used (before/after renovation)
-            #region Global warming potential of district heating
-            Key = gwp_district;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C20", value: value, exls: ref exls);
-            #endregion
-
-            #region "Primary energy use of district heating
-            Key = peu_district;
-            value = Convert.ToDouble(((Number)commonProperties[Key]).GetValue());
-            Set(sheet: "Indata", cell: "C21", value: value, exls: ref exls);
-            #endregion
-            #endregion
-
-            #region Calculate LCA per building
-            int nrRenovatedBuildings = 0;
-            foreach (Feature building in buildingProperties.value.features)
-            {
-                if (GetSetBool(ref building.properties, change_heating_system) ||
-                    GetSetBool(ref building.properties, change_circulationpump_in_heating_system) ||
-                    GetSetBool(ref building.properties, change_insulation_material_1) ||
-                    GetSetBool(ref building.properties, change_insulation_material_2) ||
-                    GetSetBool(ref building.properties, change_facade_system) ||
-                    GetSetBool(ref building.properties, change_windows) ||
-                    GetSetBool(ref building.properties, change_doors) ||
-                    GetSetBool(ref building.properties, change_ventilation_ducts) ||
-                    GetSetBool(ref building.properties, change_airflow_assembly) ||
-                    GetSetBool(ref building.properties, change_air_distribution_housings_and_silencers) ||
-                    GetSetBool(ref building.properties, change_radiators) ||
-                    GetSetBool(ref building.properties, change_piping_copper) ||
-                    GetSetBool(ref building.properties, change_piping_pex) ||
-                    GetSetBool(ref building.properties, change_piping_pp) ||
-                    GetSetBool(ref building.properties, change_piping_cast_iron) ||
-                    GetSetBool(ref building.properties, change_piping_galvanized_steel) ||
-                    GetSetBool(ref building.properties, change_piping_relining) ||
-                    GetSetBool(ref building.properties, change_electrical_wiring))
-                {
-                    SetInputDataOneBuilding(building, ref exls, perSqrm);
-
-                    double resi = Convert.ToDouble(exls.GetCellValue("Indata", resultCell));
-                    kpi += resi;
-
-                    switch (kpiId)
-                    {
-                        case kpi_gwp:
-                        case kpi_peu:
-                            resi = Math.Round(resi, 1);
-                            break;
-                        case kpi_gwp_per_heated_area:
-                        case kpi_peu_per_heated_area:
-                            resi = Math.Round(resi, 3);
-                            break;
-                        default:
-                            throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-                    }
-
-                    if (!building.properties.ContainsKey("kpiValue"))
-                        building.properties.Add("kpiValue", resi);
-                    else
-                        building.properties["kpiValue"] = Math.Round(resi, 3);
-
-                    ++nrRenovatedBuildings;
-                }
-                //else
-                //    building.properties.Add("kpiValue", 0);
-
-            }
-            #endregion
-
-            ////Calculate the mean kpi value
-            //if (buildingProperties.value.features.Count > 0 & 
-            //    (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
-            //    kpiId == kpi_gwp | kpiId == kpi_peu))
-            //    kpi = kpi / (double)buildingProperties.value.features.Count;
-
-            //Calculate the mean kpi value
-            if (nrRenovatedBuildings > 0 &
-                (kpiId == kpi_gwp_per_heated_area | kpiId == kpi_peu_per_heated_area |
-                kpiId == kpi_gwp | kpiId == kpi_peu))
-                kpi = kpi / (double)nrRenovatedBuildings;
-
-            switch (kpiId)
-            {
-                case kpi_gwp:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of global warming potential", "tonnes CO2 eq"));
-                    break;
-                case kpi_gwp_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of global warming potential per heated area", "tonnes CO2 eq / m\u00b2"));
-                    break;
-                case kpi_peu:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 1), "Change of primary energy use", "MWh"));
-                    break;
-                case kpi_peu_per_heated_area:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 3), "Change of primary energy use per heated area", "MWh / m\u00b2"));
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            }
-            Ecodistrict.Messaging.Output.GeoJson buildingsProps = new Ecodistrict.Messaging.Output.GeoJson(buildingProperties);
-            outputs.Add(buildingsProps);
-
-            return true;
-        }
-        
+                
         InputSpecification GetInputSpecificationGeoJson(bool perSqrm = false)
         {
             InputSpecification iSpec = new InputSpecification();
