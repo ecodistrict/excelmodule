@@ -879,8 +879,6 @@ namespace IMB
         {
             if (connected)
             {
-                if (onDisconnect!=null)
-                    onDisconnect(this);
                 if (aSendCloseCmd)
                     try
                     {
@@ -888,6 +886,8 @@ namespace IMB
                     }
                     catch { } //  catch and ignore all
                 connected = false;
+                if (onDisconnect != null)
+                    onDisconnect(this);
             }
         }
 
