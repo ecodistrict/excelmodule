@@ -15,13 +15,17 @@ namespace LCC
         #region Defines
         // - Kpis
         const string kpi_lcc = "lcc";
+        const string kpi_yearsToPayback = "years-to-payback"; //Todo: to dashboard
+        const string kpi_totalLCC = "total-lcc"; //Todo: to dashboard
         const string sheet = "LCC-mall 2";
         const string buidingIdKey = "gml_id";
 
         #region Cell Mapping
         Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
         {
-            {kpi_lcc,                 "H4"}
+            {kpi_lcc,                 "H4"},
+            {kpi_yearsToPayback,      "J4"},
+            {kpi_totalLCC,      "H4"}
         };
 
         Dictionary<string, string> generalCellMapping = new Dictionary<string, string>()  //TODO update variable names
@@ -216,6 +220,7 @@ namespace LCC
             {"heating_system_installation_cost",       "O43"}
         };
 
+
         Dictionary<string, string> EnergyProductionCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
             //{"heating_system_time_for_investment",     "G20"},
@@ -234,7 +239,7 @@ namespace LCC
             this.useBothVariantAndAsISForVariant = false;
             
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_lcc };
+            this.KpiList = kpiCellMapping.Keys.ToList();
 
             //Error handler
             this.ErrorRaised += CExcelModule_ErrorRaised;
@@ -351,6 +356,8 @@ namespace LCC
 
                     kpiValuei = Convert.ToDouble(exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]));
 
+                    //Todo: Reset all used building values
+
                     if (changesMade)
                         ++noRenovatedBuildings;
                     
@@ -358,7 +365,7 @@ namespace LCC
                     outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData[buidingIdKey] as string, process.KpiId, kpiValuei));
                 }
 
-                if (noRenovatedBuildings > 0)
+                if (noRenovatedBuildings > 0 && (process.KpiId != kpi_totalLCC))
                     kpiValue /= Convert.ToDouble(noRenovatedBuildings);
 
                 output = new Ecodistrict.Messaging.Data.Output(process.KpiId, Math.Round(kpiValue, 1));
