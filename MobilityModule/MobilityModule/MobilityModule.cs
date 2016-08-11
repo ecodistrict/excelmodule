@@ -249,15 +249,18 @@ namespace MobilityModule
                     return false;
                 }
 
-                if (!process.As_IS_Data.ContainsKey("District"))
+                //string distrName = "District";
+                string distrName = "District trafic area";
+
+                if (!process.As_IS_Data.ContainsKey(distrName))
                 {
                     process.CalcMessage = "As is district information missing";
                     return false;
                 }
 
                 Dictionary<string, object> dataAsIS ;
-                if(process.As_IS_Data["District"] is Dictionary<string, object>)
-                    dataAsIS = process.As_IS_Data["District"] as Dictionary<string, object>;
+                if (process.As_IS_Data[distrName] is Dictionary<string, object>)
+                    dataAsIS = process.As_IS_Data[distrName] as Dictionary<string, object>;
                 else
                 {
                     process.CalcMessage = "As is data received from data module is wrongly formated";
@@ -286,7 +289,7 @@ namespace MobilityModule
                         return false;
                     }
 
-                    if (!process.Variant_Data.ContainsKey("District"))
+                    if (!process.Variant_Data.ContainsKey(distrName))
                     {
                         process.CalcMessage = "Variant district information missing";
                         return false;
@@ -294,8 +297,8 @@ namespace MobilityModule
 
 
                     Dictionary<string, object> dataVariant;
-                    if (process.Variant_Data["District"] is Dictionary<string, object>)
-                        dataVariant = process.Variant_Data["District"] as Dictionary<string, object>;
+                    if (process.Variant_Data[distrName] is Dictionary<string, object>)
+                        dataVariant = process.Variant_Data[distrName] as Dictionary<string, object>;
                     else
                     {
                         process.CalcMessage = "Variant data received from data module is wrongly formated";

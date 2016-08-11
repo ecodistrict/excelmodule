@@ -300,7 +300,7 @@ namespace Ecodistrict.Excel
                     if (Connection.connected)
                     {
                         SubscribedEvent = Connection.subscribe(SubScribedEventName);
-                        SubscribedDataEvent = Connection.subscribe(Connection.privateEventName, false);
+                        SubscribedDataEvent = Connection.subscribe("Ecodistrict." + Connection.privateEventName, false);
                         PublishedEvent = Connection.publish(PublishedEventName);
                         PublishedDataEvent = Connection.publish(PublishedDataModuleEventName);
                         Connection.onDisconnect += Connection_onDisconnect;

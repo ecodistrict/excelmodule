@@ -3,6 +3,6 @@
 name: Stockholm Green Area Factor (Dev)
 description: Calculates the Stockholm green area factor, with sub cathegories Biodiversity, Social value and Climate adaptation.
 moduleId: Stockholm_Green_Area_Factor
-# path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Green\StockholmGreenAreaFactor.xls 
+path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Green\StockholmGreenAreaFactor.xls 
 # path: L:\EcoDistr\Modules\Stockholm_BAF\StockholmBiotopeAreaFactor.xls 
-path:C:\Programutveckling\EcoDistr\Modules\Stockholm_BAF\StockholmBiotopeAreaFactor.xls 
+# path:C:\Programutveckling\EcoDistr\Modules\Stockholm_BAF\StockholmBiotopeAreaFactor.xls 
