@@ -1,8 +1,12 @@
 ---
 # Information needed in order to connect to the IMB-hub
 remoteHost:  vps17642.public.cloudvps.com
+remotePort:  443 #443 #4443
 subScribedEventName: modules
 publishedEventName: dashboard
-aCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\client-eco-district.pfx
+publishedDataModuleEventName: data
+aCertFile : L:\EcoDistr\Kod\Certificates\client-eco-district.pfx 
+# aCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\client-eco-district.pfx
 aCertFilePassword : "&8dh48klosaxu90OKH"
-aRootCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\root-ca-imb.crt
+aRootCertFile : L:\EcoDistr\Kod\Certificates\client-eco-district.crt 
+#aRootCertFile : C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Certificates\client-eco-district.crt #

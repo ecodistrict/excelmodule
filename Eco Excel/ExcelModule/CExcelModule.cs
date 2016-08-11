@@ -1115,6 +1115,21 @@ namespace Ecodistrict.Excel
 
             return true;
         }
+        protected bool CheckAndReportBuildingProp(ModuleProcess process, Dictionary<string, object> buildingProps, string key)
+        {
+            if (!buildingProps.ContainsKey(key))
+            {
+                string buildingIdKey = "attr_gml_id";
+                if (buildingProps.ContainsKey(buildingIdKey))
+                    process.CalcMessage = String.Format("Property {0} missing in building {1}", key, buildingProps[buildingIdKey]);
+                else
+                    process.CalcMessage = String.Format("Property {0} missing, building id not set", key);
+
+                return false;
+            }
+
+            return true;
+        }
         protected bool CheckAndReportDistrictProp(ModuleProcess process, Dictionary<string, object> distrProps, string key)
         {
             if (distrProps == null)
