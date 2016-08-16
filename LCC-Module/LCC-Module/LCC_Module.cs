@@ -330,7 +330,7 @@ namespace LCC
                 if (!CheckAndReportDistrictProp(process,process.CurrentData, "Buildings"))
                     return false;
 
-                string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);
+                string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);  //TODO error if process.CurrentData["Buildings"] == "{}"
                 List<Dictionary<string, object>> buildings = Newtonsoft.Json.JsonConvert.DeserializeObject(buildingsData, typeof(List<Dictionary<string, object>>)) as List<Dictionary<string, object>>;
 
                 //buildings = process.CurrentData["Buildings"] as GeoValue;

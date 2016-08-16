@@ -482,7 +482,7 @@ namespace Ecodistrict.Excel
 
             if (message is GetModulesRequest)
                 HandleGetModulesRequest(message as GetModulesRequest);
-            else if (message is SelectModuleRequest) //Currently not used. The dashboard doesn't send these anymore, since the input specifikation was removed.
+            else if (message is SelectModuleRequest) //Currently not used. The dashboard doesn't send these anymore, since the input specification was removed.
                 HandleSelectModuleRequest(message as SelectModuleRequest); 
             else if (message is StartModuleRequest)
             {
