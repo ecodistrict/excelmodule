@@ -578,7 +578,8 @@ namespace Ecodistrict.Excel
                     //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "green_factor", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
 
                     //Mobility - Warsaw
-                    request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "warsaw_mobility", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
+                    //request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "warsaw_mobility", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
+                    request = new StartModuleRequest(moduleId: this.ModuleId, caseId: "antwerpen_affordability", variantId: "variant2", userId: "cstb", kpiId: realReq.kpiId);
 
                 }
 
@@ -596,10 +597,10 @@ namespace Ecodistrict.Excel
                         //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt2", dataEventId, "cstb");
 
-                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, Connection.privateEventName, "cstb");
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "antwerpen_affordability", null, Connection.privateEventName, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt1", dataEventId, "cstb");
                         //process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt2", dataEventId, "cstb");
-                        process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", "alt3", Connection.privateEventName, "cstb");
+                        process.Variant_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "antwerpen_affordability", "alt3", Connection.privateEventName, "cstb");
 
 
                         //process.As_IS_Request =
@@ -612,7 +613,8 @@ namespace Ecodistrict.Excel
                         //else if (request.variantId != "greenfactoralt2")
                         process.Variant_Request = new GetDataRequest(request, Convert.ToString(4), Connection.privateEventName);
                     else
-                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, Connection.privateEventName, "cstb");
+                        process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "antwerpen_affordability", null, Connection.privateEventName, "cstb");
+                        //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "warsaw_mobility", null, Connection.privateEventName, "cstb");
                         //process.As_IS_Request = new GetDataRequest(ModuleId, Convert.ToString(4), "hovsjo", "greenfactoralt1", dataEventId, "cstb");
                     //process.As_IS_Request = new GetDataRequest(request, Convert.ToString(4), dataEventId);
 

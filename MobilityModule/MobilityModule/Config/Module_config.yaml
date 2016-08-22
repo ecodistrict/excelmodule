@@ -3,6 +3,6 @@
 name: Mobility Module
 description: 
 moduleId: MobilityModule
-path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Mobility\Mobility v1.0.xlsx 
+# path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Mobility\Mobility v1.0.xlsx 
 # path: L:\EcoDistr\Modules\MobilityModule\Mobility v1.0.xlsx
-# path: C:\Programutveckling\EcoDistr\Modules\MobilityModule\Mobility v1.0.xlsx
+path: C:\Programutveckling\EcoDistr\Modules\MobilityModule\Mobility v1.0.xlsx

@@ -3,6 +3,6 @@
 name: SP LCC
 description: LCC tool for renovation options, interface developed by SP.
 moduleId: SP_LCC_v1.0
-path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\SP_LCC\SP_LCC.xlsx
+# path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\SP_LCC\SP_LCC.xlsx
 # path: L:\EcoDistr\Modules\LCC\SP_LCC.xlsx
-# path: C:\Programutveckling\EcoDistr\Modules\LCC\SP_LCC.xlsx
+path: C:\Programutveckling\EcoDistr\Modules\LCC\SP_LCC.xlsx

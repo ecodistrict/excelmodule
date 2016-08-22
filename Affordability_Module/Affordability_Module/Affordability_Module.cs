@@ -45,7 +45,7 @@ namespace Affordability
         };
 
 
-        Checkbox cb_include_household_electricity = new Checkbox("Household electricity payed separately");
+        //Checkbox cb_include_household_electricity = new Checkbox("Household electricity payed separately");
 
         static KeyValuePair<string, string> include_household_electricity =
             new KeyValuePair<string, string>("include_household_electricity", "C12");
@@ -126,6 +126,7 @@ namespace Affordability
 
         public Affordability_Module()
         {
+            this.useDummyDB = false;
             this.useBothVariantAndAsISForVariant = false;
             
             //List of kpis the module can calculate
@@ -168,6 +169,13 @@ namespace Affordability
                 outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
                 double kpiValue = 0;
                 int noRenovatedBuildings = 0;
+
+                //NEW_CODE: Start with getting all default (Inital start) values from the excel Sheet for buildingdata
+                Dictionary<string, object> buildingDefaultValues = new Dictionary<string, object>();
+                if (buildings != null && buildings.Count > 0)
+                    if (!GetBuildingDefaultValues(exls, out buildingDefaultValues))
+                        return false;
+
                 foreach (Dictionary<string, object> buildingData in buildings)
                 {
                     double kpiValuei;
@@ -177,10 +185,12 @@ namespace Affordability
 
                     kpiValuei = 100 * Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
                     
-                    //Todo: Reset all used building values
-
                     if (changesMade)
                         ++noRenovatedBuildings;
+
+                    //NEW_CODE: Reset all used building values
+                    if (!SetInputDataOneBuilding(process, buildingDefaultValues, exls, out changesMade))
+                        return false;
 
                     kpiValue += kpiValuei;
                     outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData[buidingIdKey] as string, process.KpiId, kpiValuei));
@@ -199,6 +209,32 @@ namespace Affordability
                 throw ex;
             }
         }
+
+        private bool GetBuildingDefaultValues(CExcel exls, out Dictionary<string, object> buildingDefaultValues)
+        {
+            buildingDefaultValues = new Dictionary<string, object>();
+            try
+            {
+                #region Get data
+
+                if (!GetProperties(exls, generalBuildingCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, include_household_electricity, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, energy_price_houshold_electricity, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, manualHouseholdElectricity, ref buildingDefaultValues))
+                    return false;
+                #endregion
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
         private bool SetInputDataOneBuilding(ModuleProcess process, Dictionary<string, object> buildingData, CExcel exls, out bool changesMade)
         {
@@ -356,7 +392,37 @@ namespace Affordability
             return true;
         }
 
+        private bool GetProperties(CExcel exls, Dictionary<string, string> cellMapping, ref Dictionary<string, object> buildingDefaultValues)
+        {
+            foreach (KeyValuePair<string, string> property in cellMapping)
+            {
+                try
+                {
+                    buildingDefaultValues.Add(property.Key, exls.GetCellValue(sheet, property.Value));
+                }
+                catch (Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "GetProperties", exception: ex);
+                    return false;
+                }
+            }
+            return true;
+        }
 
+        private bool GetProperties(CExcel exls, KeyValuePair<string, string> cellMapping,
+            ref Dictionary<string, object> buildingDefaultValues)
+        {
+            try
+            {
+                buildingDefaultValues.Add(cellMapping.Key,exls.GetCellValue(sheet,cellMapping.Value));
+            }
+            catch (Exception ex)
+            {
+                SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", cellMapping.Key), sourceFunction: "GetProperties", exception: ex);
+                return false;
+            }
+            return true;
+        }
 
         //Old system
         void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
