@@ -62,172 +62,166 @@ namespace LCC
 
         Dictionary<string, string> heatingSystemCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
             {"BuildingHeatingSystem_LifeOfProduct",                 "J24"}, 
             {"BuildingHeatingSystemHeatSource_InitialInvestement",  "N24"},
             {"BuildingHeatingSystemHeatSource_InstallationCost",    "O24"}
         };
 
+        Dictionary<string, string> heatingPumpCellMapping = new Dictionary<string, string>()  //TODO update variable names
+        {
+            {"BuildingSystemHeatPump_LifeOfProduct",      "J25"}, 
+            {"BuildingSystemHeatPump_InitialInvestment",  "N25"},
+            {"BuildingSystemHeatPump_InstallationCost",   "O25"}
+        };
+
         Dictionary<string, string> heatingSystemBoreHoleCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"heating_BoreHole_system_life_time",               "J25"}, 
-            {"heating_BoreHole_system_investment_cost",         "N25"},
-            {"heating_BoreHole_system_installation_cost",       "O25"}
+            {"BuildingSystemBoreHole_LifeOfProduct",          "J26"}, 
+            {"BuildingSystemBoreHole_InitialInvestment",      "N26"},
+            {"BuildingSystemBoreHole_InstallationCost",       "O26"}
         };
 
         Dictionary<string, string> heatingSystemCirculationPumpCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"heating_CirculationPump_system_life_time",               "J26"}, 
-            {"heating_CirculationPump_system_investment_cost",         "N26"},
-            {"heating_CirculationPump_system_installation_cost",       "O26"}
+            {"heating_CirculationPump_system_life_time",               "J27"}, 
+            {"heating_CirculationPump_system_investment_cost",         "N27"},
+            {"heating_CirculationPump_system_installation_cost",       "O27"}
         };
 
         Dictionary<string, string> buildingShellInsulationMaterial1CellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"BuildingShellInsulationMaterial1_LifeOfProduct",          "J27"}, 
-            {"BuildingShellInsulationMaterial1_InitialInvestement",     "N27"},
-            {"BuildingShellInsulationMaterial1_InstallationCost",       "O27"}
+            {"BuildingShellInsulationMaterial1_LifeOfProduct",          "J28"}, 
+            {"BuildingShellInsulationMaterial1_InitialInvestement",     "N28"},
+            {"BuildingShellInsulationMaterial1_InstallationCost",       "O28"}
         };
 
         Dictionary<string, string> buildingShellInsulationMaterial2CellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"BuildingShellInsulationMaterial2_LifeOfProduct",          "J28"}, 
-            {"BuildingShellInsulationMaterial2_InitialInvestement",     "N28"},
-            {"BuildingShellInsulationMaterial2_InstallationCost",       "O28"}
+            {"BuildingShellInsulationMaterial2_LifeOfProduct",          "J29"}, 
+            {"BuildingShellInsulationMaterial2_InitialInvestement",     "N29"},
+            {"BuildingShellInsulationMaterial2_InstallationCost",       "O29"}
         };
 
         Dictionary<string, string> buildingShellFacadeSystemCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"Building_ShellFacade_system_life_time",               "J29"}, 
-            {"Building_ShellFacade_system_investment_cost",         "N29"},
-            {"Building_ShellFacade_system_installation_cost",       "O29"}
+            {"Building_ShellFacade_system_life_time",               "J30"}, 
+            {"Building_ShellFacade_system_investment_cost",         "N30"},
+            {"Building_ShellFacade_system_installation_cost",       "O30"}
         };
 
         Dictionary<string, string> buildingShellWindowsCellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"BuildingShellWindows_LifeOfProduct",        "J30"}, 
-            {"BuildingShellWindows_InitialInvestement",   "N30"},
-            {"BuildingShellWindows_InstallationCost",     "O30"}
+            {"BuildingShellWindows_LifeOfProduct",        "J31"}, 
+            {"BuildingShellWindows_InitialInvestement",   "N31"},
+            {"BuildingShellWindows_InstallationCost",     "O31"}
         };
 
         Dictionary<string, string> buildingShellDoorsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"Building_ShellDoors_system_life_time",               "J31"}, 
-            {"Building_ShellDoors_system_investment_cost",         "N31"},
-            {"Building_ShellDoors_system_installation_cost",       "O31"}
+            {"Building_ShellDoors_system_life_time",               "J32"}, 
+            {"Building_ShellDoors_system_investment_cost",         "N32"},
+            {"Building_ShellDoors_system_installation_cost",       "O32"}
         };
 
         Dictionary<string, string> VentilationSystemVentilationDuctsCellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"VentilationSystem_LifeOfVentilationDucts",      "J32"}, 
-            {"VentilationSystem_InitialInvestementDucts",     "N32"},
-            {"VentilationSystem_InstallationCostDucts",       "O32"}
+            {"VentilationSystem_LifeOfVentilationDucts",      "J33"}, 
+            {"VentilationSystem_InitialInvestementDucts",     "N33"},
+            {"VentilationSystem_InstallationCostDucts",       "O33"}
         };
 
         Dictionary<string, string> VentilationSystemAirflowAssemblyCellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"VentilationSystem_LifeOfAirflowAssembly",                 "J33"}, 
-            {"VentilationSystem_InitialInvestementAirflowAssembly",     "N33"},
-            {"VentilationSystem_InstallationCostAirflowAssembly",       "O33"}
+            {"VentilationSystem_LifeOfAirflowAssembly",                 "J34"}, 
+            {"VentilationSystem_InitialInvestementAirflowAssembly",     "N34"},
+            {"VentilationSystem_InstallationCostAirflowAssembly",       "O34"}
         };
 
         Dictionary<string, string> VentilationSystemDistributionHousingsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"VentilationSystemDistributionHousings_life_time",               "J34"}, 
-            {"VentilationSystemDistributionHousings_investment_cost",         "N34"},
-            {"VentilationSystemDistributionHousings_installation_cost",       "O34"}
+            {"VentilationSystemDistributionHousings_life_time",               "J35"}, 
+            {"VentilationSystemDistributionHousings_investment_cost",         "N35"},
+            {"VentilationSystemDistributionHousings_installation_cost",       "O35"}
         };
 
         Dictionary<string, string> RadiatorsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"BuildingRadiators_LifeOfProduct",          "J35"}, 
-            {"BuildingRadiators_InitialInvestement",     "N35"},
-            {"BuildingRadiators_InstallationCost",       "O35"}
+            {"BuildingRadiators_LifeOfProduct",          "J36"}, 
+            {"BuildingRadiators_InitialInvestement",     "N36"},
+            {"BuildingRadiators_InstallationCost",       "O36"}
         };
 
         Dictionary<string, string> WaterTapsCellMapping = new Dictionary<string, string>()
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"WaterTaps_LifeOfProduct",               "J36"}, 
-            {"WaterTaps_InitialInvestement",          "N36"},
-            {"WaterTaps_InstallationCost",            "O36"}
+            {"WaterTaps_LifeOfProduct",               "J37"}, 
+            {"WaterTaps_InitialInvestement",          "N37"},
+            {"WaterTaps_InstallationCost",            "O37"}
         };
 
         Dictionary<string, string> PipingSystemsCopperCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsCopper_LifeOfProduct",               "J37"}, 
-            {"BuildingPipingSystemsCopper_InitialInvestement",  "N37"},
-            {"BuildingPipingSystemsCopper_InstallationCost",    "O37"}
+            {"PipingSystemsCopper_LifeOfProduct",               "J38"}, 
+            {"PipingSystemsCopper_InitialInvestement",  "N38"},
+            {"PipingSystemsCopper_InstallationCost",    "O38"}
         };
 
         Dictionary<string, string> PipingSystemsPEXCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsPEX_life_time",               "J38"}, 
-            {"PipingSystemsPEX_investment_cost",         "N38"},
-            {"PipingSystemsPEX_installation_cost",       "O38"}
+            {"PipingSystemsPEX_life_time",               "J39"}, 
+            {"PipingSystemsPEX_investment_cost",         "N39"},
+            {"PipingSystemsPEX_installation_cost",       "O39"}
         };
 
         Dictionary<string, string> PipingSystemsPPCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsPP_life_time",               "J39"}, 
-            {"PipingSystemsPP_investment_cost",         "N39"},
-            {"PipingSystemsPP_installation_cost",       "O39"}
+            {"PipingSystemsPP_life_time",               "J40"}, 
+            {"PipingSystemsPP_investment_cost",         "N40"},
+            {"PipingSystemsPP_installation_cost",       "O40"}
         };
 
         Dictionary<string, string> PipingSystemsCastIronCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsCastIron_life_time",               "J40"}, 
-            {"PipingSystemsCastIron_investment_cost",         "N40"},
-            {"PipingSystemsCastIron_installation_cost",       "O40"}
+            {"PipingSystemsCastIron_life_time",               "J41"}, 
+            {"PipingSystemsCastIron_investment_cost",         "N41"},
+            {"PipingSystemsCastIron_installation_cost",       "O41"}
         };
 
         Dictionary<string, string> PipingSystemsGalvanisedSteelCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsGalvanisedSteel_life_time",               "J41"}, 
-            {"PipingSystemsGalvanisedSteel_investment_cost",         "N41"},
-            {"PipingSystemsGalvanisedSteel_installation_cost",       "O41"}
+            {"PipingSystemsGalvanisedSteel_life_time",               "J42"}, 
+            {"PipingSystemsGalvanisedSteel_investment_cost",         "N42"},
+            {"PipingSystemsGalvanisedSteel_installation_cost",       "O42"}
         };
 
         Dictionary<string, string> PipingSystemsReliningCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"PipingSystemsRelining_life_time",               "J42"}, 
-            {"PipingSystemsRelining_investment_cost",         "N42"},
-            {"PipingSystemsRelining_installation_cost",       "O42"}
+            {"PipingSystemsRelining_life_time",               "J43"}, 
+            {"PipingSystemsRelining_investment_cost",         "N43"},
+            {"PipingSystemsRelining_installation_cost",       "O43"}
         };
 
         Dictionary<string, string> ElectricalWiringCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"ElectricalWiring_life_time",               "J43"}, 
-            {"ElectricalWiring_investment_cost",         "N43"},
-            {"ElectricalWiring_installation_cost",       "O43"}
+            {"ElectricalWiring_life_time",               "J44"}, 
+            {"ElectricalWiring_investment_cost",         "N44"},
+            {"ElectricalWiring_installation_cost",       "O44"}
         };
 
 
         Dictionary<string, string> EnergyProductionCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            //{"heating_system_time_for_investment",     "G20"},
-            {"EnergyProduction_LifeOfProduct",          "J44"}, 
-            {"EnergyProduction_InitialInvestement",     "N44"},
-            {"EnergyProduction_InstallationCost",       "O44"}
+            {"EnergyProduction_LifeOfProduct",          "J45"}, 
+            {"EnergyProduction_InitialInvestement",     "N45"},
+            {"EnergyProduction_InstallationCost",       "O45"}
         };
+
+        Dictionary<string, string> BuildingCondBoilersCellMapping = new Dictionary<string, string>()  //TODO update variable names
+        {
+            {"BuildingCondBoiler_LifeOfProduct",          "J46"}, 
+            {"BuildingCondBoiler_InitialInvestement",     "N46"},
+            {"BuildingCondBoiler_InstallationCost",       "O46"}
+        };
+
 
         #endregion
 
