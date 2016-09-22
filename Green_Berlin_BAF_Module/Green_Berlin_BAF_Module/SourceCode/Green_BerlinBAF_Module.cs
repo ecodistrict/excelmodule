@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Ecodistrict.Messaging;
 using Ecodistrict.Excel;
+using Ecodistrict.Messaging.Data;
 
 namespace Green_BerlinBAF_Module
 {
@@ -15,46 +16,52 @@ namespace Green_BerlinBAF_Module
         // - Kpis
         const string kpi_baf = "biotope-area-factor";
         const string kpi_berlin_baf = "berlin-biotope-area-factor";
-        const string result_cell = "E30";
+
+        const string sheet = "Input";
+        const string sheetOutput = "Input";
 
         Dictionary<string, InputSpecification> inputSpecifications;
-        
-        void DefineInputSpecifications()
-        {
-            try
-            {
-                inputSpecifications = new Dictionary<string, InputSpecification>();
 
-                //GeoJson
-                inputSpecifications.Add(kpi_baf, GetInputSpecificationGreen());
-                inputSpecifications.Add(kpi_berlin_baf, GetInputSpecificationGreen());
-            }
-            catch (System.Exception ex)
-            {
-                CExcelModule_ErrorRaised(this, ex);
-            }
-        }
+        #region Cell Mapping
+
+        private Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
+        {
+            {kpi_baf, "E30"}
+        };
+ 
+
+        Dictionary<string,string> GreenCellMapping=new Dictionary<string, string>()
+        {
+            {"GreenTotArea",                "C4"},
+            {"GreenSealedSurfaceArea",      "C12"},
+            {"GreenPartSealedSurfaceArea",  "C13"},
+            {"GreenSemiOpenSurfaceArea",    "C14"},
+            {"GreenVegetationLT80Area",     "C15"},
+            {"GreenVegetationGT80Area",     "C19"},
+            {"GreenVergetationToSoilArea",  "C23"},
+            {"GreenRainWaterInfArea",       "C25"},
+            {"GreenVerticalArea",           "C27"},
+            {"GreenRoofTopArea",            "C29"}
+        };
 
         #endregion
 
+        #endregion
+
+        
         public Green_BerlinBAF_Module()
         {
-            //IMB-hub info (not used)
-            this.UserId = 0;
-            this.UserName = "";
-            this.ModuleName = "SP_Green_BerlinBAF_Module";
+            this.useDummyDB = false;
+            this.useBothVariantAndAsISForVariant = false;
 
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_baf, kpi_berlin_baf };
+            this.KpiList = kpiCellMapping.Keys.ToList();
 
             //Error handler
             this.ErrorRaised += CExcelModule_ErrorRaised;
 
             //Notification
-            this.StatusMessage += CExcelModule_StatusMessage;
-            
-            //Define the input specification for the different kpis
-            DefineInputSpecifications();
+            this.StatusMessage += CExcelModule_StatusMessage;            
         }
                         
         private void Set(string sheet, string cell, object value, ref CExcel exls)
@@ -63,322 +70,93 @@ namespace Green_BerlinBAF_Module
                 throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
 
-        string total_area = "total_area";
-        string developed_area = "developed_area";
-        string weighting_factor_per_m2 = "weighting_factor_per_m2";
-        string amount = "amount";
-
-        string area_info = "area_info";
-        string sealed_surfaces = "sealed_surfaces";
-        string partially_sealed_surfaces = "partially_sealed_surfaces";
-        string semiOpenSurfacesStr = "semiOpenSurfaces";
-        string swvutsBelow80Str = "swvutsBelow80";
-        string swvutsAbove80Str = "swvutsAbove80";
-        string swvConnectedToSoilBelowStr = "swvConnectedToSoilBelow";
-        string rainwaterInfiltrationpSqrmRunoffAreaStr = "rainwaterInfiltrationpSqrmRunoffArea";
-        string vgtm10mHeightStr = "vgtm10mHeight";
-        string greeneryOnRooftopStr = "greeneryOnRooftop";
-
-        InputSpecification GetInputSpecificationGreen()
+        private bool SetProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
         {
-            InputSpecification iSpec = new InputSpecification();
+            changesMade = false;
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                try
+                {
+                    if (buildingData.ContainsKey(property.Key))
+                    {
+                        object value = buildingData[property.Key];
+                        Set(sheet, property.Value, value, ref exls);
+                        changesMade = true;
+                    }
+                    //else
+                    //{
+                    //    Set(sheet, property.Value, 0, ref exls);
+                    //    //TODO
+                    //}
 
-            int ipgOrder = 0;
-            InputGroup areaInfo = new InputGroup("Area information", ++ipgOrder);
-            areaInfo.Add(total_area, new Number("Total area", 1, 0, "m\u00b2", 0));
-            //areaInfo.Add(developed_area, new Number("Developed area", 2, 0, "m\u00b2", 0));
-            iSpec.Add(area_info, areaInfo);
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
 
-            //Sealed Surfaces
-            InputGroup sealedSurfaces = new InputGroup("Sealed surfaces", ++ipgOrder);
-            //sealedSurfaces.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0, null, 0));
-            sealedSurfaces.Add(amount, new Number("Amount (weighted 0)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(sealed_surfaces, sealedSurfaces);
-
-            //Partially Sealed Surfaces
-            InputGroup partiallySealedSurfaces = new InputGroup("Partially sealed surfaces", ++ipgOrder);
-            //partiallySealedSurfaces.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.3, null, 0));
-            partiallySealedSurfaces.Add(amount, new Number("Amount (weighted 0.3)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(partially_sealed_surfaces, partiallySealedSurfaces);
-
-            //Semi-open Surfaces
-            InputGroup semiOpenSurfaces = new InputGroup("Semi-open surfaces", ++ipgOrder);
-            //semiOpenSurfaces.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.5, null, 0));
-            semiOpenSurfaces.Add(amount, new Number("Amount (weighted 0.5)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(semiOpenSurfacesStr, semiOpenSurfaces);
-
-            //Surfaces with vegetation unconnected to the soil below and with < 80 mm of soil covering
-            InputGroup swvutsBelow80 = new InputGroup("Surfaces with vegetation unconnected to the soil below and with < 80 mm of soil covering", ++ipgOrder);
-            //swvutsBelow80.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.5, null, 0));
-            swvutsBelow80.Add(amount, new Number("Amount (weighted 0.5)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(swvutsBelow80Str, swvutsBelow80);
-
-            //Surfaces with vegetation unconnected to the soil below and with > 80 mm of soil covering
-            InputGroup swvutsAbove80 = new InputGroup("Surfaces with vegetation unconnected to the soil below and with > 80 mm of soil covering", ++ipgOrder);
-            //swvutsAbove80.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.7, null, 0));
-            swvutsAbove80.Add(amount, new Number("Amount (weighted 0.7)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(swvutsAbove80Str, swvutsAbove80);
-
-            //Surfaces with vegetation connected to the soil below
-            InputGroup swvConnectedToSoilBelow = new InputGroup("Surfaces with vegetation connected to the soil below", ++ipgOrder);
-            //swvConnectedToSoilBelow.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 1.0, null, 0));
-            swvConnectedToSoilBelow.Add(amount, new Number("Amount (weighted 1.0)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(swvConnectedToSoilBelowStr, swvConnectedToSoilBelow);
-
-            //Rainwater infiltration per m² of runoff area
-            InputGroup rainwaterInfiltrationpSqrmRunoffArea = new InputGroup("Rainwater infiltration per m² of runoff area", ++ipgOrder);
-            //rainwaterInfiltrationpSqrmRunoffArea.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.2, null, 0));
-            rainwaterInfiltrationpSqrmRunoffArea.Add(amount, new Number("Amount (weighted 0.2)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(rainwaterInfiltrationpSqrmRunoffAreaStr, rainwaterInfiltrationpSqrmRunoffArea);
-
-            //Vertical greenery up to a maximum of 10 m in height
-            InputGroup vgtm10mHeight = new InputGroup("Vertical greenery up to a maximum of 10 m in height", ++ipgOrder);
-            //vgtm10mHeight.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.5, null, 0));
-            vgtm10mHeight.Add(amount, new Number("Amount (weighted 0.5)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(vgtm10mHeightStr, vgtm10mHeight);
-
-            //Greenery on rooftop
-            InputGroup greeneryOnRooftop = new InputGroup("Greenery on rooftop", ++ipgOrder);
-            //greeneryOnRooftop.Add(weighting_factor_per_m2, new Number("Weighting factor per m²", 1, 0.7, null, 0));
-            greeneryOnRooftop.Add(amount, new Number("Amount (weighted 0.7)", 2, 0, "m\u00b2", 0));
-            iSpec.Add(greeneryOnRooftopStr, greeneryOnRooftop);
-            
-            
-            return iSpec;
+            return true;
         }
 
-        protected override InputSpecification GetInputSpecification(string kpiId)
+        private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
-            if (!inputSpecifications.ContainsKey(kpiId))
-                throw new ApplicationException(String.Format("No input specification for kpiId '{0}' could be found.", kpiId));
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                Dictionary<string, object> CurrentData = process.CurrentData;
+                try
+                {
+                    {
 
-            return inputSpecifications[kpiId];
+                        if (CurrentData.ContainsKey(property.Key))
+                        {
+                            object value = CurrentData[property.Key];
+
+                            double val = Convert.ToDouble(value);
+                            if (val < 0)
+                            {
+                                process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                                return false;
+                            }
+
+                            Set(sheet, property.Value, value, ref exls);
+                        }
+                        else
+                        {
+                            process.CalcMessage = "";
+                            return false;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}, isCurrentDataMissing = {1}", property.Key, CurrentData == null), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
+
+            return true;
         }
 
-        protected override Ecodistrict.Messaging.Output.Outputs CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls)
+
+        protected override bool CalculateKpi(ModuleProcess process, CExcel exls, out Output output, out OutputDetailed outputDetailed)
         {
-            if (indata == null)
-                throw new Exception("No data received!");
+            output = null;
+            outputDetailed = null;
 
-            Ecodistrict.Messaging.Output.Outputs outputs = new Ecodistrict.Messaging.Output.Outputs();
+            if (!CheckAndReportDistrictProp(process, process.CurrentData, "Buildings"))
+                return false;
+
+            if (!SetProperties(process, exls, GreenCellMapping))
+                return false;
+
+            double kpiValue;
+            kpiValue = Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
             
-            #region Area Info
-            {
-                object value = 0;
-                string key = area_info;
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[area_info] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[total_area] is Number)
-                            value = (ipg[total_area] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", "B4", value, ref exls);
-            }
-            #endregion
-
-            #region Area types data
-            #region Sealed Surfaces
-            {
-                object value = 0;
-                string key = sealed_surfaces;
-                string cell = "C12";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-
-            #region Partially Sealed Surfaces
-            {
-                object value = 0;
-                string key = partially_sealed_surfaces;
-                string cell = "C13";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-            
-            #region semiOpenSurfacesStr
-            {
-                object value = 0;
-                string key = semiOpenSurfacesStr;
-                string cell = "C14";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-            
-            #region swvutsBelow80Str
-            {
-                object value = 0;
-                string key = swvutsBelow80Str;
-                string cell = "C15";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-            
-            #region swvutsAbove80Str
-            {
-                object value = 0;
-                string key = swvutsAbove80Str;
-                string cell = "C19";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-            
-            #region swvConnectedToSoilBelowStr
-            {
-                object value = 0;
-                string key = swvConnectedToSoilBelowStr;
-                string cell = "C23";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-
-            #region rainwaterInfiltrationpSqrmRunoffAreaStr
-            {
-                object value = 0;
-                string key = rainwaterInfiltrationpSqrmRunoffAreaStr;
-                string cell = "C25";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-
-            #region vgtm10mHeightStr
-            {
-                object value = 0;
-                string key = vgtm10mHeightStr;
-                string cell = "C27";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-
-            #region greeneryOnRooftopStr
-            {
-                object value = 0;
-                string key = greeneryOnRooftopStr;
-                string cell = "C29";
-                if (indata.ContainsKey(key))
-                {
-                    if (indata[key] is InputGroup)
-                    {
-                        Dictionary<string, Input> ipg = (indata[key] as InputGroup).GetInputs();
-                        if (ipg[amount] is Number)
-                            value = (ipg[amount] as Number).GetValue();
-                    }
-
-                }
-
-                Set("Blad1", cell, value, ref exls);
-            }
-            #endregion
-            #endregion
-
-            double kpi = Convert.ToDouble(exls.GetCellValue("Blad1", "D35"));
-
-            switch (kpiId)
-            {
-                case kpi_baf:
-                case kpi_berlin_baf:
-                    outputs.Add(new Ecodistrict.Messaging.Output.Kpi(Math.Round(kpi, 2), kpiId, ""));
-                    break;
-                default:
-                    throw new ApplicationException(String.Format("No calculation procedure could be found for '{0}'", kpiId));
-            }
-
-
-            return outputs;
-        }
-        
+            output=new Output(process.KpiId, Math.Round(kpiValue,1));
+            return true;
+        }        
     }
 }
 

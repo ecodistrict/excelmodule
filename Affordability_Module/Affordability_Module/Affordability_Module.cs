@@ -15,7 +15,7 @@ namespace Affordability
         #region Defines
         // - Kpis
         const string kpi_mdi = "minimum-disposable-income";
-        const string sheet = "Customised input";
+        const string sheet = "Input";
         const string sheetOutput = "Output";
         const string buidingIdKey = "gml_id";
 
@@ -27,102 +27,62 @@ namespace Affordability
 
         private Dictionary<string, string> generalCellMapping = new Dictionary<string, string>()
         {
-            {"maximum_housing_costs_as_a_percentage_of_disposable_income", "C17"}
+            {"MaxCostShare", "B18"}
         };
+
         Dictionary<string, string> generalBuildingCellMapping = new Dictionary<string, string>()
         {
-            {"size_of_household",                                           "C5"},
-            {"size_of_dwelling",                                            "C6"},
-            {"rent_or_cost_of_housing_per_month",                           "C10"}
+            {"NoOfPeopleInHousehold",   "B4"},
+            {"HeatedFloorArea",         "B6"},
+            {"RentPerMonth",            "B10"}
         };
 
-        #region Houshold Electricity
+        
+        #region paidSeparatelyChoise
+
+        private Dictionary<string, string> paidSeparatelyChoiseCellMapping = new Dictionary<string, string>()
+            {
+                {"ElectricityPaidSeparately",   "C13"}, //True/False or 0/1
+                {"HotWaterPaidSerparately",     "C14"},
+                {"CoolingPaidSeparately",       "C15"},
+                {"SpaceHeatingPaidSeparately",  "C16"}
+            };
+        #endregion
+        #region paidSeparatelyValuesCellMapping
         Dictionary<string, string> householdElectricityCellMapping = new Dictionary<string, string>()
         {
-            {include_household_electricity.Key,     include_household_electricity.Value},
-            {useTypicalHouseholdElectricity.Key,    useTypicalHouseholdElectricity.Value},
-            {energy_price_houshold_electricity.Key, energy_price_houshold_electricity.Value}
+            {"ElectricityCalculationChoice",     "C23"},
+            {"HouseholdElectricityConsumption",  "B24"},
+            {"HouseHoldElectricityPrice",        "D24"}
         };
 
-
-        //Checkbox cb_include_household_electricity = new Checkbox("Household electricity payed separately");
-
-        static KeyValuePair<string, string> include_household_electricity =
-            new KeyValuePair<string, string>("include_household_electricity", "C12");
-
-        static KeyValuePair<string, string> energy_price_houshold_electricity =
-            new KeyValuePair<string, string>("energy_price_houshold_electricity", "F23");
-
-        Select householdElectricitySelect = new Select("Use typical calculation of household electricity (based on household size and heated floor area)?", householdElectricityOpt, null, householdElectricityOpt.First());
-
-        static Options householdElectricityOpt = new Options()
+        Dictionary<string, string> householdHotWaterCellMapping = new Dictionary<string, string>()
         {
-            new Option("no - enter manually below","no - enter manually below"),
-            new Option("yes, energy efficient white goods, appliances and lights are used","yes, energy efficient white goods, appliances and lights are used"),
-            new Option("yes, conventional appliances are used","yes, conventional appliances are used")
+            {"HouseholdHotWaterCalculationChoice",    "C27"},
+            {"HouseholdHotWaterEnergyConsumption",    "B28"},
+            {"HouseholdHotWaterEnergyPrice",          "D28"}
         };
 
-        static KeyValuePair<string, string> useTypicalHouseholdElectricity =
-            new KeyValuePair<string, string>("use_typical_calculation_for_household_electricity", "C22");
-        KeyValuePair<string, string> manualHouseholdElectricity =
-            new KeyValuePair<string, string>("annual_energy_consumption_for_household_electricity", "C23");
-        #endregion
-
-        #region DHW
-
-        Checkbox cb_include_domestic_hot_water = new Checkbox("Domestic hot water payed separately");
-
-        KeyValuePair<string, string> include_domestic_hot_water =
-            new KeyValuePair<string, string>("include_domestic_hot_water", "C13");
-
-        KeyValuePair<string, string> energy_price_domestic_hot_water =
-            new KeyValuePair<string, string>("energy_price__domestic_hot_water", "F27");
-
-        Select dHWSelect = new Select("Use typical calculation of domestic hot water (based on household size)?", dHWOpt, null, dHWOpt.First());
-
-        static Options dHWOpt = new Options()
+                Dictionary<string, string> householdCoolingCellMapping = new Dictionary<string, string>()
         {
-            new Option("no - enter manually below","no - enter manually below"),
-            new Option("yes, water saving/energy efficient taps are used","yes, water saving/energy efficient taps are used"),
-            new Option("yes, conventional taps are used","yes, conventional taps are used")
+            {"HouseholdCoolingEnergyConsumption",      "B32"},
+            {"HouseholdCoolingEnergyConsumptionPSqM",  "B32"}, //Has to be multiplied with Dwellingsize (B6) before used in cell
+            {"HouseholdCoolingEnergyPrice",            "D32"}
         };
-
-        static KeyValuePair<string, string> useTypicalDHW =
-            new KeyValuePair<string, string>("use_typical_calculation_for_domestic_hot_water", "C26");
-        KeyValuePair<string, string> manualDHW =
-            new KeyValuePair<string, string>("annual_energy_consumption_for_domestic_hot_water", "C27");
-        #endregion
-
-        #region Cooling
-        Checkbox cb_include_cooling = new Checkbox("Cooling payed separately");
-
-        KeyValuePair<string, string> include_cooling =
-            new KeyValuePair<string, string>("include_cooling", "C14");
-
-        KeyValuePair<string, string> energy_price_cooling =
-            new KeyValuePair<string, string>("energy_price_cooling", "F31");
-
-        KeyValuePair<string, string> manualCooling =
-            new KeyValuePair<string, string>("annual_energy_consumption_for_cooling", "C31");
-        #endregion
-
-        #region Space Heating
-
-        Checkbox cb_include_space_heating = new Checkbox("Space heating payed separately");
-
-        KeyValuePair<string, string> include_space_heating =
-            new KeyValuePair<string, string>("include_space_heating", "C15");
-
-        KeyValuePair<string, string> energy_price_space_heating =
-            new KeyValuePair<string, string>("energy_price_space_heating", "F35");
-
-        KeyValuePair<string, string> manualSpaceHeating =
-            new KeyValuePair<string, string>("annual_energy_consumption_for_space_heating", "C35");
+        Dictionary<string, string> householdSpaceHeatingCellMapping = new Dictionary<string, string>()
+        {
+            {"HouseholdSpaceHeatingEnergyConsumption",       "B35"},
+            {"HouseholdSpaceHeatingEnergyConsumptionPSqM",   "B35"}, //Has to be multiplied with Dwellingsize (B6) before used in cell
+            {"HouseholdSpaceHeatingEnergyPrice",             "D35"}
+        };
         #endregion
 
         #endregion
 
+  
+
         #endregion
+
 
         public Affordability_Module()
         {
@@ -130,7 +90,8 @@ namespace Affordability
             this.useBothVariantAndAsISForVariant = false;
             
             //List of kpis the module can calculate
-            this.KpiList = new List<string> { kpi_mdi };
+            //this.KpiList = new List<string> { kpi_mdi };
+            this.KpiList = kpiCellMapping.Keys.ToList();
 
             //Error handler
             this.ErrorRaised += CExcelModule_ErrorRaised;
@@ -210,21 +171,26 @@ namespace Affordability
             }
         }
 
-        private bool GetBuildingDefaultValues(CExcel exls, out Dictionary<string, object> buildingDefaultValues)
+        private bool GetBuildingDefaultValues(CExcel exls, out Dictionary<string, object> DefaultValues)
         {
-            buildingDefaultValues = new Dictionary<string, object>();
+            DefaultValues = new Dictionary<string, object>();
             try
             {
                 #region Get data
 
-                if (!GetProperties(exls, generalBuildingCellMapping, ref buildingDefaultValues))
+                if (!GetProperties(exls, generalBuildingCellMapping, ref DefaultValues))
                     return false;
-                if (!GetProperties(exls, include_household_electricity, ref buildingDefaultValues))
+                if (!GetProperties(exls, paidSeparatelyChoiseCellMapping, ref DefaultValues))
                     return false;
-                if (!GetProperties(exls, energy_price_houshold_electricity, ref buildingDefaultValues))
+                if (!GetProperties(exls, householdElectricityCellMapping, ref DefaultValues))
                     return false;
-                if (!GetProperties(exls, manualHouseholdElectricity, ref buildingDefaultValues))
+                if (!GetProperties(exls, householdHotWaterCellMapping, ref DefaultValues))
                     return false;
+                if (!GetProperties(exls, householdCoolingCellMapping, ref DefaultValues))
+                    return false;
+                if (!GetProperties(exls, householdSpaceHeatingCellMapping, ref DefaultValues))
+                    return false;
+
                 #endregion
                 return true;
             }
@@ -239,96 +205,38 @@ namespace Affordability
         private bool SetInputDataOneBuilding(ModuleProcess process, Dictionary<string, object> buildingData, CExcel exls, out bool changesMade)
         {
             changesMade = false;
+            bool changesMade_i = false;
 
-            if (!Set(process, buildingData, generalBuildingCellMapping, ref exls))
+            try
+            {
+                #region Set data
+
+                if (!SetProperties(buildingData, exls, generalBuildingCellMapping, out changesMade_i))
+                    return false;
+                if (!SetProperties(buildingData, exls, paidSeparatelyChoiseCellMapping, out changesMade_i))
+                    return false;
+                if (!SetProperties(buildingData, exls, householdElectricityCellMapping, out changesMade_i))
+                    return false;
+                if (!SetProperties(buildingData, exls, householdHotWaterCellMapping, out changesMade_i))
+                    return false;
+                if (!SetProperties(buildingData, exls, householdCoolingCellMapping, out changesMade_i))
+                    return false;
+                if (!SetProperties(buildingData, exls, householdSpaceHeatingCellMapping, out changesMade_i))
+                    return false;
+                #endregion
+
+                return true;
+            }
+            catch (System.Exception ex)
+            {
                 return false;
-
-            #region Household Electricity
-            if (buildingData.ContainsKey(include_household_electricity.Key))
-            {
-                if (!Set(process, buildingData, include_household_electricity, ref exls))
-                    return false;
-
-                if ((bool)buildingData[include_household_electricity.Key])
-                {
-                    if (!Set(process, buildingData, energy_price_houshold_electricity, ref exls))
-                        return false;
-
-                    if (!Set(process, buildingData, useTypicalHouseholdElectricity, ref exls))
-                        return false;
-
-                    if ((string)buildingData[useTypicalHouseholdElectricity.Key] == householdElectricityOpt.First().value)
-                    {
-                        if (!Set(process, buildingData, manualHouseholdElectricity, ref exls))
-                            return false;
-                    }
-                }
-                changesMade = true;
             }
-            #endregion
-
-            #region DHW
-            if (buildingData.ContainsKey(include_domestic_hot_water.Key))
-            {
-                if (!Set(process, buildingData, energy_price_domestic_hot_water, ref exls))
-                    return false;
-
-                if (!Set(process, buildingData, include_domestic_hot_water, ref exls))
-                    return false;
-
-                if ((bool)buildingData[include_domestic_hot_water.Key])
-                {
-                    if (!Set(process, buildingData, useTypicalDHW, ref exls))
-                        return false;
-
-                    if ((string)buildingData[useTypicalDHW.Key] == dHWOpt.First().value)
-                    {
-                        if (!Set(process, buildingData, manualDHW, ref exls))
-                            return false;
-                    }
-                }
-                changesMade = true;
-            }
-            #endregion
-
-            #region Cooling
-            if (buildingData.ContainsKey(include_cooling.Key))
-            {
-                if (!Set(process, buildingData, energy_price_cooling, ref exls))
-                    return false;
-
-                if (!Set(process, buildingData, include_cooling, ref exls))
-                    return false;
-
-                if ((bool)buildingData[include_cooling.Key])
-                {
-                    if (!Set(process, buildingData, manualCooling, ref exls))
-                        return false;
-                }
-                changesMade = true;
-            }
-            #endregion
-
-            #region Space Heating
-            if (buildingData.ContainsKey(include_space_heating.Key))
-            {
-                if (!Set(process, buildingData, energy_price_space_heating, ref exls))
-                    return false;
-
-                if (!Set(process, buildingData, include_space_heating, ref exls))
-                    return false;
-
-                if ((bool)buildingData[include_space_heating.Key])
-                {
-                    if (!Set(process, buildingData, manualSpaceHeating, ref exls))
-                        return false;
-                }
-                changesMade = true;
-            }
-            #endregion
 
 
-            return true;
+
+
+
+   
 
         }
 
@@ -370,6 +278,37 @@ namespace Affordability
 
             return true;
         }
+
+        private bool SetProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
+        {
+            changesMade = false;
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                try
+                {
+                    if (buildingData.ContainsKey(property.Key))
+                    {
+                        object value = buildingData[property.Key];
+                        Set(sheet, property.Value, value, ref exls);
+                        changesMade = true;
+                    }
+                    //else
+                    //{
+                    //    Set(sheet, property.Value, 0, ref exls);
+                    //    //TODO
+                    //}
+
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
+
+            return true;
+        }
+
 
         private bool Set(ModuleProcess process, Dictionary<string, object> buildingData, Dictionary<string, string> propertyCellMappings, ref CExcel exls)
         {
@@ -425,30 +364,30 @@ namespace Affordability
         }
 
         //Old system
-        void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!iSpec.ContainsKey(property.Key))
-                    iSpec.Add(property.Key, new Number(property.Key));
-            }
-        }
+        //void SetIspec(ref InputSpecification iSpec, Dictionary<string, string> propertyCellMapping)
+        //{
+        //    foreach (KeyValuePair<string, string> property in propertyCellMapping)
+        //    {
+        //        if (!iSpec.ContainsKey(property.Key))
+        //            iSpec.Add(property.Key, new Number(property.Key));
+        //    }
+        //}
         
-        void SetInp(ref NonAtomic input, Dictionary<string, string> propertyCellMapping)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMapping)
-            {
-                if (!input.ContainsKey(property.Key))
-                    input.Add(property.Key, new Number(property.Key));
-            }
-        }
+        //void SetInp(ref NonAtomic input, Dictionary<string, string> propertyCellMapping)
+        //{
+        //    foreach (KeyValuePair<string, string> property in propertyCellMapping)
+        //    {
+        //        if (!input.ContainsKey(property.Key))
+        //            input.Add(property.Key, new Number(property.Key));
+        //    }
+        //}
 
-        void SetInp(ref NonAtomic input, KeyValuePair<string, string> property)
-        {
-                if (!input.ContainsKey(property.Key))
-                    input.Add(property.Key, new Number(property.Key));
+        //void SetInp(ref NonAtomic input, KeyValuePair<string, string> property)
+        //{
+        //        if (!input.ContainsKey(property.Key))
+        //            input.Add(property.Key, new Number(property.Key));
            
-        }
+        //}
    
         private void Set(string sheet, string cell, object value, ref CExcel exls)
         {
@@ -456,37 +395,37 @@ namespace Affordability
                 throw new Exception(String.Format("Could not set cell {} to value {2} in sheet {3}", cell, value, sheet));
         }
 
-        bool GetSetBool(ref Dictionary<string, object> properties, string property)
-        {
-            if (!properties.ContainsKey(property))
-                properties.Add(property, false);
+        //bool GetSetBool(ref Dictionary<string, object> properties, string property)
+        //{
+        //    if (!properties.ContainsKey(property))
+        //        properties.Add(property, false);
 
-            if (properties[property] is bool)
-                return (bool)properties[property];
+        //    if (properties[property] is bool)
+        //        return (bool)properties[property];
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private bool Set(Feature building, Dictionary<string, string> propertyCellMappings, ref CExcel exls)
-        {
-            foreach (KeyValuePair<string, string> property in propertyCellMappings)
-            {
-                if(!Set(building, property, ref exls))
-                    return false;
-            }
+        //private bool Set(Feature building, Dictionary<string, string> propertyCellMappings, ref CExcel exls)
+        //{
+        //    foreach (KeyValuePair<string, string> property in propertyCellMappings)
+        //    {
+        //        if(!Set(building, property, ref exls))
+        //            return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        private bool Set(Feature building, KeyValuePair<string, string> propertyCellMapping, ref CExcel exls)
-        {
-            //if (!CheckAndReportBuildingProp(building, propertyCellMapping.Key))
-            //        return false;
+        //private bool Set(Feature building, KeyValuePair<string, string> propertyCellMapping, ref CExcel exls)
+        //{
+        //    //if (!CheckAndReportBuildingProp(building, propertyCellMapping.Key))
+        //    //        return false;
 
-            Set(sheet, propertyCellMapping.Value, building.properties[propertyCellMapping.Key], ref exls);                      
+        //    Set(sheet, propertyCellMapping.Value, building.properties[propertyCellMapping.Key], ref exls);                      
 
-            return true;
-        }
+        //    return true;
+        //}
 
         //protected override bool CalculateKpi(Dictionary<string, Input> indata, string kpiId, CExcel exls, out Ecodistrict.Messaging.Output.Outputs outputs)
         //{

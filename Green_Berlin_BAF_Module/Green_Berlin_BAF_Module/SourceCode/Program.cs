@@ -14,13 +14,17 @@ namespace Green_BerlinBAF_Module
 
             try
             {
+                bool startupStatus = true;
+
                 if (!module.Init("IMB_config.yaml", "Module_config.yaml"))
                 {
                     Console.WriteLine("Could not read module settings");
-                    return;
+                    startupStatus = false;
                 }
-                
-                if (module.ConnectToServer())
+
+                startupStatus = module.ConnectToServer();
+
+                if (startupStatus)
                 {
                     Console.WriteLine(">> Press return to close connection");
                     Console.ReadLine();
@@ -30,14 +34,18 @@ namespace Green_BerlinBAF_Module
                     Console.WriteLine("**** Errors detected! ****");
                     Console.WriteLine(">> Press return to close");
                     Console.ReadLine();
-                    module.Close();
+                    if (module != null)
+                        module.Close();
                 }
             }
             finally
             {
-                module.Close();
+                if (module != null)
+                    module.Close();
                 module = null;
             }
+
+            return;
         }
     }
 }
