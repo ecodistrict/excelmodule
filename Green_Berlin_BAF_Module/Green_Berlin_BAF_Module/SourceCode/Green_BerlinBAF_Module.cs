@@ -20,28 +20,30 @@ namespace Green_BerlinBAF_Module
         const string sheet = "Input";
         const string sheetOutput = "Input";
 
+        private const string inputResultName = "District input for Berlin Green";
+
         Dictionary<string, InputSpecification> inputSpecifications;
 
         #region Cell Mapping
 
         private Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
         {
-            {kpi_baf, "E30"}
+            {kpi_berlin_baf, "D35"}
         };
  
 
         Dictionary<string,string> GreenCellMapping=new Dictionary<string, string>()
         {
-            {"GreenTotArea",                "C4"},
-            {"GreenSealedSurfaceArea",      "C12"},
-            {"GreenPartSealedSurfaceArea",  "C13"},
-            {"GreenSemiOpenSurfaceArea",    "C14"},
-            {"GreenVegetationLT80Area",     "C15"},
-            {"GreenVegetationGT80Area",     "C19"},
-            {"GreenVergetationToSoilArea",  "C23"},
-            {"GreenRainWaterInfArea",       "C25"},
-            {"GreenVerticalArea",           "C27"},
-            {"GreenRoofTopArea",            "C29"}
+            {"greentotarea",                "B4"},
+            {"greensealedsurfacearea",      "C12"},
+            {"greenpartsealedsurfacearea",  "C13"},
+            {"greensemiopensurfacearea",    "C14"},
+            {"greenvegetationlt80area",     "C15"},
+            {"greenvegetationgt80area",     "C19"},
+            {"greenvergetationtosoilarea",  "C23"},
+            {"greenrainwaterinfarea",       "C25"},
+            {"greenverticalarea",           "C27"},
+            {"greenrooftoparea",            "C29"}
         };
 
         #endregion
@@ -102,9 +104,12 @@ namespace Green_BerlinBAF_Module
 
         private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
+            var nw = process.CurrentData[inputResultName] as List<Object>;
+            //var CurrentData = nw[0] as Dictionary<string, object>;
+
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
-                Dictionary<string, object> CurrentData = process.CurrentData;
+                Dictionary<string, object> CurrentData = nw[0] as Dictionary<string, object>;
                 try
                 {
                     {
@@ -145,7 +150,7 @@ namespace Green_BerlinBAF_Module
             output = null;
             outputDetailed = null;
 
-            if (!CheckAndReportDistrictProp(process, process.CurrentData, "Buildings"))
+            if (!CheckAndReportDistrictProp(process, process.CurrentData, inputResultName))
                 return false;
 
             if (!SetProperties(process, exls, GreenCellMapping))

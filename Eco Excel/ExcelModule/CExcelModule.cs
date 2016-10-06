@@ -1134,6 +1134,7 @@ namespace Ecodistrict.Excel
         }
         protected bool CheckAndReportDistrictProp(ModuleProcess process, Dictionary<string, object> distrProps, string key)
         {
+
             if (distrProps == null)
             {
                 process.CalcMessage = String.Format("Property {0} is missing in district data", key);

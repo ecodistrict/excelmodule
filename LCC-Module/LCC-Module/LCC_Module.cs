@@ -20,6 +20,10 @@ namespace LCC
         const string sheet = "LCC-mall 2";
         const string buidingIdKey = "gml_id";
 
+        private const string inputDistrictName = "District input for LCC";
+        private const string inputBuildingName = "Building input for LCC";
+
+
         #region Cell Mapping
         Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
         {
@@ -30,196 +34,196 @@ namespace LCC
 
         Dictionary<string, string> generalCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"DiscountRateExclInflation",                           "C4"},
-            {"ElectricityPriceIncrease",                            "C5"},
-            {"DistrictHeatingPriceIncrease",                        "C6"},
-            {"EnergyPriceIncreaseDistrictHeatingNaturalGas",        "C7"},
-            {"EnergyPriceIncreaseOtherFuel",                        "C8"},
-            {"FeedInTariffPriceIncrease",                           "C9"},
-            {"LCACalcPeriod ",                                      "C10"},
-            {"RentIncrease",                                        "C11"},
-            {"FeedInTariffPrice",                                   "C12"},
-            {"ElectricityPrice",                                    "C13"},
-            {"NaturalGasPrice",                                     "C14"},
-            {"DistrictHeatingPrice",                                "C15"},
-            {"OtherFuelPrice",                                      "C16"}
+            {"discountrateexclinflation",                           "C4"},
+            {"electricitypriceincrease",                            "C5"},
+            {"districtheatingpriceincrease",                        "C6"},
+            {"energypriceincreasedistrictheatingnaturalgas",        "C7"},
+            {"energypriceincreaseotherfuel",                        "C8"},
+            {"feedintariffpriceincrease",                           "C9"},
+            {"lcacalcperiod",                                      "C10"},
+            {"rentincrease",                                        "C11"},
+            {"feedintariffprice",                                   "C12"},
+            {"electricityprice",                                    "C13"},
+            {"naturalgasprice",                                     "C14"},
+            {"districtheatingprice",                                "C15"},
+            {"otherfuelprice",                                      "C16"}
         };
 
         Dictionary<string, string> buildingCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"RentIncomes",                         "C17"},
-            {"FixedCostForElectricity",             "C24"},
-            {"ElectricityConsumption",              "E25"},
-            {"ElectricityProduction",               "E26"},
-            {"FixedCostDistrictHeating",            "C27"},       
-            {"DistrictHeatingConsumption",          "E28"},
-            {"FixedCostForNaturalGas",              "C29"},
-            {"NaturalGasConsumption",               "E30"},
-            {"FixedCostForOtherFuel",               "C31"},
-            {"OtherFuelConsumption",                "E32"},
-            {"OperatingAndMaintenanceCosts",        "C34"}
+            {"rentincomes",                         "C17"},
+            {"fixedcostforelectricity",             "C24"},
+            {"electricityconsumption",              "E25"},
+            {"electricityproduction",               "E26"},
+            {"fixedcostdistrictheating",            "C27"},       
+            {"districtheatingconsumption",          "E28"},
+            {"fixedcostfornaturalgas",              "C29"},
+            {"naturalgasconsumption",               "E30"},
+            {"fixedcostforotherfuel",               "C31"},
+            {"otherfuelconsumption",                "E32"},
+            {"operatingandmaintenancecosts",        "C34"}
         };
 
         Dictionary<string, string> heatingSystemCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingHeatingSystemLifeOfProduct",                 "J24"}, 
-            {"BuildingHeatingSystemHeatSourceInitialInvestement",  "N24"},
-            {"BuildingHeatingSystemHeatSourceInstallationCost",    "O24"}
+            {"buildingheatingsystemlifeofproduct",                 "J24"}, 
+            {"buildingheatingsystemheatsourceinitialinvestement",  "N24"},
+            {"buildingheatingsystemheatsourceinstallationcost",    "O24"}
         };
 
         Dictionary<string, string> heatingPumpCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingSystemHeatPumpLifeOfProduct",      "J25"}, 
-            {"BuildingSystemHeatPumpInitialInvestment",  "N25"},
-            {"BuildingSystemHeatPumpInstallationCost",   "O25"}
+            {"buildingsystemheatpumplifeofproduct",      "J25"}, 
+            {"buildingsystemheatpumpinitialinvestment",  "N25"},
+            {"buildingsystemheatpumpinstallationcost",   "O25"}
         };
 
         Dictionary<string, string> heatingSystemBoreHoleCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingSystemBoreHoleLifeOfProduct",          "J26"}, 
-            {"BuildingSystemBoreHoleInitialInvestment",      "N26"},
-            {"BuildingSystemBoreHoleInstallationCost",       "O26"}
+            {"buildingsystemboreholelifeofproduct",          "J26"}, 
+            {"buildingsystemboreholeinitialinvestment",      "N26"},
+            {"buildingsystemboreholeinstallationcost",       "O26"}
         };
 
         Dictionary<string, string> heatingSystemCirculationPumpCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"HeatingCirculationPumpSystemLifeTime",               "J27"}, 
-            {"HeatingCirculationPumpSystemInvestmentCost",         "N27"},
-            {"HeatingCirculationPumpSystemInstallationCost",       "O27"}
+            {"heatingcirculationpumpsystemlifetime",               "J27"}, 
+            {"heatingcirculationpumpsysteminvestmentcost",         "N27"},
+            {"heatingcirculationpumpsysteminstallationcost",       "O27"}
         };
 
         Dictionary<string, string> buildingShellInsulationMaterial1CellMapping = new Dictionary<string, string>()
         {
-            {"BuildingShellInsulationMaterial1LifeOfProduct",          "J28"}, 
-            {"BuildingShellInsulationMaterial1InitialInvestement",     "N28"},
-            {"BuildingShellInsulationMaterial1InstallationCost",       "O28"}
+            {"buildingshellinsulationmaterial1lifeofproduct",          "J28"}, 
+            {"buildingshellinsulationmaterial1initialinvestement",     "N28"},
+            {"buildingshellinsulationmaterial1installationcost",       "O28"}
         };
 
         Dictionary<string, string> buildingShellInsulationMaterial2CellMapping = new Dictionary<string, string>()
         {
-            {"BuildingShellInsulationMaterial2LifeOfProduct",          "J29"}, 
-            {"BuildingShellInsulationMaterial2InitialInvestement",     "N29"},
-            {"BuildingShellInsulationMaterial2InstallationCost",       "O29"}
+            {"buildingshellinsulationmaterial2lifeofproduct",          "J29"}, 
+            {"buildingshellinsulationmaterial2initialinvestement",     "N29"},
+            {"buildingshellinsulationmaterial2installationcost",       "O29"}
         };
 
         Dictionary<string, string> buildingShellFacadeSystemCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingShellFacadeSystemLifeTime",               "J30"}, 
-            {"BuildingShellFacadeSystemInvestmentCost",         "N30"},
-            {"BuildingShellFacadeSystemInstallationCost",       "O30"}
+            {"buildingshellfacadesystemlifetime",               "J30"}, 
+            {"buildingshellfacadesysteminvestmentcost",         "N30"},
+            {"buildingshellfacadesysteminstallationcost",       "O30"}
         };
 
         Dictionary<string, string> buildingShellWindowsCellMapping = new Dictionary<string, string>()
         {
-            {"BuildingShellWindowsLifeOfProduct",        "J31"}, 
-            {"BuildingShellWindowsInitialInvestement",   "N31"},
-            {"BuildingShellWindowsInstallationCost",     "O31"}
+            {"buildingshellwindowslifeofproduct",        "J31"}, 
+            {"buildingshellwindowsinitialinvestement",   "N31"},
+            {"buildingshellwindowsinstallationcost",     "O31"}
         };
 
         Dictionary<string, string> buildingShellDoorsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"Building_ShellDoorsSystemLifeTime",               "J32"}, 
-            {"BuildingShellDoorsSystemInvestmentCost",         "N32"},
-            {"BuildingShellDoorSystemInstallationCost",       "O32"}
+            {"buildingshelldoorssystemlifetime",               "J32"}, 
+            {"buildingshelldoorssysteminvestmentcost",         "N32"},
+            {"buildingshelldoorsysteminstallationcost",       "O32"}
         };
 
         Dictionary<string, string> VentilationSystemVentilationDuctsCellMapping = new Dictionary<string, string>()
         {
-            {"VentilationSystemLifeOfVentilationDucts",      "J33"}, 
-            {"VentilationSystemInitialInvestementDucts",     "N33"},
-            {"VentilationSystemInstallationCostDucts",       "O33"}
+            {"ventilationsystemlifeofventilationducts",      "J33"}, 
+            {"ventilationsysteminitialinvestementducts",     "N33"},
+            {"ventilationsysteminstallationcostducts",       "O33"}
         };
 
         Dictionary<string, string> VentilationSystemAirflowAssemblyCellMapping = new Dictionary<string, string>()
         {
-            {"VentilationSystemLifeOfAirflowAssembly",                 "J34"}, 
-            {"VentilationSystemInitialInvestementAirflowAssembly",     "N34"},
-            {"VentilationSystemInstallationCostAirflowAssembly",       "O34"}
+            {"ventilationsystemlifeofairflowassembly",                 "J34"}, 
+            {"ventilationsysteminitialinvestementairflowassembly",     "N34"},
+            {"ventilationsysteminstallationcostairflowassembly",       "O34"}
         };
 
         Dictionary<string, string> VentilationSystemDistributionHousingsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"VentilationSystemDistributionHousingsLifeTime",               "J35"}, 
-            {"VentilationSystemDistributionHousingsInvestmentCost",         "N35"},
-            {"VentilationSystemDistributionHousingsInstallationCost",       "O35"}
+            {"ventilationsystemdistributionhousingslifetime",               "J35"}, 
+            {"ventilationsystemdistributionhousingsinvestmentcost",         "N35"},
+            {"ventilationsystemdistributionhousingsinstallationcost",       "O35"}
         };
 
         Dictionary<string, string> RadiatorsCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingRadiatorsLifeOfProduct",          "J36"}, 
-            {"BuildingRadiatorsInitialInvestement",     "N36"},
-            {"BuildingRadiatorsInstallationCost",       "O36"}
+            {"buildingradiatorslifeofproduct",          "J36"}, 
+            {"buildingradiatorsinitialinvestement",     "N36"},
+            {"buildingradiatorsinstallationcost",       "O36"}
         };
 
         Dictionary<string, string> WaterTapsCellMapping = new Dictionary<string, string>()
         {
-            {"WaterTapsLifeOfProduct",               "J37"}, 
-            {"WaterTapsInitialInvestement",          "N37"},
-            {"WaterTapsInstallationCost",            "O37"}
+            {"watertapslifeofproduct",               "J37"}, 
+            {"watertapsinitialinvestement",          "N37"},
+            {"watertapsinstallationcost",            "O37"}
         };
 
         Dictionary<string, string> PipingSystemsCopperCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsCopperLifeOfProduct",       "J38"}, 
-            {"PipingSystemsCopperInitialInvestement",  "N38"},
-            {"PipingSystemsCopperInstallationCost",    "O38"}
+            {"pipingsystemscopperlifeofproduct",       "J38"}, 
+            {"pipingsystemscopperinitialinvestement",  "N38"},
+            {"pipingsystemscopperinstallationcost",    "O38"}
         };
 
         Dictionary<string, string> PipingSystemsPEXCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsPEXLifeTime",               "J39"}, 
-            {"PipingSystemsPEXInvestmentCost",         "N39"},
-            {"PipingSystemsPEXInstallationCost",       "O39"}
+            {"pipingsystemspexlifetime",               "J39"}, 
+            {"pipingsystemspexinvestmentcost",         "N39"},
+            {"pipingsystemspexinstallationcost",       "O39"}
         };
 
         Dictionary<string, string> PipingSystemsPPCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsPPLifeTime",               "J40"}, 
-            {"PipingSystemsPPInvestmentCost",         "N40"},
-            {"PipingSystemsPPInstallationCost",       "O40"}
+            {"pipingsystemspplifetime",               "J40"}, 
+            {"pipingsystemsppinvestmentcost",         "N40"},
+            {"pipingsystemsppinstallationcost",       "O40"}
         };
 
         Dictionary<string, string> PipingSystemsCastIronCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsCastIronLifeTime",               "J41"}, 
-            {"PipingSystemsCastIronInvestmentCost",         "N41"},
-            {"PipingSystemsCastIronInstallationCost",       "O41"}
+            {"pipingsystemscastironlifetime",               "J41"}, 
+            {"pipingsystemscastironinvestmentcost",         "N41"},
+            {"pipingsystemscastironinstallationcost",       "O41"}
         };
 
         Dictionary<string, string> PipingSystemsGalvanisedSteelCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsGalvanisedSteelLifeTime",               "J42"}, 
-            {"PipingSystemsGalvanisedSteelInvestmentCost",         "N42"},
-            {"PipingSystemsGalvanisedSteelInstallationCost",       "O42"}
+            {"pipingsystemsgalvanisedsteellifetime",               "J42"}, 
+            {"pipingsystemsgalvanisedsteelinvestmentcost",         "N42"},
+            {"pipingsystemsgalvanisedsteelinstallationcost",       "O42"}
         };
 
         Dictionary<string, string> PipingSystemsReliningCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"PipingSystemsReliningLifeTime",               "J43"}, 
-            {"PipingSystemsReliningInvestmentCost",         "N43"},
-            {"PipingSystemsReliningInstallationCost",       "O43"}
+            {"pipingsystemsrelininglifetime",               "J43"}, 
+            {"pipingsystemsrelininginvestmentcost",         "N43"},
+            {"pipingsystemsrelininginstallationcost",       "O43"}
         };
 
         Dictionary<string, string> ElectricalWiringCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"ElectricalWiringLifeTime",               "J44"}, 
-            {"ElectricalWiringInvestmentCost",         "N44"},
-            {"ElectricalWiringInstallationCost",       "O44"}
+            {"electricalwiringlifetime",               "J44"}, 
+            {"electricalwiringinvestmentcost",         "N44"},
+            {"electricalwiringinstallationcost",       "O44"}
         };
 
 
         Dictionary<string, string> EnergyProductionCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"EnergyProductionLifeOfProduct",          "J45"}, 
-            {"EnergyProductionInitialInvestement",     "N45"},
-            {"EnergyProductionInstallationCost",       "O45"}
+            {"energyproductionlifeofproduct",          "J45"}, 
+            {"energyproductioninitialinvestement",     "N45"},
+            {"energyproductioninstallationcost",       "O45"}
         };
 
         Dictionary<string, string> BuildingCondBoilersCellMapping = new Dictionary<string, string>()  //TODO update variable names
         {
-            {"BuildingCondBoilerLifeOfProduct",          "J46"}, 
-            {"BuildingCondBoilerInitialInvestement",     "N46"},
-            {"BuildingCondBoilerInstallationCost",       "O46"}
+            {"buildingcondboilerlifeofproduct",          "J46"}, 
+            {"buildingcondboilerinitialinvestement",     "N46"},
+            {"buildingcondboilerinstallationcost",       "O46"}
         };
 
 
@@ -311,6 +315,48 @@ namespace LCC
             return true;
         }
 
+        private bool SetDistrictProperties(Dictionary<string, Object> currentData, CExcel exls, Dictionary<string, string> propertyCellMapping)
+        {
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                //Dictionary<string, object> CurrentData = process.CurrentData;
+                try
+                {
+                    {
+
+                        if (currentData.ContainsKey(property.Key))
+                        {
+                            object value = currentData[property.Key];
+
+                            double val = Convert.ToDouble(value);
+                            if (val < 0)
+                            {
+                                //process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                                return false;
+                            }
+
+                            Set(sheet, property.Value, value, ref exls);
+                        }
+                        else
+                        {
+                            //process.CalcMessage = "";
+                            return false;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(
+                        message:
+                        String.Format(ex.Message + "\t key = {0}, isCurrentDataMissing = {1}", property.Key,
+                            currentData == null), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
+            return true;
+        }
+
+
         private bool GetProperties(CExcel exls, Dictionary<string, string> cellMapping, ref Dictionary<string, object> buildingDefaultValues)
         {
             foreach (KeyValuePair<string,string> property in cellMapping)
@@ -338,58 +384,63 @@ namespace LCC
                 //Check and prepare data
                 //Dictionary<string, object> district_data;
                 //GeoValue buildingsAsIS;
-                if (!CheckAndReportDistrictProp(process,process.CurrentData, "Buildings"))
+                if (!CheckAndReportDistrictProp(process, process.CurrentData, inputDistrictName))
                     return false;
 
-                string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);  //TODO error if process.CurrentData["Buildings"] == "{}"
-                List<Dictionary<string, object>> buildings = Newtonsoft.Json.JsonConvert.DeserializeObject(buildingsData, typeof(List<Dictionary<string, object>>)) as List<Dictionary<string, object>>;
 
-                //buildings = process.CurrentData["Buildings"] as GeoValue;
-                //buildings = Ecodistrict.Messaging.DeserializeData<GeoValue>.JsonString(process.CurrentData["Buildings"] as string);
-                //bool perHeatedArea;
-                //if (!CheckAndPrepareData(process, out district_data, out buildingsAsIS, out buildingsVariant, out perHeatedArea))
-                //    return false;
+                if (!CheckAndReportDistrictProp(process,process.CurrentData, inputBuildingName))
+                    return false;
+
+                var nw = process.CurrentData[inputDistrictName] as List<Object>;
+                var districtData = nw[0] as Dictionary<string, Object>;
+                var myBuildings = process.CurrentData[inputBuildingName] as List<Object>;
 
                 //Set common properties
-                if (!SetProperties(process, exls, generalCellMapping))
+                if (!SetDistrictProperties(districtData, exls, generalCellMapping))
                     return false;
-                
-                //Calculate kpi
-                outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
-                double kpiValue = 0;
-                int noRenovatedBuildings = 0;
 
+                //Calculate kpi
                 //NEW_CODE: Start with getting all default (Inital start) values from the excel Sheet for buildingdata
-                Dictionary<string,object> buildingDefaultValues=new Dictionary<string, object>();
-                if(buildings != null && buildings.Count>0)
+                Dictionary<string, object> buildingDefaultValues = new Dictionary<string, object>();
+                if (myBuildings != null && myBuildings.Count > 0)
                     if (!GetBuildingDefaultValues(exls, out buildingDefaultValues))
                         return false;
 
-                foreach (Dictionary<string,object> buildingData in buildings)
+                outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
+                double kpiValue = 0;
+                int noRenovatedBuildings = 0;
+                
+                foreach (Dictionary<string,object> buildingData in myBuildings)
                 {
                     double kpiValuei;
                     bool changesMade;
                     if (!SetInputDataOneBuilding(buildingData, exls, out changesMade))
                         return false;
-
                     kpiValuei = Convert.ToDouble(exls.GetCellValue(sheet, kpiCellMapping[process.KpiId]));
-                    
                     if (changesMade)
                         ++noRenovatedBuildings;
 
+                    if(noRenovatedBuildings % 50==0)
+                        SendStatusMessage(string.Format("{0} building processed", noRenovatedBuildings));
+
                     //NEW_CODE: Reset all used building values
-                    if (buildingDefaultValues != null && 
+                    if (buildingDefaultValues != null &&
                         !SetInputDataOneBuilding(buildingDefaultValues, exls, out changesMade))
                         return false;
-                    
+
                     kpiValue += kpiValuei;
-                    outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData[buidingIdKey] as string, process.KpiId, kpiValuei));
+                    //TODO fix this below
+                    outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData["building_id"] as string, process.KpiId, kpiValuei));
+
                 }
+
 
                 if (noRenovatedBuildings > 0 && (process.KpiId != kpi_totalLCC))
                     kpiValue /= Convert.ToDouble(noRenovatedBuildings);
 
                 output = new Ecodistrict.Messaging.Data.Output(process.KpiId, Math.Round(kpiValue, 1));
+
+                SendStatusMessage(string.Format("Totally {0} building processed", noRenovatedBuildings));
 
                 return true;
             }
@@ -409,13 +460,31 @@ namespace LCC
 
                 if (!GetProperties(exls, buildingCellMapping, ref buildingDefaultValues))
                     return false;
+                if (!GetProperties(exls, heatingSystemCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, heatingPumpCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, heatingSystemBoreHoleCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, heatingSystemCirculationPumpCellMapping, ref buildingDefaultValues))
+                    return false;
                 if (!GetProperties(exls, buildingShellInsulationMaterial1CellMapping, ref buildingDefaultValues))
                     return false;
+                if (!GetProperties(exls, buildingShellInsulationMaterial2CellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, buildingShellFacadeSystemCellMapping, ref buildingDefaultValues))
+                    return false;
                 if (!GetProperties(exls, buildingShellWindowsCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, buildingShellDoorsCellMapping, ref buildingDefaultValues))
                     return false;
                 if (!GetProperties(exls, VentilationSystemVentilationDuctsCellMapping, ref buildingDefaultValues))
                     return false;
                 if (!GetProperties(exls, VentilationSystemAirflowAssemblyCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, VentilationSystemDistributionHousingsCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, RadiatorsCellMapping, ref buildingDefaultValues))
                     return false;
                 if (!GetProperties(exls, WaterTapsCellMapping, ref buildingDefaultValues))
                     return false;
@@ -433,7 +502,12 @@ namespace LCC
                     return false;
                 if (!GetProperties(exls, ElectricalWiringCellMapping, ref buildingDefaultValues))
                     return false;
+                if (!GetProperties(exls, EnergyProductionCellMapping, ref buildingDefaultValues))
+                    return false;
+                if (!GetProperties(exls, BuildingCondBoilersCellMapping, ref buildingDefaultValues))
+                    return false;
                 #endregion
+
                 return true;
             }
             catch (Exception ex)
@@ -443,7 +517,7 @@ namespace LCC
 
         }
 
-        bool SetInputDataOneBuilding(Dictionary<string, object> buildingData, CExcel exls, out bool changesMade)
+        private bool SetInputDataOneBuilding(Dictionary<string, object> buildingData, CExcel exls, out bool changesMade)
         {
             changesMade = false;
             bool changesMade_i = false;
@@ -455,11 +529,39 @@ namespace LCC
                     return false;
                 changesMade = changesMade | changesMade_i;
 
+                if (!SetProperties(buildingData, exls, heatingSystemCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, heatingPumpCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, heatingSystemBoreHoleCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, heatingSystemCirculationPumpCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
                 if (!SetProperties(buildingData, exls, buildingShellInsulationMaterial1CellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
 
+                if (!SetProperties(buildingData, exls, buildingShellInsulationMaterial2CellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, buildingShellFacadeSystemCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
                 if (!SetProperties(buildingData, exls, buildingShellWindowsCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, buildingShellDoorsCellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
 
@@ -468,6 +570,14 @@ namespace LCC
                 changesMade = changesMade | changesMade_i;
 
                 if (!SetProperties(buildingData, exls, VentilationSystemAirflowAssemblyCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, VentilationSystemDistributionHousingsCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, RadiatorsCellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
 
@@ -494,7 +604,7 @@ namespace LCC
                 if (!SetProperties(buildingData, exls, PipingSystemsGalvanisedSteelCellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
-                
+
                 if (!SetProperties(buildingData, exls, PipingSystemsReliningCellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
@@ -502,7 +612,15 @@ namespace LCC
                 if (!SetProperties(buildingData, exls, ElectricalWiringCellMapping, out changesMade_i))
                     return false;
                 changesMade = changesMade | changesMade_i;
-                
+
+                if (!SetProperties(buildingData, exls, EnergyProductionCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
+                if (!SetProperties(buildingData, exls, BuildingCondBoilersCellMapping, out changesMade_i))
+                    return false;
+                changesMade = changesMade | changesMade_i;
+
                 #endregion
 
                 return true;

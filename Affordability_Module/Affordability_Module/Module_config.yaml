@@ -3,7 +3,7 @@
 name: SP Affordability
 description: Calculates affordability of different renovation options. Developed by SP
 moduleId: SP_Affordability_v0.1
-# path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Affordability\Affordability.xlsm
-# path: L:\EcoDistr\Modules\Affordability\Affordability.xlsm
-path: L:\EcoDistr\Modules\Affordability\AffordabilityV1.xlsm
-# path: C:\Programutveckling\EcoDistr\Modules\Affordability\Affordability.xlsm
+# path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Affordability\AffordabilityV1.xlsx
+# path: L:\EcoDistr\Modules\Affordability\AffordabilityV1.xlsx
+path: L:\EcoDistr\Modules\Affordability\AffordabilityV1.xlsx
+# path: C:\Programutveckling\EcoDistr\Modules\Affordability\AffordabilityV1.xlsx

@@ -19,22 +19,28 @@ namespace Affordability
         const string sheetOutput = "Output";
         const string buidingIdKey = "gml_id";
 
+        private const string inputDistrictName = "District input for Affordability";
+        private const string inputBuildingName = "Building input for Affordability";
+
+
         #region Cell Mapping
         Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
         {
-            {kpi_mdi,                 "C22"}
+            {kpi_mdi,                 "B22"}
         };
 
         private Dictionary<string, string> generalCellMapping = new Dictionary<string, string>()
         {
-            {"MaxCostShare", "B18"}
+            {"maxcostshare", "B18"}
         };
+
+        private const string HeatedFloorArea = "heatedfloorarea";
 
         Dictionary<string, string> generalBuildingCellMapping = new Dictionary<string, string>()
         {
-            {"NoOfPeopleInHousehold",   "B4"},
-            {"HeatedFloorArea",         "B6"},
-            {"RentPerMonth",            "B10"}
+            {"noofpeopleinhousehold",   "B4"},
+            {HeatedFloorArea,           "B6"},
+            {"rentpermonth",            "B10"}
         };
 
         
@@ -42,39 +48,50 @@ namespace Affordability
 
         private Dictionary<string, string> paidSeparatelyChoiseCellMapping = new Dictionary<string, string>()
             {
-                {"ElectricityPaidSeparately",   "C13"}, //True/False or 0/1
-                {"HotWaterPaidSerparately",     "C14"},
-                {"CoolingPaidSeparately",       "C15"},
-                {"SpaceHeatingPaidSeparately",  "C16"}
+                {"electricitypaidseparately",   "C13"}, //True/False or 0/1
+                {"hotwaterpaidserparately",     "C14"},
+                {"coolingpaidseparately",       "C15"},
+                {"spaceheatingpaidseparately",  "C16"}
             };
         #endregion
         #region paidSeparatelyValuesCellMapping
         Dictionary<string, string> householdElectricityCellMapping = new Dictionary<string, string>()
         {
-            {"ElectricityCalculationChoice",     "C23"},
-            {"HouseholdElectricityConsumption",  "B24"},
-            {"HouseHoldElectricityPrice",        "D24"}
+            {"electricitycalculationchoice",     "C23"},
+            {"householdelectricityconsumption",  "B24"},
+            {"householdelectricityprice",        "D24"}
         };
 
         Dictionary<string, string> householdHotWaterCellMapping = new Dictionary<string, string>()
         {
-            {"HouseholdHotWaterCalculationChoice",    "C27"},
-            {"HouseholdHotWaterEnergyConsumption",    "B28"},
-            {"HouseholdHotWaterEnergyPrice",          "D28"}
+            {"householdhotwatercalculationchoice",    "C27"},
+            {"householdhotwaterenergyconsumption",    "B28"},
+            {"householdhotwaterenergyprice",          "D28"}
         };
 
-                Dictionary<string, string> householdCoolingCellMapping = new Dictionary<string, string>()
+        private const string CoolingConsumpStrSQM = "householdcoolingenergyconsumptionpsqm";
+        private const string CoolingConsumpStr = "householdcoolingenergyconsumption";
+
+        Dictionary<string, string> householdCoolingCellMapping = new Dictionary<string, string>()
         {
-            {"HouseholdCoolingEnergyConsumption",      "B32"},
-            {"HouseholdCoolingEnergyConsumptionPSqM",  "B32"}, //Has to be multiplied with Dwellingsize (B6) before used in cell
-            {"HouseholdCoolingEnergyPrice",            "D32"}
+            {CoolingConsumpStr,                        "B32"},
+            {CoolingConsumpStrSQM,                     "B32"}, //Has to be multiplied with heatedFloorArea (B6) before used in cell
+            {"householdcoolingenergyprice",            "D32"}
         };
+
+
+        private const string SpaceHeatingStr = "householdspaceheatingenergyconsumption";
+        private const string SpaceHeatingStrSQM = "householdspaceheatingenergyconsumptionpsqm";
+
         Dictionary<string, string> householdSpaceHeatingCellMapping = new Dictionary<string, string>()
         {
-            {"HouseholdSpaceHeatingEnergyConsumption",       "B35"},
-            {"HouseholdSpaceHeatingEnergyConsumptionPSqM",   "B35"}, //Has to be multiplied with Dwellingsize (B6) before used in cell
-            {"HouseholdSpaceHeatingEnergyPrice",             "D35"}
+            {SpaceHeatingStr,                                "B35"},
+            {SpaceHeatingStrSQM,                             "B35"}, //Has to be multiplied with heatedFloorArea (B6) before used in cell
+            {"householdspaceheatingenergyprice",             "D35"}
         };
+
+        private const string SpaceHeatingSQM = "householdspaceheatingenergyconsumptionpsqm";
+
         #endregion
 
         #endregion
@@ -110,20 +127,19 @@ namespace Affordability
                 //Check and prepare data
                 //Dictionary<string, object> district_data;
                 //GeoValue buildingsAsIS;
-                if (!CheckAndReportDistrictProp(process, process.CurrentData, "Buildings"))
+                if (!CheckAndReportDistrictProp(process, process.CurrentData, inputDistrictName))
                     return false;
 
-                string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);
-                List<Dictionary<string, object>> buildings = Newtonsoft.Json.JsonConvert.DeserializeObject(buildingsData, typeof(List<Dictionary<string, object>>)) as List<Dictionary<string, object>>;
+                if (!CheckAndReportDistrictProp(process, process.CurrentData, inputBuildingName))
+                    return false;
 
-                //buildings = process.CurrentData["Buildings"] as GeoValue;
-                //buildings = Ecodistrict.Messaging.DeserializeData<GeoValue>.JsonString(process.CurrentData["Buildings"] as string);
-                //bool perHeatedArea;
-                //if (!CheckAndPrepareData(process, out district_data, out buildingsAsIS, out buildingsVariant, out perHeatedArea))
-                //    return false;
+                var nw = process.CurrentData[inputDistrictName] as List<Object>;
+                var districtData = nw[0] as Dictionary<string, object>;
+                var myBuildings = process.CurrentData[inputBuildingName] as List<Object>;
 
-                //Set common properties
-                if (!SetProperties(process, exls, generalCellMapping))
+                //var building0 = buildings[0] as Dictionary<string, object>;
+
+                if (!SetDistrictProperties(districtData, exls, generalCellMapping))
                     return false;
 
                 //Calculate kpi
@@ -133,34 +149,44 @@ namespace Affordability
 
                 //NEW_CODE: Start with getting all default (Inital start) values from the excel Sheet for buildingdata
                 Dictionary<string, object> buildingDefaultValues = new Dictionary<string, object>();
-                if (buildings != null && buildings.Count > 0)
+                if (myBuildings != null && myBuildings.Count > 0)
                     if (!GetBuildingDefaultValues(exls, out buildingDefaultValues))
                         return false;
 
-                foreach (Dictionary<string, object> buildingData in buildings)
+                foreach (Dictionary<string, object> buildingData in myBuildings)
                 {
                     double kpiValuei;
                     bool changesMade;
-                    if (!SetInputDataOneBuilding(process,buildingData, exls, out changesMade))
+
+                    if (!SetInputDataOneBuilding(process, buildingData, exls, out changesMade))
                         return false;
 
-                    kpiValuei = 100 * Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
-                    
+                    kpiValuei = 100*Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
+
                     if (changesMade)
                         ++noRenovatedBuildings;
+
+                    if (noRenovatedBuildings % 50 == 0)
+                        SendStatusMessage(string.Format("{0} building processed", noRenovatedBuildings));
+
 
                     //NEW_CODE: Reset all used building values
                     if (!SetInputDataOneBuilding(process, buildingDefaultValues, exls, out changesMade))
                         return false;
 
                     kpiValue += kpiValuei;
-                    outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData[buidingIdKey] as string, process.KpiId, kpiValuei));
-                }
 
+                    //ToDo PB 2016-10-04 fix this
+                    outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building",buildingData["building_id"] as string, process.KpiId, kpiValuei));
+                }
+                                
                 if (noRenovatedBuildings > 0)
                     kpiValue /= Convert.ToDouble(noRenovatedBuildings);
 
                 output = new Ecodistrict.Messaging.Data.Output(process.KpiId, Math.Round(kpiValue, 1));
+
+                SendStatusMessage(string.Format("Totally {0} building processed", noRenovatedBuildings));
+
 
                 return true;
             }
@@ -169,7 +195,65 @@ namespace Affordability
                 SendErrorMessage(message: ex.Message, sourceFunction: "CalculateKpi", exception: ex);
                 throw ex;
             }
-        }
+
+            }
+
+
+
+
+
+                //string buildingsData = Newtonsoft.Json.JsonConvert.SerializeObject(process.CurrentData["Buildings"]);
+                //List<Dictionary<string, object>> buildings = Newtonsoft.Json.JsonConvert.DeserializeObject(buildingsData, typeof(List<Dictionary<string, object>>)) as List<Dictionary<string, object>>;
+
+
+                //Set common properties
+                //if (!SetProperties(process, exls, generalCellMapping))
+                //    return false;
+
+                //Calculate kpi
+                //outputDetailed = new Ecodistrict.Messaging.Data.OutputDetailed(process.KpiId);
+                //double kpiValue = 0;
+                //int noRenovatedBuildings = 0;
+
+                //NEW_CODE: Start with getting all default (Inital start) values from the excel Sheet for buildingdata
+                //Dictionary<string, object> buildingDefaultValues = new Dictionary<string, object>();
+                //if (buildings != null && buildings.Count > 0)
+                //    if (!GetBuildingDefaultValues(exls, out buildingDefaultValues))
+                //        return false;
+
+            //    foreach (Dictionary<string, object> buildingData in buildings)
+            //    {
+            //        double kpiValuei;
+            //        bool changesMade;
+            //        if (!SetInputDataOneBuilding(process,buildingData, exls, out changesMade))
+            //            return false;
+
+            //        kpiValuei = 100 * Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
+                    
+            //        if (changesMade)
+            //            ++noRenovatedBuildings;
+
+            //        //NEW_CODE: Reset all used building values
+            //        if (!SetInputDataOneBuilding(process, buildingDefaultValues, exls, out changesMade))
+            //            return false;
+
+            //        kpiValue += kpiValuei;
+            //        outputDetailed.KpiValueList.Add(new Ecodistrict.Messaging.Data.GeoObject("building", buildingData[buidingIdKey] as string, process.KpiId, kpiValuei));
+            //    }
+
+            //    if (noRenovatedBuildings > 0)
+            //        kpiValue /= Convert.ToDouble(noRenovatedBuildings);
+
+            //    output = new Ecodistrict.Messaging.Data.Output(process.KpiId, Math.Round(kpiValue, 1));
+
+            //    return true;
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    SendErrorMessage(message: ex.Message, sourceFunction: "CalculateKpi", exception: ex);
+            //    throw ex;
+            //}
+        //}
 
         private bool GetBuildingDefaultValues(CExcel exls, out Dictionary<string, object> DefaultValues)
         {
@@ -211,18 +295,84 @@ namespace Affordability
             {
                 #region Set data
 
-                if (!SetProperties(buildingData, exls, generalBuildingCellMapping, out changesMade_i))
+                if (!SetBuildingProperties(buildingData, exls, generalBuildingCellMapping, out changesMade_i))
                     return false;
-                if (!SetProperties(buildingData, exls, paidSeparatelyChoiseCellMapping, out changesMade_i))
+                if (changesMade_i) changesMade = true;
+
+                if (!SetBuildingPropertiesTrueFalse(buildingData, exls, paidSeparatelyChoiseCellMapping, out changesMade_i))
                     return false;
-                if (!SetProperties(buildingData, exls, householdElectricityCellMapping, out changesMade_i))
+                if (changesMade_i) changesMade = true;
+                
+                if (!SetBuildingProperties(buildingData, exls, householdElectricityCellMapping, out changesMade_i))
                     return false;
-                if (!SetProperties(buildingData, exls, householdHotWaterCellMapping, out changesMade_i))
+                if (changesMade_i) changesMade = true;
+                
+                if (!SetBuildingProperties(buildingData, exls, householdHotWaterCellMapping, out changesMade_i))
                     return false;
-                if (!SetProperties(buildingData, exls, householdCoolingCellMapping, out changesMade_i))
+                if (changesMade_i) changesMade = true;
+                
+                //Special for Dimosimdata
+                if (buildingData.ContainsKey(CoolingConsumpStr))
+                {
+                    if (buildingData[CoolingConsumpStr] != null && ((double) buildingData[CoolingConsumpStr] > 0))
+                    {
+                        buildingData.Remove(CoolingConsumpStrSQM);
+                    }
+                    else if (buildingData.ContainsKey(CoolingConsumpStrSQM) &&
+                            (buildingData[CoolingConsumpStrSQM]!=null) &&
+                            ((double)(buildingData[CoolingConsumpStrSQM])>0) 
+                            &&
+                            ((buildingData.ContainsKey(HeatedFloorArea) &&
+                            (buildingData[HeatedFloorArea]!=null) &&
+                            ((double)buildingData[HeatedFloorArea])>0)))
+                    {
+                        buildingData[CoolingConsumpStr] = (double)buildingData[CoolingConsumpStrSQM] *
+                                                            (double)buildingData[HeatedFloorArea];
+                        buildingData.Remove(CoolingConsumpStrSQM);
+                    }
+                    else if (buildingData.ContainsKey(CoolingConsumpStrSQM))
+                    {
+                        buildingData.Remove(CoolingConsumpStrSQM);
+                    }
+                }
+
+                if (!SetBuildingProperties(buildingData, exls, householdCoolingCellMapping, out changesMade_i))
                     return false;
-                if (!SetProperties(buildingData, exls, householdSpaceHeatingCellMapping, out changesMade_i))
+                if (changesMade_i) changesMade = true;
+
+
+
+                //Special for Dimosimdata
+                if (buildingData.ContainsKey(SpaceHeatingStr))
+                {
+                    if (buildingData[SpaceHeatingStr] != null && ((double)buildingData[SpaceHeatingStr] > 0))
+                    {
+                        buildingData.Remove(SpaceHeatingStrSQM);
+                    }
+                    else if (buildingData.ContainsKey(SpaceHeatingStrSQM) &&
+                            (buildingData[SpaceHeatingStrSQM]!=null) &&
+                            ((double)(buildingData[SpaceHeatingStrSQM]) > 0)
+                            &&
+                            ((buildingData.ContainsKey(HeatedFloorArea) &&
+                            (buildingData[HeatedFloorArea]!=null) &&
+                            ((double)buildingData[HeatedFloorArea]) > 0)))
+                    {
+                        buildingData[CoolingConsumpStr] = (double)buildingData[SpaceHeatingStrSQM] *
+                                                         (double)buildingData[HeatedFloorArea];
+                        buildingData.Remove(SpaceHeatingStrSQM);
+                    }
+                    else if (buildingData.ContainsKey(SpaceHeatingStrSQM))
+                    {
+                        buildingData.Remove(SpaceHeatingStrSQM);
+                    }
+                }
+
+                if (!SetBuildingProperties(buildingData, exls, householdSpaceHeatingCellMapping, out changesMade_i))
                     return false;
+                if (changesMade_i) changesMade = true;
+                
+
+
                 #endregion
 
                 return true;
@@ -230,14 +380,51 @@ namespace Affordability
             catch (System.Exception ex)
             {
                 return false;
+            }   
+
+        }
+
+
+        private bool SetDistrictProperties(Dictionary<string, Object> currentData, CExcel exls,
+            Dictionary<string, string> propertyCellMapping)
+        {
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                //Dictionary<string, object> CurrentData = process.CurrentData;
+                try
+                {
+                    {
+
+                        if (currentData.ContainsKey(property.Key))
+                        {
+                            object value = currentData[property.Key];
+
+                            double val = Convert.ToDouble(value);
+                            if (val < 0)
+                            {
+                                //process.CalcMessage = String.Format("Property '{0}' has invalid data, only values equal or above zero is allowed; value: {1}", property.Key, val);
+                                return false;
+                            }
+
+                            Set(sheet, property.Value, value, ref exls);
+                        }
+                        else
+                        {
+                            //process.CalcMessage = "";
+                            return false;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(
+                        message:
+                        String.Format(ex.Message + "\t key = {0}, isCurrentDataMissing = {1}", property.Key,
+                            currentData == null), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
             }
-
-
-
-
-
-   
-
+            return true;
         }
 
         private bool SetProperties(ModuleProcess process, CExcel exls, Dictionary<string, string> propertyCellMapping)
@@ -279,7 +466,7 @@ namespace Affordability
             return true;
         }
 
-        private bool SetProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
+        private bool SetBuildingProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
         {
             changesMade = false;
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
@@ -297,6 +484,37 @@ namespace Affordability
                     //    Set(sheet, property.Value, 0, ref exls);
                     //    //TODO
                     //}
+
+                }
+                catch (System.Exception ex)
+                {
+                    SendErrorMessage(message: String.Format(ex.Message + "\t key = {0}", property.Key), sourceFunction: "SetProperties", exception: ex);
+                    throw ex;
+                }
+            }
+
+            return true;
+        }
+
+        private bool SetBuildingPropertiesTrueFalse(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
+        {
+            changesMade = false;
+            foreach (KeyValuePair<string, string> property in propertyCellMapping)
+            {
+                try
+                {
+                    if (buildingData.ContainsKey(property.Key))
+                    {
+                        object value = buildingData[property.Key];
+                        Set(sheet, property.Value, value, ref exls);
+                        changesMade = true;
+                    }
+                    else
+                    {
+                        Set(sheet, property.Value, true, ref exls);
+                        changesMade = true;
+                        //TODO
+                    }
 
                 }
                 catch (System.Exception ex)
