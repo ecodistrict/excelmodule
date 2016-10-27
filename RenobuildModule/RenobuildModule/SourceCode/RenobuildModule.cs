@@ -407,6 +407,7 @@ namespace RenobuildModule
                 GeoValue buildingsAsIS;
                 GeoValue buildingsVariant;
                 bool perHeatedArea;
+
                 if (!CheckAndPrepareData(process, out district_data, out buildingsAsIS, out buildingsVariant, out perHeatedArea))
                     return false;
 

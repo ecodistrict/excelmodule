@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RenobuildModule.SourceCode;
 
 namespace RenobuildModule
 {
@@ -12,7 +13,7 @@ namespace RenobuildModule
 
         static void Main(string[] args)
         {
-            RenobuildModule module = new RenobuildModule();
+            RenobuildModuleNew module = new RenobuildModuleNew();
 
             try
             {

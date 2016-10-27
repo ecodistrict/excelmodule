@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define ToClipBoard
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,9 @@ namespace Affordability
             {"maxcostshare", "B18"}
         };
 
-        private const string HeatedFloorArea = "heatedfloorarea";
+        // TODO: New name for the field is "dwellingsize" check afternoon 2016-10-11 if any not null values
+        //private const string HeatedFloorArea = "heatedfloorarea";
+        private const string HeatedFloorArea = "dwellingsize";
 
         Dictionary<string, string> generalBuildingCellMapping = new Dictionary<string, string>()
         {
@@ -85,9 +88,9 @@ namespace Affordability
 
         Dictionary<string, string> householdSpaceHeatingCellMapping = new Dictionary<string, string>()
         {
-            {SpaceHeatingStr,                                "B35"},
-            {SpaceHeatingStrSQM,                             "B35"}, //Has to be multiplied with heatedFloorArea (B6) before used in cell
-            {"householdspaceheatingenergyprice",             "D35"}
+            {SpaceHeatingStr,                                "B36"},
+            {SpaceHeatingStrSQM,                             "B36"}, //Has to be multiplied with heatedFloorArea (B6) before used in cell
+            {"householdspaceheatingenergyprice",             "D36"}
         };
 
         private const string SpaceHeatingSQM = "householdspaceheatingenergyconsumptionpsqm";
@@ -161,7 +164,7 @@ namespace Affordability
                     if (!SetInputDataOneBuilding(process, buildingData, exls, out changesMade))
                         return false;
 
-                    kpiValuei = 100*Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
+                    kpiValuei = Convert.ToDouble(exls.GetCellValue(sheetOutput, kpiCellMapping[process.KpiId]));
 
                     if (changesMade)
                         ++noRenovatedBuildings;
@@ -314,26 +317,40 @@ namespace Affordability
                 //Special for Dimosimdata
                 if (buildingData.ContainsKey(CoolingConsumpStr))
                 {
-                    if (buildingData[CoolingConsumpStr] != null && ((double) buildingData[CoolingConsumpStr] > 0))
+                    var tst = buildingData[CoolingConsumpStr] as long?;
+                    
+                    if (tst != null && (tst > 0))
                     {
-                        buildingData.Remove(CoolingConsumpStrSQM);
-                    }
-                    else if (buildingData.ContainsKey(CoolingConsumpStrSQM) &&
-                            (buildingData[CoolingConsumpStrSQM]!=null) &&
-                            ((double)(buildingData[CoolingConsumpStrSQM])>0) 
-                            &&
-                            ((buildingData.ContainsKey(HeatedFloorArea) &&
-                            (buildingData[HeatedFloorArea]!=null) &&
-                            ((double)buildingData[HeatedFloorArea])>0)))
-                    {
-                        buildingData[CoolingConsumpStr] = (double)buildingData[CoolingConsumpStrSQM] *
-                                                            (double)buildingData[HeatedFloorArea];
                         buildingData.Remove(CoolingConsumpStrSQM);
                     }
                     else if (buildingData.ContainsKey(CoolingConsumpStrSQM))
                     {
+                        var tst2 = buildingData[CoolingConsumpStrSQM] as long?;
+                        var tst3 = buildingData[HeatedFloorArea] as long?;
+                        if ((tst2 != null) && (tst3 != null))
+                        {
+                            buildingData[CoolingConsumpStr] = tst2*tst3;
+                        }
                         buildingData.Remove(CoolingConsumpStrSQM);
                     }
+                       
+
+                    //else if (buildingData.ContainsKey(CoolingConsumpStrSQM) &&
+                    //        (buildingData[CoolingConsumpStrSQM] != null) &&
+                    //        ((double)(buildingData[CoolingConsumpStrSQM]) > 0)
+                    //        &&
+                    //        ((buildingData.ContainsKey(HeatedFloorArea) &&
+                    //        (buildingData[HeatedFloorArea] != null) &&
+                    //        ((double)buildingData[HeatedFloorArea]) > 0)))
+                    //{
+                    //    buildingData[CoolingConsumpStr] = (double)buildingData[CoolingConsumpStrSQM] *
+                    //                                        (double)buildingData[HeatedFloorArea];
+                    //    buildingData.Remove(CoolingConsumpStrSQM);
+                    //}
+                    //else if (buildingData.ContainsKey(CoolingConsumpStrSQM))
+                    //{
+                    //    buildingData.Remove(CoolingConsumpStrSQM);
+                    //}
                 }
 
                 if (!SetBuildingProperties(buildingData, exls, householdCoolingCellMapping, out changesMade_i))
@@ -345,26 +362,40 @@ namespace Affordability
                 //Special for Dimosimdata
                 if (buildingData.ContainsKey(SpaceHeatingStr))
                 {
-                    if (buildingData[SpaceHeatingStr] != null && ((double)buildingData[SpaceHeatingStr] > 0))
+                    var tst = buildingData[SpaceHeatingStr] as long?;
+                    
+                    if (tst != null && tst > 0)
                     {
-                        buildingData.Remove(SpaceHeatingStrSQM);
-                    }
-                    else if (buildingData.ContainsKey(SpaceHeatingStrSQM) &&
-                            (buildingData[SpaceHeatingStrSQM]!=null) &&
-                            ((double)(buildingData[SpaceHeatingStrSQM]) > 0)
-                            &&
-                            ((buildingData.ContainsKey(HeatedFloorArea) &&
-                            (buildingData[HeatedFloorArea]!=null) &&
-                            ((double)buildingData[HeatedFloorArea]) > 0)))
-                    {
-                        buildingData[CoolingConsumpStr] = (double)buildingData[SpaceHeatingStrSQM] *
-                                                         (double)buildingData[HeatedFloorArea];
                         buildingData.Remove(SpaceHeatingStrSQM);
                     }
                     else if (buildingData.ContainsKey(SpaceHeatingStrSQM))
                     {
-                        buildingData.Remove(SpaceHeatingStrSQM);
+                        var tst2 = buildingData[SpaceHeatingStrSQM] as long?;
+                        var tst3 = buildingData[HeatedFloorArea] as long?;
+                        if ((tst2 != null) && (tst3 != null))
+                        {
+                            buildingData[SpaceHeatingStr] = tst2*tst3;
+                            buildingData.Remove(SpaceHeatingStrSQM);
+                        }
+
                     }
+
+                    //else if (buildingData.ContainsKey(SpaceHeatingStrSQM) &&
+                    //        (buildingData[SpaceHeatingStrSQM] != null) &&
+                    //        ((double)(buildingData[SpaceHeatingStrSQM]) > 0)
+                    //        &&
+                    //        ((buildingData.ContainsKey(HeatedFloorArea) &&
+                    //        (buildingData[HeatedFloorArea] != null) &&
+                    //        ((double)buildingData[HeatedFloorArea]) > 0)))
+                    //{
+                    //    buildingData[CoolingConsumpStr] = (double)buildingData[SpaceHeatingStrSQM] *
+                    //                                     (double)buildingData[HeatedFloorArea];
+                    //    buildingData.Remove(SpaceHeatingStrSQM);
+                    //}
+                    //else if (buildingData.ContainsKey(SpaceHeatingStrSQM))
+                    //{
+                    //    buildingData.Remove(SpaceHeatingStrSQM);
+                    //}
                 }
 
                 if (!SetBuildingProperties(buildingData, exls, householdSpaceHeatingCellMapping, out changesMade_i))
@@ -385,9 +416,22 @@ namespace Affordability
         }
 
 
-        private bool SetDistrictProperties(Dictionary<string, Object> currentData, CExcel exls,
-            Dictionary<string, string> propertyCellMapping)
+        private bool SetDistrictProperties(Dictionary<string, Object> currentData, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
+#if(ToClipBoard)
+            using (FileStream fs = File.Open(@"C:\Temp\EcoTemp\DistData.csv", FileMode.Create))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (KeyValuePair<string, object> pair in currentData)
+                    {
+                        sw.WriteLineAsync(string.Format("{0}\t{1}\t{2}", pair.Key, propertyCellMapping[pair.Key],pair.Value));
+                    }
+                }
+            }
+#endif
+
+
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
                 //Dictionary<string, object> CurrentData = process.CurrentData;
@@ -468,6 +512,20 @@ namespace Affordability
 
         private bool SetBuildingProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
         {
+
+#if(ToClipBoard)
+            using (FileStream fs = File.Open(@"C:\Temp\EcoTemp\BuildingData.csv", FileMode.Append))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (KeyValuePair<string, string> pair in propertyCellMapping)
+                    {
+                        if (buildingData.ContainsKey(pair.Key))
+                            sw.WriteLineAsync(string.Format("{0}\t{1}\t{2}", pair.Key, pair.Value, buildingData[pair.Key]));
+                    }
+                }
+            }
+#endif
             changesMade = false;
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
@@ -498,6 +556,18 @@ namespace Affordability
 
         private bool SetBuildingPropertiesTrueFalse(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
         {
+#if(ToClipBoard)
+            using (FileStream fs = File.Open(@"C:\Temp\EcoTemp\BuildingData.csv", FileMode.Append))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (KeyValuePair<string, string> pair in propertyCellMapping)
+                    {
+                        sw.WriteLineAsync(string.Format("{0}\t{1}\t{2}", pair.Key, pair.Value, buildingData[pair.Key]));
+                    }
+                }
+            }
+#endif
             changesMade = false;
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {

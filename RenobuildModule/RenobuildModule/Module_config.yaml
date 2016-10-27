@@ -4,5 +4,5 @@ name: Renobuild (TEST)
 description: Renoubuild a LCA tool for renovation options, developed by SP.
 moduleId: SP_LCA_v4.0
 # path: C:\Users\johannesma\Documents\Dokument\!Ecodistr-ICT\Renobuild\Renobuild v4.0.xlsx 
-# path: L:\EcoDistr\Modules\LCA\Renobuild v4.0.xlsx 
-path: C:\Programutveckling\EcoDistr\Modules\LCA\Renobuild v4.0.xlsx 
+path: L:\EcoDistr\Modules\LCA\Renobuild v4.0.xlsx 
+# path: C:\Programutveckling\EcoDistr\Modules\LCA\Renobuild v4.0.xlsx 

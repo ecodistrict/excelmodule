@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define ToClipBoard
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Yaml.Serialization;
 using Ecodistrict.Messaging;
 using Ecodistrict.Excel;
+
 
 namespace LCC
 {
@@ -23,6 +25,38 @@ namespace LCC
         private const string inputDistrictName = "District input for LCC";
         private const string inputBuildingName = "Building input for LCC";
 
+        #region AntwerpConstants
+
+        private const bool UseAntwerpFix = true;
+
+        private const string cHeatingSystemFieldName = "heatingsystem";
+        private const string cHeatingSystemDestination = "buildingheatingsystemSelected";
+        private const string cHeatingSystemCommand = "High_Efficiency_Boiler";
+        private const double cHeatingSystemValue = 1.0;
+
+
+        private const string cFacadeMaterialFieldName = "facadematerial";
+        private const string cFacadeMaterialDestination = "buildingshellfacadesystemSelected";
+        private const string cFacadeMaterialCommand = "Extra_Facade_Insulation";
+        private const double cFacadeMaterialValue = 1.0;
+
+        private const string cRoofMaterialFieldName = "roofmaterial";
+        private const string cRoofMaterialDestination = "buildingshellinsulationmaterial1Selected";
+        private const string cRoofMaterialCommandExtraInsCommand = "Extra_Roof_Insulation";
+        private const double cRoofMaterialCommandExtraInsValue = 1.0;
+        private const string cRoofMaterialCommandVegRoofCommand = "Vegetated_Roof";
+        private const double cRoofMaterialCommandVegRoofValue = 1.2;
+
+        private const string cGlazingTypeFieldName = "glazingtype";
+        private const string cGlazingTypeDestination = "buildingshellwindowsSelected";
+        private const string cGlazingTypeDoubleGlazeCommand = "High_Efficiency_Double_Glazing";
+        private const double cGlazingTypeDoubleGlazeValue = 1.0;
+        private const string cGlazingTypeTripleGlazeCommand = "Triple_Glazing";
+        private const double cGlazingTypeTripleGlazeValue = 1.3;
+
+        
+
+        #endregion
 
         #region Cell Mapping
         Dictionary<string, string> kpiCellMapping = new Dictionary<string, string>()
@@ -226,6 +260,34 @@ namespace LCC
             {"buildingcondboilerinstallationcost",       "O46"}
         };
 
+        //Extra for Antwerpen fix
+        Dictionary<string,string> CalcExtraCommandsCellMapping=new Dictionary<string, string>()
+        {
+            {cHeatingSystemDestination,                     "V24"}, // Antwerpfix
+            {"buildingsystemheatpumpelected",               "V25"},  
+            {"buildingsystemboreholeSelected",              "V26"},  
+            {"heatingcirculationpumpSelected",              "V27"},  
+            {cRoofMaterialDestination,                      "V28"}, // Antwerpfix
+            {"buildingshellinsulationmaterial2Selected",    "V29"},
+            {cFacadeMaterialDestination,                    "V30"}, // Antwerpfix
+            {cGlazingTypeDestination,                       "V31"}, // Antwerpfix 
+            {"buildingshelldoorsSelected",                  "V32"},  
+            {"ventilationductsSelected",                    "V33"},  
+            {"airflowassemblySelected",                     "V34"},  
+            {"distributionhousingsSelected",                "V35"},  
+            {"buildingradiatorsSelected",                   "V36"},  
+            {"watertapsSelected",                           "V37"},  
+            {"pipingsystemscopperSelected",                 "V38"},  
+            {"pipingsystemspexSelected",                    "V39"},  
+            {"pipingsystemsppSelected",                     "V40"},  
+            {"pipingsystemscastironSelected",               "V41"},  
+            {"pipingsystemsgalvanisedsteelSelected",        "V42"},  
+            {"pipingsystemsreliningSelected",               "V43"},  
+            {"electricalwiringSelected",                    "V44"},  
+            {"energyproductionSelected",                    "V45"},  
+            {"buildingcondboilerSelected",                  "V46"}
+        };
+
 
         #endregion
 
@@ -287,6 +349,21 @@ namespace LCC
 
         private bool SetProperties(Dictionary<string, object> buildingData, CExcel exls, Dictionary<string, string> propertyCellMapping, out bool changesMade)
         {
+
+#if(ToClipBoard)
+            using (FileStream fs = File.Open(@"C:\Temp\EcoTemp\BuildingData.csv", FileMode.Append))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (KeyValuePair<string, string> pair in propertyCellMapping)
+                    {
+                        sw.WriteLineAsync(string.Format("{0}\t{1}\t{2}", pair.Key, pair.Value, buildingData[pair.Key]));
+                    }
+                }
+            }
+#endif
+
+
             changesMade = false;
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
@@ -317,6 +394,19 @@ namespace LCC
 
         private bool SetDistrictProperties(Dictionary<string, Object> currentData, CExcel exls, Dictionary<string, string> propertyCellMapping)
         {
+#if(ToClipBoard)
+            using (FileStream fs = File.Open(@"C:\Temp\EcoTemp\DistData.csv", FileMode.Create))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (KeyValuePair<string, object> pair in currentData)
+                    {
+                        sw.WriteLineAsync(string.Format("{0}\t{1}\t{2}", pair.Key, propertyCellMapping[pair.Key],pair.Value));
+                    }
+                }
+            }
+#endif
+
             foreach (KeyValuePair<string, string> property in propertyCellMapping)
             {
                 //Dictionary<string, object> CurrentData = process.CurrentData;
@@ -506,6 +596,9 @@ namespace LCC
                     return false;
                 if (!GetProperties(exls, BuildingCondBoilersCellMapping, ref buildingDefaultValues))
                     return false;
+                if (!GetProperties(exls, CalcExtraCommandsCellMapping, ref buildingDefaultValues))
+                    return false;
+
                 #endregion
 
                 return true;
@@ -524,6 +617,66 @@ namespace LCC
 
             try
             {
+                //Antwerp fix
+                if (UseAntwerpFix)
+                {
+                    Dictionary<string,object> buildingExtraData=new Dictionary<string, object>();
+                    if (buildingData.ContainsKey(cHeatingSystemFieldName))
+                    {
+                        if (buildingData[cHeatingSystemFieldName] != null)
+                        {
+                            if ((string) buildingData[cHeatingSystemFieldName] == cHeatingSystemCommand)
+                            {
+                                buildingExtraData.Add(cHeatingSystemDestination, cHeatingSystemValue);
+                            }
+                        }
+                    }
+                    if (buildingData.ContainsKey(cFacadeMaterialFieldName))
+                    {
+                        if (buildingData[cFacadeMaterialFieldName] != null)
+                        {
+                            if ((string)buildingData[cFacadeMaterialFieldName] == cFacadeMaterialCommand)
+                            {
+                                buildingExtraData.Add(cFacadeMaterialDestination, cFacadeMaterialValue);
+                            }
+                        }
+                    }
+                    if (buildingData.ContainsKey(cRoofMaterialFieldName))
+                    {
+                        if (buildingData[cRoofMaterialFieldName] != null)
+                        {
+                            if ((string) buildingData[cRoofMaterialFieldName] == cRoofMaterialCommandExtraInsCommand)
+                            {
+                                buildingExtraData.Add(cRoofMaterialDestination, cRoofMaterialCommandExtraInsValue);
+                            }
+                            else if ((string) buildingData[cRoofMaterialFieldName] == cRoofMaterialCommandVegRoofCommand)
+                            {
+                                buildingExtraData.Add(cRoofMaterialDestination, cRoofMaterialCommandVegRoofValue);
+                            }
+                        }
+                    }
+                    if (buildingData.ContainsKey(cGlazingTypeFieldName))
+                    {
+                        if (buildingData[cGlazingTypeFieldName] != null)
+                        {
+                            if ((string) buildingData[cGlazingTypeFieldName] == cGlazingTypeDoubleGlazeCommand)
+                            {
+                                buildingExtraData.Add(cGlazingTypeDestination,cGlazingTypeDoubleGlazeValue);
+                            }
+                            else if ((string) buildingData[cGlazingTypeFieldName] == cGlazingTypeTripleGlazeCommand)
+                            {
+                                buildingExtraData.Add(cGlazingTypeDestination, cGlazingTypeTripleGlazeValue);
+                            }
+                        }
+                    }
+                    if (buildingExtraData.Count > 0)
+                    {
+                        if (!SetProperties(buildingExtraData, exls, CalcExtraCommandsCellMapping, out changesMade_i))
+                            return false;
+                        changesMade = changesMade | changesMade_i;
+                    }
+                }
+                //end Antwerp fix
                 #region Set Data
                 if (!SetProperties(buildingData, exls, buildingCellMapping, out changesMade_i))
                     return false;

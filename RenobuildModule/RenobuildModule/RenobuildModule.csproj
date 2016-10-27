@@ -51,6 +51,7 @@
     <Compile Include="SourceCode\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceCode\RenobuildModule.cs" />
+    <Compile Include="SourceCode\RenobuildModuleNew.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
