@@ -49,6 +49,7 @@
     <None Include="App.config" />
     <None Include="Config\IMB_config.yaml" />
     <None Include="Config\Module_config.yaml" />
+    <None Include="Exceldocument\Mobility v1.0.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\IDSSFramework\EcodistrictMessaging.Net\EcodistrictMessaging\EcodistrictMessaging.csproj">
