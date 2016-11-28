@@ -121,7 +121,7 @@ namespace MobilityModule
             {"M0707ImpactOnPublicTransport",                                            "I100"},
             {"M0708ImpactOnSlowModes",                                                  "J100"},
             {"M0801DaysPerWeekThatEmployeesWorkFromHome",                               "H114"},
-            {"M0802PercentageOfFloorAreaOfficeBuildingsParticipatingInFlexworking",     "H115"},
+            {"M0802PercentFloorAreaOffBuildFlexwork",                                   "H115"},
             {"M0803ImpactWithoutMeasure",                                               "F120"},
             {"M0804ImpactOnSlowModes",                                                  "J120"},
             {"M0901ImpactWithoutMeasure",                                               "F128"},
@@ -138,7 +138,7 @@ namespace MobilityModule
         {
             {"M01CombineTramAndBusInfrastructure",                                                    "E8"},
             {"M02LargerTramAndBusVehiclesUpToMax20PerCentIncrease",                                   "E9"},
-            {"M03HigherFrequencyTramAndBusServicesUpToMax20PerCentIncreaseOfTramAndBusStopService",   "E10"},
+            {"M03HiFreqTramBusServ20PerCentIncrStopServ",                                             "E10"},
             {"M04OptimisationOfBusRoute",                                                             "E11"},
             {"M05ModificationOfTramAndBusRoutesToConnectToPAndR",                                     "E12"},
             {"M06ParkingZonePolicy ",                                                                 "E13"},
